@@ -1,0 +1,60 @@
+{
+  "schema": "r23_oracle_vs_interior_v1",
+  "created_utc": "2026-07-28T19:23:34.872013Z",
+  "config": {
+    "sobol_index": 60,
+    "design": "B",
+    "beta": 1.0,
+    "policy": "constant degree (oracle)",
+    "degree": 249,
+    "comparator_role": "post-hoc best member of the frozen ladder under the budget; a lower envelope, not a selectable policy",
+    "ladder_source": "r15_fixed_oracle.json, offsets frozen in R15-A",
+    "adopted_truth_degree": 900,
+    "initial_state_si": [
+      1711016.888889955,
+      447609.8065530065,
+      113.7396310240361,
+      -148.677967389235,
+      567.9068133932498,
+      1669.2011747774286
+    ],
+    "duration_s": 604800.0,
+    "output_step_s": 120.0,
+    "integrator": "InstrumentedDOP853",
+    "max_step_s": 60.0,
+    "level": "tighter",
+    "atol_kind": "vector",
+    "timing_comparable": false,
+    "source": {
+      "driver": "rev23_oracle_vs_interior.py",
+      "reuses": "r15_fixed_oracle.json (frozen ladder and its argmin), r14_trajectory_{design}_beta_1.00.json (states, truths), r11 truths",
+      "preregistration": "r23_preregistration.json"
+    }
+  },
+  "config_sha256": "4b3f0cdead1dc03e40844a1273b6b3e474f5ba99c0aa74b31fbcff484f219fed",
+  "status": "ok",
+  "event": null,
+  "telemetry": {
+    "n_rhs": 224276,
+    "n_accepted_steps": 13850,
+    "n_attempted_steps": 15227,
+    "n_rejected_trials": 1377,
+    "switch_count_at_rhs_samples": 0,
+    "degree_counts": {
+      "249": 224276
+    },
+    "degree_range": [
+      249,
+      249
+    ],
+    "mean_degree": 249.0,
+    "mean_degree_sq": 62001.0,
+    "gravity_kernel_ns": 156827588300,
+    "process_cpu_ns": 160609375000,
+    "total_wall_ns": 174604542800
+  },
+  "raw_path": "metrics\\r23_raw\\oracle_vs_interior\\B\\sobolA_060\\oracle_249_tighter.npz",
+  "raw_sha256": "f42bc81c251885c854ceaff24561a82982080aedcef046d06304f93300a16580",
+  "n_output_epochs": 5041,
+  "last_output_epoch_s": 604800.0
+}

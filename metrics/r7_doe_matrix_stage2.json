@@ -1,0 +1,4528 @@
+{
+  "scenario": {
+    "plan": "ROBUSTNESS_EXPERIMENT_PLAN.md Test 9 / Stage 2 main 7-day matrix",
+    "duration_s": 604800.0,
+    "output_step_s": 120.0,
+    "integrator": "DOP853",
+    "rtol": 1e-12,
+    "atol": 1e-05,
+    "rotation": "uniform sidereal about polar axis; epoch degenerate with body-fixed perilune longitude in this stage",
+    "truth_rule": "N=600 if perilune < 50 km else N=300",
+    "schedule_params": {
+      "eps_tail_fraction": 0.001,
+      "floor": 60,
+      "cap": 250,
+      "quantum": 10,
+      "alt_grid_km": [
+        20.0,
+        560.0,
+        10.0
+      ]
+    },
+    "comparator_rule": {
+      "fixed_crit": "empirical tail-criterion N_min at perilune altitude (rev4 convention, unquantized)",
+      "fixed_work": "nearest integer to sqrt(mean N^2) of the sched_emp run of the same orbit"
+    },
+    "lhs": {
+      "n_points": 18,
+      "n_candidates": 300,
+      "seed": 20260719,
+      "bounds": {
+        "hp_km": [
+          30.0,
+          120.0
+        ],
+        "ha_km": [
+          180.0,
+          500.0
+        ],
+        "incl_deg": [
+          0.0,
+          100.0
+        ],
+        "argp_deg": [
+          0.0,
+          360.0
+        ],
+        "raan_deg": [
+          0.0,
+          360.0
+        ]
+      }
+    },
+    "smoke": false
+  },
+  "design": [
+    {
+      "name": "c1_circ100_polar",
+      "family": "canonical",
+      "hp_km": 100.0,
+      "ha_km": 100.0,
+      "incl_deg": 90.0,
+      "argp_deg": 0.0,
+      "raan_deg": 0.0
+    },
+    {
+      "name": "c2_50x300_polar",
+      "family": "canonical",
+      "hp_km": 50.0,
+      "ha_km": 300.0,
+      "incl_deg": 90.0,
+      "argp_deg": 0.0,
+      "raan_deg": 0.0
+    },
+    {
+      "name": "c3_50x300_i60",
+      "family": "canonical",
+      "hp_km": 50.0,
+      "ha_km": 300.0,
+      "incl_deg": 60.0,
+      "argp_deg": 0.0,
+      "raan_deg": 0.0
+    },
+    {
+      "name": "c4_50x300_i5",
+      "family": "canonical",
+      "hp_km": 50.0,
+      "ha_km": 300.0,
+      "incl_deg": 5.0,
+      "argp_deg": 0.0,
+      "raan_deg": 0.0
+    },
+    {
+      "name": "c5_100x300_polar",
+      "family": "canonical",
+      "hp_km": 100.0,
+      "ha_km": 300.0,
+      "incl_deg": 90.0,
+      "argp_deg": 0.0,
+      "raan_deg": 0.0
+    },
+    {
+      "name": "c6_lro_30x216",
+      "family": "canonical",
+      "hp_km": 30.0,
+      "ha_km": 216.0,
+      "incl_deg": 90.0,
+      "argp_deg": 270.0,
+      "raan_deg": 0.0
+    },
+    {
+      "name": "lhs_00",
+      "family": "lhs",
+      "hp_km": 84.70441511267607,
+      "ha_km": 225.27141553491728,
+      "incl_deg": 81.31205566662692,
+      "argp_deg": 311.2050337346094,
+      "raan_deg": 273.5486005189137
+    },
+    {
+      "name": "lhs_01",
+      "family": "lhs",
+      "hp_km": 112.84963772675077,
+      "ha_km": 339.84347634732336,
+      "incl_deg": 57.16216931782602,
+      "argp_deg": 208.52318848714737,
+      "raan_deg": 81.71404407773913
+    },
+    {
+      "name": "lhs_02",
+      "family": "lhs",
+      "hp_km": 36.073229894680196,
+      "ha_km": 234.11082174429572,
+      "incl_deg": 92.16668823995907,
+      "argp_deg": 162.80000485371195,
+      "raan_deg": 19.126886414697335
+    },
+    {
+      "name": "lhs_03",
+      "family": "lhs",
+      "hp_km": 109.51792669957176,
+      "ha_km": 481.3849349052642,
+      "incl_deg": 86.77442704288163,
+      "argp_deg": 138.97326104116922,
+      "raan_deg": 101.43274615291548
+    },
+    {
+      "name": "lhs_04",
+      "family": "lhs",
+      "hp_km": 50.89946943123651,
+      "ha_km": 427.4329641437092,
+      "incl_deg": 41.08577158825445,
+      "argp_deg": 355.04807604423047,
+      "raan_deg": 352.170097047022
+    },
+    {
+      "name": "lhs_05",
+      "family": "lhs",
+      "hp_km": 33.81930545725929,
+      "ha_km": 382.35601171850305,
+      "incl_deg": 47.50405382400273,
+      "argp_deg": 20.419141439471577,
+      "raan_deg": 41.90832230667607
+    },
+    {
+      "name": "lhs_06",
+      "family": "lhs",
+      "hp_km": 77.72444404523948,
+      "ha_km": 397.97010695968424,
+      "incl_deg": 30.30480562757376,
+      "argp_deg": 196.08021059057612,
+      "raan_deg": 186.40548971531376
+    },
+    {
+      "name": "lhs_07",
+      "family": "lhs",
+      "hp_km": 49.40839915520806,
+      "ha_km": 302.3386704253329,
+      "incl_deg": 97.56474514157829,
+      "argp_deg": 13.88383526084758,
+      "raan_deg": 204.79261098866806
+    },
+    {
+      "name": "lhs_08",
+      "family": "lhs",
+      "hp_km": 69.10562140253307,
+      "ha_km": 181.1683071285384,
+      "incl_deg": 16.266535238398237,
+      "argp_deg": 98.31694766712641,
+      "raan_deg": 146.56055655633912
+    },
+    {
+      "name": "lhs_09",
+      "family": "lhs",
+      "hp_km": 62.45547782990484,
+      "ha_km": 320.42171476740555,
+      "incl_deg": 61.139389907525135,
+      "argp_deg": 146.53442579184204,
+      "raan_deg": 139.52464400292078
+    },
+    {
+      "name": "lhs_10",
+      "family": "lhs",
+      "hp_km": 41.3517036091761,
+      "ha_km": 371.627341982405,
+      "incl_deg": 18.448618457035927,
+      "argp_deg": 335.07407215683367,
+      "raan_deg": 241.153333191933
+    },
+    {
+      "name": "lhs_11",
+      "family": "lhs",
+      "hp_km": 99.1011354719697,
+      "ha_km": 452.92625757494505,
+      "incl_deg": 76.17656792475856,
+      "argp_deg": 276.5665186722245,
+      "raan_deg": 24.87620417524847
+    },
+    {
+      "name": "lhs_12",
+      "family": "lhs",
+      "hp_km": 90.31280658815315,
+      "ha_km": 201.9861833034079,
+      "incl_deg": 33.835467387092564,
+      "argp_deg": 61.868783995891,
+      "raan_deg": 326.3189277181726
+    },
+    {
+      "name": "lhs_13",
+      "family": "lhs",
+      "hp_km": 85.56824969171308,
+      "ha_km": 483.6825324774666,
+      "incl_deg": 27.75490591999653,
+      "argp_deg": 250.86442946574056,
+      "raan_deg": 64.1207213357654
+    },
+    {
+      "name": "lhs_14",
+      "family": "lhs",
+      "hp_km": 73.93105608141352,
+      "ha_km": 341.2531841221065,
+      "incl_deg": 0.7807340431803003,
+      "argp_deg": 292.48236055641917,
+      "raan_deg": 287.9575856457936
+    },
+    {
+      "name": "lhs_15",
+      "family": "lhs",
+      "hp_km": 56.839184001429686,
+      "ha_km": 273.8910904028024,
+      "incl_deg": 52.39162455649713,
+      "argp_deg": 114.55285326551376,
+      "raan_deg": 318.29704654934466
+    },
+    {
+      "name": "lhs_16",
+      "family": "lhs",
+      "hp_km": 116.251029819861,
+      "ha_km": 434.9413670726583,
+      "incl_deg": 70.79863756410872,
+      "argp_deg": 228.2974993971743,
+      "raan_deg": 229.94456793510676
+    },
+    {
+      "name": "lhs_17",
+      "family": "lhs",
+      "hp_km": 104.97025439399467,
+      "ha_km": 265.3488655049768,
+      "incl_deg": 10.971639588817867,
+      "argp_deg": 47.47350144737986,
+      "raan_deg": 170.95604330239394
+    }
+  ],
+  "rows": [
+    {
+      "name": "c1_circ100_polar",
+      "family": "canonical",
+      "hp_km": 100.0,
+      "ha_km": 100.0,
+      "incl_deg": 90.0,
+      "argp_deg": 0.0,
+      "raan_deg": 0.0,
+      "perilune_lon_deg_bodyfixed_t0": 0.0,
+      "perilune_lat_deg_bodyfixed_t0": 0.0,
+      "eccentricity": 0.0,
+      "dwell_ratio_ra_over_rp": 1.0,
+      "truth_degree": 300,
+      "n_critical_empirical": 107,
+      "truth_altitude_range_km": [
+        90.2081055175641,
+        108.57595617364673
+      ],
+      "policies": {
+        "sched_emp": {
+          "pos_rms_m": 60.69552968557809,
+          "pos_max_m": 131.68947390524053,
+          "pos_final_m": 128.9769056101167,
+          "vel_rms_m_s": 0.05390753352495206,
+          "vel_max_m_s": 0.11624783963785594,
+          "vel_final_m_s": 0.11467381476262287,
+          "ric_rms_m": {
+            "radial": 1.28030357750676,
+            "in_track": 60.678223830205944,
+            "cross_track": 0.6791902338384679
+          },
+          "ric_max_m": {
+            "radial": 3.5285264286892852,
+            "in_track": 131.68909113366556,
+            "cross_track": 2.4754552108008383
+          },
+          "ric_final_m": {
+            "radial": -1.096468918641321,
+            "in_track": -128.96143053571524,
+            "cross_track": 1.670140968088506
+          },
+          "n_rhs": 138146,
+          "wall_s": 11.378662700008135,
+          "grav_s": 8.2577164,
+          "mean_deg_sq": 11207.54636399172
+        },
+        "fixed_work": {
+          "pos_rms_m": 12.926748865732659,
+          "pos_max_m": 27.445529209372484,
+          "pos_final_m": 24.635418437827333,
+          "vel_rms_m_s": 0.011476289191082187,
+          "vel_max_m_s": 0.023172384620683925,
+          "vel_final_m_s": 0.021330599481298344,
+          "ric_rms_m": {
+            "radial": 0.38365064720375885,
+            "in_track": 12.9091841807371,
+            "cross_track": 0.5537257501938423
+          },
+          "ric_max_m": {
+            "radial": 1.691003836499423,
+            "in_track": 27.445243515005362,
+            "cross_track": 1.642113547899175
+          },
+          "ric_final_m": {
+            "radial": 1.5738077420582108,
+            "in_track": -24.536021007215137,
+            "cross_track": 1.552624852106236
+          },
+          "n_rhs": 134030,
+          "wall_s": 11.04831009998452,
+          "grav_s": 8.0540439,
+          "mean_deg_sq": 11236.0
+        },
+        "fixed_crit": {
+          "pos_rms_m": 21.584727771808627,
+          "pos_max_m": 49.06345840318226,
+          "pos_final_m": 48.07557732552976,
+          "vel_rms_m_s": 0.019178845351999544,
+          "vel_max_m_s": 0.04218315005678081,
+          "vel_final_m_s": 0.04207864854914122,
+          "ric_rms_m": {
+            "radial": 0.3544615635045646,
+            "in_track": 21.57474909958779,
+            "cross_track": 0.5522963633052375
+          },
+          "ric_max_m": {
+            "radial": 1.5605915664396308,
+            "in_track": 49.06336000347065,
+            "cross_track": 1.797622981755766
+          },
+          "ric_final_m": {
+            "radial": 1.472729304561355,
+            "in_track": -48.023027120090134,
+            "cross_track": 1.697371438891489
+          },
+          "n_rhs": 134489,
+          "wall_s": 15.187163599999622,
+          "grav_s": 10.7652459,
+          "mean_deg_sq": 11449.0
+        },
+        "sched_down": {
+          "pos_rms_m": 4.130901270965529,
+          "pos_max_m": 9.95447663515859,
+          "pos_final_m": 2.8189529599415257,
+          "vel_rms_m_s": 0.003549272525987311,
+          "vel_max_m_s": 0.007986866694153407,
+          "vel_final_m_s": 0.0021972821289708033,
+          "ric_rms_m": {
+            "radial": 0.6043405139372993,
+            "in_track": 4.084038301555413,
+            "cross_track": 0.14053115351050882
+          },
+          "ric_max_m": {
+            "radial": 1.6265917869429045,
+            "in_track": 9.954082291302964,
+            "cross_track": 0.45785924441259734
+          },
+          "ric_final_m": {
+            "radial": -0.7621224555457429,
+            "in_track": 2.6972825452750646,
+            "cross_track": 0.3005528640197655
+          },
+          "n_rhs": 138461,
+          "wall_s": 14.190195899980608,
+          "grav_s": 10.4766264,
+          "mean_deg_sq": 13426.850882197876
+        },
+        "sched_up": {
+          "pos_rms_m": 7.437340834310692,
+          "pos_max_m": 18.938407577732008,
+          "pos_final_m": 14.548844419154962,
+          "vel_rms_m_s": 0.006543250693008506,
+          "vel_max_m_s": 0.015540144829837718,
+          "vel_final_m_s": 0.013263749017966646,
+          "ric_rms_m": {
+            "radial": 0.6069971046520874,
+            "in_track": 7.408515727666931,
+            "cross_track": 0.2439014423101408
+          },
+          "ric_max_m": {
+            "radial": 1.573627860174397,
+            "in_track": 18.938215032560645,
+            "cross_track": 0.608028472604774
+          },
+          "ric_final_m": {
+            "radial": -1.0125690787229344,
+            "in_track": -14.513130010774391,
+            "cross_track": 0.1124058893046492
+          },
+          "n_rhs": 139400,
+          "wall_s": 14.126304300007178,
+          "grav_s": 10.7409703,
+          "mean_deg_sq": 14883.104734576758
+        }
+      },
+      "n_work_matched": 106,
+      "ratios": {
+        "sched_emp": {
+          "rho_crit": 0.35562302336966656,
+          "rho_work": 0.21297695123013638,
+          "grav_time_saving_vs_crit": 0.23292821392960472
+        },
+        "sched_down": {
+          "rho_crit": 5.225186068599398,
+          "rho_work": 3.1292805172056917,
+          "grav_time_saving_vs_crit": 0.026810302586771306
+        },
+        "sched_up": {
+          "rho_crit": 2.9022103803864656,
+          "rho_work": 1.7380874634785695,
+          "grav_time_saving_vs_crit": 0.002254997259282243
+        }
+      },
+      "orbit_wall_s": 124.45862740001758
+    },
+    {
+      "name": "c2_50x300_polar",
+      "family": "canonical",
+      "hp_km": 50.0,
+      "ha_km": 300.0,
+      "incl_deg": 90.0,
+      "argp_deg": 0.0,
+      "raan_deg": 0.0,
+      "perilune_lon_deg_bodyfixed_t0": 0.0,
+      "perilune_lat_deg_bodyfixed_t0": 0.0,
+      "eccentricity": 0.06534239414532149,
+      "dwell_ratio_ra_over_rp": 1.139821029082774,
+      "truth_degree": 300,
+      "n_critical_empirical": 196,
+      "truth_altitude_range_km": [
+        47.870198066065086,
+        301.75910018975264
+      ],
+      "policies": {
+        "sched_emp": {
+          "pos_rms_m": 846.0841791058137,
+          "pos_max_m": 1692.8741319794722,
+          "pos_final_m": 1519.4493550930629,
+          "vel_rms_m_s": 0.7124347360406958,
+          "vel_max_m_s": 1.5237063363940255,
+          "vel_final_m_s": 1.198884681319498,
+          "ric_rms_m": {
+            "radial": 38.13330802415229,
+            "in_track": 845.2236318533003,
+            "cross_track": 1.1406616546754704
+          },
+          "ric_max_m": {
+            "radial": 104.77011222635268,
+            "in_track": 1692.8715540345647,
+            "cross_track": 3.5207090950909574
+          },
+          "ric_final_m": {
+            "radial": -54.042098385751046,
+            "in_track": 1518.4867261839906,
+            "cross_track": -1.9638477069802818
+          },
+          "n_rhs": 133196,
+          "wall_s": 14.254269199998816,
+          "grav_s": 10.8522733,
+          "mean_deg_sq": 15022.968407459683
+        },
+        "fixed_work": {
+          "pos_rms_m": 26.954188364339085,
+          "pos_max_m": 46.37639469513612,
+          "pos_final_m": 39.61072522046483,
+          "vel_rms_m_s": 0.022716528301639786,
+          "vel_max_m_s": 0.042029956987619334,
+          "vel_final_m_s": 0.0316747739555991,
+          "ric_rms_m": {
+            "radial": 1.4232789863059152,
+            "in_track": 26.915500435009335,
+            "cross_track": 0.24162706889957156
+          },
+          "ric_max_m": {
+            "radial": 3.6474616457905085,
+            "in_track": 46.37619835640783,
+            "cross_track": 1.0293926678820056
+          },
+          "ric_final_m": {
+            "radial": -1.5724797715978873,
+            "in_track": 39.57947947256502,
+            "cross_track": -0.04079877311870794
+          },
+          "n_rhs": 99413,
+          "wall_s": 13.631967100023758,
+          "grav_s": 10.0727735,
+          "mean_deg_sq": 15129.0
+        },
+        "fixed_crit": {
+          "pos_rms_m": 12.627113361387288,
+          "pos_max_m": 27.188908226541916,
+          "pos_final_m": 24.387086713610806,
+          "vel_rms_m_s": 0.01063527130675298,
+          "vel_max_m_s": 0.0244349129539225,
+          "vel_final_m_s": 0.019286542510780907,
+          "ric_rms_m": {
+            "radial": 0.5957485255171535,
+            "in_track": 12.613044031637772,
+            "cross_track": 0.01399255646002771
+          },
+          "ric_max_m": {
+            "radial": 1.7390435468141288,
+            "in_track": 27.188842752627213,
+            "cross_track": 0.06723813967314518
+          },
+          "ric_final_m": {
+            "radial": -0.9247382314425963,
+            "in_track": 24.369545086476535,
+            "cross_track": -0.011395554760684767
+          },
+          "n_rhs": 102863,
+          "wall_s": 25.38772999998764,
+          "grav_s": 21.8426905,
+          "mean_deg_sq": 38416.0
+        },
+        "sched_down": {
+          "pos_rms_m": 584.220038217577,
+          "pos_max_m": 1438.460594588925,
+          "pos_final_m": 1307.8024408327822,
+          "vel_rms_m_s": 0.49182700371670907,
+          "vel_max_m_s": 1.2961456962150693,
+          "vel_final_m_s": 1.0302401312713088,
+          "ric_rms_m": {
+            "radial": 25.996197304427255,
+            "in_track": 583.640272710208,
+            "cross_track": 1.1326303061672196
+          },
+          "ric_max_m": {
+            "radial": 89.05838892857625,
+            "in_track": 1438.4566925100303,
+            "cross_track": 3.174951383221897
+          },
+          "ric_final_m": {
+            "radial": -48.36346673396389,
+            "in_track": 1306.9058479764058,
+            "cross_track": -2.3030107961289037
+          },
+          "n_rhs": 127427,
+          "wall_s": 17.55255490000127,
+          "grav_s": 13.5025162,
+          "mean_deg_sq": 17448.310797554677
+        },
+        "sched_up": {
+          "pos_rms_m": 173.78161439777446,
+          "pos_max_m": 444.0740888316922,
+          "pos_final_m": 400.69058260049746,
+          "vel_rms_m_s": 0.14635734209763773,
+          "vel_max_m_s": 0.39828261855595504,
+          "vel_final_m_s": 0.31616190749125817,
+          "ric_rms_m": {
+            "radial": 8.384119269344332,
+            "in_track": 173.57861576998138,
+            "cross_track": 0.46924849638244986
+          },
+          "ric_max_m": {
+            "radial": 29.473803315563714,
+            "in_track": 444.06856139689336,
+            "cross_track": 1.0445348707945157
+          },
+          "ric_final_m": {
+            "radial": -17.92317773288505,
+            "in_track": 400.2892346356862,
+            "cross_track": -0.4809568151287955
+          },
+          "n_rhs": 119765,
+          "wall_s": 18.5996901000035,
+          "grav_s": 14.4432617,
+          "mean_deg_sq": 19851.616081492924
+        }
+      },
+      "n_work_matched": 123,
+      "ratios": {
+        "sched_emp": {
+          "rho_crit": 0.0149241809186555,
+          "rho_work": 0.031857572839650176,
+          "grav_time_saving_vs_crit": 0.5031622455118339
+        },
+        "sched_down": {
+          "rho_crit": 0.0216136259206581,
+          "rho_work": 0.046137048716396005,
+          "grav_time_saving_vs_crit": 0.3818290745821812
+        },
+        "sched_up": {
+          "rho_crit": 0.0726608128549472,
+          "rho_work": 0.1551037977046453,
+          "grav_time_saving_vs_crit": 0.3387599526715813
+        }
+      },
+      "orbit_wall_s": 140.41901820001658
+    },
+    {
+      "name": "c3_50x300_i60",
+      "family": "canonical",
+      "hp_km": 50.0,
+      "ha_km": 300.0,
+      "incl_deg": 60.0,
+      "argp_deg": 0.0,
+      "raan_deg": 0.0,
+      "perilune_lon_deg_bodyfixed_t0": 0.0,
+      "perilune_lat_deg_bodyfixed_t0": 0.0,
+      "eccentricity": 0.06534239414532149,
+      "dwell_ratio_ra_over_rp": 1.139821029082774,
+      "truth_degree": 300,
+      "n_critical_empirical": 196,
+      "truth_altitude_range_km": [
+        50.0,
+        298.92482628648867
+      ],
+      "policies": {
+        "sched_emp": {
+          "pos_rms_m": 85.78411249931975,
+          "pos_max_m": 164.29378315783947,
+          "pos_final_m": 122.82931834596802,
+          "vel_rms_m_s": 0.07211727543435106,
+          "vel_max_m_s": 0.14553707395754148,
+          "vel_final_m_s": 0.09923392761541946,
+          "ric_rms_m": {
+            "radial": 3.6773996627576793,
+            "in_track": 85.6971282122384,
+            "cross_track": 1.180214044769165
+          },
+          "ric_max_m": {
+            "radial": 9.468605617632953,
+            "in_track": 164.25871712212574,
+            "cross_track": 3.3082384955636996
+          },
+          "ric_final_m": {
+            "radial": 0.5416914007755906,
+            "in_track": -122.80518557722755,
+            "cross_track": -2.3736914509220384
+          },
+          "n_rhs": 121577,
+          "wall_s": 18.445118699979503,
+          "grav_s": 12.9381065,
+          "mean_deg_sq": 13717.32482295171
+        },
+        "fixed_work": {
+          "pos_rms_m": 29.21870917352771,
+          "pos_max_m": 52.971873070112004,
+          "pos_final_m": 49.597559136039024,
+          "vel_rms_m_s": 0.024551691674412346,
+          "vel_max_m_s": 0.04779719919088592,
+          "vel_final_m_s": 0.03919116230830012,
+          "ric_rms_m": {
+            "radial": 0.9970646846626651,
+            "in_track": 29.20118089130719,
+            "cross_track": 0.17280721902382118
+          },
+          "ric_max_m": {
+            "radial": 2.6771375359480665,
+            "in_track": 52.971238688150976,
+            "cross_track": 0.6288673179147197
+          },
+          "ric_final_m": {
+            "radial": -1.1212253831445604,
+            "in_track": 49.584773602091616,
+            "cross_track": 0.10465525499313699
+          },
+          "n_rhs": 96029,
+          "wall_s": 14.054998200008413,
+          "grav_s": 9.8565244,
+          "mean_deg_sq": 13689.0
+        },
+        "fixed_crit": {
+          "pos_rms_m": 5.398659787611084,
+          "pos_max_m": 12.656272600630665,
+          "pos_final_m": 11.567589316079017,
+          "vel_rms_m_s": 0.0045406286543142205,
+          "vel_max_m_s": 0.01130312211958819,
+          "vel_final_m_s": 0.009193157163516945,
+          "ric_rms_m": {
+            "radial": 0.22338530392124953,
+            "in_track": 5.394022229916878,
+            "cross_track": 0.012275647580237362
+          },
+          "ric_max_m": {
+            "radial": 0.6940844160124486,
+            "in_track": 12.656235386450673,
+            "cross_track": 0.044250323670369476
+          },
+          "ric_final_m": {
+            "radial": 0.36091210082775627,
+            "in_track": -11.561953339900217,
+            "cross_track": 0.010000345576885117
+          },
+          "n_rhs": 99554,
+          "wall_s": 30.518329599988647,
+          "grav_s": 25.675818,
+          "mean_deg_sq": 38416.0
+        },
+        "sched_down": {
+          "pos_rms_m": 134.23944260458927,
+          "pos_max_m": 240.26286566480732,
+          "pos_final_m": 212.40368250427872,
+          "vel_rms_m_s": 0.1129472505620006,
+          "vel_max_m_s": 0.2135572498345948,
+          "vel_final_m_s": 0.17026044698867088,
+          "ric_rms_m": {
+            "radial": 5.7031643871006565,
+            "in_track": 134.1149800359718,
+            "cross_track": 0.9348779147105801
+          },
+          "ric_max_m": {
+            "radial": 13.71019556459557,
+            "in_track": 240.24446534184716,
+            "cross_track": 2.5995672660881297
+          },
+          "ric_final_m": {
+            "radial": 4.654957254876912,
+            "in_track": -212.34138643199776,
+            "cross_track": -2.1889089681129974
+          },
+          "n_rhs": 118421,
+          "wall_s": 17.69787809997797,
+          "grav_s": 12.8064826,
+          "mean_deg_sq": 16078.672701632311
+        },
+        "sched_up": {
+          "pos_rms_m": 43.77907550123534,
+          "pos_max_m": 118.33328662452566,
+          "pos_final_m": 107.24839687669287,
+          "vel_rms_m_s": 0.03682610152904268,
+          "vel_max_m_s": 0.10502624997395574,
+          "vel_final_m_s": 0.08524588143038161,
+          "ric_rms_m": {
+            "radial": 1.972823697462683,
+            "in_track": 43.73017437641936,
+            "cross_track": 0.6223081307116591
+          },
+          "ric_max_m": {
+            "radial": 7.134743696749792,
+            "in_track": 118.32185479669774,
+            "cross_track": 1.7132677927220108
+          },
+          "ric_final_m": {
+            "radial": -4.510331512927742,
+            "in_track": 107.14532700220427,
+            "cross_track": -1.324554209848742
+          },
+          "n_rhs": 112331,
+          "wall_s": 17.482706700015115,
+          "grav_s": 13.2746292,
+          "mean_deg_sq": 18025.84059609547
+        }
+      },
+      "n_work_matched": 117,
+      "ratios": {
+        "sched_emp": {
+          "rho_crit": 0.06293309600485632,
+          "rho_work": 0.3406074659076226,
+          "grav_time_saving_vs_crit": 0.49609759268429154
+        },
+        "sched_down": {
+          "rho_crit": 0.040216643356551895,
+          "rho_work": 0.2176611330217845,
+          "grav_time_saving_vs_crit": 0.501223968794295
+        },
+        "sched_up": {
+          "rho_crit": 0.12331598430987303,
+          "rho_work": 0.667412658650209,
+          "grav_time_saving_vs_crit": 0.48299099175730253
+        }
+      },
+      "orbit_wall_s": 159.71034029999282
+    },
+    {
+      "name": "c4_50x300_i5",
+      "family": "canonical",
+      "hp_km": 50.0,
+      "ha_km": 300.0,
+      "incl_deg": 5.0,
+      "argp_deg": 0.0,
+      "raan_deg": 0.0,
+      "perilune_lon_deg_bodyfixed_t0": 0.0,
+      "perilune_lat_deg_bodyfixed_t0": 0.0,
+      "eccentricity": 0.06534239414532149,
+      "dwell_ratio_ra_over_rp": 1.139821029082774,
+      "truth_degree": 300,
+      "n_critical_empirical": 196,
+      "truth_altitude_range_km": [
+        4.344416315684095,
+        344.3220491547466
+      ],
+      "policies": {
+        "sched_emp": {
+          "pos_rms_m": 13.380203169942053,
+          "pos_max_m": 28.67486109529547,
+          "pos_final_m": 20.80385569347698,
+          "vel_rms_m_s": 0.011030797141604542,
+          "vel_max_m_s": 0.024392191436288433,
+          "vel_final_m_s": 0.015324299754020644,
+          "ric_rms_m": {
+            "radial": 1.385257304513505,
+            "in_track": 13.167016199836443,
+            "cross_track": 1.9340588053273033
+          },
+          "ric_max_m": {
+            "radial": 3.712855856260341,
+            "in_track": 28.636148921187896,
+            "cross_track": 9.161858047569844
+          },
+          "ric_final_m": {
+            "radial": 1.0969721970383886,
+            "in_track": -18.645573759745744,
+            "cross_track": -9.161858047569844
+          },
+          "n_rhs": 152747,
+          "wall_s": 31.99218510001083,
+          "grav_s": 26.5130463,
+          "mean_deg_sq": 28545.814320412184
+        },
+        "fixed_work": {
+          "pos_rms_m": 23.414091642744022,
+          "pos_max_m": 114.70476183836745,
+          "pos_final_m": 23.696334467506087,
+          "vel_rms_m_s": 0.018065125487451587,
+          "vel_max_m_s": 0.06863702461950774,
+          "vel_final_m_s": 0.020274129181557587,
+          "ric_rms_m": {
+            "radial": 3.6506731302026125,
+            "in_track": 22.652928564772303,
+            "cross_track": 4.662306359577322
+          },
+          "ric_max_m": {
+            "radial": 18.59857931759603,
+            "in_track": 114.70064050661833,
+            "cross_track": 29.638909114189048
+          },
+          "ric_final_m": {
+            "radial": 0.5118272656452596,
+            "in_track": -8.998410692787388,
+            "cross_track": -21.915357744056767
+          },
+          "n_rhs": 115661,
+          "wall_s": 25.816997599991737,
+          "grav_s": 21.3405501,
+          "mean_deg_sq": 28561.0
+        },
+        "fixed_crit": {
+          "pos_rms_m": 13.152706921300416,
+          "pos_max_m": 57.54774655797735,
+          "pos_final_m": 13.314751509994926,
+          "vel_rms_m_s": 0.009466071925142164,
+          "vel_max_m_s": 0.03186129641536137,
+          "vel_final_m_s": 0.01029227514301986,
+          "ric_rms_m": {
+            "radial": 2.898676664012648,
+            "in_track": 12.456447512030577,
+            "cross_track": 3.070551796527726
+          },
+          "ric_max_m": {
+            "radial": 12.547432071536736,
+            "in_track": 57.48477058923906,
+            "cross_track": 14.304021726809747
+          },
+          "ric_final_m": {
+            "radial": 2.3642283752646382,
+            "in_track": -12.486951108101358,
+            "cross_track": -3.971030594995705
+          },
+          "n_rhs": 119225,
+          "wall_s": 32.94537339999806,
+          "grav_s": 28.2002973,
+          "mean_deg_sq": 38416.0
+        },
+        "sched_down": {
+          "pos_rms_m": 42.032775633141426,
+          "pos_max_m": 73.81259054570037,
+          "pos_final_m": 49.84745045972558,
+          "vel_rms_m_s": 0.035354534197748914,
+          "vel_max_m_s": 0.069839128886404,
+          "vel_final_m_s": 0.040012628403379595,
+          "ric_rms_m": {
+            "radial": 1.634815417235572,
+            "in_track": 41.95334427545151,
+            "cross_track": 1.9996274860624583
+          },
+          "ric_max_m": {
+            "radial": 6.428246037703191,
+            "in_track": 73.74616948828576,
+            "cross_track": 7.970410743347738
+          },
+          "ric_final_m": {
+            "radial": 1.459264230626556,
+            "in_track": -49.184463175095615,
+            "cross_track": -7.970410743347738
+          },
+          "n_rhs": 146570,
+          "wall_s": 32.296784100006334,
+          "grav_s": 27.0789537,
+          "mean_deg_sq": 30606.79402333356
+        },
+        "sched_up": {
+          "pos_rms_m": 31.484057815200742,
+          "pos_max_m": 55.82022720020639,
+          "pos_final_m": 31.23092895547268,
+          "vel_rms_m_s": 0.026439346002995533,
+          "vel_max_m_s": 0.051075449396328146,
+          "vel_final_m_s": 0.02635219248139259,
+          "ric_rms_m": {
+            "radial": 1.4482624297753068,
+            "in_track": 31.423141501808256,
+            "cross_track": 1.3170461657586972
+          },
+          "ric_max_m": {
+            "radial": 5.997725233520686,
+            "in_track": 55.78002810053057,
+            "cross_track": 6.572791183576328
+          },
+          "ric_final_m": {
+            "radial": 0.03768229383701355,
+            "in_track": -30.531425114521177,
+            "cross_track": -6.572791183576328
+          },
+          "n_rhs": 139697,
+          "wall_s": 29.24229209998157,
+          "grav_s": 24.7060635,
+          "mean_deg_sq": 32388.27677043888
+        }
+      },
+      "n_work_matched": 169,
+      "ratios": {
+        "sched_emp": {
+          "rho_crit": 0.9829975490093681,
+          "rho_work": 1.749905539203066,
+          "grav_time_saving_vs_crit": 0.059830964973550116
+        },
+        "sched_down": {
+          "rho_crit": 0.3129154980412464,
+          "rho_work": 0.5570436710413861,
+          "grav_time_saving_vs_crit": 0.03976353823759149
+        },
+        "sched_up": {
+          "rho_crit": 0.41775767909275624,
+          "rho_work": 0.7436808743071079,
+          "grav_time_saving_vs_crit": 0.12390769369654842
+        }
+      },
+      "orbit_wall_s": 235.07067200000165
+    },
+    {
+      "name": "c5_100x300_polar",
+      "family": "canonical",
+      "hp_km": 100.0,
+      "ha_km": 300.0,
+      "incl_deg": 90.0,
+      "argp_deg": 0.0,
+      "raan_deg": 0.0,
+      "perilune_lon_deg_bodyfixed_t0": 0.0,
+      "perilune_lat_deg_bodyfixed_t0": 0.0,
+      "eccentricity": 0.05159958720330237,
+      "dwell_ratio_ra_over_rp": 1.1088139281828073,
+      "truth_degree": 300,
+      "n_critical_empirical": 107,
+      "truth_altitude_range_km": [
+        97.34521087406134,
+        302.05241201189534
+      ],
+      "policies": {
+        "sched_emp": {
+          "pos_rms_m": 139.4845802299071,
+          "pos_max_m": 224.23704226557265,
+          "pos_final_m": 89.64566958921402,
+          "vel_rms_m_s": 0.1149274352053849,
+          "vel_max_m_s": 0.19384308119196755,
+          "vel_final_m_s": 0.07712635079735598,
+          "ric_rms_m": {
+            "radial": 5.268540929491445,
+            "in_track": 139.3787476681079,
+            "cross_track": 1.3248761668826667
+          },
+          "ric_max_m": {
+            "radial": 10.91893578952601,
+            "in_track": 224.22188250356828,
+            "cross_track": 3.7084912869230156
+          },
+          "ric_final_m": {
+            "radial": 2.8374227203388696,
+            "in_track": -89.52711027232651,
+            "cross_track": -3.6320290047475208
+          },
+          "n_rhs": 95384,
+          "wall_s": 5.105862700002035,
+          "grav_s": 3.1783541,
+          "mean_deg_sq": 5954.7481757946825
+        },
+        "fixed_work": {
+          "pos_rms_m": 19.01499626536618,
+          "pos_max_m": 33.01627586180402,
+          "pos_final_m": 33.01627586180402,
+          "vel_rms_m_s": 0.015684271774747793,
+          "vel_max_m_s": 0.028699351236891494,
+          "vel_final_m_s": 0.028671337568384945,
+          "ric_rms_m": {
+            "radial": 0.9412467362127345,
+            "in_track": 18.990034056013638,
+            "cross_track": 0.2504877340327607
+          },
+          "ric_max_m": {
+            "radial": 2.519907015969517,
+            "in_track": 33.01382492013483,
+            "cross_track": 0.9963544727214027
+          },
+          "ric_final_m": {
+            "radial": 0.22271726685330684,
+            "in_track": -33.01382492013483,
+            "cross_track": 0.33501185721195004
+          },
+          "n_rhs": 78485,
+          "wall_s": 3.9241006999800447,
+          "grav_s": 2.5075329,
+          "mean_deg_sq": 5929.0
+        },
+        "fixed_crit": {
+          "pos_rms_m": 5.563063760188288,
+          "pos_max_m": 10.786701768373709,
+          "pos_final_m": 10.78142786520465,
+          "vel_rms_m_s": 0.004585105646267263,
+          "vel_max_m_s": 0.0094175271946545,
+          "vel_final_m_s": 0.009397821197225346,
+          "ric_rms_m": {
+            "radial": 0.2061518445415682,
+            "in_track": 5.5592137555602985,
+            "cross_track": 0.017950958234007393
+          },
+          "ric_max_m": {
+            "radial": 0.6260030990732635,
+            "in_track": 10.78667043241191,
+            "cross_track": 0.09005878159715719
+          },
+          "ric_final_m": {
+            "radial": 0.07549624700556734,
+            "in_track": 10.781155604511259,
+            "cross_track": 0.013075190814461624
+          },
+          "n_rhs": 80204,
+          "wall_s": 5.725077100010822,
+          "grav_s": 4.2747185,
+          "mean_deg_sq": 11449.0
+        },
+        "sched_down": {
+          "pos_rms_m": 67.22266761093105,
+          "pos_max_m": 149.47527074426074,
+          "pos_final_m": 149.47527074426074,
+          "vel_rms_m_s": 0.055389850002910905,
+          "vel_max_m_s": 0.12968739540048824,
+          "vel_final_m_s": 0.12968739540048824,
+          "ric_rms_m": {
+            "radial": 2.653405304626312,
+            "in_track": 67.15887964057502,
+            "cross_track": 1.2374839157969963
+          },
+          "ric_max_m": {
+            "radial": 7.756518415108999,
+            "in_track": 149.42327866400194,
+            "cross_track": 3.473221026608551
+          },
+          "ric_final_m": {
+            "radial": 2.070820332994977,
+            "in_track": -149.42327866400194,
+            "cross_track": -3.3544091161541663
+          },
+          "n_rhs": 92732,
+          "wall_s": 5.87355670001125,
+          "grav_s": 3.6611754,
+          "mean_deg_sq": 6527.5029116162705
+        },
+        "sched_up": {
+          "pos_rms_m": 39.41563459413793,
+          "pos_max_m": 134.31520910247312,
+          "pos_final_m": 127.7116204615196,
+          "vel_rms_m_s": 0.0323497840656564,
+          "vel_max_m_s": 0.11292030121841025,
+          "vel_final_m_s": 0.11149220243240761,
+          "ric_rms_m": {
+            "radial": 2.40976866753003,
+            "in_track": 39.33661835844567,
+            "cross_track": 0.6447647242118599
+          },
+          "ric_max_m": {
+            "radial": 8.995480237144193,
+            "in_track": 134.27926417170886,
+            "cross_track": 1.7412696785043902
+          },
+          "ric_final_m": {
+            "radial": 5.770319468898579,
+            "in_track": 127.570864807529,
+            "cross_track": -1.623535153067744
+          },
+          "n_rhs": 88979,
+          "wall_s": 5.559647599991877,
+          "grav_s": 3.552386,
+          "mean_deg_sq": 6954.680317827802
+        }
+      },
+      "n_work_matched": 77,
+      "ratios": {
+        "sched_emp": {
+          "rho_crit": 0.039883001769936886,
+          "rho_work": 0.1363232855848617,
+          "grav_time_saving_vs_crit": 0.25647639721773485
+        },
+        "sched_down": {
+          "rho_crit": 0.08275577209143185,
+          "rho_work": 0.2828658388777502,
+          "grav_time_saving_vs_crit": 0.14352830484627233
+        },
+        "sched_up": {
+          "rho_crit": 0.1411385055060271,
+          "rho_work": 0.4824226848346665,
+          "grav_time_saving_vs_crit": 0.16897779350850817
+        }
+      },
+      "orbit_wall_s": 59.184720600023866
+    },
+    {
+      "name": "c6_lro_30x216",
+      "family": "canonical",
+      "hp_km": 30.0,
+      "ha_km": 216.0,
+      "incl_deg": 90.0,
+      "argp_deg": 270.0,
+      "raan_deg": 0.0,
+      "perilune_lon_deg_bodyfixed_t0": -161.565051177078,
+      "perilune_lat_deg_bodyfixed_t0": -90.0,
+      "eccentricity": 0.04997313272434175,
+      "dwell_ratio_ra_over_rp": 1.1052036199095023,
+      "truth_degree": 600,
+      "n_critical_empirical": 250,
+      "truth_altitude_range_km": [
+        30.0,
+        217.4530183933077
+      ],
+      "policies": {
+        "sched_emp": {
+          "pos_rms_m": 28.620450513760005,
+          "pos_max_m": 60.24557178096459,
+          "pos_final_m": 17.886850580834363,
+          "vel_rms_m_s": 0.025059304565328434,
+          "vel_max_m_s": 0.05410352185800765,
+          "vel_final_m_s": 0.016079986782664958,
+          "ric_rms_m": {
+            "radial": 1.854043952890053,
+            "in_track": 28.55213300931793,
+            "cross_track": 0.684404302700301
+          },
+          "ric_max_m": {
+            "radial": 4.319728889206014,
+            "in_track": 60.245071885288226,
+            "cross_track": 1.9070883945609434
+          },
+          "ric_final_m": {
+            "radial": 1.8594611070601612,
+            "in_track": -17.748241639553562,
+            "cross_track": -1.2172702232627555
+          },
+          "n_rhs": 189464,
+          "wall_s": 31.897507400019094,
+          "grav_s": 27.1226769,
+          "mean_deg_sq": 29826.682113752482
+        },
+        "fixed_work": {
+          "pos_rms_m": 39.68152342830351,
+          "pos_max_m": 97.91264171096336,
+          "pos_final_m": 90.99494785622947,
+          "vel_rms_m_s": 0.0317611795393113,
+          "vel_max_m_s": 0.07379252401891957,
+          "vel_final_m_s": 0.06975095112136839,
+          "ric_rms_m": {
+            "radial": 10.930637293203198,
+            "in_track": 37.49052874939512,
+            "cross_track": 7.043062121422321
+          },
+          "ric_max_m": {
+            "radial": 22.017037499817732,
+            "in_track": 97.90456992018125,
+            "cross_track": 18.3784954753124
+          },
+          "ric_final_m": {
+            "radial": 14.2509017300614,
+            "in_track": -89.86988765224643,
+            "cross_track": -0.6289901514787534
+          },
+          "n_rhs": 144728,
+          "wall_s": 24.84009209999931,
+          "grav_s": 21.0812994,
+          "mean_deg_sq": 29929.0
+        },
+        "fixed_crit": {
+          "pos_rms_m": 10.281094846113445,
+          "pos_max_m": 18.732931604300916,
+          "pos_final_m": 5.5327422345062685,
+          "vel_rms_m_s": 0.008867833384253971,
+          "vel_max_m_s": 0.013839339357460683,
+          "vel_final_m_s": 0.005051244756579603,
+          "ric_rms_m": {
+            "radial": 0.46499814211548607,
+            "in_track": 10.240484328033492,
+            "cross_track": 0.7856008464290541
+          },
+          "ric_max_m": {
+            "radial": 1.2971698559680434,
+            "in_track": 18.732744819977363,
+            "cross_track": 2.0287844859460624
+          },
+          "ric_final_m": {
+            "radial": -0.03188766542983057,
+            "in_track": 5.3906585518178005,
+            "cross_track": -1.24539960976245
+          },
+          "n_rhs": 153083,
+          "wall_s": 47.548325800016755,
+          "grav_s": 43.2356929,
+          "mean_deg_sq": 62500.0
+        },
+        "sched_down": {
+          "pos_rms_m": 44.348969046642985,
+          "pos_max_m": 70.47402471365533,
+          "pos_final_m": 55.24939868733828,
+          "vel_rms_m_s": 0.0387002757438461,
+          "vel_max_m_s": 0.06562983386539673,
+          "vel_final_m_s": 0.0507699845371352,
+          "ric_rms_m": {
+            "radial": 1.090238991364151,
+            "in_track": 44.33043443352329,
+            "cross_track": 0.674549758653363
+          },
+          "ric_max_m": {
+            "radial": 3.0070359717938415,
+            "in_track": 70.47185374374021,
+            "cross_track": 1.9228158102115231
+          },
+          "ric_final_m": {
+            "radial": -1.0523759096889158,
+            "in_track": 55.22518202167697,
+            "cross_track": -1.2521305562161116
+          },
+          "n_rhs": 179996,
+          "wall_s": 44.16245720000006,
+          "grav_s": 37.1478572,
+          "mean_deg_sq": 32047.384941887598
+        },
+        "sched_up": {
+          "pos_rms_m": 54.81856546994738,
+          "pos_max_m": 125.61762357771839,
+          "pos_final_m": 124.79858268630875,
+          "vel_rms_m_s": 0.047946980805011856,
+          "vel_max_m_s": 0.11469277495415305,
+          "vel_final_m_s": 0.11317856744898956,
+          "ric_rms_m": {
+            "radial": 2.393200513574049,
+            "in_track": 54.76216401119603,
+            "cross_track": 0.673130221875636
+          },
+          "ric_max_m": {
+            "radial": 6.499238093159608,
+            "in_track": 125.61509987942915,
+            "cross_track": 1.8231643698578552
+          },
+          "ric_final_m": {
+            "radial": 4.605841365832163,
+            "in_track": -124.70746575766813,
+            "cross_track": -1.2330653365739315
+          },
+          "n_rhs": 174470,
+          "wall_s": 43.50544700000319,
+          "grav_s": 36.9009326,
+          "mean_deg_sq": 33763.55648535565
+        }
+      },
+      "n_work_matched": 173,
+      "ratios": {
+        "sched_emp": {
+          "rho_crit": 0.3592219780457526,
+          "rho_work": 1.3864744515193992,
+          "grav_time_saving_vs_crit": 0.37267856530639754
+        },
+        "sched_down": {
+          "rho_crit": 0.23182263459834987,
+          "rho_work": 0.894756389637139,
+          "grav_time_saving_vs_crit": 0.14080578549025635
+        },
+        "sched_up": {
+          "rho_crit": 0.18754768130059413,
+          "rho_work": 0.7238701539911273,
+          "grav_time_saving_vs_crit": 0.14651691403793832
+        }
+      },
+      "orbit_wall_s": 478.5427134000056
+    },
+    {
+      "name": "lhs_00",
+      "family": "lhs",
+      "hp_km": 84.70441511267607,
+      "ha_km": 225.27141553491728,
+      "incl_deg": 81.31205566662692,
+      "argp_deg": 311.2050337346094,
+      "raan_deg": 273.5486005189137,
+      "perilune_lon_deg_bodyfixed_t0": -96.23947503950478,
+      "perilune_lat_deg_bodyfixed_t0": -48.049639261062296,
+      "eccentricity": 0.03712834067358457,
+      "dwell_ratio_ra_over_rp": 1.0771200197117816,
+      "truth_degree": 300,
+      "n_critical_empirical": 124,
+      "truth_altitude_range_km": [
+        84.7044151126761,
+        225.66088898813283
+      ],
+      "policies": {
+        "sched_emp": {
+          "pos_rms_m": 133.93571847365857,
+          "pos_max_m": 330.02629917569527,
+          "pos_final_m": 330.02629917569527,
+          "vel_rms_m_s": 0.11399681227907882,
+          "vel_max_m_s": 0.2882592046279258,
+          "vel_final_m_s": 0.2882592046279258,
+          "ric_rms_m": {
+            "radial": 2.8954558393479943,
+            "in_track": 133.90331478137455,
+            "cross_track": 0.5434234974948744
+          },
+          "ric_max_m": {
+            "radial": 11.230502135873266,
+            "in_track": 329.9279429284541,
+            "cross_track": 1.635673346706099
+          },
+          "ric_final_m": {
+            "radial": -8.0397733554708,
+            "in_track": 329.9279429284541,
+            "cross_track": -0.5221752549197411
+          },
+          "n_rhs": 125948,
+          "wall_s": 8.806252900016261,
+          "grav_s": 5.9114335,
+          "mean_deg_sq": 7764.47184552355
+        },
+        "fixed_work": {
+          "pos_rms_m": 25.28611968922678,
+          "pos_max_m": 64.92044203702338,
+          "pos_final_m": 63.81090318765798,
+          "vel_rms_m_s": 0.021078051010246446,
+          "vel_max_m_s": 0.047179404858809275,
+          "vel_final_m_s": 0.04674684152813647,
+          "ric_rms_m": {
+            "radial": 3.93417537476361,
+            "in_track": 24.912749797278508,
+            "cross_track": 1.8069340321953284
+          },
+          "ric_max_m": {
+            "radial": 13.407124886846905,
+            "in_track": 64.91472407232085,
+            "cross_track": 6.016653806686212
+          },
+          "ric_final_m": {
+            "radial": 6.372715141396856,
+            "in_track": -63.485366190669694,
+            "cross_track": 0.9100258171297941
+          },
+          "n_rhs": 97058,
+          "wall_s": 8.500479100010125,
+          "grav_s": 5.4590456,
+          "mean_deg_sq": 7744.0
+        },
+        "fixed_crit": {
+          "pos_rms_m": 6.400937444449033,
+          "pos_max_m": 12.419376488186586,
+          "pos_final_m": 12.336334358531577,
+          "vel_rms_m_s": 0.005439368745728262,
+          "vel_max_m_s": 0.010748036740308766,
+          "vel_final_m_s": 0.010570805105108261,
+          "ric_rms_m": {
+            "radial": 0.16606016955891617,
+            "in_track": 6.3984623662105795,
+            "cross_track": 0.06405884812184674
+          },
+          "ric_max_m": {
+            "radial": 0.6328309163538024,
+            "in_track": 12.419122856623101,
+            "cross_track": 0.1802209920647474
+          },
+          "ric_final_m": {
+            "radial": 0.3722570682231119,
+            "in_track": -12.330685776638255,
+            "cross_track": 0.027538308875073803
+          },
+          "n_rhs": 100994,
+          "wall_s": 12.003979400004027,
+          "grav_s": 9.0221785,
+          "mean_deg_sq": 15376.0
+        },
+        "sched_down": {
+          "pos_rms_m": 21.077257070134575,
+          "pos_max_m": 60.535315485994225,
+          "pos_final_m": 60.535315485994225,
+          "vel_rms_m_s": 0.01788992675279095,
+          "vel_max_m_s": 0.053731713144450556,
+          "vel_final_m_s": 0.053731713144450556,
+          "ric_rms_m": {
+            "radial": 0.42191378904970384,
+            "in_track": 21.069043271829536,
+            "cross_track": 0.4100853141994772
+          },
+          "ric_max_m": {
+            "radial": 1.3056719557320293,
+            "in_track": 60.526143140721004,
+            "cross_track": 1.1588588643914526
+          },
+          "ric_final_m": {
+            "radial": 1.0430396873785277,
+            "in_track": -60.526143140721004,
+            "cross_track": -0.14995235362203063
+          },
+          "n_rhs": 121766,
+          "wall_s": 9.141237400006503,
+          "grav_s": 6.124523,
+          "mean_deg_sq": 8577.554489759046
+        },
+        "sched_up": {
+          "pos_rms_m": 195.45804200793305,
+          "pos_max_m": 373.9997163801396,
+          "pos_final_m": 373.9997163801396,
+          "vel_rms_m_s": 0.1664500016031247,
+          "vel_max_m_s": 0.32809902424754794,
+          "vel_final_m_s": 0.32554409578897203,
+          "ric_rms_m": {
+            "radial": 5.223853154075361,
+            "in_track": 195.38794938819024,
+            "cross_track": 0.3267685382552806
+          },
+          "ric_max_m": {
+            "radial": 14.319486376112266,
+            "in_track": 373.8571141103148,
+            "cross_track": 0.8244483769607243
+          },
+          "ric_final_m": {
+            "radial": -10.326822773777536,
+            "in_track": 373.8571141103148,
+            "cross_track": -0.05303707120815204
+          },
+          "n_rhs": 115532,
+          "wall_s": 12.177317699999548,
+          "grav_s": 8.1435616,
+          "mean_deg_sq": 9726.598691271682
+        }
+      },
+      "n_work_matched": 88,
+      "ratios": {
+        "sched_emp": {
+          "rho_crit": 0.04779111589794413,
+          "rho_work": 0.1887929521518926,
+          "grav_time_saving_vs_crit": 0.344788678255479
+        },
+        "sched_down": {
+          "rho_crit": 0.3036892999478022,
+          "rho_work": 1.1996873978946698,
+          "grav_time_saving_vs_crit": 0.3211702694642985
+        },
+        "sched_up": {
+          "rho_crit": 0.03274839642663175,
+          "rho_work": 0.12936853060361925,
+          "grav_time_saving_vs_crit": 0.0973841184809191
+        }
+      },
+      "orbit_wall_s": 104.58722669997951
+    },
+    {
+      "name": "lhs_01",
+      "family": "lhs",
+      "hp_km": 112.84963772675077,
+      "ha_km": 339.84347634732336,
+      "incl_deg": 57.16216931782602,
+      "argp_deg": 208.52318848714737,
+      "raan_deg": 81.71404407773913,
+      "perilune_lon_deg_bodyfixed_t0": -81.86523303385525,
+      "perilune_lat_deg_bodyfixed_t0": -23.653953880245336,
+      "eccentricity": 0.05777846017226295,
+      "dwell_ratio_ra_over_rp": 1.1226430467357527,
+      "truth_degree": 300,
+      "n_critical_empirical": 95,
+      "truth_altitude_range_km": [
+        112.84963772675115,
+        339.92818688102255
+      ],
+      "policies": {
+        "sched_emp": {
+          "pos_rms_m": 153.14323859375105,
+          "pos_max_m": 224.83445183631835,
+          "pos_final_m": 209.7881133201518,
+          "vel_rms_m_s": 0.12364721068610801,
+          "vel_max_m_s": 0.19221938358600238,
+          "vel_final_m_s": 0.1608221021484641,
+          "ric_rms_m": {
+            "radial": 5.095554864919858,
+            "in_track": 153.04683480130558,
+            "cross_track": 1.8849946692317576
+          },
+          "ric_max_m": {
+            "radial": 10.540591891598297,
+            "in_track": 224.74126993195432,
+            "cross_track": 5.226525121746803
+          },
+          "ric_final_m": {
+            "radial": -1.5968425616992583,
+            "in_track": -209.71698343470598,
+            "cross_track": 5.223929872161477
+          },
+          "n_rhs": 86261,
+          "wall_s": 6.290575799997896,
+          "grav_s": 3.5030393,
+          "mean_deg_sq": 5205.095002376508
+        },
+        "fixed_work": {
+          "pos_rms_m": 2.665316379279793,
+          "pos_max_m": 8.077487529248641,
+          "pos_final_m": 5.289010432341429,
+          "vel_rms_m_s": 0.001989578884961929,
+          "vel_max_m_s": 0.005475810709572741,
+          "vel_final_m_s": 0.003223183544110048,
+          "ric_rms_m": {
+            "radial": 0.4849422568933181,
+            "in_track": 2.3813884929413764,
+            "cross_track": 1.0944090893366898
+          },
+          "ric_max_m": {
+            "radial": 1.3057298285021792,
+            "in_track": 8.072982896882483,
+            "cross_track": 3.3217067292298217
+          },
+          "ric_final_m": {
+            "radial": 0.7584227281456406,
+            "in_track": -4.439526385573771,
+            "cross_track": 2.772910346665191
+          },
+          "n_rhs": 73436,
+          "wall_s": 4.828274500003317,
+          "grav_s": 2.7625081,
+          "mean_deg_sq": 5184.0
+        },
+        "fixed_crit": {
+          "pos_rms_m": 14.301671626408924,
+          "pos_max_m": 27.81421063179726,
+          "pos_final_m": 25.300628239857684,
+          "vel_rms_m_s": 0.011555450373435168,
+          "vel_max_m_s": 0.023710630068137423,
+          "vel_final_m_s": 0.019502662411479483,
+          "ric_rms_m": {
+            "radial": 0.5381399313608064,
+            "in_track": 14.29146962413532,
+            "cross_track": 0.04596418521489619
+          },
+          "ric_max_m": {
+            "radial": 1.5111770439150973,
+            "in_track": 27.814196085858047,
+            "cross_track": 0.15665005470265392
+          },
+          "ric_final_m": {
+            "radial": 0.7013692255220829,
+            "in_track": 25.290902679299215,
+            "cross_track": 0.010592789558206306
+          },
+          "n_rhs": 74552,
+          "wall_s": 6.318521000008332,
+          "grav_s": 4.2531674,
+          "mean_deg_sq": 9025.0
+        },
+        "sched_down": {
+          "pos_rms_m": 229.15784790118033,
+          "pos_max_m": 604.8527921371272,
+          "pos_final_m": 553.092993974572,
+          "vel_rms_m_s": 0.18520988491222984,
+          "vel_max_m_s": 0.5159534117378252,
+          "vel_final_m_s": 0.42705309787371104,
+          "ric_rms_m": {
+            "radial": 8.925981446563958,
+            "in_track": 228.98123581684044,
+            "cross_track": 1.1134422789716132
+          },
+          "ric_max_m": {
+            "radial": 32.716569583399746,
+            "in_track": 604.8462970880789,
+            "cross_track": 3.1055795584268537
+          },
+          "ric_final_m": {
+            "radial": -11.44152889943922,
+            "in_track": -552.9659182768912,
+            "cross_track": 3.1055795584268537
+          },
+          "n_rhs": 89153,
+          "wall_s": 5.734085900010541,
+          "grav_s": 3.4123652,
+          "mean_deg_sq": 5621.220822630758
+        },
+        "sched_up": {
+          "pos_rms_m": 5.888856541563776,
+          "pos_max_m": 16.50912634072527,
+          "pos_final_m": 16.456173684564934,
+          "vel_rms_m_s": 0.0046832072171099515,
+          "vel_max_m_s": 0.013515090157496914,
+          "vel_final_m_s": 0.012597938912564168,
+          "ric_rms_m": {
+            "radial": 0.5411767508226918,
+            "in_track": 5.860820199196363,
+            "cross_track": 0.19116925531938783
+          },
+          "ric_max_m": {
+            "radial": 1.2910634030292982,
+            "in_track": 16.498893850563604,
+            "cross_track": 0.6207509804021045
+          },
+          "ric_final_m": {
+            "radial": 0.9780909515754435,
+            "in_track": -16.415348264576764,
+            "cross_track": 0.6207509804021045
+          },
+          "n_rhs": 81410,
+          "wall_s": 6.608968299988192,
+          "grav_s": 3.8457443,
+          "mean_deg_sq": 6040.379560250583
+        }
+      },
+      "n_work_matched": 72,
+      "ratios": {
+        "sched_emp": {
+          "rho_crit": 0.09338754853126437,
+          "rho_work": 0.01740407479790982,
+          "grav_time_saving_vs_crit": 0.1763692865698161
+        },
+        "sched_down": {
+          "rho_crit": 0.06240969601257658,
+          "rho_work": 0.011630919052919178,
+          "grav_time_saving_vs_crit": 0.19768848035466458
+        },
+        "sched_up": {
+          "rho_crit": 2.4285990880346935,
+          "rho_work": 0.4526033807188013,
+          "grav_time_saving_vs_crit": 0.09579286721702984
+        }
+      },
+      "orbit_wall_s": 73.11861279999721
+    },
+    {
+      "name": "lhs_02",
+      "family": "lhs",
+      "hp_km": 36.073229894680196,
+      "ha_km": 234.11082174429572,
+      "incl_deg": 92.16668823995907,
+      "argp_deg": 162.80000485371195,
+      "raan_deg": 19.126886414697335,
+      "perilune_lon_deg_bodyfixed_t0": -160.20260219210792,
+      "perilune_lat_deg_bodyfixed_t0": 17.18731551357714,
+      "eccentricity": 0.05286381798645826,
+      "dwell_ratio_ra_over_rp": 1.1116287583356252,
+      "truth_degree": 600,
+      "n_critical_empirical": 250,
+      "truth_altitude_range_km": [
+        29.199891860040136,
+        239.72661408028705
+      ],
+      "policies": {
+        "sched_emp": {
+          "pos_rms_m": 96.37612093004711,
+          "pos_max_m": 256.4056491614441,
+          "pos_final_m": 245.76359640809378,
+          "vel_rms_m_s": 0.08371178188937588,
+          "vel_max_m_s": 0.2324511415514855,
+          "vel_final_m_s": 0.2159842190425026,
+          "ric_rms_m": {
+            "radial": 4.5689544615418844,
+            "in_track": 96.23603162144536,
+            "cross_track": 2.4713474882321615
+          },
+          "ric_max_m": {
+            "radial": 15.704385287880683,
+            "in_track": 256.3895052919503,
+            "cross_track": 5.859951889243804
+          },
+          "ric_final_m": {
+            "radial": 12.933588739396285,
+            "in_track": 245.41740059781932,
+            "cross_track": -1.6634559116643524
+          },
+          "n_rhs": 195605,
+          "wall_s": 34.2571498999896,
+          "grav_s": 28.9539961,
+          "mean_deg_sq": 29249.41131361673
+        },
+        "fixed_work": {
+          "pos_rms_m": 23.17765777115965,
+          "pos_max_m": 46.786181017761976,
+          "pos_final_m": 44.02406210312786,
+          "vel_rms_m_s": 0.020140495038077785,
+          "vel_max_m_s": 0.042193560710145614,
+          "vel_final_m_s": 0.038265312618548965,
+          "ric_rms_m": {
+            "radial": 1.4505555811001667,
+            "in_track": 23.12492430181013,
+            "cross_track": 0.5810200501598771
+          },
+          "ric_max_m": {
+            "radial": 3.3392139748456984,
+            "in_track": 46.7857895677279,
+            "cross_track": 2.541430187538599
+          },
+          "ric_final_m": {
+            "radial": 3.0943985351665333,
+            "in_track": 43.914492836403994,
+            "cross_track": -0.24507281987104756
+          },
+          "n_rhs": 142931,
+          "wall_s": 26.172085199999856,
+          "grav_s": 22.0812549,
+          "mean_deg_sq": 29241.0
+        },
+        "fixed_crit": {
+          "pos_rms_m": 12.556675021717815,
+          "pos_max_m": 20.775117690653538,
+          "pos_final_m": 19.7267345179078,
+          "vel_rms_m_s": 0.010911667972031717,
+          "vel_max_m_s": 0.018624525954282007,
+          "vel_final_m_s": 0.017083950410137997,
+          "ric_rms_m": {
+            "radial": 0.7008084558020029,
+            "in_track": 12.53528158625409,
+            "cross_track": 0.21370695502870873
+          },
+          "ric_max_m": {
+            "radial": 1.5084324625297394,
+            "in_track": 20.77506940386741,
+            "cross_track": 0.7259000826613591
+          },
+          "ric_final_m": {
+            "radial": 1.3061904241049493,
+            "in_track": 19.682773351136625,
+            "cross_track": 0.1623407643737529
+          },
+          "n_rhs": 151751,
+          "wall_s": 51.866588900011266,
+          "grav_s": 47.236857,
+          "mean_deg_sq": 62500.0
+        },
+        "sched_down": {
+          "pos_rms_m": 322.2141667213392,
+          "pos_max_m": 487.1650602333208,
+          "pos_final_m": 269.74515458509023,
+          "vel_rms_m_s": 0.2797627740172524,
+          "vel_max_m_s": 0.44580147047534197,
+          "vel_final_m_s": 0.23649991978809334,
+          "ric_rms_m": {
+            "radial": 13.277875852790388,
+            "in_track": 321.9328029971127,
+            "cross_track": 2.222071823118582
+          },
+          "ric_max_m": {
+            "radial": 27.246895145915715,
+            "in_track": 487.1506893193381,
+            "cross_track": 5.116762110066336
+          },
+          "ric_final_m": {
+            "radial": -13.302933456480503,
+            "in_track": -269.41054524360686,
+            "cross_track": -1.854317968714338
+          },
+          "n_rhs": 183392,
+          "wall_s": 34.340738899976714,
+          "grav_s": 29.4641336,
+          "mean_deg_sq": 31466.148468853604
+        },
+        "sched_up": {
+          "pos_rms_m": 44.66796214621597,
+          "pos_max_m": 133.73489010599135,
+          "pos_final_m": 129.1025158094887,
+          "vel_rms_m_s": 0.038793076495733034,
+          "vel_max_m_s": 0.12169624175226273,
+          "vel_final_m_s": 0.11341685089171816,
+          "ric_rms_m": {
+            "radial": 1.9541747206143312,
+            "in_track": 44.61201621783634,
+            "cross_track": 1.084459513583482
+          },
+          "ric_max_m": {
+            "radial": 7.636008028291634,
+            "in_track": 133.7308987654389,
+            "cross_track": 2.375181090154376
+          },
+          "ric_final_m": {
+            "radial": 6.300168653646558,
+            "in_track": 128.94803997815896,
+            "cross_track": -0.4128547759279608
+          },
+          "n_rhs": 175019,
+          "wall_s": 32.35222739999881,
+          "grav_s": 27.8690594,
+          "mean_deg_sq": 33339.73625720636
+        }
+      },
+      "n_work_matched": 171,
+      "ratios": {
+        "sched_emp": {
+          "rho_crit": 0.13028823841988676,
+          "rho_work": 0.240491706321971,
+          "grav_time_saving_vs_crit": 0.3870465153936893
+        },
+        "sched_down": {
+          "rho_crit": 0.03896996568924053,
+          "rho_work": 0.07193246034773017,
+          "grav_time_saving_vs_crit": 0.37624695055388635
+        },
+        "sched_up": {
+          "rho_crit": 0.28111143688657286,
+          "rho_work": 0.518887736478552,
+          "grav_time_saving_vs_crit": 0.41001452742717404
+        }
+      },
+      "orbit_wall_s": 489.85558689999743
+    },
+    {
+      "name": "lhs_03",
+      "family": "lhs",
+      "hp_km": 109.51792669957176,
+      "ha_km": 481.3849349052642,
+      "incl_deg": 86.77442704288163,
+      "argp_deg": 138.97326104116922,
+      "raan_deg": 101.43274615291548,
+      "perilune_lon_deg_bodyfixed_t0": -81.37012527677811,
+      "perilune_lat_deg_bodyfixed_t0": 40.947805943438375,
+      "eccentricity": 0.09143739618579193,
+      "dwell_ratio_ra_over_rp": 1.2012792421830516,
+      "truth_degree": 300,
+      "n_critical_empirical": 98,
+      "truth_altitude_range_km": [
+        109.51792669957177,
+        481.9750227006017
+      ],
+      "policies": {
+        "sched_emp": {
+          "pos_rms_m": 255.80905690955234,
+          "pos_max_m": 529.9358584580466,
+          "pos_final_m": 447.49964366132883,
+          "vel_rms_m_s": 0.19754938411189948,
+          "vel_max_m_s": 0.4465593473457742,
+          "vel_final_m_s": 0.31444311355335475,
+          "ric_rms_m": {
+            "radial": 15.715718066618937,
+            "in_track": 255.32490809284363,
+            "cross_track": 0.6936209239125651
+          },
+          "ric_max_m": {
+            "radial": 43.43982487558162,
+            "in_track": 529.9345034095427,
+            "cross_track": 1.8526918002562667
+          },
+          "ric_final_m": {
+            "radial": -0.7275392907906735,
+            "in_track": -447.4983999149224,
+            "cross_track": -0.7640923902295054
+          },
+          "n_rhs": 74600,
+          "wall_s": 3.755197299993597,
+          "grav_s": 2.2115518,
+          "mean_deg_sq": 5036.635388739946
+        },
+        "fixed_work": {
+          "pos_rms_m": 4.780796160342253,
+          "pos_max_m": 15.796071977048179,
+          "pos_final_m": 10.518851545908399,
+          "vel_rms_m_s": 0.003563106093804249,
+          "vel_max_m_s": 0.011456263172125824,
+          "vel_final_m_s": 0.007403443988852654,
+          "ric_rms_m": {
+            "radial": 0.5162813438047905,
+            "in_track": 4.714256903018917,
+            "cross_track": 0.6043569749087425
+          },
+          "ric_max_m": {
+            "radial": 1.4500022604358431,
+            "in_track": 15.795537391121389,
+            "cross_track": 2.0774322582072005
+          },
+          "ric_final_m": {
+            "radial": 0.39838793418168006,
+            "in_track": 10.502331994035693,
+            "cross_track": -0.4342206648839679
+          },
+          "n_rhs": 61631,
+          "wall_s": 3.286381900019478,
+          "grav_s": 1.9230829,
+          "mean_deg_sq": 5041.0
+        },
+        "fixed_crit": {
+          "pos_rms_m": 3.2142346733961387,
+          "pos_max_m": 10.11270838659561,
+          "pos_final_m": 8.635746243617621,
+          "vel_rms_m_s": 0.002482245159970663,
+          "vel_max_m_s": 0.00848261767756942,
+          "vel_final_m_s": 0.0060916415713236395,
+          "ric_rms_m": {
+            "radial": 0.20308264965399359,
+            "in_track": 3.2075973715733297,
+            "cross_track": 0.037162816730703714
+          },
+          "ric_max_m": {
+            "radial": 0.8600307843108705,
+            "in_track": 10.112667736104406,
+            "cross_track": 0.15908359963768737
+          },
+          "ric_final_m": {
+            "radial": -0.08748871365728306,
+            "in_track": 8.635292784710611,
+            "cross_track": -0.01332034021025369
+          },
+          "n_rhs": 64568,
+          "wall_s": 5.0055032999953255,
+          "grav_s": 3.481968,
+          "mean_deg_sq": 9604.0
+        },
+        "sched_down": {
+          "pos_rms_m": 215.6924510483781,
+          "pos_max_m": 388.6273536280714,
+          "pos_final_m": 328.3962481055728,
+          "vel_rms_m_s": 0.16655334489803886,
+          "vel_max_m_s": 0.32763164896327296,
+          "vel_final_m_s": 0.23069324483567197,
+          "ric_rms_m": {
+            "radial": 13.19170073444436,
+            "in_track": 215.2872842545246,
+            "cross_track": 0.7731166156371553
+          },
+          "ric_max_m": {
+            "radial": 31.784899248871966,
+            "in_track": 388.6253850993651,
+            "cross_track": 1.9483598253847543
+          },
+          "ric_final_m": {
+            "radial": -0.7323508019559029,
+            "in_track": -328.39396262501936,
+            "cross_track": -0.9822136006152622
+          },
+          "n_rhs": 78002,
+          "wall_s": 4.113872199988691,
+          "grav_s": 2.4753261,
+          "mean_deg_sq": 5401.771749442322
+        },
+        "sched_up": {
+          "pos_rms_m": 178.37293081882945,
+          "pos_max_m": 370.231851901323,
+          "pos_final_m": 310.42864687066697,
+          "vel_rms_m_s": 0.1377871660801284,
+          "vel_max_m_s": 0.31144401596913984,
+          "vel_final_m_s": 0.21867209945081337,
+          "ric_rms_m": {
+            "radial": 11.217526184480056,
+            "in_track": 178.0197615822825,
+            "cross_track": 0.1845030804937214
+          },
+          "ric_max_m": {
+            "radial": 31.137494489448414,
+            "in_track": 370.23109241065526,
+            "cross_track": 0.5124773221443331
+          },
+          "ric_final_m": {
+            "radial": -0.2991804054205147,
+            "in_track": -310.4285011995393,
+            "cross_track": -0.030529426821065186
+          },
+          "n_rhs": 71996,
+          "wall_s": 3.9305669000023045,
+          "grav_s": 2.4020058,
+          "mean_deg_sq": 5768.506583699094
+        }
+      },
+      "n_work_matched": 71,
+      "ratios": {
+        "sched_emp": {
+          "rho_crit": 0.012564976049822237,
+          "rho_work": 0.018688924536525,
+          "grav_time_saving_vs_crit": 0.3648557941945475
+        },
+        "sched_down": {
+          "rho_crit": 0.014901934016574421,
+          "rho_work": 0.022164874742278108,
+          "grav_time_saving_vs_crit": 0.28910142195448085
+        },
+        "sched_up": {
+          "rho_crit": 0.01801974469243198,
+          "rho_work": 0.026802251543414014,
+          "grav_time_saving_vs_crit": 0.31015856550088916
+        }
+      },
+      "orbit_wall_s": 47.82869059999939
+    },
+    {
+      "name": "lhs_04",
+      "family": "lhs",
+      "hp_km": 50.89946943123651,
+      "ha_km": 427.4329641437092,
+      "incl_deg": 41.08577158825445,
+      "argp_deg": 355.04807604423047,
+      "raan_deg": 352.170097047022,
+      "perilune_lon_deg_bodyfixed_t0": -11.566315344452873,
+      "perilune_lat_deg_bodyfixed_t0": -3.2520413010342426,
+      "eccentricity": 0.09522049575686901,
+      "dwell_ratio_ra_over_rp": 1.2104833173393403,
+      "truth_degree": 300,
+      "n_critical_empirical": 193,
+      "truth_altitude_range_km": [
+        50.89946943123638,
+        426.1346966671534
+      ],
+      "policies": {
+        "sched_emp": {
+          "pos_rms_m": 183.2687839225085,
+          "pos_max_m": 411.23321624138606,
+          "pos_final_m": 371.96764360100593,
+          "vel_rms_m_s": 0.14746163670532086,
+          "vel_max_m_s": 0.3578883920398644,
+          "vel_final_m_s": 0.28557889760437394,
+          "ric_rms_m": {
+            "radial": 10.83293006279947,
+            "in_track": 182.94761586197805,
+            "cross_track": 0.5144289141573044
+          },
+          "ric_max_m": {
+            "radial": 31.07958071211939,
+            "in_track": 411.23228612015646,
+            "cross_track": 1.8096833760597022
+          },
+          "ric_final_m": {
+            "radial": -26.98556163206183,
+            "in_track": 370.9873446907084,
+            "cross_track": -0.312135907344782
+          },
+          "n_rhs": 101609,
+          "wall_s": 7.832883900002344,
+          "grav_s": 5.7196692,
+          "mean_deg_sq": 11336.110974421557
+        },
+        "fixed_work": {
+          "pos_rms_m": 34.986561073831005,
+          "pos_max_m": 61.60052504287865,
+          "pos_final_m": 54.98810078554762,
+          "vel_rms_m_s": 0.028159930265785203,
+          "vel_max_m_s": 0.05384547012744805,
+          "vel_final_m_s": 0.042359397420904575,
+          "ric_rms_m": {
+            "radial": 2.0593443711344483,
+            "in_track": 34.92509338171329,
+            "cross_track": 0.23750539486616018
+          },
+          "ric_max_m": {
+            "radial": 4.571627508531352,
+            "in_track": 61.599741519478044,
+            "cross_track": 0.923343266343556
+          },
+          "ric_final_m": {
+            "radial": 3.857688588292799,
+            "in_track": -54.85202923637023,
+            "cross_track": 0.2536836803660858
+          },
+          "n_rhs": 79697,
+          "wall_s": 6.069613700004993,
+          "grav_s": 4.4554991,
+          "mean_deg_sq": 11236.0
+        },
+        "fixed_crit": {
+          "pos_rms_m": 13.481088843174861,
+          "pos_max_m": 33.57811668825155,
+          "pos_final_m": 30.63983633370484,
+          "vel_rms_m_s": 0.010840889206753863,
+          "vel_max_m_s": 0.02924498709918605,
+          "vel_final_m_s": 0.02347505193428473,
+          "ric_rms_m": {
+            "radial": 0.7727035203376089,
+            "in_track": 13.45892509536076,
+            "cross_track": 0.004576537985137425
+          },
+          "ric_max_m": {
+            "radial": 2.5260593340917916,
+            "in_track": 33.57811561056194,
+            "cross_track": 0.010997075287741798
+          },
+          "ric_final_m": {
+            "radial": 2.236045280208695,
+            "in_track": -30.55813505182499,
+            "cross_track": 0.007363117585202694
+          },
+          "n_rhs": 81815,
+          "wall_s": 16.721448299998883,
+          "grav_s": 14.4611586,
+          "mean_deg_sq": 37249.0
+        },
+        "sched_down": {
+          "pos_rms_m": 265.4864235079871,
+          "pos_max_m": 498.5934535365667,
+          "pos_final_m": 445.86236952235885,
+          "vel_rms_m_s": 0.2137121882604867,
+          "vel_max_m_s": 0.43362034994468024,
+          "vel_final_m_s": 0.34283003992879413,
+          "ric_rms_m": {
+            "radial": 15.873050095172978,
+            "in_track": 265.0110715413219,
+            "cross_track": 0.46830359682310535
+          },
+          "ric_max_m": {
+            "radial": 37.52725291643542,
+            "in_track": 498.5925541466766,
+            "cross_track": 1.7724901047020296
+          },
+          "ric_final_m": {
+            "radial": -32.03898434917011,
+            "in_track": 444.70949257877805,
+            "cross_track": -0.47249157863424784
+          },
+          "n_rhs": 98966,
+          "wall_s": 8.09466999999131,
+          "grav_s": 6.0704352,
+          "mean_deg_sq": 12843.184528019723
+        },
+        "sched_up": {
+          "pos_rms_m": 125.24852550437981,
+          "pos_max_m": 205.68836170357469,
+          "pos_final_m": 184.23908945087234,
+          "vel_rms_m_s": 0.10081448013914059,
+          "vel_max_m_s": 0.17936322416294348,
+          "vel_final_m_s": 0.14126694646236734,
+          "ric_rms_m": {
+            "radial": 7.334213031283999,
+            "in_track": 125.03344898711792,
+            "cross_track": 0.19772359192843844
+          },
+          "ric_max_m": {
+            "radial": 15.493242966059045,
+            "in_track": 205.68809625176058,
+            "cross_track": 0.6432424845225313
+          },
+          "ric_final_m": {
+            "radial": 13.087756499466963,
+            "in_track": -183.7734893368176,
+            "cross_track": -0.23943363964994546
+          },
+          "n_rhs": 93194,
+          "wall_s": 8.12274150000303,
+          "grav_s": 6.2114837,
+          "mean_deg_sq": 14356.120565701654
+        }
+      },
+      "n_work_matched": 106,
+      "ratios": {
+        "sched_emp": {
+          "rho_crit": 0.07355911112977684,
+          "rho_work": 0.19090300227355883,
+          "grav_time_saving_vs_crit": 0.6044805704571969
+        },
+        "sched_down": {
+          "rho_crit": 0.05077882576835152,
+          "rho_work": 0.13178286336279807,
+          "grav_time_saving_vs_crit": 0.5802248375866648
+        },
+        "sched_up": {
+          "rho_crit": 0.1076347109787208,
+          "rho_work": 0.2793371094225581,
+          "grav_time_saving_vs_crit": 0.5704712276649812
+        }
+      },
+      "orbit_wall_s": 82.90899850000278
+    },
+    {
+      "name": "lhs_05",
+      "family": "lhs",
+      "hp_km": 33.81930545725929,
+      "ha_km": 382.35601171850305,
+      "incl_deg": 47.50405382400273,
+      "argp_deg": 20.419141439471577,
+      "raan_deg": 41.90832230667607,
+      "perilune_lon_deg_bodyfixed_t0": 56.024739673011396,
+      "perilune_lat_deg_bodyfixed_t0": 14.906462725662882,
+      "eccentricity": 0.08954804906222694,
+      "dwell_ratio_ra_over_rp": 1.196711202540654,
+      "truth_degree": 600,
+      "n_critical_empirical": 250,
+      "truth_altitude_range_km": [
+        33.81930545725953,
+        381.2265404867027
+      ],
+      "policies": {
+        "sched_emp": {
+          "pos_rms_m": 218.3094376353216,
+          "pos_max_m": 397.8839066122951,
+          "pos_final_m": 337.1068546682757,
+          "vel_rms_m_s": 0.18005397251947342,
+          "vel_max_m_s": 0.3545808240466402,
+          "vel_final_m_s": 0.25561469328561337,
+          "ric_rms_m": {
+            "radial": 13.274713841421349,
+            "in_track": 217.90515451587888,
+            "cross_track": 0.36901014851284714
+          },
+          "ric_max_m": {
+            "radial": 31.14006953205154,
+            "in_track": 397.8810005480857,
+            "cross_track": 1.067800288312812
+          },
+          "ric_final_m": {
+            "radial": -7.2396374490926405,
+            "in_track": 337.0281487032904,
+            "cross_track": -0.8038007068874151
+          },
+          "n_rhs": 124640,
+          "wall_s": 13.989398400008213,
+          "grav_s": 11.5563592,
+          "mean_deg_sq": 21664.04284338896
+        },
+        "fixed_work": {
+          "pos_rms_m": 10.248900406982917,
+          "pos_max_m": 16.017875645595186,
+          "pos_final_m": 2.6124249093556857,
+          "vel_rms_m_s": 0.008442727804295003,
+          "vel_max_m_s": 0.014552742176600878,
+          "vel_final_m_s": 0.0019541700838804793,
+          "ric_rms_m": {
+            "radial": 0.5922521134130652,
+            "in_track": 10.228792347536704,
+            "cross_track": 0.24699007548267748
+          },
+          "ric_max_m": {
+            "radial": 1.3934185581864393,
+            "in_track": 16.017841340917073,
+            "cross_track": 0.8944581598559949
+          },
+          "ric_final_m": {
+            "radial": -0.11279255543250932,
+            "in_track": 2.6029542967787664,
+            "cross_track": 0.1914958885773428
+          },
+          "n_rhs": 96545,
+          "wall_s": 10.849976199999219,
+          "grav_s": 9.010842,
+          "mean_deg_sq": 21609.0
+        },
+        "fixed_crit": {
+          "pos_rms_m": 2.673841692144898,
+          "pos_max_m": 6.33422288777463,
+          "pos_final_m": 1.3668804757722859,
+          "vel_rms_m_s": 0.0022001092800688566,
+          "vel_max_m_s": 0.005723917279670466,
+          "vel_final_m_s": 0.0010950369924985566,
+          "ric_rms_m": {
+            "radial": 0.14583582966507172,
+            "in_track": 2.6698415127566544,
+            "cross_track": 0.010373148001214395
+          },
+          "ric_max_m": {
+            "radial": 0.44741643926798447,
+            "in_track": 6.33420641686136,
+            "cross_track": 0.03930338828551497
+          },
+          "ric_final_m": {
+            "radial": -0.10759850753476408,
+            "in_track": 1.3625380238876268,
+            "cross_track": 0.016581003713978415
+          },
+          "n_rhs": 100385,
+          "wall_s": 27.43663889999152,
+          "grav_s": 25.1364097,
+          "mean_deg_sq": 62500.0
+        },
+        "sched_down": {
+          "pos_rms_m": 210.03606751868242,
+          "pos_max_m": 374.3694006899971,
+          "pos_final_m": 321.940607121228,
+          "vel_rms_m_s": 0.17315368182821417,
+          "vel_max_m_s": 0.3347201126425051,
+          "vel_final_m_s": 0.24321386474915951,
+          "ric_rms_m": {
+            "radial": 12.206329318229688,
+            "in_track": 209.67985567668745,
+            "cross_track": 0.7164542490407902
+          },
+          "ric_max_m": {
+            "radial": 28.33403674837767,
+            "in_track": 374.3652709206692,
+            "cross_track": 1.6079491866770894
+          },
+          "ric_final_m": {
+            "radial": -6.2823111292527045,
+            "in_track": 321.8790130523311,
+            "cross_track": 0.43363223753087254
+          },
+          "n_rhs": 118739,
+          "wall_s": 15.75103010001476,
+          "grav_s": 13.0869237,
+          "mean_deg_sq": 24390.348579657904
+        },
+        "sched_up": {
+          "pos_rms_m": 227.0093984798749,
+          "pos_max_m": 466.7933356124335,
+          "pos_final_m": 399.80694197587735,
+          "vel_rms_m_s": 0.1871873245594267,
+          "vel_max_m_s": 0.41657902552433496,
+          "vel_final_m_s": 0.30290356807808594,
+          "ric_rms_m": {
+            "radial": 13.496117322317408,
+            "in_track": 226.60768807951632,
+            "cross_track": 0.27842175474518616
+          },
+          "ric_max_m": {
+            "radial": 36.351232593022374,
+            "in_track": 466.7920930751004,
+            "cross_track": 0.7103361039742992
+          },
+          "ric_final_m": {
+            "radial": 7.9188812455566335,
+            "in_track": -399.72841601674503,
+            "cross_track": -0.2749557516586094
+          },
+          "n_rhs": 113945,
+          "wall_s": 15.864105099986773,
+          "grav_s": 13.2586719,
+          "mean_deg_sq": 25755.545219184696
+        }
+      },
+      "n_work_matched": 147,
+      "ratios": {
+        "sched_emp": {
+          "rho_crit": 0.012247943657898377,
+          "rho_work": 0.04694666670390748,
+          "grav_time_saving_vs_crit": 0.5402541835558958
+        },
+        "sched_down": {
+          "rho_crit": 0.012730393040267065,
+          "rho_work": 0.04879590695093971,
+          "grav_time_saving_vs_crit": 0.4793638448692218
+        },
+        "sched_up": {
+          "rho_crit": 0.011778550624114105,
+          "rho_work": 0.04514747175937526,
+          "grav_time_saving_vs_crit": 0.47253119843921076
+        }
+      },
+      "orbit_wall_s": 261.80072699999437
+    },
+    {
+      "name": "lhs_06",
+      "family": "lhs",
+      "hp_km": 77.72444404523948,
+      "ha_km": 397.97010695968424,
+      "incl_deg": 30.30480562757376,
+      "argp_deg": 196.08021059057612,
+      "raan_deg": 186.40548971531376,
+      "perilune_lon_deg_bodyfixed_t0": 20.38084066648171,
+      "perilune_lat_deg_bodyfixed_t0": -8.034278593367258,
+      "eccentricity": 0.0810400851535971,
+      "dwell_ratio_ra_over_rp": 1.1763734932162788,
+      "truth_degree": 300,
+      "n_critical_empirical": 133,
+      "truth_altitude_range_km": [
+        77.66749370520445,
+        396.8415070985458
+      ],
+      "policies": {
+        "sched_emp": {
+          "pos_rms_m": 79.86807994123043,
+          "pos_max_m": 177.3507132853859,
+          "pos_final_m": 173.6331953717543,
+          "vel_rms_m_s": 0.06424019931568006,
+          "vel_max_m_s": 0.1540271384027298,
+          "vel_final_m_s": 0.13852218602159186,
+          "ric_rms_m": {
+            "radial": 4.5597994049693815,
+            "in_track": 79.7366306515232,
+            "cross_track": 0.43376863393572146
+          },
+          "ric_max_m": {
+            "radial": 13.39457698681521,
+            "in_track": 177.34885082620792,
+            "cross_track": 1.345151078675439
+          },
+          "ric_final_m": {
+            "radial": -13.322105727081137,
+            "in_track": 173.1209322871133,
+            "cross_track": -0.38837873652799004
+          },
+          "n_rhs": 90056,
+          "wall_s": 6.082550699997228,
+          "grav_s": 4.0447333,
+          "mean_deg_sq": 7998.482055609843
+        },
+        "fixed_work": {
+          "pos_rms_m": 43.94231608988351,
+          "pos_max_m": 78.96906161265551,
+          "pos_final_m": 74.11037747358831,
+          "vel_rms_m_s": 0.03531999886072271,
+          "vel_max_m_s": 0.0685550390960659,
+          "vel_final_m_s": 0.05958721304545573,
+          "ric_rms_m": {
+            "radial": 2.235643655912504,
+            "in_track": 43.881518604578424,
+            "cross_track": 0.584265130784584
+          },
+          "ric_max_m": {
+            "radial": 6.244674521026525,
+            "in_track": 78.96748831262394,
+            "cross_track": 1.7805077111356429
+          },
+          "ric_final_m": {
+            "radial": 5.616688498428045,
+            "in_track": -73.87603641267306,
+            "cross_track": -1.7697749977821573
+          },
+          "n_rhs": 71897,
+          "wall_s": 4.044144600018626,
+          "grav_s": 2.7660221,
+          "mean_deg_sq": 7921.0
+        },
+        "fixed_crit": {
+          "pos_rms_m": 4.4306559894600985,
+          "pos_max_m": 11.972987093444388,
+          "pos_final_m": 11.424347784355792,
+          "vel_rms_m_s": 0.0035641630394874033,
+          "vel_max_m_s": 0.010340439612841437,
+          "vel_final_m_s": 0.009164998051181861,
+          "ric_rms_m": {
+            "radial": 0.26134649544826166,
+            "in_track": 4.422917555435301,
+            "cross_track": 0.014519093559054959
+          },
+          "ric_max_m": {
+            "radial": 0.9443613953780718,
+            "in_track": 11.972957649662119,
+            "cross_track": 0.05269215988324594
+          },
+          "ric_final_m": {
+            "radial": -0.9443613953780718,
+            "in_track": 11.38524383681334,
+            "cross_track": -0.011252961323582777
+          },
+          "n_rhs": 74060,
+          "wall_s": 7.329559999983758,
+          "grav_s": 5.8508532,
+          "mean_deg_sq": 17689.0
+        },
+        "sched_down": {
+          "pos_rms_m": 17.446992509904355,
+          "pos_max_m": 35.754244386873395,
+          "pos_final_m": 31.349412499770015,
+          "vel_rms_m_s": 0.013989856723983132,
+          "vel_max_m_s": 0.030342472304488912,
+          "vel_final_m_s": 0.024191045581181514,
+          "ric_rms_m": {
+            "radial": 1.0837491261095833,
+            "in_track": 17.403468817357634,
+            "cross_track": 0.585071444847422
+          },
+          "ric_max_m": {
+            "radial": 2.8274620611504484,
+            "in_track": 35.71362746581985,
+            "cross_track": 1.7558611709344696
+          },
+          "ric_final_m": {
+            "radial": -2.4825630384929482,
+            "in_track": 31.250123929629652,
+            "cross_track": 0.22869023466851246
+          },
+          "n_rhs": 91445,
+          "wall_s": 6.049887000001036,
+          "grav_s": 4.0937314,
+          "mean_deg_sq": 8548.06276997102
+        },
+        "sched_up": {
+          "pos_rms_m": 77.20851351188276,
+          "pos_max_m": 138.58776180591158,
+          "pos_final_m": 133.34132374450655,
+          "vel_rms_m_s": 0.0620705815439365,
+          "vel_max_m_s": 0.12027157903480123,
+          "vel_final_m_s": 0.10628116517227675,
+          "ric_rms_m": {
+            "radial": 4.077499006755794,
+            "in_track": 77.10020823383785,
+            "cross_track": 0.29402527668794426
+          },
+          "ric_max_m": {
+            "radial": 9.95761424006703,
+            "in_track": 138.58168508870932,
+            "cross_track": 0.8159233531092056
+          },
+          "ric_final_m": {
+            "radial": -9.887913804379743,
+            "in_track": 132.97416794950678,
+            "cross_track": -0.09185135176710091
+          },
+          "n_rhs": 85880,
+          "wall_s": 6.703780799987726,
+          "grav_s": 4.5397563,
+          "mean_deg_sq": 9377.022589659991
+        }
+      },
+      "n_work_matched": 89,
+      "ratios": {
+        "sched_emp": {
+          "rho_crit": 0.05547467765245291,
+          "rho_work": 0.5501862085856792,
+          "grav_time_saving_vs_crit": 0.30869342269602673
+        },
+        "sched_down": {
+          "rho_crit": 0.25394955531418334,
+          "rho_work": 2.5186183845117274,
+          "grav_time_saving_vs_crit": 0.3003189004981359
+        },
+        "sched_up": {
+          "rho_crit": 0.05738558855660651,
+          "rho_work": 0.569138221824729,
+          "grav_time_saving_vs_crit": 0.22408644605884154
+        }
+      },
+      "orbit_wall_s": 66.26436410000315
+    },
+    {
+      "name": "lhs_07",
+      "family": "lhs",
+      "hp_km": 49.40839915520806,
+      "ha_km": 302.3386704253329,
+      "incl_deg": 97.56474514157829,
+      "argp_deg": 13.88383526084758,
+      "raan_deg": 204.79261098866806,
+      "perilune_lon_deg_bodyfixed_t0": -157.07112411042723,
+      "perilune_lat_deg_bodyfixed_t0": 13.760611202632507,
+      "eccentricity": 0.06607810460628,
+      "dwell_ratio_ra_over_rp": 1.1415067040021007,
+      "truth_degree": 600,
+      "n_critical_empirical": 198,
+      "truth_altitude_range_km": [
+        49.408399155208144,
+        300.8491218603081
+      ],
+      "policies": {
+        "sched_emp": {
+          "pos_rms_m": 482.72690450784023,
+          "pos_max_m": 1250.9463666957415,
+          "pos_final_m": 1147.3865697863835,
+          "vel_rms_m_s": 0.4056660468113998,
+          "vel_max_m_s": 1.1144003021783215,
+          "vel_final_m_s": 0.9089696682477459,
+          "ric_rms_m": {
+            "radial": 18.548732932331305,
+            "in_track": 482.3694509569743,
+            "cross_track": 0.9600134341767774
+          },
+          "ric_max_m": {
+            "radial": 68.05151115067306,
+            "in_track": 1250.9403874587085,
+            "cross_track": 3.8982588899452537
+          },
+          "ric_final_m": {
+            "radial": 26.565557289967046,
+            "in_track": -1147.0736668965703,
+            "cross_track": 3.4949112281440193
+          },
+          "n_rhs": 140228,
+          "wall_s": 12.67823099999805,
+          "grav_s": 9.4410103,
+          "mean_deg_sq": 13185.36098354109
+        },
+        "fixed_work": {
+          "pos_rms_m": 15.010391437015501,
+          "pos_max_m": 27.183813004908597,
+          "pos_final_m": 21.14615827800461,
+          "vel_rms_m_s": 0.012626987382255962,
+          "vel_max_m_s": 0.023608377906639225,
+          "vel_final_m_s": 0.017622627602430847,
+          "ric_rms_m": {
+            "radial": 1.222936736465828,
+            "in_track": 14.909764628490581,
+            "cross_track": 1.2309327983451015
+          },
+          "ric_max_m": {
+            "radial": 2.58297282272136,
+            "in_track": 27.18375683224391,
+            "cross_track": 3.000838224776818
+          },
+          "ric_final_m": {
+            "radial": 0.6883104065167895,
+            "in_track": -21.12929595394295,
+            "cross_track": 0.4889695219475425
+          },
+          "n_rhs": 100751,
+          "wall_s": 9.48050360000343,
+          "grav_s": 7.0754642,
+          "mean_deg_sq": 13225.0
+        },
+        "fixed_crit": {
+          "pos_rms_m": 13.192012024507788,
+          "pos_max_m": 27.95594656978415,
+          "pos_final_m": 24.934628187847725,
+          "vel_rms_m_s": 0.011095023130738896,
+          "vel_max_m_s": 0.024774016725664358,
+          "vel_final_m_s": 0.019870777330440414,
+          "ric_rms_m": {
+            "radial": 0.5857341751825963,
+            "in_track": 13.178988708235266,
+            "cross_track": 0.018797845316095317
+          },
+          "ric_max_m": {
+            "radial": 1.6491691545530895,
+            "in_track": 27.95594175710393,
+            "cross_track": 0.08789762824960266
+          },
+          "ric_final_m": {
+            "radial": -0.6114944012647836,
+            "in_track": 24.92712884504843,
+            "cross_track": 0.0022373615970896488
+          },
+          "n_rhs": 106598,
+          "wall_s": 21.99143580000964,
+          "grav_s": 19.1874474,
+          "mean_deg_sq": 39204.0
+        },
+        "sched_down": {
+          "pos_rms_m": 554.8748263019156,
+          "pos_max_m": 1368.1125557508576,
+          "pos_final_m": 1254.3289020162306,
+          "vel_rms_m_s": 0.4663252474023074,
+          "vel_max_m_s": 1.218815990305137,
+          "vel_final_m_s": 0.9935608105672629,
+          "ric_rms_m": {
+            "radial": 21.437292494764517,
+            "in_track": 554.4594587391482,
+            "cross_track": 1.1063312188528038
+          },
+          "ric_max_m": {
+            "radial": 74.33199930673848,
+            "in_track": 1368.1069756384056,
+            "cross_track": 4.159373552305851
+          },
+          "ric_final_m": {
+            "radial": 29.336231534793342,
+            "in_track": -1253.9802270734062,
+            "cross_track": 3.73765454638081
+          },
+          "n_rhs": 132596,
+          "wall_s": 12.27650080001331,
+          "grav_s": 9.5371833,
+          "mean_deg_sq": 15525.172705058976
+        },
+        "sched_up": {
+          "pos_rms_m": 31.61761093023279,
+          "pos_max_m": 58.23731386318385,
+          "pos_final_m": 27.930361770723103,
+          "vel_rms_m_s": 0.026469524072040965,
+          "vel_max_m_s": 0.04893666648243992,
+          "vel_final_m_s": 0.02137674520412508,
+          "ric_rms_m": {
+            "radial": 1.7785179117533796,
+            "in_track": 31.55497373853429,
+            "cross_track": 0.8909698836433898
+          },
+          "ric_max_m": {
+            "radial": 4.212390060815293,
+            "in_track": 58.211364292079004,
+            "cross_track": 2.0167918824698514
+          },
+          "ric_final_m": {
+            "radial": 2.6989425529561615,
+            "in_track": 27.775051439481125,
+            "cross_track": 1.169331122262001
+          },
+          "n_rhs": 123998,
+          "wall_s": 13.427625699987402,
+          "grav_s": 10.5684766,
+          "mean_deg_sq": 17297.895933805383
+        }
+      },
+      "n_work_matched": 115,
+      "ratios": {
+        "sched_emp": {
+          "rho_crit": 0.027328106018780086,
+          "rho_work": 0.031094996563987266,
+          "grav_time_saving_vs_crit": 0.5079590263788814
+        },
+        "sched_down": {
+          "rho_crit": 0.02377475315005518,
+          "rho_work": 0.02705185156273088,
+          "grav_time_saving_vs_crit": 0.5029467390227217
+        },
+        "sched_up": {
+          "rho_crit": 0.41723620591123073,
+          "rho_work": 0.47474780653533033,
+          "grav_time_saving_vs_crit": 0.44919840666247246
+        }
+      },
+      "orbit_wall_s": 270.19362240002374
+    },
+    {
+      "name": "lhs_08",
+      "family": "lhs",
+      "hp_km": 69.10562140253307,
+      "ha_km": 181.1683071285384,
+      "incl_deg": 16.266535238398237,
+      "argp_deg": 98.31694766712641,
+      "raan_deg": 146.56055655633912,
+      "perilune_lon_deg_bodyfixed_t0": -114.78083055994065,
+      "perilune_lat_deg_bodyfixed_t0": 16.090789722776034,
+      "eccentricity": 0.030073657459257542,
+      "dwell_ratio_ra_over_rp": 1.0620122500858755,
+      "truth_degree": 300,
+      "n_critical_empirical": 148,
+      "truth_altitude_range_km": [
+        64.7341038758615,
+        185.12991004769037
+      ],
+      "policies": {
+        "sched_emp": {
+          "pos_rms_m": 173.94077277780477,
+          "pos_max_m": 267.41653370566746,
+          "pos_final_m": 256.6587419295576,
+          "vel_rms_m_s": 0.1516209458921825,
+          "vel_max_m_s": 0.24050680670847052,
+          "vel_final_m_s": 0.22386657618146738,
+          "ric_rms_m": {
+            "radial": 3.0666322788599896,
+            "in_track": 173.91148115622502,
+            "cross_track": 0.8859588332087233
+          },
+          "ric_max_m": {
+            "radial": 6.994861390122443,
+            "in_track": 267.4164643362165,
+            "cross_track": 2.131339116098383
+          },
+          "ric_final_m": {
+            "radial": -4.33322263005342,
+            "in_track": 256.62194762652257,
+            "cross_track": 0.3301315979075099
+          },
+          "n_rhs": 155984,
+          "wall_s": 14.111872700013919,
+          "grav_s": 10.3485805,
+          "mean_deg_sq": 12392.081239101446
+        },
+        "fixed_work": {
+          "pos_rms_m": 19.762553890961847,
+          "pos_max_m": 58.13107279471996,
+          "pos_final_m": 16.01580146573713,
+          "vel_rms_m_s": 0.01469535947041625,
+          "vel_max_m_s": 0.03861266428348446,
+          "vel_final_m_s": 0.01955364711171983,
+          "ric_rms_m": {
+            "radial": 5.5724259671384,
+            "in_track": 17.21333515979669,
+            "cross_track": 7.950326899596018
+          },
+          "ric_max_m": {
+            "radial": 14.239920701467314,
+            "in_track": 58.112533212125825,
+            "cross_track": 17.330546643617073
+          },
+          "ric_final_m": {
+            "radial": 8.25433639133543,
+            "in_track": 8.211742555459473,
+            "cross_track": 10.99723199407192
+          },
+          "n_rhs": 119741,
+          "wall_s": 9.098001000005752,
+          "grav_s": 6.9064549,
+          "mean_deg_sq": 12321.0
+        },
+        "fixed_crit": {
+          "pos_rms_m": 10.747623405666967,
+          "pos_max_m": 27.917768548129153,
+          "pos_final_m": 25.981979629949123,
+          "vel_rms_m_s": 0.009287637078401106,
+          "vel_max_m_s": 0.023052449519726573,
+          "vel_final_m_s": 0.02166944306940173,
+          "ric_rms_m": {
+            "radial": 1.2245460496310432,
+            "in_track": 10.641669591711407,
+            "cross_track": 0.8756506970352034
+          },
+          "ric_max_m": {
+            "radial": 2.8296783596993156,
+            "in_track": 27.91658189553718,
+            "cross_track": 2.1184847122545363
+          },
+          "ric_final_m": {
+            "radial": -2.545722110756981,
+            "in_track": 25.84687466623799,
+            "cross_track": -0.7222426279849787
+          },
+          "n_rhs": 126434,
+          "wall_s": 16.282283000007737,
+          "grav_s": 13.325145,
+          "mean_deg_sq": 21904.0
+        },
+        "sched_down": {
+          "pos_rms_m": 76.19663362987178,
+          "pos_max_m": 145.05619588931327,
+          "pos_final_m": 141.14722286337624,
+          "vel_rms_m_s": 0.0663409443987745,
+          "vel_max_m_s": 0.1266305508947731,
+          "vel_final_m_s": 0.12418152754664663,
+          "ric_rms_m": {
+            "radial": 0.796904759939028,
+            "in_track": 76.18510447384276,
+            "cross_track": 1.0591391023649672
+          },
+          "ric_max_m": {
+            "radial": 2.1841710442668827,
+            "in_track": 145.05585276993762,
+            "cross_track": 2.225347952836625
+          },
+          "ric_final_m": {
+            "radial": -0.5656004501713952,
+            "in_track": 141.1377316761187,
+            "cross_track": -1.5360063457833455
+          },
+          "n_rhs": 149375,
+          "wall_s": 14.356696699978784,
+          "grav_s": 10.8493706,
+          "mean_deg_sq": 14408.338075313808
+        },
+        "sched_up": {
+          "pos_rms_m": 52.33616454053404,
+          "pos_max_m": 122.0565536243539,
+          "pos_final_m": 122.0565536243539,
+          "vel_rms_m_s": 0.045613510391250486,
+          "vel_max_m_s": 0.108267944949185,
+          "vel_final_m_s": 0.10604770300564526,
+          "ric_rms_m": {
+            "radial": 1.1196074755287218,
+            "in_track": 52.32330273106419,
+            "cross_track": 0.30428478109231877
+          },
+          "ric_max_m": {
+            "radial": 3.5123011556015906,
+            "in_track": 122.01160462745668,
+            "cross_track": 0.7628909977563225
+          },
+          "ric_final_m": {
+            "radial": -3.308845452782916,
+            "in_track": 122.01160462745668,
+            "cross_track": -0.14886456113639568
+          },
+          "n_rhs": 141872,
+          "wall_s": 13.125487100012833,
+          "grav_s": 10.4106987,
+          "mean_deg_sq": 16458.984154731024
+        }
+      },
+      "n_work_matched": 111,
+      "ratios": {
+        "sched_emp": {
+          "rho_crit": 0.0617889827326235,
+          "rho_work": 0.11361656945267748,
+          "grav_time_saving_vs_crit": 0.22337952044799503
+        },
+        "sched_down": {
+          "rho_crit": 0.14105115795369624,
+          "rho_work": 0.2593625590726127,
+          "grav_time_saving_vs_crit": 0.18579718269482237
+        },
+        "sched_up": {
+          "rho_crit": 0.2053574903706021,
+          "rho_work": 0.37760798989493904,
+          "grav_time_saving_vs_crit": 0.21871779256435864
+        }
+      },
+      "orbit_wall_s": 117.89828350002063
+    },
+    {
+      "name": "lhs_09",
+      "family": "lhs",
+      "hp_km": 62.45547782990484,
+      "ha_km": 320.42171476740555,
+      "incl_deg": 61.139389907525135,
+      "argp_deg": 146.53442579184204,
+      "raan_deg": 139.52464400292078,
+      "perilune_lon_deg_bodyfixed_t0": -58.17127788828042,
+      "perilune_lat_deg_bodyfixed_t0": 28.877962883075263,
+      "eccentricity": 0.06685007686494174,
+      "dwell_ratio_ra_over_rp": 1.1432783204661237,
+      "truth_degree": 300,
+      "n_critical_empirical": 161,
+      "truth_altitude_range_km": [
+        62.45547782990453,
+        320.6744743735015
+      ],
+      "policies": {
+        "sched_emp": {
+          "pos_rms_m": 45.82539316754771,
+          "pos_max_m": 106.9676972234081,
+          "pos_final_m": 94.19123911287895,
+          "vel_rms_m_s": 0.03806549134978679,
+          "vel_max_m_s": 0.0940060464295828,
+          "vel_final_m_s": 0.07367436512731748,
+          "ric_rms_m": {
+            "radial": 2.2166277357084296,
+            "in_track": 45.77037693759839,
+            "cross_track": 0.35470471067945225
+          },
+          "ric_max_m": {
+            "radial": 6.5738448517986825,
+            "in_track": 106.96275936280816,
+            "cross_track": 1.1076598675013187
+          },
+          "ric_final_m": {
+            "radial": -2.2125970749134183,
+            "in_track": 94.16393962562756,
+            "cross_track": 0.4964010322189978
+          },
+          "n_rhs": 123392,
+          "wall_s": 8.826170100015588,
+          "grav_s": 6.4985913,
+          "mean_deg_sq": 11077.619294605809
+        },
+        "fixed_work": {
+          "pos_rms_m": 10.003387279657286,
+          "pos_max_m": 28.517509664755107,
+          "pos_final_m": 25.3868858467297,
+          "vel_rms_m_s": 0.008207024524344547,
+          "vel_max_m_s": 0.02291720076575665,
+          "vel_final_m_s": 0.01920722567592993,
+          "ric_rms_m": {
+            "radial": 0.6058827710760291,
+            "in_track": 9.962120316945798,
+            "cross_track": 0.6758860297551396
+          },
+          "ric_max_m": {
+            "radial": 1.522764085860068,
+            "in_track": 28.510235309990243,
+            "cross_track": 2.0773236566100213
+          },
+          "ric_final_m": {
+            "radial": -1.0194287711331995,
+            "in_track": -25.361426909679786,
+            "cross_track": -0.5027554877282139
+          },
+          "n_rhs": 90476,
+          "wall_s": 8.242601800011471,
+          "grav_s": 5.7810585,
+          "mean_deg_sq": 11025.0
+        },
+        "fixed_crit": {
+          "pos_rms_m": 13.492387046112098,
+          "pos_max_m": 33.71064216538121,
+          "pos_final_m": 30.367708989743083,
+          "vel_rms_m_s": 0.01120683268830011,
+          "vel_max_m_s": 0.029699114651358913,
+          "vel_final_m_s": 0.023737185107025577,
+          "ric_rms_m": {
+            "radial": 0.5758788438075682,
+            "in_track": 13.480079046765551,
+            "cross_track": 0.01845676842613398
+          },
+          "ric_max_m": {
+            "radial": 1.9750523606540114,
+            "in_track": 33.710557799800696,
+            "cross_track": 0.07052382865535778
+          },
+          "ric_final_m": {
+            "radial": 0.498386519109733,
+            "in_track": -30.363612450676335,
+            "cross_track": 0.019977698204357353
+          },
+          "n_rhs": 94946,
+          "wall_s": 12.97550770000089,
+          "grav_s": 10.9471711,
+          "mean_deg_sq": 25921.0
+        },
+        "sched_down": {
+          "pos_rms_m": 98.31670444955023,
+          "pos_max_m": 158.75004090119293,
+          "pos_final_m": 108.18601151605324,
+          "vel_rms_m_s": 0.08173753939657097,
+          "vel_max_m_s": 0.13996916868448658,
+          "vel_final_m_s": 0.084890571089099,
+          "ric_rms_m": {
+            "radial": 4.816593312248744,
+            "in_track": 98.19676394062132,
+            "cross_track": 0.6085673952017094
+          },
+          "ric_max_m": {
+            "radial": 10.232761993351005,
+            "in_track": 158.7487980438612,
+            "cross_track": 1.5249363856126337
+          },
+          "ric_final_m": {
+            "radial": 0.7693802362010587,
+            "in_track": -108.18190777737134,
+            "cross_track": -0.5440325836484519
+          },
+          "n_rhs": 118751,
+          "wall_s": 12.959399399987888,
+          "grav_s": 9.1904925,
+          "mean_deg_sq": 12447.348653906072
+        },
+        "sched_up": {
+          "pos_rms_m": 52.06974918344896,
+          "pos_max_m": 138.80491331963472,
+          "pos_final_m": 125.22318501871887,
+          "vel_rms_m_s": 0.043225570668518176,
+          "vel_max_m_s": 0.12225823542184233,
+          "vel_final_m_s": 0.09769495086338019,
+          "ric_rms_m": {
+            "radial": 2.2205853265350113,
+            "in_track": 52.01448841269212,
+            "cross_track": 0.9059668872420665
+          },
+          "ric_max_m": {
+            "radial": 7.769903157315859,
+            "in_track": 138.78956418976998,
+            "cross_track": 1.8818476016122538
+          },
+          "ric_final_m": {
+            "radial": 0.38667591717139516,
+            "in_track": -125.21653637509291,
+            "cross_track": -1.231083340971395
+          },
+          "n_rhs": 111059,
+          "wall_s": 10.806474499986507,
+          "grav_s": 8.1001954,
+          "mean_deg_sq": 14006.223718924175
+        }
+      },
+      "n_work_matched": 105,
+      "ratios": {
+        "sched_emp": {
+          "rho_crit": 0.2944303608434076,
+          "rho_work": 0.21829353963385983,
+          "grav_time_saving_vs_crit": 0.4063679793951517
+        },
+        "sched_down": {
+          "rho_crit": 0.137233922980357,
+          "rho_work": 0.10174656825270599,
+          "grav_time_saving_vs_crit": 0.16046872602548445
+        },
+        "sched_up": {
+          "rho_crit": 0.25912141421262747,
+          "rho_work": 0.19211514241049946,
+          "grav_time_saving_vs_crit": 0.2600649678344755
+        }
+      },
+      "orbit_wall_s": 93.2368690999865
+    },
+    {
+      "name": "lhs_10",
+      "family": "lhs",
+      "hp_km": 41.3517036091761,
+      "ha_km": 371.627341982405,
+      "incl_deg": 18.448618457035927,
+      "argp_deg": 335.07407215683367,
+      "raan_deg": 241.153333191933,
+      "perilune_lon_deg_bodyfixed_t0": -142.63699694446504,
+      "perilune_lat_deg_bodyfixed_t0": -7.6642820911387055,
+      "eccentricity": 0.08492605244238043,
+      "dwell_ratio_ra_over_rp": 1.1856157148152944,
+      "truth_degree": 600,
+      "n_critical_empirical": 231,
+      "truth_altitude_range_km": [
+        36.62816810956318,
+        374.4058162511117
+      ],
+      "policies": {
+        "sched_emp": {
+          "pos_rms_m": 457.67867084684354,
+          "pos_max_m": 946.1009551406516,
+          "pos_final_m": 817.8211805689017,
+          "vel_rms_m_s": 0.37811739984318715,
+          "vel_max_m_s": 0.8480765973972312,
+          "vel_final_m_s": 0.6276426716274041,
+          "ric_rms_m": {
+            "radial": 28.185353756982465,
+            "in_track": 456.8023076198032,
+            "cross_track": 2.646381482287556
+          },
+          "ric_max_m": {
+            "radial": 75.94494642569332,
+            "in_track": 946.0955052600714,
+            "cross_track": 5.850798667319964
+          },
+          "ric_final_m": {
+            "radial": 48.70764182139245,
+            "in_track": -816.3618273743854,
+            "cross_track": -3.523609124947882
+          },
+          "n_rhs": 162263,
+          "wall_s": 22.00363130000187,
+          "grav_s": 18.2276471,
+          "mean_deg_sq": 23863.237460172684
+        },
+        "fixed_work": {
+          "pos_rms_m": 62.98866603069143,
+          "pos_max_m": 119.70435172534775,
+          "pos_final_m": 101.8119150353212,
+          "vel_rms_m_s": 0.05203035406661221,
+          "vel_max_m_s": 0.10727582801617049,
+          "vel_final_m_s": 0.0786196691824095,
+          "ric_rms_m": {
+            "radial": 3.919241741960404,
+            "in_track": 62.846308822262976,
+            "cross_track": 1.5978297502566756
+          },
+          "ric_max_m": {
+            "radial": 9.976105987224395,
+            "in_track": 119.69422091168369,
+            "cross_track": 4.30679529224006
+          },
+          "ric_final_m": {
+            "radial": 6.1059064478526235,
+            "in_track": -101.60645641723175,
+            "cross_track": -2.1241384000859185
+          },
+          "n_rhs": 108965,
+          "wall_s": 14.313820799987298,
+          "grav_s": 11.9145805,
+          "mean_deg_sq": 23716.0
+        },
+        "fixed_crit": {
+          "pos_rms_m": 5.458367331743389,
+          "pos_max_m": 8.920290543538563,
+          "pos_final_m": 7.86092255953775,
+          "vel_rms_m_s": 0.0045087354760921005,
+          "vel_max_m_s": 0.008116131886340614,
+          "vel_final_m_s": 0.0059819875212391025,
+          "ric_rms_m": {
+            "radial": 0.3343102730646201,
+            "in_track": 5.4468434706619755,
+            "cross_track": 0.11792699298261125
+          },
+          "ric_max_m": {
+            "radial": 0.7811247987124906,
+            "in_track": 8.920149947115545,
+            "cross_track": 0.3033268254775683
+          },
+          "ric_final_m": {
+            "radial": 0.39471736679889435,
+            "in_track": -7.84991932531736,
+            "cross_track": -0.13064560232147815
+          },
+          "n_rhs": 116066,
+          "wall_s": 29.444923000002746,
+          "grav_s": 26.5769574,
+          "mean_deg_sq": 53361.0
+        },
+        "sched_down": {
+          "pos_rms_m": 41.23014391858431,
+          "pos_max_m": 78.12410708431509,
+          "pos_final_m": 24.228716175714187,
+          "vel_rms_m_s": 0.034012185679639304,
+          "vel_max_m_s": 0.07015141391793842,
+          "vel_final_m_s": 0.019290454865168918,
+          "ric_rms_m": {
+            "radial": 2.850540100637828,
+            "in_track": 41.09391551972034,
+            "cross_track": 1.7576393088224143
+          },
+          "ric_max_m": {
+            "radial": 6.294414385622885,
+            "in_track": 78.09734594856644,
+            "cross_track": 4.236641600405321
+          },
+          "ric_final_m": {
+            "radial": -1.372573289800705,
+            "in_track": 24.132644446934723,
+            "cross_track": -1.6619873902262237
+          },
+          "n_rhs": 154715,
+          "wall_s": 21.02260270001716,
+          "grav_s": 17.7631032,
+          "mean_deg_sq": 26375.546650292472
+        },
+        "sched_up": {
+          "pos_rms_m": 83.47799201733622,
+          "pos_max_m": 191.86399959038638,
+          "pos_final_m": 168.38284012903415,
+          "vel_rms_m_s": 0.06889633223687415,
+          "vel_max_m_s": 0.17245395055341603,
+          "vel_final_m_s": 0.1287340254798639,
+          "ric_rms_m": {
+            "radial": 4.7664229866273695,
+            "in_track": 83.33957145364585,
+            "cross_track": 0.6100762916669888
+          },
+          "ric_max_m": {
+            "radial": 15.012988959078054,
+            "in_track": 191.85674650577337,
+            "cross_track": 1.3822843024889018
+          },
+          "ric_final_m": {
+            "radial": 9.720076162525972,
+            "in_track": -168.09904760140108,
+            "cross_track": -1.0055669129733502
+          },
+          "n_rhs": 142049,
+          "wall_s": 21.085851700016065,
+          "grav_s": 17.9525678,
+          "mean_deg_sq": 28676.473611218666
+        }
+      },
+      "n_work_matched": 154,
+      "ratios": {
+        "sched_emp": {
+          "rho_crit": 0.011926199928967115,
+          "rho_work": 0.13762639607859242,
+          "grav_time_saving_vs_crit": 0.31415598762257124
+        },
+        "sched_down": {
+          "rho_crit": 0.13238778265052462,
+          "rho_work": 1.5277333534191122,
+          "grav_time_saving_vs_crit": 0.3316351855987849
+        },
+        "sched_up": {
+          "rho_crit": 0.06538690258157896,
+          "rho_work": 0.7545541586291428,
+          "grav_time_saving_vs_crit": 0.3245062807678655
+        }
+      },
+      "orbit_wall_s": 312.1812699000002
+    },
+    {
+      "name": "lhs_11",
+      "family": "lhs",
+      "hp_km": 99.1011354719697,
+      "ha_km": 452.92625757494505,
+      "incl_deg": 76.17656792475856,
+      "argp_deg": 276.5665186722245,
+      "raan_deg": 24.87620417524847,
+      "perilune_lon_deg_bodyfixed_t0": -39.39999352303305,
+      "perilune_lat_deg_bodyfixed_t0": -74.72368442162349,
+      "eccentricity": 0.08784079341509449,
+      "dwell_ratio_ra_over_rp": 1.1925996970286965,
+      "truth_degree": 300,
+      "n_critical_empirical": 107,
+      "truth_altitude_range_km": [
+        99.10113547196961,
+        453.65446587056385
+      ],
+      "policies": {
+        "sched_emp": {
+          "pos_rms_m": 119.39562441947274,
+          "pos_max_m": 375.2951620436254,
+          "pos_final_m": 323.06584537948527,
+          "vel_rms_m_s": 0.09336594150885785,
+          "vel_max_m_s": 0.3167370973419921,
+          "vel_final_m_s": 0.23319677793210575,
+          "ric_rms_m": {
+            "radial": 7.04784758775648,
+            "in_track": 119.1868526913132,
+            "cross_track": 0.3702977649884322
+          },
+          "ric_max_m": {
+            "radial": 31.085774779655658,
+            "in_track": 375.28853970759894,
+            "cross_track": 1.0750891620790965
+          },
+          "ric_final_m": {
+            "radial": -11.587730800655109,
+            "in_track": 322.8572869235644,
+            "cross_track": -0.661230677025717
+          },
+          "n_rhs": 81584,
+          "wall_s": 4.448992799996631,
+          "grav_s": 2.6715178,
+          "mean_deg_sq": 5546.301970974701
+        },
+        "fixed_work": {
+          "pos_rms_m": 13.197382391760598,
+          "pos_max_m": 38.22929207838689,
+          "pos_final_m": 5.229757652795768,
+          "vel_rms_m_s": 0.008640480731704847,
+          "vel_max_m_s": 0.020083623619958486,
+          "vel_final_m_s": 0.0037048874845098763,
+          "ric_rms_m": {
+            "radial": 3.08600046330316,
+            "in_track": 12.628442299317303,
+            "cross_track": 2.2737520154271036
+          },
+          "ric_max_m": {
+            "radial": 7.947875924927381,
+            "in_track": 38.22564796686851,
+            "cross_track": 6.025054026890379
+          },
+          "ric_final_m": {
+            "radial": -1.3170604718338603,
+            "in_track": -4.740452734229215,
+            "cross_track": -1.7730833863773683
+          },
+          "n_rhs": 66413,
+          "wall_s": 4.130759399995441,
+          "grav_s": 2.4290401,
+          "mean_deg_sq": 5476.0
+        },
+        "fixed_crit": {
+          "pos_rms_m": 6.716674567430268,
+          "pos_max_m": 19.30285358670816,
+          "pos_final_m": 19.30001781134907,
+          "vel_rms_m_s": 0.005206946168504839,
+          "vel_max_m_s": 0.01555330365867639,
+          "vel_final_m_s": 0.013003126735965547,
+          "ric_rms_m": {
+            "radial": 0.19426092606646025,
+            "in_track": 6.69948708112412,
+            "cross_track": 0.4391500736871121
+          },
+          "ric_max_m": {
+            "radial": 0.5783976425950692,
+            "in_track": 19.299601340035945,
+            "cross_track": 0.9912860381434223
+          },
+          "ric_final_m": {
+            "radial": 0.20682023252977721,
+            "in_track": -19.295236734907522,
+            "cross_track": -0.3765000048909368
+          },
+          "n_rhs": 68426,
+          "wall_s": 5.266259999974864,
+          "grav_s": 3.8564281,
+          "mean_deg_sq": 11449.0
+        },
+        "sched_down": {
+          "pos_rms_m": 53.60346890828056,
+          "pos_max_m": 99.94114279197031,
+          "pos_final_m": 81.86701885737176,
+          "vel_rms_m_s": 0.04195694670314447,
+          "vel_max_m_s": 0.08334424457012542,
+          "vel_final_m_s": 0.06011790829492205,
+          "ric_rms_m": {
+            "radial": 3.398331719606125,
+            "in_track": 53.49453791447313,
+            "cross_track": 0.3429779023729781
+          },
+          "ric_max_m": {
+            "radial": 9.468391077380353,
+            "in_track": 99.94038369293251,
+            "cross_track": 0.9188120064856697
+          },
+          "ric_final_m": {
+            "radial": -3.503622878757536,
+            "in_track": 81.79147695994732,
+            "cross_track": -0.2961419036854833
+          },
+          "n_rhs": 81101,
+          "wall_s": 4.319260799995391,
+          "grav_s": 2.7094508,
+          "mean_deg_sq": 6070.992959396308
+        },
+        "sched_up": {
+          "pos_rms_m": 121.77103695697274,
+          "pos_max_m": 281.60868414261415,
+          "pos_final_m": 248.70415092665286,
+          "vel_rms_m_s": 0.09521600842543432,
+          "vel_max_m_s": 0.23948106001500025,
+          "vel_final_m_s": 0.17780654998672835,
+          "ric_rms_m": {
+            "radial": 6.9783161156394,
+            "in_track": 121.57059465337461,
+            "cross_track": 0.28117857584139166
+          },
+          "ric_max_m": {
+            "radial": 21.00957408171668,
+            "in_track": 281.60534293416157,
+            "cross_track": 0.8525994810769362
+          },
+          "ric_final_m": {
+            "radial": 7.266421188858175,
+            "in_track": -248.59796284513476,
+            "cross_track": 0.08173434056355688
+          },
+          "n_rhs": 76871,
+          "wall_s": 4.579245900007663,
+          "grav_s": 2.8365583,
+          "mean_deg_sq": 6421.996591692576
+        }
+      },
+      "n_work_matched": 74,
+      "ratios": {
+        "sched_emp": {
+          "rho_crit": 0.05625561740715531,
+          "rho_work": 0.11053489150820323,
+          "grav_time_saving_vs_crit": 0.30725590346154774
+        },
+        "sched_down": {
+          "rho_crit": 0.12530298326257555,
+          "rho_work": 0.24620388681080102,
+          "grav_time_saving_vs_crit": 0.2974195992400325
+        },
+        "sched_up": {
+          "rho_crit": 0.055158227566080235,
+          "rho_work": 0.10837866475936996,
+          "grav_time_saving_vs_crit": 0.2644596952293756
+        }
+      },
+      "orbit_wall_s": 51.65787080000155
+    },
+    {
+      "name": "lhs_12",
+      "family": "lhs",
+      "hp_km": 90.31280658815315,
+      "ha_km": 201.9861833034079,
+      "incl_deg": 33.835467387092564,
+      "argp_deg": 61.868783995891,
+      "raan_deg": 326.3189277181726,
+      "perilune_lon_deg_bodyfixed_t0": 23.551119543573773,
+      "perilune_lat_deg_bodyfixed_t0": 29.40856727088858,
+      "eccentricity": 0.029634956518794792,
+      "dwell_ratio_ra_over_rp": 1.0610800166759486,
+      "truth_degree": 300,
+      "n_critical_empirical": 117,
+      "truth_altitude_range_km": [
+        90.3070193815173,
+        200.73646618784684
+      ],
+      "policies": {
+        "sched_emp": {
+          "pos_rms_m": 154.4633085454894,
+          "pos_max_m": 223.72328355380264,
+          "pos_final_m": 220.25669178635292,
+          "vel_rms_m_s": 0.13243229939918666,
+          "vel_max_m_s": 0.19881935072186294,
+          "vel_final_m_s": 0.18610870464801643,
+          "ric_rms_m": {
+            "radial": 2.261221301457174,
+            "in_track": 154.42539317357077,
+            "cross_track": 2.5687561645625077
+          },
+          "ric_max_m": {
+            "radial": 5.109385746263758,
+            "in_track": 223.7183972081521,
+            "cross_track": 6.1596284709641225
+          },
+          "ric_final_m": {
+            "radial": 3.3242658873113413,
+            "in_track": 220.21262408755052,
+            "cross_track": 2.8913189817267053
+          },
+          "n_rhs": 115694,
+          "wall_s": 8.403560300008394,
+          "grav_s": 5.2209871,
+          "mean_deg_sq": 6857.582934292184
+        },
+        "fixed_work": {
+          "pos_rms_m": 19.783427690283087,
+          "pos_max_m": 47.76659287233523,
+          "pos_final_m": 47.76659287233523,
+          "vel_rms_m_s": 0.016841454663684363,
+          "vel_max_m_s": 0.0392963531871301,
+          "vel_final_m_s": 0.039273960025752556,
+          "ric_rms_m": {
+            "radial": 0.9399349053202533,
+            "in_track": 19.49158537617644,
+            "cross_track": 3.2524810643022724
+          },
+          "ric_max_m": {
+            "radial": 2.4977954634657014,
+            "in_track": 47.6263826629091,
+            "cross_track": 7.1221704462887025
+          },
+          "ric_final_m": {
+            "radial": -0.5202824804693558,
+            "in_track": 47.6263826629091,
+            "cross_track": 3.619996577083336
+          },
+          "n_rhs": 98936,
+          "wall_s": 7.260489800013602,
+          "grav_s": 4.581132,
+          "mean_deg_sq": 6889.0
+        },
+        "fixed_crit": {
+          "pos_rms_m": 8.683111919244059,
+          "pos_max_m": 27.27428083546355,
+          "pos_final_m": 27.27428083546355,
+          "vel_rms_m_s": 0.007434098443509105,
+          "vel_max_m_s": 0.023391358868237646,
+          "vel_final_m_s": 0.022761720053217072,
+          "ric_rms_m": {
+            "radial": 0.14796630407975708,
+            "in_track": 8.681763845528833,
+            "cross_track": 0.038924355403589794
+          },
+          "ric_max_m": {
+            "radial": 0.3879029298283685,
+            "in_track": 27.274153553966357,
+            "cross_track": 0.1257632189092206
+          },
+          "ric_final_m": {
+            "radial": 0.07436611971147444,
+            "in_track": 27.274153553966357,
+            "cross_track": -0.037585723857210596
+          },
+          "n_rhs": 101108,
+          "wall_s": 9.355609999998705,
+          "grav_s": 7.1178712,
+          "mean_deg_sq": 13689.0
+        },
+        "sched_down": {
+          "pos_rms_m": 67.54462506898443,
+          "pos_max_m": 142.64231929176137,
+          "pos_final_m": 133.99045917832993,
+          "vel_rms_m_s": 0.05793444614215208,
+          "vel_max_m_s": 0.12379041183494366,
+          "vel_final_m_s": 0.11374039984494841,
+          "ric_rms_m": {
+            "radial": 1.8192560185571525,
+            "in_track": 67.49587249796777,
+            "cross_track": 1.809386356393214
+          },
+          "ric_max_m": {
+            "radial": 5.87734610255297,
+            "in_track": 142.6156478564076,
+            "cross_track": 4.782880820244834
+          },
+          "ric_final_m": {
+            "radial": -4.957591867980685,
+            "in_track": -133.88801869614173,
+            "cross_track": 1.6923011882769217
+          },
+          "n_rhs": 114383,
+          "wall_s": 6.9429967000032775,
+          "grav_s": 4.5824215,
+          "mean_deg_sq": 7658.122273414756
+        },
+        "sched_up": {
+          "pos_rms_m": 21.416504003422336,
+          "pos_max_m": 67.15189475327077,
+          "pos_final_m": 67.15189475327077,
+          "vel_rms_m_s": 0.018340524661653614,
+          "vel_max_m_s": 0.05640310480168088,
+          "vel_final_m_s": 0.05529912546180204,
+          "ric_rms_m": {
+            "radial": 0.514570006390808,
+            "in_track": 21.339796129265096,
+            "cross_track": 1.7363647654021979
+          },
+          "ric_max_m": {
+            "radial": 1.5329491564733546,
+            "in_track": 67.13086891926686,
+            "cross_track": 3.8072519946238152
+          },
+          "ric_final_m": {
+            "radial": 0.3386522196141808,
+            "in_track": 67.13086891926686,
+            "cross_track": 1.6458194836359112
+          },
+          "n_rhs": 109712,
+          "wall_s": 10.034504599985667,
+          "grav_s": 6.3919685,
+          "mean_deg_sq": 8523.00477614117
+        }
+      },
+      "n_work_matched": 83,
+      "ratios": {
+        "sched_emp": {
+          "rho_crit": 0.05621472180680944,
+          "rho_work": 0.12807849240427782,
+          "grav_time_saving_vs_crit": 0.26649598548509834
+        },
+        "sched_down": {
+          "rho_crit": 0.12855370668466742,
+          "rho_work": 0.2928941817365623,
+          "grav_time_saving_vs_crit": 0.3562089884402516
+        },
+        "sched_up": {
+          "rho_crit": 0.4054402118037802,
+          "rho_work": 0.9237468303473674,
+          "grav_time_saving_vs_crit": 0.10198311821096173
+        }
+      },
+      "orbit_wall_s": 102.15971169999102
+    },
+    {
+      "name": "lhs_13",
+      "family": "lhs",
+      "hp_km": 85.56824969171308,
+      "ha_km": 483.6825324774666,
+      "incl_deg": 27.75490591999653,
+      "argp_deg": 250.86442946574056,
+      "raan_deg": 64.1207213357654,
+      "perilune_lon_deg_bodyfixed_t0": -47.28877584777379,
+      "perilune_lat_deg_bodyfixed_t0": -26.101255679656578,
+      "eccentricity": 0.0984152291720893,
+      "dwell_ratio_ra_over_rp": 1.2183160859776196,
+      "truth_degree": 300,
+      "n_critical_empirical": 123,
+      "truth_altitude_range_km": [
+        70.20799010649114,
+        498.4529347506147
+      ],
+      "policies": {
+        "sched_emp": {
+          "pos_rms_m": 105.32522489897411,
+          "pos_max_m": 183.70863726762803,
+          "pos_final_m": 176.80703840247511,
+          "vel_rms_m_s": 0.08255554000150349,
+          "vel_max_m_s": 0.15860649891051437,
+          "vel_final_m_s": 0.14825004182201326,
+          "ric_rms_m": {
+            "radial": 8.299886144868244,
+            "in_track": 104.99653341558307,
+            "cross_track": 0.49280900159398966
+          },
+          "ric_max_m": {
+            "radial": 18.3315146188203,
+            "in_track": 183.70831872921391,
+            "cross_track": 1.6454080666243058
+          },
+          "ric_final_m": {
+            "radial": -12.890594790322375,
+            "in_track": -176.3357279874264,
+            "cross_track": 0.5219480341694194
+          },
+          "n_rhs": 97400,
+          "wall_s": 5.840244499995606,
+          "grav_s": 4.0674236,
+          "mean_deg_sq": 8549.319301848049
+        },
+        "fixed_work": {
+          "pos_rms_m": 11.115707744677406,
+          "pos_max_m": 27.927024559690235,
+          "pos_final_m": 19.360080907466553,
+          "vel_rms_m_s": 0.007586162103228848,
+          "vel_max_m_s": 0.023627049194448677,
+          "vel_final_m_s": 0.01954702633083841,
+          "ric_rms_m": {
+            "radial": 2.9003939171702293,
+            "in_track": 8.778964126790433,
+            "cross_track": 6.170612826198859
+          },
+          "ric_max_m": {
+            "radial": 10.409997947749355,
+            "in_track": 27.630183266265124,
+            "cross_track": 25.433941755154393
+          },
+          "ric_final_m": {
+            "radial": 4.852189710889235,
+            "in_track": 11.025563714939036,
+            "cross_track": -15.156052669511654
+          },
+          "n_rhs": 71948,
+          "wall_s": 4.283110599993961,
+          "grav_s": 2.9879693,
+          "mean_deg_sq": 8464.0
+        },
+        "fixed_crit": {
+          "pos_rms_m": 14.049568838763093,
+          "pos_max_m": 31.939974439090765,
+          "pos_final_m": 30.097602015236113,
+          "vel_rms_m_s": 0.011032485675138225,
+          "vel_max_m_s": 0.025556313353205542,
+          "vel_final_m_s": 0.023537402275265913,
+          "ric_rms_m": {
+            "radial": 1.597824377740598,
+            "in_track": 13.949719016118038,
+            "cross_track": 0.49262682062144536
+          },
+          "ric_max_m": {
+            "radial": 5.551669749970109,
+            "in_track": 31.938153048749694,
+            "cross_track": 2.4027595240798183
+          },
+          "ric_final_m": {
+            "radial": 3.73082573049466,
+            "in_track": 29.823031515166164,
+            "cross_track": -1.5916587830403275
+          },
+          "n_rhs": 74765,
+          "wall_s": 6.386829700000817,
+          "grav_s": 5.0300489,
+          "mean_deg_sq": 15129.0
+        },
+        "sched_down": {
+          "pos_rms_m": 50.95951420765625,
+          "pos_max_m": 123.54379906246423,
+          "pos_final_m": 118.94448163262123,
+          "vel_rms_m_s": 0.03993946944680709,
+          "vel_max_m_s": 0.10673237775764888,
+          "vel_final_m_s": 0.10041364552751003,
+          "ric_rms_m": {
+            "radial": 3.9659581416150758,
+            "in_track": 50.80399946668364,
+            "cross_track": 0.31129164538156767
+          },
+          "ric_max_m": {
+            "radial": 11.987803373813684,
+            "in_track": 123.5422729919517,
+            "cross_track": 1.2505917601911776
+          },
+          "ric_final_m": {
+            "radial": -9.040512046240586,
+            "in_track": -118.59835393111175,
+            "cross_track": 0.6994981240102476
+          },
+          "n_rhs": 96002,
+          "wall_s": 5.973964100005105,
+          "grav_s": 4.2194803,
+          "mean_deg_sq": 9127.18693360555
+        },
+        "sched_up": {
+          "pos_rms_m": 29.95520647737667,
+          "pos_max_m": 53.35809117040595,
+          "pos_final_m": 39.00491395758215,
+          "vel_rms_m_s": 0.02347283458968836,
+          "vel_max_m_s": 0.046015963392449066,
+          "vel_final_m_s": 0.032572287312365215,
+          "ric_rms_m": {
+            "radial": 2.362123352027538,
+            "in_track": 29.860586092663958,
+            "cross_track": 0.28313702456462564
+          },
+          "ric_max_m": {
+            "radial": 5.522266051304589,
+            "in_track": 53.35797405745358,
+            "cross_track": 0.7926953318064509
+          },
+          "ric_final_m": {
+            "radial": 3.3249576662151017,
+            "in_track": 38.86222268012216,
+            "cross_track": -0.23583408757529067
+          },
+          "n_rhs": 87227,
+          "wall_s": 5.644229999976233,
+          "grav_s": 4.0841126,
+          "mean_deg_sq": 10293.99727148704
+        }
+      },
+      "n_work_matched": 92,
+      "ratios": {
+        "sched_emp": {
+          "rho_crit": 0.13339225102285956,
+          "rho_work": 0.10553699510577239,
+          "grav_time_saving_vs_crit": 0.1913749387207747
+        },
+        "sched_down": {
+          "rho_crit": 0.27570060384626394,
+          "rho_work": 0.21812821251359893,
+          "grav_time_saving_vs_crit": 0.16114527236504594
+        },
+        "sched_up": {
+          "rho_crit": 0.46901926212305933,
+          "rho_work": 0.3710776539988939,
+          "grav_time_saving_vs_crit": 0.1880570783317832
+        }
+      },
+      "orbit_wall_s": 57.79700890000095
+    },
+    {
+      "name": "lhs_14",
+      "family": "lhs",
+      "hp_km": 73.93105608141352,
+      "ha_km": 341.2531841221065,
+      "incl_deg": 0.7807340431803003,
+      "argp_deg": 292.48236055641917,
+      "raan_deg": 287.9575856457936,
+      "perilune_lon_deg_bodyfixed_t0": -139.55817418347917,
+      "perilune_lat_deg_bodyfixed_t0": -0.7213928864007135,
+      "eccentricity": 0.06869942709952774,
+      "dwell_ratio_ra_over_rp": 1.1475343816992791,
+      "truth_degree": 300,
+      "n_critical_empirical": 139,
+      "truth_altitude_range_km": [
+        70.85231791601517,
+        342.4784492891508
+      ],
+      "policies": {
+        "sched_emp": {
+          "pos_rms_m": 75.57652287060093,
+          "pos_max_m": 179.969848702461,
+          "pos_final_m": 153.5759589620962,
+          "vel_rms_m_s": 0.06214361738498086,
+          "vel_max_m_s": 0.15548028227730493,
+          "vel_final_m_s": 0.11882586652418979,
+          "ric_rms_m": {
+            "radial": 4.268276673214857,
+            "in_track": 75.38833527257312,
+            "cross_track": 3.192417310043181
+          },
+          "ric_max_m": {
+            "radial": 13.833740164295719,
+            "in_track": 179.887717025848,
+            "cross_track": 7.386397395565315
+          },
+          "ric_final_m": {
+            "radial": 7.011998751658725,
+            "in_track": -153.34991268498547,
+            "cross_track": 4.4957006285489305
+          },
+          "n_rhs": 119438,
+          "wall_s": 7.692280299990671,
+          "grav_s": 5.5445699,
+          "mean_deg_sq": 9864.81354342839
+        },
+        "fixed_work": {
+          "pos_rms_m": 63.435200166339826,
+          "pos_max_m": 170.55871617876073,
+          "pos_final_m": 154.62114112386195,
+          "vel_rms_m_s": 0.03667232485529143,
+          "vel_max_m_s": 0.07532161985798316,
+          "vel_final_m_s": 0.0726589667333349,
+          "ric_rms_m": {
+            "radial": 24.720032217683254,
+            "in_track": 56.23208135801079,
+            "cross_track": 15.839749159830697
+          },
+          "ric_max_m": {
+            "radial": 67.81611336285,
+            "in_track": 170.54490379319782,
+            "cross_track": 29.884576529790618
+          },
+          "ric_final_m": {
+            "radial": -35.24652885926683,
+            "in_track": -150.36981229692768,
+            "cross_track": -7.368787933225194
+          },
+          "n_rhs": 86630,
+          "wall_s": 5.515168200014159,
+          "grav_s": 3.9919732,
+          "mean_deg_sq": 9801.0
+        },
+        "fixed_crit": {
+          "pos_rms_m": 6.331191749326518,
+          "pos_max_m": 24.65815443199179,
+          "pos_final_m": 13.413144198631535,
+          "vel_rms_m_s": 0.005148071622798021,
+          "vel_max_m_s": 0.01945292321732998,
+          "vel_final_m_s": 0.012015630188097681,
+          "ric_rms_m": {
+            "radial": 1.0771553235499143,
+            "in_track": 6.120569766011579,
+            "cross_track": 1.2092771043368105
+          },
+          "ric_max_m": {
+            "radial": 3.9023843723231084,
+            "in_track": 24.65637052722178,
+            "cross_track": 2.3938268086742656
+          },
+          "ric_final_m": {
+            "radial": -2.1117048985526976,
+            "in_track": 13.227373714104754,
+            "cross_track": -0.6998030738157671
+          },
+          "n_rhs": 89771,
+          "wall_s": 9.02741710000555,
+          "grav_s": 7.4069874,
+          "mean_deg_sq": 19321.0
+        },
+        "sched_down": {
+          "pos_rms_m": 70.72619792899853,
+          "pos_max_m": 209.98610239405937,
+          "pos_final_m": 182.68845921624177,
+          "vel_rms_m_s": 0.058186654290267495,
+          "vel_max_m_s": 0.1824328269033183,
+          "vel_final_m_s": 0.14087115875124434,
+          "ric_rms_m": {
+            "radial": 4.059681391580352,
+            "in_track": 70.53327134458725,
+            "cross_track": 3.282025886789914
+          },
+          "ric_max_m": {
+            "radial": 15.65985970486669,
+            "in_track": 209.90161626790567,
+            "cross_track": 9.721567908753741
+          },
+          "ric_final_m": {
+            "radial": 7.270022705574744,
+            "in_track": -182.30284314127903,
+            "cross_track": 9.375141773386023
+          },
+          "n_rhs": 120263,
+          "wall_s": 9.887122899992391,
+          "grav_s": 6.9561667,
+          "mean_deg_sq": 10781.163782709562
+        },
+        "sched_up": {
+          "pos_rms_m": 38.91610646183128,
+          "pos_max_m": 57.881432646723866,
+          "pos_final_m": 50.12561786560466,
+          "vel_rms_m_s": 0.032015650595166444,
+          "vel_max_m_s": 0.050951756833432206,
+          "vel_final_m_s": 0.03836045871676673,
+          "ric_rms_m": {
+            "radial": 2.0785781209731224,
+            "in_track": 38.84010186204586,
+            "cross_track": 1.2606912744603065
+          },
+          "ric_max_m": {
+            "radial": 3.8294896925824835,
+            "in_track": 57.82734634569427,
+            "cross_track": 3.2651678929780843
+          },
+          "ric_final_m": {
+            "radial": -0.6268070298507544,
+            "in_track": 50.07148828958496,
+            "cross_track": 2.2429310782793572
+          },
+          "n_rhs": 109211,
+          "wall_s": 11.192292899999302,
+          "grav_s": 7.9287447,
+          "mean_deg_sq": 12214.135938687496
+        }
+      },
+      "n_work_matched": 99,
+      "ratios": {
+        "sched_emp": {
+          "rho_crit": 0.08377193748601704,
+          "rho_work": 0.839350604617667,
+          "grav_time_saving_vs_crit": 0.25144061943456264
+        },
+        "sched_down": {
+          "rho_crit": 0.0895169249120722,
+          "rho_work": 0.8969123468226289,
+          "grav_time_saving_vs_crit": 0.060864245563587716
+        },
+        "sched_up": {
+          "rho_crit": 0.16268821125608027,
+          "rho_work": 1.6300500212824924,
+          "grav_time_saving_vs_crit": -0.0704412295881589
+        }
+      },
+      "orbit_wall_s": 77.3327549000096
+    },
+    {
+      "name": "lhs_15",
+      "family": "lhs",
+      "hp_km": 56.839184001429686,
+      "ha_km": 273.8910904028024,
+      "incl_deg": 52.39162455649713,
+      "argp_deg": 114.55285326551376,
+      "raan_deg": 318.29704654934466,
+      "perilune_lon_deg_bodyfixed_t0": 85.1155369426892,
+      "perilune_lat_deg_bodyfixed_t0": 46.10142596384016,
+      "eccentricity": 0.05701793685273438,
+      "dwell_ratio_ra_over_rp": 1.120931116467758,
+      "truth_degree": 300,
+      "n_critical_empirical": 175,
+      "truth_altitude_range_km": [
+        49.814357995664935,
+        281.6709660435547
+      ],
+      "policies": {
+        "sched_emp": {
+          "pos_rms_m": 46.73358216702566,
+          "pos_max_m": 130.5310626700683,
+          "pos_final_m": 126.26283470399778,
+          "vel_rms_m_s": 0.0396113419342288,
+          "vel_max_m_s": 0.11666700116645544,
+          "vel_final_m_s": 0.11105558998611391,
+          "ric_rms_m": {
+            "radial": 2.0910274374381324,
+            "in_track": 46.68542912403185,
+            "cross_track": 0.3549843982757486
+          },
+          "ric_max_m": {
+            "radial": 7.973314377382092,
+            "in_track": 130.52875550369262,
+            "cross_track": 0.936900478334195
+          },
+          "ric_final_m": {
+            "radial": 6.112688477005998,
+            "in_track": 126.11225204701509,
+            "cross_track": -0.7989685239586137
+          },
+          "n_rhs": 129797,
+          "wall_s": 10.71719930000836,
+          "grav_s": 8.4143233,
+          "mean_deg_sq": 15244.759894296478
+        },
+        "fixed_work": {
+          "pos_rms_m": 17.390796218336344,
+          "pos_max_m": 43.390571353438276,
+          "pos_final_m": 39.67541216857156,
+          "vel_rms_m_s": 0.014746226793129837,
+          "vel_max_m_s": 0.03696699372805213,
+          "vel_final_m_s": 0.034085237848775665,
+          "ric_rms_m": {
+            "radial": 1.3979361112164401,
+            "in_track": 17.327225643460412,
+            "cross_track": 0.5028113336697552
+          },
+          "ric_max_m": {
+            "radial": 4.533245647747147,
+            "in_track": 43.39053987938396,
+            "cross_track": 1.981015038091374
+          },
+          "ric_final_m": {
+            "radial": 3.843995957491843,
+            "in_track": 39.48843083830425,
+            "cross_track": 0.1607972427754909
+          },
+          "n_rhs": 101729,
+          "wall_s": 8.779676799982553,
+          "grav_s": 6.8762198,
+          "mean_deg_sq": 15129.0
+        },
+        "fixed_crit": {
+          "pos_rms_m": 5.226485898072327,
+          "pos_max_m": 13.196487182238101,
+          "pos_final_m": 12.737008843811063,
+          "vel_rms_m_s": 0.004429782603050277,
+          "vel_max_m_s": 0.011705462391399368,
+          "vel_final_m_s": 0.011087734702324404,
+          "ric_rms_m": {
+            "radial": 0.23592192320049257,
+            "in_track": 5.220233210058375,
+            "cross_track": 0.09828998680397338
+          },
+          "ric_max_m": {
+            "radial": 0.8439324685251659,
+            "in_track": 13.19613056422919,
+            "cross_track": 0.2758284356319116
+          },
+          "ric_final_m": {
+            "radial": 0.7121612431397726,
+            "in_track": 12.715520962172263,
+            "cross_track": 0.19936727827926415
+          },
+          "n_rhs": 105545,
+          "wall_s": 15.692305000004126,
+          "grav_s": 13.5262009,
+          "mean_deg_sq": 30625.0
+        },
+        "sched_down": {
+          "pos_rms_m": 134.82631694695039,
+          "pos_max_m": 229.15843678304407,
+          "pos_final_m": 224.4188881982342,
+          "vel_rms_m_s": 0.1142794181595289,
+          "vel_max_m_s": 0.2047770204509073,
+          "vel_final_m_s": 0.1955675393543519,
+          "ric_rms_m": {
+            "radial": 5.78802661671586,
+            "in_track": 134.70193865578733,
+            "cross_track": 0.14903602322661852
+          },
+          "ric_max_m": {
+            "radial": 13.167651064748021,
+            "in_track": 229.15816399220557,
+            "cross_track": 0.47767073731068876
+          },
+          "ric_final_m": {
+            "radial": -10.349829896531274,
+            "in_track": -224.18009377231908,
+            "cross_track": -0.0629084939531026
+          },
+          "n_rhs": 128609,
+          "wall_s": 12.676039099984337,
+          "grav_s": 10.0458371,
+          "mean_deg_sq": 17555.568428337054
+        },
+        "sched_up": {
+          "pos_rms_m": 148.90731599113172,
+          "pos_max_m": 306.60205716821537,
+          "pos_final_m": 300.26075467134206,
+          "vel_rms_m_s": 0.12622247521524493,
+          "vel_max_m_s": 0.27417679583873045,
+          "vel_final_m_s": 0.26197323700869685,
+          "ric_rms_m": {
+            "radial": 6.324064677207873,
+            "in_track": 148.77288635699915,
+            "cross_track": 0.15246851695747027
+          },
+          "ric_max_m": {
+            "radial": 17.599179089520916,
+            "in_track": 306.6015972050498,
+            "cross_track": 0.465813147339297
+          },
+          "ric_final_m": {
+            "radial": -13.66201530604381,
+            "in_track": -299.9497494440027,
+            "cross_track": 0.133947979763974
+          },
+          "n_rhs": 119831,
+          "wall_s": 13.09827079999377,
+          "grav_s": 10.5433615,
+          "mean_deg_sq": 19668.422194590716
+        }
+      },
+      "n_work_matched": 123,
+      "ratios": {
+        "sched_emp": {
+          "rho_crit": 0.11183576468400998,
+          "rho_work": 0.3721263256940523,
+          "grav_time_saving_vs_crit": 0.37792412206445936
+        },
+        "sched_down": {
+          "rho_crit": 0.038764582586119097,
+          "rho_work": 0.12898665937139733,
+          "grav_time_saving_vs_crit": 0.25730534580482234
+        },
+        "sched_up": {
+          "rho_crit": 0.03509891950764591,
+          "rho_work": 0.11678940086041216,
+          "grav_time_saving_vs_crit": 0.22052307385143155
+        }
+      },
+      "orbit_wall_s": 100.84425320001901
+    },
+    {
+      "name": "lhs_16",
+      "family": "lhs",
+      "hp_km": 116.251029819861,
+      "ha_km": 434.9413670726583,
+      "incl_deg": 70.79863756410872,
+      "argp_deg": 228.2974993971743,
+      "raan_deg": 229.94456793510676,
+      "perilune_lon_deg_bodyfixed_t0": 70.20390360360449,
+      "perilune_lat_deg_bodyfixed_t0": -44.83553877058287,
+      "eccentricity": 0.07913461931908354,
+      "dwell_ratio_ra_over_rp": 1.1718701147404824,
+      "truth_degree": 300,
+      "n_critical_empirical": 93,
+      "truth_altitude_range_km": [
+        106.33587182258373,
+        444.9927203850113
+      ],
+      "policies": {
+        "sched_emp": {
+          "pos_rms_m": 101.78542286157543,
+          "pos_max_m": 280.7701548606339,
+          "pos_final_m": 245.37046893683055,
+          "vel_rms_m_s": 0.07968540141686115,
+          "vel_max_m_s": 0.23725582068717294,
+          "vel_final_m_s": 0.17775422405275265,
+          "ric_rms_m": {
+            "radial": 6.546531677523523,
+            "in_track": 101.53011643503932,
+            "cross_track": 3.00843593786916
+          },
+          "ric_max_m": {
+            "radial": 21.51772392273243,
+            "in_track": 280.74406593619346,
+            "cross_track": 7.067854097284879
+          },
+          "ric_final_m": {
+            "radial": 10.450234953610327,
+            "in_track": -245.14086612360097,
+            "cross_track": 1.848072472935069
+          },
+          "n_rhs": 78059,
+          "wall_s": 4.254065499990247,
+          "grav_s": 2.5190677,
+          "mean_deg_sq": 5327.147414135462
+        },
+        "fixed_work": {
+          "pos_rms_m": 10.862965620654762,
+          "pos_max_m": 21.777252292392347,
+          "pos_final_m": 14.575073364566864,
+          "vel_rms_m_s": 0.008233161558992865,
+          "vel_max_m_s": 0.014952932440799278,
+          "vel_final_m_s": 0.010121557943854808,
+          "ric_rms_m": {
+            "radial": 0.9831112239580092,
+            "in_track": 10.742606109420985,
+            "cross_track": 1.2782520779118822
+          },
+          "ric_max_m": {
+            "radial": 2.2541482521267513,
+            "in_track": 21.763308057883574,
+            "cross_track": 4.306143719341371
+          },
+          "ric_final_m": {
+            "radial": -0.9938796724362362,
+            "in_track": 14.48187470082904,
+            "cross_track": 1.3115913726127597
+          },
+          "n_rhs": 63473,
+          "wall_s": 3.7893919000052847,
+          "grav_s": 2.2072113,
+          "mean_deg_sq": 5329.0
+        },
+        "fixed_crit": {
+          "pos_rms_m": 17.34941772109833,
+          "pos_max_m": 35.21785027897713,
+          "pos_final_m": 29.84106678378616,
+          "vel_rms_m_s": 0.0135885820473875,
+          "vel_max_m_s": 0.029589879557226983,
+          "vel_final_m_s": 0.021806911307186084,
+          "ric_rms_m": {
+            "radial": 1.1096286482174431,
+            "in_track": 17.313581572372513,
+            "cross_track": 0.10446368277463335
+          },
+          "ric_max_m": {
+            "radial": 2.916833355645645,
+            "in_track": 35.217317314410145,
+            "cross_track": 0.42182854149883475
+          },
+          "ric_final_m": {
+            "radial": 1.1365042310695985,
+            "in_track": -29.819411762961256,
+            "cross_track": -0.01752250309620873
+          },
+          "n_rhs": 64952,
+          "wall_s": 4.074911500007147,
+          "grav_s": 2.8108933,
+          "mean_deg_sq": 8649.0
+        },
+        "sched_down": {
+          "pos_rms_m": 187.1074139819622,
+          "pos_max_m": 439.00428641727507,
+          "pos_final_m": 375.0135078490969,
+          "vel_rms_m_s": 0.14655933079131508,
+          "vel_max_m_s": 0.36955871050402894,
+          "vel_final_m_s": 0.27323876650315126,
+          "ric_rms_m": {
+            "radial": 12.141723345356004,
+            "in_track": 186.7073558250615,
+            "cross_track": 1.4581502104027169
+          },
+          "ric_max_m": {
+            "radial": 34.893529584355775,
+            "in_track": 438.99826576569666,
+            "cross_track": 4.235957519815912
+          },
+          "ric_final_m": {
+            "radial": 15.567011208479386,
+            "in_track": -374.6882751155681,
+            "cross_track": 1.2229972363611594
+          },
+          "n_rhs": 79310,
+          "wall_s": 3.868995500000892,
+          "grav_s": 2.4195382,
+          "mean_deg_sq": 5835.478502080444
+        },
+        "sched_up": {
+          "pos_rms_m": 24.04437110345209,
+          "pos_max_m": 37.99866862963661,
+          "pos_final_m": 28.13535509374539,
+          "vel_rms_m_s": 0.018713423622481185,
+          "vel_max_m_s": 0.031355884666702534,
+          "vel_final_m_s": 0.01913335848092698,
+          "ric_rms_m": {
+            "radial": 1.067712667139874,
+            "in_track": 24.020071531515836,
+            "cross_track": 0.16713779289367067
+          },
+          "ric_max_m": {
+            "radial": 2.5005333869805177,
+            "in_track": 37.96879813834758,
+            "cross_track": 0.5280374336163369
+          },
+          "ric_final_m": {
+            "radial": -0.669368665103593,
+            "in_track": 28.127180555025628,
+            "cross_track": 0.10893055728622425
+          },
+          "n_rhs": 74768,
+          "wall_s": 3.7263479999965057,
+          "grav_s": 2.3493594,
+          "mean_deg_sq": 6154.99946501177
+        }
+      },
+      "n_work_matched": 73,
+      "ratios": {
+        "sched_emp": {
+          "rho_crit": 0.17045090773649313,
+          "rho_work": 0.1067241783278536,
+          "grav_time_saving_vs_crit": 0.10381952242726544
+        },
+        "sched_down": {
+          "rho_crit": 0.09272437340602054,
+          "rho_work": 0.05805737671999459,
+          "grav_time_saving_vs_crit": 0.13922801694393738
+        },
+        "sched_up": {
+          "rho_crit": 0.7215583907955674,
+          "rho_work": 0.4517883031299225,
+          "grav_time_saving_vs_crit": 0.16419474193488603
+        }
+      },
+      "orbit_wall_s": 47.76443609999842
+    },
+    {
+      "name": "lhs_17",
+      "family": "lhs",
+      "hp_km": 104.97025439399467,
+      "ha_km": 265.3488655049768,
+      "incl_deg": 10.971639588817867,
+      "argp_deg": 47.47350144737986,
+      "raan_deg": 170.95604330239394,
+      "perilune_lon_deg_bodyfixed_t0": -142.09736086528952,
+      "perilune_lat_deg_bodyfixed_t0": 8.062973455217358,
+      "eccentricity": 0.04169664713498729,
+      "dwell_ratio_ra_over_rp": 1.0870218120605089,
+      "truth_degree": 300,
+      "n_critical_empirical": 102,
+      "truth_altitude_range_km": [
+        96.98440362925268,
+        271.5759521499826
+      ],
+      "policies": {
+        "sched_emp": {
+          "pos_rms_m": 384.0828195594199,
+          "pos_max_m": 849.2895897206631,
+          "pos_final_m": 849.2895897206631,
+          "vel_rms_m_s": 0.3196812500000994,
+          "vel_max_m_s": 0.7317431012540544,
+          "vel_final_m_s": 0.7317431012540544,
+          "ric_rms_m": {
+            "radial": 9.55428583172468,
+            "in_track": 383.9626445129186,
+            "cross_track": 1.0077309192861208
+          },
+          "ric_max_m": {
+            "radial": 30.616164363736665,
+            "in_track": 849.1561451165536,
+            "cross_track": 2.193170403264358
+          },
+          "ric_final_m": {
+            "radial": -15.05241227920133,
+            "in_track": 849.1561451165536,
+            "cross_track": -0.2707457547521699
+          },
+          "n_rhs": 104804,
+          "wall_s": 5.2293174999940675,
+          "grav_s": 3.3916879,
+          "mean_deg_sq": 6478.5437578718365
+        },
+        "fixed_work": {
+          "pos_rms_m": 31.78901389731481,
+          "pos_max_m": 76.11925294366107,
+          "pos_final_m": 76.11925294366107,
+          "vel_rms_m_s": 0.02588512732464431,
+          "vel_max_m_s": 0.0632095512361231,
+          "vel_final_m_s": 0.062070776582972435,
+          "ric_rms_m": {
+            "radial": 4.622524411379137,
+            "in_track": 29.138339262084294,
+            "cross_track": 11.837688020790008
+          },
+          "ric_max_m": {
+            "radial": 11.992797821542503,
+            "in_track": 74.67706311866982,
+            "cross_track": 26.917170712184383
+          },
+          "ric_final_m": {
+            "radial": -3.988471216847704,
+            "in_track": 74.59574979292434,
+            "cross_track": 14.618716731808501
+          },
+          "n_rhs": 83387,
+          "wall_s": 4.1355292000225745,
+          "grav_s": 2.6934854,
+          "mean_deg_sq": 6400.0
+        },
+        "fixed_crit": {
+          "pos_rms_m": 23.616868596339543,
+          "pos_max_m": 60.25177492806908,
+          "pos_final_m": 52.553472959952934,
+          "vel_rms_m_s": 0.019415830568700488,
+          "vel_max_m_s": 0.047191450763741656,
+          "vel_final_m_s": 0.0471876053454649,
+          "ric_rms_m": {
+            "radial": 1.1811682763921465,
+            "in_track": 23.553877126749967,
+            "cross_track": 1.2554664860435523
+          },
+          "ric_max_m": {
+            "radial": 2.809129478440552,
+            "in_track": 60.24898317928446,
+            "cross_track": 2.821474426836581
+          },
+          "ric_final_m": {
+            "radial": 1.3836601064653173,
+            "in_track": 52.490958075510726,
+            "cross_track": 2.1569249354707463
+          },
+          "n_rhs": 85796,
+          "wall_s": 5.682263700000476,
+          "grav_s": 4.1463701,
+          "mean_deg_sq": 10404.0
+        },
+        "sched_down": {
+          "pos_rms_m": 170.76963590975265,
+          "pos_max_m": 363.97237073818644,
+          "pos_final_m": 363.97237073818644,
+          "vel_rms_m_s": 0.1422790617188508,
+          "vel_max_m_s": 0.3117901786046955,
+          "vel_final_m_s": 0.3117901786046955,
+          "ric_rms_m": {
+            "radial": 5.862323369742289,
+            "in_track": 170.66794156942072,
+            "cross_track": 0.5961827864316819
+          },
+          "ric_max_m": {
+            "radial": 15.27620880727986,
+            "in_track": 363.89800381649803,
+            "cross_track": 1.4020558077997904
+          },
+          "ric_final_m": {
+            "radial": -7.346487036825041,
+            "in_track": 363.89800381649803,
+            "cross_track": 0.3982553974516705
+          },
+          "n_rhs": 103766,
+          "wall_s": 5.491697799996473,
+          "grav_s": 3.660775,
+          "mean_deg_sq": 7184.541179191643
+        },
+        "sched_up": {
+          "pos_rms_m": 31.987506200824235,
+          "pos_max_m": 61.81808941531318,
+          "pos_final_m": 61.24256988996559,
+          "vel_rms_m_s": 0.026630162673813816,
+          "vel_max_m_s": 0.0535474567478386,
+          "vel_final_m_s": 0.0521773743711622,
+          "ric_rms_m": {
+            "radial": 0.9735953888789578,
+            "in_track": 31.95842233708271,
+            "cross_track": 0.9549380561981381
+          },
+          "ric_max_m": {
+            "radial": 3.048954771394105,
+            "in_track": 61.80706813984306,
+            "cross_track": 2.643310593189848
+          },
+          "ric_final_m": {
+            "radial": 1.8789407703417713,
+            "in_track": -61.169512842538076,
+            "cross_track": 2.326509599257303
+          },
+          "n_rhs": 98648,
+          "wall_s": 5.492992699990282,
+          "grav_s": 3.7224951,
+          "mean_deg_sq": 7738.703268185873
+        }
+      },
+      "n_work_matched": 80,
+      "ratios": {
+        "sched_emp": {
+          "rho_crit": 0.06148900027194753,
+          "rho_work": 0.0827660397145071,
+          "grav_time_saving_vs_crit": 0.18201033236275754
+        },
+        "sched_down": {
+          "rho_crit": 0.13829665016572648,
+          "rho_work": 0.1861514415485109,
+          "grav_time_saving_vs_crit": 0.11711330351335503
+        },
+        "sched_up": {
+          "rho_crit": 0.7383154050230711,
+          "rho_work": 0.9937946927696317,
+          "grav_time_saving_vs_crit": 0.1022279704361172
+        }
+      },
+      "orbit_wall_s": 58.04573500002152
+    }
+  ],
+  "summary": {
+    "sched_emp": {
+      "vs_fixed_crit": {
+        "n_orbits": 24,
+        "frac_schedule_better": 0.0,
+        "median_rho": 0.06236103936873991,
+        "p10_rho": 0.013272737510472216,
+        "p90_rho": 0.3372652246117888
+      },
+      "vs_fixed_work": {
+        "n_orbits": 24,
+        "frac_schedule_better": 0.08333333333333333,
+        "median_rho": 0.13697484083172706,
+        "p10_rho": 0.03132376944668614,
+        "p90_rho": 0.7526012858080704
+      }
+    },
+    "sched_down": {
+      "vs_fixed_crit": {
+        "n_orbits": 24,
+        "frac_schedule_better": 0.041666666666666664,
+        "median_rho": 0.10901367833429804,
+        "p10_rho": 0.022261964089477223,
+        "p90_rho": 0.2952926911173407
+      },
+      "vs_fixed_work": {
+        "n_orbits": 24,
+        "frac_schedule_better": 0.16666666666666666,
+        "median_rho": 0.2178946727676917,
+        "p10_rho": 0.032777410708830425,
+        "p90_rho": 1.4293195667617793
+      }
+    },
+    "sched_up": {
+      "vs_fixed_crit": {
+        "n_orbits": 24,
+        "frac_schedule_better": 0.08333333333333333,
+        "median_rho": 0.1751179462783372,
+        "p10_rho": 0.033453553350936,
+        "p90_rho": 0.73328830075482
+      },
+      "vs_fixed_work": {
+        "n_orbits": 24,
+        "frac_schedule_better": 0.08333333333333333,
+        "median_rho": 0.4636755936270658,
+        "p10_rho": 0.11090188558968261,
+        "p90_rho": 0.9727803340429524
+      }
+    }
+  },
+  "complete": true,
+  "repo_commit_sha": "c63de18580bbcc108f8825c4c271cbbfeae10123",
+  "repo_working_tree_clean": true
+}

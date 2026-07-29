@@ -1,0 +1,28 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+
+# Run logs and queue lock directories from the campaign drivers.
+*.log
+.*.lock/
+
+# Raw trajectory arrays (~2.1 GB). Regenerable from the drivers; per-file
+# digests are recorded in the campaign manifests under metrics/.
+metrics/*_raw/
+
+# Large external products fetched by the user, not redistributed here.
+data/gravity_models/
+data/spice_kernels/
+*.bsp
+*.bpc
+*.tab.txt
+
+# LaTeX build artifacts, in case the manuscript is ever built alongside.
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.out
+*.synctex.gz

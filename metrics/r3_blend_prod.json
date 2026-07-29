@@ -1,0 +1,102 @@
+{
+  "config": {
+    "N_lo": 30,
+    "N_hi": 120,
+    "alt_near_m": 50000.0,
+    "alt_far_m": 200000.0,
+    "probe": "118 km altitude, lat 25 deg, lon 40 deg"
+  },
+  "curl_fd_convergence": [
+    {
+      "h_fd_m": 0.125,
+      "fixed": 2.2088695522352508e-14,
+      "switch": 2.2088695522352508e-14,
+      "blend_accel": 1.412636591366988e-10,
+      "blend_pot": 8.633408340079614e-13
+    },
+    {
+      "h_fd_m": 0.25,
+      "fixed": 5.0292000132872715e-15,
+      "switch": 5.0292000132872715e-15,
+      "blend_accel": 1.4125264153854684e-10,
+      "blend_pot": 1.0687452252865465e-13
+    },
+    {
+      "h_fd_m": 0.5,
+      "fixed": 1.837746106097754e-15,
+      "switch": 1.837746106097754e-15,
+      "blend_accel": 1.4125058688042808e-10,
+      "blend_pot": 1.223798694002082e-13
+    },
+    {
+      "h_fd_m": 1.0,
+      "fixed": 2.9940020596445738e-15,
+      "switch": 2.9940020596445738e-15,
+      "blend_accel": 1.4124944564986453e-10,
+      "blend_pot": 5.1083139715810105e-14
+    },
+    {
+      "h_fd_m": 2.0,
+      "fixed": 7.114312260401321e-16,
+      "switch": 7.114312260401321e-16,
+      "blend_accel": 1.412504208703995e-10,
+      "blend_pot": 3.1840024841982864e-14
+    },
+    {
+      "h_fd_m": 4.0,
+      "fixed": 1.336092985331683e-15,
+      "switch": 1.336092985331683e-15,
+      "blend_accel": 1.4125043675271016e-10,
+      "blend_pot": 1.517066927110528e-14
+    },
+    {
+      "h_fd_m": 8.0,
+      "fixed": 1.834546968005097e-16,
+      "switch": 1.834546968005097e-16,
+      "blend_accel": 1.412503284179713e-10,
+      "blend_pot": 7.912027943019392e-15
+    }
+  ],
+  "curl_analytic_blend_accel_1_s2": 1.412503929309053e-10,
+  "curl_analytic_note": "fixed, switch (piecewise), and the corrected potential blend are gradients of scalar potentials, so their curl is identically zero; FD values measure stencil error only",
+  "production_timing_us": {
+    "prod_accel_N120_fixed": {
+      "median_us": 95.62033333333333,
+      "q1_us": 93.26923333333333,
+      "q3_us": 107.60010000000001,
+      "reps": 3000,
+      "blocks": 7
+    },
+    "prod_accel_N30_switch_far_side": {
+      "median_us": 13.438600000000001,
+      "q1_us": 12.553666666666667,
+      "q3_us": 14.942266666666667,
+      "reps": 3000,
+      "blocks": 7
+    },
+    "prod_accel_blend_two_calls": {
+      "median_us": 103.35356666666667,
+      "q1_us": 96.25773333333333,
+      "q3_us": 107.41510000000001,
+      "reps": 3000,
+      "blocks": 7
+    },
+    "potential_path_fixed_N120_control": {
+      "median_us": 13498.093666666666,
+      "q1_us": 11257.022,
+      "q3_us": 16697.015666666666,
+      "reps": 300,
+      "blocks": 7
+    },
+    "potential_blend_two_calls": {
+      "median_us": 15421.701333333334,
+      "q1_us": 12643.601,
+      "q3_us": 17720.128666666667,
+      "reps": 300,
+      "blocks": 7
+    }
+  },
+  "timing_note": "prod_* rows use the production single-point numba kernel with preallocated workspace; potential_* rows use the batch potential+acceleration path (one call returns both), whose per-call overhead is measured by the fixed control row",
+  "repo_commit_sha": "c5888befc63eaefbe4db1fea025bc6f8b5b87300",
+  "repo_working_tree_clean": true
+}

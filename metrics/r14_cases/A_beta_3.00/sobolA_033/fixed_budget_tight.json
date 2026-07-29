@@ -1,0 +1,102 @@
+{
+  "schema": "r14_budget_trajectory_v1",
+  "created_utc": "2026-07-26T02:21:14.534918Z",
+  "config": {
+    "sobol_index": 33,
+    "design": "A",
+    "beta_requested": 3.0,
+    "adopted_truth_degree": 300,
+    "n_critical": 98,
+    "initial_state_si": [
+      -311590.346460011,
+      -1778261.7369138,
+      -393025.2377035126,
+      -1621.2927918567877,
+      311.19221918100357,
+      -122.64360871262502
+    ],
+    "budget_definition": "beta = W / N_crit^2, per-call quadratic gravity work",
+    "atallah_tol_accel_m_s2": 2.3069443029072475e-05,
+    "atallah_tol_source": "log-space bisection to <N_A^2> = beta*N_crit^2 on the archived truth epochs; frozen in r14_budget_pareto.json",
+    "atallah_reference": "Atallah et al. 2022, J.Astronaut.Sci. 69(3):745-766, Eq.28/20",
+    "atallah_degree_table": {
+      "100.0": 267,
+      "110.0": 243,
+      "120.0": 221,
+      "130.0": 202,
+      "140.0": 186,
+      "150.0": 172,
+      "160.0": 160,
+      "170.0": 150,
+      "180.0": 140,
+      "190.0": 132,
+      "200.0": 125,
+      "210.0": 118,
+      "220.0": 112,
+      "230.0": 106,
+      "240.0": 101
+    },
+    "sampled_beta_achieved_atallah": 3.0008851201902003,
+    "sampled_beta_achieved_fixed": 3.0091628488129945,
+    "duration_s": 604800.0,
+    "output_step_s": 120.0,
+    "integrator": "InstrumentedDOP853",
+    "max_step_s": 60.0,
+    "atol_kind": "vector",
+    "timing_comparable": false,
+    "source": {
+      "lunaris_repo": "D:\\Masaustu\\LUNAR_SIMULATION",
+      "lunaris_commit": "27e9ab86ed61d623f78c453ea2054348f1044c23",
+      "lunaris_working_tree_clean": true,
+      "release_tag": "paper-truncation-v1.0",
+      "kernel_path": "D:\\Masaustu\\LUNAR_SIMULATION\\src\\lunaris\\physics\\spherical_harmonics.py",
+      "kernel_sha256": "6e2a0a85e18c9b400c003e6c2ad1e163c524c27f54bc0d404e0172709d16d740",
+      "gravity_path": "D:\\Masaustu\\LUNAR_SIMULATION\\data\\gravity_models\\jggrx_1800f_sha.tab.txt",
+      "gravity_sha256": "d2a552067a78bf1d2755807ae14ee1d6843a8f6a4228e01ce59a665516738fec",
+      "experiment_script": "C:\\Users\\ayber\\Desktop\\Makale\\codebase\\python_codes\\rev10_sobol_confirmatory.py",
+      "experiment_script_sha256": "e483912446449f0086be062844fe3e8070ed8868a4ecd9c15d17ccdf38fb6b25",
+      "python": "3.12.1 (tags/v3.12.1:2305ca5, Dec  7 2023, 22:03:25) [MSC v.1937 64 bit (AMD64)]",
+      "numpy": "2.2.6",
+      "scipy": "1.14.1",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "processor": "Intel64 Family 6 Model 158 Stepping 10, GenuineIntel",
+      "logical_cpu_count": 12
+    },
+    "policy": "fixed_budget",
+    "level": "tight",
+    "rtol": 1e-12,
+    "atol_position_m": 1e-05,
+    "atol_velocity_m_s": 1e-08,
+    "policy_spec": {
+      "kind": "fixed_budget_degree",
+      "degree": 170,
+      "source": "argmin_N |N^2 - beta*N_crit^2|"
+    }
+  },
+  "config_sha256": "c7022804c8287ce14f918ecd9a36296d8b2ec2bce45b8d5148922cadb153c9cf",
+  "status": "complete",
+  "event": null,
+  "telemetry": {
+    "n_rhs": 168620,
+    "n_accepted_steps": 10734,
+    "n_attempted_steps": 11368,
+    "n_rejected_trials": 634,
+    "switch_count_at_rhs_samples": 0,
+    "degree_counts": {
+      "170": 168620
+    },
+    "degree_range": [
+      170,
+      170
+    ],
+    "mean_degree": 170.0,
+    "mean_degree_sq": 28900.0,
+    "gravity_kernel_ns": 38245577800,
+    "process_cpu_ns": 44390625000,
+    "total_wall_ns": 45785754900
+  },
+  "raw_path": "metrics\\r14_raw\\A_beta_3.00\\sobolA_033\\fixed_budget_tight.npz",
+  "raw_sha256": "f6d5f08c9a4f3ac743a57caf4a4223eb30dd1333bc4a174585e4584a1d2e6243",
+  "n_output_epochs": 5041,
+  "last_output_epoch_s": 604800.0
+}

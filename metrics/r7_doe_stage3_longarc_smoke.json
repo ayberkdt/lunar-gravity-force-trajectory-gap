@@ -1,0 +1,400 @@
+{
+  "scenario": {
+    "plan": "ROBUSTNESS_EXPERIMENT_PLAN.md Test 9 / Stage 3 long-arc",
+    "duration_s": 21600.0,
+    "output_step_s": 120.0,
+    "checkpoint_days": [
+      7,
+      14,
+      21,
+      28
+    ],
+    "integrator": "DOP853",
+    "rtol": 1e-12,
+    "atol": 1e-05,
+    "rotation": "uniform sidereal about polar axis; epoch degenerate with body-fixed perilune longitude",
+    "truth_rule": "N=600 if perilune < 50 km else N=300 (LRO N=600->900 adequacy shown in Test 3)",
+    "representative_orbits": {
+      "c2_50x300_polar": "polar, scheduling loses badly",
+      "c6_lro_30x216": "LRO-like, scheduling beats work-matched fixed",
+      "c3_50x300_i60": "intermediate inclination",
+      "c4_50x300_i5": "near-equatorial / non-polar"
+    },
+    "smoke": true
+  },
+  "rows": [
+    {
+      "name": "c2_50x300_polar",
+      "family": "canonical",
+      "hp_km": 50.0,
+      "ha_km": 300.0,
+      "incl_deg": 90.0,
+      "argp_deg": 0.0,
+      "raan_deg": 0.0,
+      "perilune_lon_deg_bodyfixed_t0": 0.0,
+      "perilune_lat_deg_bodyfixed_t0": 0.0,
+      "eccentricity": 0.06534239414532149,
+      "dwell_ratio_ra_over_rp": 1.139821029082774,
+      "truth_degree": 300,
+      "n_critical_empirical": 196,
+      "truth_altitude_range_km": [
+        49.86988940427196,
+        299.2718457386852
+      ],
+      "policies": {
+        "sched_emp": {
+          "pos_rms_m": 1.8436244828899464,
+          "pos_max_m": 4.1070073836465,
+          "pos_final_m": 4.1070073836465,
+          "vel_rms_m_s": 0.0015084972388241533,
+          "vel_max_m_s": 0.0037301679701034996,
+          "vel_final_m_s": 0.0037301679701034996,
+          "ric_rms_m": {
+            "radial": 0.19960779483642113,
+            "in_track": 1.8321787392056619,
+            "cross_track": 0.047212601649511514
+          },
+          "ric_max_m": {
+            "radial": 0.3869375725328239,
+            "in_track": 4.0953300341827505,
+            "cross_track": 0.11948908029488066
+          },
+          "ric_final_m": {
+            "radial": -0.29781737020119303,
+            "in_track": 4.0953300341827505,
+            "cross_track": 0.08418060616325283
+          },
+          "n_rhs": 4544,
+          "wall_s": 0.5315784999984317,
+          "grav_s": 0.3997181,
+          "mean_deg_sq": 15910.299295774648,
+          "checkpoints": {}
+        },
+        "fixed_work": {
+          "pos_rms_m": 1.0652419020474366,
+          "pos_max_m": 2.3051633117810018,
+          "pos_final_m": 2.3051633117810018,
+          "vel_rms_m_s": 0.000828824307568338,
+          "vel_max_m_s": 0.0018887243527320665,
+          "vel_final_m_s": 0.0018887243527320665,
+          "ric_rms_m": {
+            "radial": 0.2901227731294444,
+            "in_track": 1.0026055521425858,
+            "cross_track": 0.21295819590281573
+          },
+          "ric_max_m": {
+            "radial": 0.6760175645571069,
+            "in_track": 2.2809187817302536,
+            "cross_track": 0.3182907107125563
+          },
+          "ric_final_m": {
+            "radial": -0.27301310215037145,
+            "in_track": 2.2809187817302536,
+            "cross_track": -0.19144516495738487
+          },
+          "n_rhs": 3542,
+          "wall_s": 0.4179207000124734,
+          "grav_s": 0.311401,
+          "mean_deg_sq": 15876.0,
+          "checkpoints": {}
+        },
+        "fixed_crit": {
+          "pos_rms_m": 0.035862784448649224,
+          "pos_max_m": 0.06466408723870264,
+          "pos_final_m": 0.023309402776824657,
+          "vel_rms_m_s": 2.7060465445472767e-05,
+          "vel_max_m_s": 4.592776695709564e-05,
+          "vel_final_m_s": 1.5874949638263233e-05,
+          "ric_rms_m": {
+            "radial": 0.007200815683821093,
+            "in_track": 0.03399120938035455,
+            "cross_track": 0.008881736697223681
+          },
+          "ric_max_m": {
+            "radial": 0.01587028077296961,
+            "in_track": 0.06441246698731697,
+            "cross_track": 0.02048098639663674
+          },
+          "ric_final_m": {
+            "radial": -0.01109754072618371,
+            "in_track": -0.012364502049846026,
+            "cross_track": 0.016349065315860972
+          },
+          "n_rhs": 3662,
+          "wall_s": 0.9972627000242937,
+          "grav_s": 0.8439668,
+          "mean_deg_sq": 38416.0,
+          "checkpoints": {}
+        },
+        "sched_down": {
+          "pos_rms_m": 0.7375896653143112,
+          "pos_max_m": 1.478425197106139,
+          "pos_final_m": 1.4071876075081757,
+          "vel_rms_m_s": 0.0005897477974821656,
+          "vel_max_m_s": 0.001326715828259622,
+          "vel_final_m_s": 0.001326715828259622,
+          "ric_rms_m": {
+            "radial": 0.07764774187273864,
+            "in_track": 0.7330492148764054,
+            "cross_track": 0.02545959798637264
+          },
+          "ric_max_m": {
+            "radial": 0.15768776773984006,
+            "in_track": 1.4769476033193891,
+            "cross_track": 0.05212095648204632
+          },
+          "ric_final_m": {
+            "radial": -0.03203313114504114,
+            "in_track": 1.406232487504023,
+            "cross_track": 0.040755764277889885
+          },
+          "n_rhs": 4847,
+          "wall_s": 0.6244479000160936,
+          "grav_s": 0.4735393,
+          "mean_deg_sq": 16984.56777388075,
+          "checkpoints": {}
+        },
+        "sched_up": {
+          "pos_rms_m": 1.1772127920459265,
+          "pos_max_m": 2.890691620616584,
+          "pos_final_m": 2.890691620616584,
+          "vel_rms_m_s": 0.0009739386202089753,
+          "vel_max_m_s": 0.0024537161420561996,
+          "vel_final_m_s": 0.0024537161420561996,
+          "ric_rms_m": {
+            "radial": 0.1498864513166487,
+            "in_track": 1.1654916297308742,
+            "cross_track": 0.07066307731438277
+          },
+          "ric_max_m": {
+            "radial": 0.37817348932123523,
+            "in_track": 2.875562190081063,
+            "cross_track": 0.15048162962164163
+          },
+          "ric_final_m": {
+            "radial": -0.267568994687287,
+            "in_track": 2.875562190081063,
+            "cross_track": -0.1250878473760054
+          },
+          "n_rhs": 4556,
+          "wall_s": 0.628210199996829,
+          "grav_s": 0.4860227,
+          "mean_deg_sq": 19893.459174714662,
+          "checkpoints": {}
+        }
+      },
+      "n_work_matched": 126,
+      "ratios": {
+        "sched_emp": {
+          "rho_crit": 0.019452325992347988,
+          "rho_work": 0.5777976545297513,
+          "grav_time_saving_vs_crit": 0.5263817249683281
+        },
+        "sched_down": {
+          "rho_crit": 0.048621592919644435,
+          "rho_work": 1.444220210967167,
+          "grav_time_saving_vs_crit": 0.43891240745489046
+        },
+        "sched_up": {
+          "rho_crit": 0.030464147765776325,
+          "rho_work": 0.904884749167658,
+          "grav_time_saving_vs_crit": 0.4241210673216056
+        }
+      },
+      "sched_emp_in_track_growth": {
+        "checkpoint_days": [],
+        "abs_in_track_m": [],
+        "d28_over_d7": null
+      },
+      "orbit_wall_s": 5.067530200001784
+    },
+    {
+      "name": "c6_lro_30x216",
+      "family": "canonical",
+      "hp_km": 30.0,
+      "ha_km": 216.0,
+      "incl_deg": 90.0,
+      "argp_deg": 270.0,
+      "raan_deg": 0.0,
+      "perilune_lon_deg_bodyfixed_t0": -161.565051177078,
+      "perilune_lat_deg_bodyfixed_t0": -90.0,
+      "eccentricity": 0.04997313272434175,
+      "dwell_ratio_ra_over_rp": 1.1052036199095023,
+      "truth_degree": 600,
+      "n_critical_empirical": 250,
+      "truth_altitude_range_km": [
+        30.0,
+        217.21428797005652
+      ],
+      "policies": {
+        "sched_emp": {
+          "pos_rms_m": 0.9653096270880561,
+          "pos_max_m": 1.6472179350171925,
+          "pos_final_m": 1.5744679119340579,
+          "vel_rms_m_s": 0.0006464939777372715,
+          "vel_max_m_s": 0.001022484164335412,
+          "vel_final_m_s": 0.0009962524218420778,
+          "ric_rms_m": {
+            "radial": 0.3261654156281236,
+            "in_track": 0.8814156674184191,
+            "cross_track": 0.22032979604755776
+          },
+          "ric_max_m": {
+            "radial": 0.6559480553817527,
+            "in_track": 1.6451964866335889,
+            "cross_track": 0.48823759390956967
+          },
+          "ric_final_m": {
+            "radial": 0.06446794156238111,
+            "in_track": 1.542197046678856,
+            "cross_track": -0.31051788907519645
+          },
+          "n_rhs": 7256,
+          "wall_s": 1.533685800008243,
+          "grav_s": 1.287944,
+          "mean_deg_sq": 32411.342337375965,
+          "checkpoints": {}
+        },
+        "fixed_work": {
+          "pos_rms_m": 5.30102271454629,
+          "pos_max_m": 8.26566361067462,
+          "pos_final_m": 1.7353803405074342,
+          "vel_rms_m_s": 0.004363531164200193,
+          "vel_max_m_s": 0.00738514687757438,
+          "vel_final_m_s": 0.007134908329422493,
+          "ric_rms_m": {
+            "radial": 0.7858179489293087,
+            "in_track": 2.912018395624559,
+            "cross_track": 4.359298204392585
+          },
+          "ric_max_m": {
+            "radial": 1.2284229716408992,
+            "in_track": 5.175257651023431,
+            "cross_track": 8.03935636284783
+          },
+          "ric_final_m": {
+            "radial": 0.48641945213845467,
+            "in_track": -0.6688894174310234,
+            "cross_track": -1.5256238035799683
+          },
+          "n_rhs": 5429,
+          "wall_s": 1.142080999998143,
+          "grav_s": 0.9553156,
+          "mean_deg_sq": 32400.0,
+          "checkpoints": {}
+        },
+        "fixed_crit": {
+          "pos_rms_m": 0.7592401509195239,
+          "pos_max_m": 1.2730581208310012,
+          "pos_final_m": 0.8607322816665497,
+          "vel_rms_m_s": 0.00048346323537754867,
+          "vel_max_m_s": 0.0006849294607200565,
+          "vel_final_m_s": 0.00046341517105819203,
+          "ric_rms_m": {
+            "radial": 0.2786810154047932,
+            "in_track": 0.6899646375435228,
+            "cross_track": 0.15076901989696054
+          },
+          "ric_max_m": {
+            "radial": 0.48608367046101053,
+            "in_track": 1.2712866305337818,
+            "cross_track": 0.3213221083398168
+          },
+          "ric_final_m": {
+            "radial": -0.03606109695418919,
+            "in_track": 0.8574076435399128,
+            "cross_track": -0.06642131275952663
+          },
+          "n_rhs": 5744,
+          "wall_s": 2.172616600000765,
+          "grav_s": 1.9443567,
+          "mean_deg_sq": 62500.0,
+          "checkpoints": {}
+        },
+        "sched_down": {
+          "pos_rms_m": 1.0401743950763087,
+          "pos_max_m": 1.8365892225475717,
+          "pos_final_m": 0.5073290703529612,
+          "vel_rms_m_s": 0.0008179188184549986,
+          "vel_max_m_s": 0.0012307970622470845,
+          "vel_final_m_s": 0.0008902226881023015,
+          "ric_rms_m": {
+            "radial": 0.2042945786710048,
+            "in_track": 1.002611569854669,
+            "cross_track": 0.18707361463220196
+          },
+          "ric_max_m": {
+            "radial": 0.34157948111802644,
+            "in_track": 1.8249311304260167,
+            "cross_track": 0.4239240582253485
+          },
+          "ric_final_m": {
+            "radial": 0.033976172808641555,
+            "in_track": -0.4663319760440097,
+            "cross_track": -0.1968829434597274
+          },
+          "n_rhs": 6713,
+          "wall_s": 1.5353900000045542,
+          "grav_s": 1.2907452,
+          "mean_deg_sq": 34479.48756144794,
+          "checkpoints": {}
+        },
+        "sched_up": {
+          "pos_rms_m": 0.7359969218047371,
+          "pos_max_m": 1.3610876815422306,
+          "pos_final_m": 0.6361572228491363,
+          "vel_rms_m_s": 0.0005169479914048045,
+          "vel_max_m_s": 0.0007958534924001824,
+          "vel_final_m_s": 0.00042866433348766244,
+          "ric_rms_m": {
+            "radial": 0.22223233470459405,
+            "in_track": 0.6828912775886038,
+            "cross_track": 0.16113274437927858
+          },
+          "ric_max_m": {
+            "radial": 0.399716485649394,
+            "in_track": 1.3563844767509157,
+            "cross_track": 0.3680524114469777
+          },
+          "ric_final_m": {
+            "radial": -0.007275508906047308,
+            "in_track": 0.6200820911497763,
+            "cross_track": -0.1419199752980682
+          },
+          "n_rhs": 6698,
+          "wall_s": 1.4994303999992553,
+          "grav_s": 1.2675825,
+          "mean_deg_sq": 34627.84413257689,
+          "checkpoints": {}
+        }
+      },
+      "n_work_matched": 180,
+      "ratios": {
+        "sched_emp": {
+          "rho_crit": 0.7865249963473798,
+          "rho_work": 5.491525792130868,
+          "grav_time_saving_vs_crit": 0.33759890867761044
+        },
+        "sched_down": {
+          "rho_crit": 0.7299162087755726,
+          "rho_work": 5.0962826422557725,
+          "grav_time_saving_vs_crit": 0.336158226522942
+        },
+        "sched_up": {
+          "rho_crit": 1.0315806064212771,
+          "rho_work": 7.202506637592531,
+          "grav_time_saving_vs_crit": 0.34807100981008265
+        }
+      },
+      "sched_emp_in_track_growth": {
+        "checkpoint_days": [],
+        "abs_in_track_m": [],
+        "d28_over_d7": null
+      },
+      "orbit_wall_s": 20.743104699999094
+    }
+  ],
+  "complete": true,
+  "repo_commit_sha": "c63de18580bbcc108f8825c4c271cbbfeae10123",
+  "repo_working_tree_clean": true
+}

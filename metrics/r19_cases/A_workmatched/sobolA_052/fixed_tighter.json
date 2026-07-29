@@ -1,0 +1,62 @@
+{
+  "schema": "r19_equal_total_work_v1",
+  "created_utc": "2026-07-27T21:30:46.905213Z",
+  "config": {
+    "sobol_index": 52,
+    "design": "A",
+    "beta": 1.0,
+    "policy": "constant degree matched on realized total quadratic work",
+    "matched_to": "span-sweep member k=0.50",
+    "degree": 319,
+    "target_total_quadratic_work": 22182534453.0,
+    "constant_endpoint_degree": 246,
+    "constant_endpoint_total_work": 13215363048.0,
+    "first_estimate_rule": "N* = round(N_0 * sqrt(W_k / W_0)); the achieved ratio is measured, not assumed",
+    "adopted_truth_degree": 600,
+    "initial_state_si": [
+      -654756.3455549908,
+      666070.710622823,
+      1511185.3728434793,
+      817.607186163633,
+      1504.9565153380313,
+      -309.07787403791104
+    ],
+    "duration_s": 604800.0,
+    "output_step_s": 120.0,
+    "integrator": "InstrumentedDOP853",
+    "max_step_s": 60.0,
+    "atol_kind": "vector",
+    "timing_comparable": false,
+    "source": {
+      "driver": "rev19_equal_total_work.py",
+      "reuses": "r18_span_sweep_A_beta_1.00.json (realized work), r14_trajectory_A_beta_1.00.json, r11 truths",
+      "lunaris_commit": "27e9ab86ed61d623f78c453ea2054348f1044c23"
+    }
+  },
+  "config_sha256": "881cb64d10403192dc0c95084c8745483beb1f288d1a59d4ebdcd6a877362b0c",
+  "status": "ok",
+  "event": null,
+  "telemetry": {
+    "n_rhs": 262100,
+    "n_accepted_steps": 15890,
+    "n_attempted_steps": 17869,
+    "n_rejected_trials": 1979,
+    "switch_count_at_rhs_samples": 0,
+    "degree_counts": {
+      "319": 262100
+    },
+    "degree_range": [
+      319,
+      319
+    ],
+    "mean_degree": 319.0,
+    "mean_degree_sq": 101761.0,
+    "gravity_kernel_ns": 952820608300,
+    "process_cpu_ns": 578421875000,
+    "total_wall_ns": 1012715048700
+  },
+  "raw_path": "metrics\\r19_raw\\A_workmatched\\sobolA_052\\fixed_tighter.npz",
+  "raw_sha256": "e8c856ee9318dfa974de22852dc52648bd37225ca4c0220693a4de3c6a50ffbd",
+  "n_output_epochs": 5041,
+  "last_output_epoch_s": 604800.0
+}

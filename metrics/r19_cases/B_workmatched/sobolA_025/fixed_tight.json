@@ -1,0 +1,62 @@
+{
+  "schema": "r19_equal_total_work_v1",
+  "created_utc": "2026-07-27T21:41:16.737140Z",
+  "config": {
+    "sobol_index": 25,
+    "design": "B",
+    "beta": 1.0,
+    "policy": "constant degree matched on realized total quadratic work",
+    "matched_to": "span-sweep member k=0.50",
+    "degree": 97,
+    "target_total_quadratic_work": 1509730184.0,
+    "constant_endpoint_degree": 94,
+    "constant_endpoint_total_work": 1410349304.0,
+    "first_estimate_rule": "N* = round(N_0 * sqrt(W_k / W_0)); the achieved ratio is measured, not assumed",
+    "adopted_truth_degree": 300,
+    "initial_state_si": [
+      357108.1425048811,
+      -693388.5571321762,
+      -1681238.793144495,
+      -755.204526882102,
+      1324.118930675621,
+      -706.513914300707
+    ],
+    "duration_s": 604800.0,
+    "output_step_s": 120.0,
+    "integrator": "InstrumentedDOP853",
+    "max_step_s": 60.0,
+    "atol_kind": "vector",
+    "timing_comparable": false,
+    "source": {
+      "driver": "rev19_equal_total_work.py",
+      "reuses": "r18_span_sweep_B_beta_1.00.json (realized work), r14_trajectory_B_beta_1.00.json, r11 truths",
+      "lunaris_commit": "27e9ab86ed61d623f78c453ea2054348f1044c23"
+    }
+  },
+  "config_sha256": "ca9d441fd60108dba4108d0f8b6b8bb58c127554b1b9bd6cc904e3f39b30b239",
+  "status": "ok",
+  "event": null,
+  "telemetry": {
+    "n_rhs": 159746,
+    "n_accepted_steps": 10404,
+    "n_attempted_steps": 10711,
+    "n_rejected_trials": 307,
+    "switch_count_at_rhs_samples": 0,
+    "degree_counts": {
+      "97": 159746
+    },
+    "degree_range": [
+      97,
+      97
+    ],
+    "mean_degree": 97.0,
+    "mean_degree_sq": 9409.0,
+    "gravity_kernel_ns": 22630536300,
+    "process_cpu_ns": 27031250000,
+    "total_wall_ns": 34784361400
+  },
+  "raw_path": "metrics\\r19_raw\\B_workmatched\\sobolA_025\\fixed_tight.npz",
+  "raw_sha256": "31b037c3fb6fe583649bcae78e10416d3100bc26cb818914621d98829e22b10c",
+  "n_output_epochs": 5041,
+  "last_output_epoch_s": 604800.0
+}

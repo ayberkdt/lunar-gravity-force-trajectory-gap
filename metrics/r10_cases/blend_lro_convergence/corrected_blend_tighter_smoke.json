@@ -1,0 +1,82 @@
+{
+  "schema": "r10_blend_lro_convergence_result_v1",
+  "created_utc": "2026-07-22T19:57:21.736111Z",
+  "config": {
+    "schema": "r10_blend_lro_convergence_config_v1",
+    "protocol_sha256": "ebed6ac042e85fd1399b931bc849fb78a9f167cfc343f2165dde2e254d32e691",
+    "script_sha256": "b7f8f3a3bce4819aaedbf568c96c6120d5341518c6023bcd8289483b2c28612b",
+    "orbit": {
+      "name": "c6_lro_30x216",
+      "hp_km": 30.0,
+      "ha_km": 216.0,
+      "incl_deg": 90.0,
+      "argp_deg": 270.0,
+      "raan_deg": 0.0
+    },
+    "initial_state_si": [
+      -3.2477633113387807e-10,
+      -1.0825877704462603e-10,
+      -1768000.0,
+      1706.3576548106416,
+      -1.9193449391416538e-29,
+      -3.1345281602466546e-13
+    ],
+    "policy": "corrected_blend",
+    "level": "tighter",
+    "duration_s": 7200.0,
+    "output_step_s": 300.0,
+    "integrator": "InstrumentedDOP853",
+    "rtol": 1e-12,
+    "atol": 1e-07,
+    "atol_kind": "scalar",
+    "max_step_s": 120.0,
+    "truth_degree": 600,
+    "fixed_degree": 120,
+    "blend_degrees": [
+      30,
+      120
+    ],
+    "transition_altitude_m": [
+      50000.0,
+      200000.0
+    ],
+    "corrected_term": "(U_hi-U_lo)*dw/dr*r_hat",
+    "orientation": "uniform lunar sidereal rotation",
+    "timing_comparable": true,
+    "source": {
+      "lunaris_repo": "D:\\Masaustu\\LUNAR_SIMULATION",
+      "lunaris_commit": "27e9ab86ed61d623f78c453ea2054348f1044c23",
+      "lunaris_working_tree_clean": true,
+      "release_tag": "paper-truncation-v1.0",
+      "kernel_path": "D:\\Masaustu\\LUNAR_SIMULATION\\src\\lunaris\\physics\\spherical_harmonics.py",
+      "kernel_sha256": "6e2a0a85e18c9b400c003e6c2ad1e163c524c27f54bc0d404e0172709d16d740",
+      "gravity_path": "D:\\Masaustu\\LUNAR_SIMULATION\\data\\gravity_models\\jggrx_1800f_sha.tab.txt",
+      "gravity_sha256": "d2a552067a78bf1d2755807ae14ee1d6843a8f6a4228e01ce59a665516738fec",
+      "experiment_script": "C:\\Users\\ayber\\Desktop\\Makale\\codebase\\python_codes\\rev10_sobol_confirmatory.py",
+      "experiment_script_sha256": "e483912446449f0086be062844fe3e8070ed8868a4ecd9c15d17ccdf38fb6b25",
+      "python": "3.10.20 (main, Jun  2 2026, 22:31:55) [MSC v.1944 64 bit (AMD64)]",
+      "numpy": "2.2.6",
+      "scipy": "1.15.3",
+      "platform": "Windows-10-10.0.26200-SP0",
+      "processor": "Intel64 Family 6 Model 158 Stepping 10, GenuineIntel",
+      "logical_cpu_count": 12
+    }
+  },
+  "config_sha256": "747491de9d7f13a2bb9f06523e6f5abaf688c961a54395c9a56da13241044d24",
+  "status": "complete",
+  "event": null,
+  "failure_message": null,
+  "telemetry": {
+    "n_rhs": 2597,
+    "n_accepted_steps": 145,
+    "n_attempted_steps": 180,
+    "n_rejected_trials": 35,
+    "gravity_kernel_ns": 32022641500,
+    "process_cpu_ns": 31000000000,
+    "total_wall_ns": 32201744400
+  },
+  "raw_path": "metrics\\r10_raw\\blend_lro_convergence\\corrected_blend_tighter_smoke.npz",
+  "raw_sha256": "d183381d7ab02cfca882861fa8da6062018d574e62fc164c9f5d606e15aee487",
+  "n_output_epochs": 25,
+  "last_output_epoch_s": 7200.0
+}

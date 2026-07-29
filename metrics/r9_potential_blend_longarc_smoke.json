@@ -1,0 +1,295 @@
+{
+  "scenario": {
+    "purpose": "long-arc accuracy of corrected potential-level blend",
+    "duration_s": 21600.0,
+    "output_step_s": 300.0,
+    "integrator": "DOP853",
+    "rtol": 1e-11,
+    "atol": 1e-06,
+    "max_step_s": 120.0,
+    "rotation": "uniform lunar sidereal rotation about polar axis",
+    "degrees": {
+      "low": 30,
+      "high": 120
+    },
+    "transition_altitude_m": {
+      "near": 50000.0,
+      "far": 200000.0
+    },
+    "weight": "smoothstep; high-degree weight is 1 below near and 0 above far",
+    "corrected_term": "(U_hi-U_lo) * dw/dr * r_hat",
+    "truth_rule": "N=600 for perilune below 50 km, otherwise N=300",
+    "orbits": [
+      "c2_50x300_polar",
+      "c6_lro_30x216"
+    ],
+    "checkpoint_days": [],
+    "potential_path": "production sh_potential_accel_fixed called separately at N=30 and N=120 on every corrected-blend RHS evaluation",
+    "smoke": true
+  },
+  "rows": [
+    {
+      "name": "c2_50x300_polar",
+      "family": "canonical",
+      "hp_km": 50.0,
+      "ha_km": 300.0,
+      "incl_deg": 90.0,
+      "argp_deg": 0.0,
+      "raan_deg": 0.0,
+      "truth_degree": 300,
+      "policies": {
+        "fixed_N120": {
+          "pos_rms_m": 1.78978619182402,
+          "pos_max_m": 3.598761041041157,
+          "pos_final_m": 1.4222987334795685,
+          "vel_rms_m_s": 0.001360066116508977,
+          "vel_max_m_s": 0.0021665860341715925,
+          "vel_final_m_s": 0.001497782994828024,
+          "ric_rms_m": {
+            "radial": 0.29929941928895853,
+            "in_track": 1.757935320446115,
+            "cross_track": 0.15302901419415696
+          },
+          "ric_max_m": {
+            "radial": 0.7235305636232663,
+            "in_track": 3.598164889463776,
+            "cross_track": 0.3593806963040911
+          },
+          "ric_final_m": {
+            "radial": -0.056852163669771194,
+            "in_track": -1.405580640616064,
+            "cross_track": -0.2098680096369734
+          },
+          "wall_s": 0.6048847000001842,
+          "n_rhs": 3953,
+          "grav_s": 0.427306,
+          "checkpoints": {}
+        },
+        "switch_N30_N120": {
+          "pos_rms_m": 129.83098423799865,
+          "pos_max_m": 319.82856288531565,
+          "pos_final_m": 310.9318194374067,
+          "vel_rms_m_s": 0.09969809150631012,
+          "vel_max_m_s": 0.24743585083361433,
+          "vel_final_m_s": 0.24743585083361433,
+          "ric_rms_m": {
+            "radial": 23.69952740691017,
+            "in_track": 127.47236736813443,
+            "cross_track": 6.724018624301078
+          },
+          "ric_max_m": {
+            "radial": 57.767441649178664,
+            "in_track": 319.36953934078343,
+            "cross_track": 14.54370247313973
+          },
+          "ric_final_m": {
+            "radial": -8.68196537848533,
+            "in_track": -310.4701282477844,
+            "cross_track": 14.54370247313973
+          },
+          "wall_s": 0.464306700000634,
+          "n_rhs": 4745,
+          "grav_s": 0.2962695,
+          "checkpoints": {}
+        },
+        "blend_acceleration": {
+          "pos_rms_m": 40.61846459815582,
+          "pos_max_m": 98.4701337752216,
+          "pos_final_m": 84.08743864016601,
+          "vel_rms_m_s": 0.025112195527971722,
+          "vel_max_m_s": 0.05748388526274036,
+          "vel_final_m_s": 0.05490902383997809,
+          "ric_rms_m": {
+            "radial": 13.442808556916338,
+            "in_track": 37.86085592321108,
+            "cross_track": 5.975462590928518
+          },
+          "ric_max_m": {
+            "radial": 30.661311311846703,
+            "in_track": 98.3912763318537,
+            "cross_track": 12.719512358765659
+          },
+          "ric_final_m": {
+            "radial": -21.445111757247723,
+            "in_track": -80.31006980856685,
+            "cross_track": 12.692407420420952
+          },
+          "wall_s": 0.5590944999994463,
+          "n_rhs": 3809,
+          "grav_s": 0.4223969,
+          "checkpoints": {}
+        },
+        "blend_potential_corrected": {
+          "pos_rms_m": 18.05775719762369,
+          "pos_max_m": 37.23768078960827,
+          "pos_final_m": 22.49356990567881,
+          "vel_rms_m_s": 0.01203603723802518,
+          "vel_max_m_s": 0.024058562883736652,
+          "vel_final_m_s": 0.015198594648294778,
+          "ric_rms_m": {
+            "radial": 6.469976262260571,
+            "in_track": 15.762330301718055,
+            "cross_track": 5.980881676948283
+          },
+          "ric_max_m": {
+            "radial": 14.559322708745631,
+            "in_track": 37.20513204690729,
+            "cross_track": 12.73492432423232
+          },
+          "ric_final_m": {
+            "radial": -11.422321234449763,
+            "in_track": -14.64167109878325,
+            "cross_track": 12.69301903227726
+          },
+          "wall_s": 59.044000800000504,
+          "n_rhs": 3749,
+          "grav_s": 58.7341836,
+          "checkpoints": {}
+        }
+      },
+      "truth": {
+        "wall_s": 3.001708300000246,
+        "n_rhs": 4193,
+        "grav_s": 2.7166288
+      },
+      "comparison": {
+        "corrected_over_naive_pos_rms": 0.44457015734768957,
+        "corrected_minus_naive_pos_rms_m": -22.560707400532127
+      },
+      "orbit_wall_s": 64.28121370000008
+    },
+    {
+      "name": "c6_lro_30x216",
+      "family": "canonical",
+      "hp_km": 30.0,
+      "ha_km": 216.0,
+      "incl_deg": 90.0,
+      "argp_deg": 270.0,
+      "raan_deg": 0.0,
+      "truth_degree": 600,
+      "policies": {
+        "fixed_N120": {
+          "pos_rms_m": 15.54854194863035,
+          "pos_max_m": 25.703161935720054,
+          "pos_final_m": 23.249740072552374,
+          "vel_rms_m_s": 0.012738730593736099,
+          "vel_max_m_s": 0.02069278858823617,
+          "vel_final_m_s": 0.02069278858823617,
+          "ric_rms_m": {
+            "radial": 2.667584764308783,
+            "in_track": 12.740953129667362,
+            "cross_track": 8.503485262006677
+          },
+          "ric_max_m": {
+            "radial": 6.33900257389926,
+            "in_track": 23.053385086908843,
+            "cross_track": 16.96258428607825
+          },
+          "ric_final_m": {
+            "radial": -0.9991790844771152,
+            "in_track": -22.870589903742744,
+            "cross_track": -4.060563021701739
+          },
+          "wall_s": 0.7943563999997423,
+          "n_rhs": 5393,
+          "grav_s": 0.5662203,
+          "checkpoints": {}
+        },
+        "switch_N30_N120": {
+          "pos_rms_m": 47.532950202664324,
+          "pos_max_m": 139.05349362892676,
+          "pos_final_m": 139.05349362892676,
+          "vel_rms_m_s": 0.0422375788981348,
+          "vel_max_m_s": 0.11411244717592973,
+          "vel_final_m_s": 0.11411244717592973,
+          "ric_rms_m": {
+            "radial": 9.490163637885157,
+            "in_track": 46.30091760281803,
+            "cross_track": 5.054025942967078
+          },
+          "ric_max_m": {
+            "radial": 28.823100332451574,
+            "in_track": 137.13995397130668,
+            "cross_track": 11.992858312915503
+          },
+          "ric_final_m": {
+            "radial": 20.077392669092927,
+            "in_track": -137.13995397130668,
+            "cross_track": 11.19845608862735
+          },
+          "wall_s": 0.705184299999928,
+          "n_rhs": 5849,
+          "grav_s": 0.4729173,
+          "checkpoints": {}
+        },
+        "blend_acceleration": {
+          "pos_rms_m": 44.29899787683978,
+          "pos_max_m": 104.57214503105796,
+          "pos_final_m": 104.57214503105796,
+          "vel_rms_m_s": 0.03857541504234445,
+          "vel_max_m_s": 0.08366481446903143,
+          "vel_final_m_s": 0.08366481446903143,
+          "ric_rms_m": {
+            "radial": 8.110078156985578,
+            "in_track": 43.16826947248571,
+            "cross_track": 5.755723753855674
+          },
+          "ric_max_m": {
+            "radial": 20.238490976750022,
+            "in_track": 103.19846386722307,
+            "cross_track": 10.520358913483934
+          },
+          "ric_final_m": {
+            "radial": 13.218646684648059,
+            "in_track": -103.19846386722307,
+            "cross_track": 10.520358913483934
+          },
+          "wall_s": 0.8115512999993371,
+          "n_rhs": 5225,
+          "grav_s": 0.6122103,
+          "checkpoints": {}
+        },
+        "blend_potential_corrected": {
+          "pos_rms_m": 19.38111881303054,
+          "pos_max_m": 44.26294910456476,
+          "pos_final_m": 44.26294910456476,
+          "vel_rms_m_s": 0.011398523892089982,
+          "vel_max_m_s": 0.02211302316163839,
+          "vel_final_m_s": 0.019149646816371463,
+          "ric_rms_m": {
+            "radial": 8.222539566848164,
+            "in_track": 16.575931302530574,
+            "cross_track": 5.766811161310006
+          },
+          "ric_max_m": {
+            "radial": 21.882481240629424,
+            "in_track": 42.86315486944598,
+            "cross_track": 10.519704133651867
+          },
+          "ric_final_m": {
+            "radial": 3.3607206089777644,
+            "in_track": -42.86315486944598,
+            "cross_track": 10.519704133651867
+          },
+          "wall_s": 82.55589800000052,
+          "n_rhs": 5177,
+          "grav_s": 82.1173571,
+          "checkpoints": {}
+        }
+      },
+      "truth": {
+        "wall_s": 14.546270599999843,
+        "n_rhs": 6245,
+        "grav_s": 14.074955
+      },
+      "comparison": {
+        "corrected_over_naive_pos_rms": 0.43750693564025966,
+        "corrected_minus_naive_pos_rms_m": -24.917879063809238
+      },
+      "orbit_wall_s": 100.01611520000006
+    }
+  ],
+  "complete": true,
+  "repo_commit_sha": "27e9ab86ed61d623f78c453ea2054348f1044c23",
+  "repo_working_tree_clean": true
+}

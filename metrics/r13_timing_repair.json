@@ -1,0 +1,103 @@
+{
+  "schema": "r13_timing_repair_v1",
+  "created_utc": "2026-07-25T13:55:50.157348Z",
+  "design": "A",
+  "index": 36,
+  "accept_window": [
+    0.95,
+    1.05
+  ],
+  "timing_repeats": 3,
+  "audit": [
+    {
+      "design": "A",
+      "index": 36,
+      "level": "tight",
+      "problem": "degree mismatch",
+      "ran_degree": 746,
+      "selected_degree": 466
+    }
+  ],
+  "quarantined": [
+    {
+      "design": "A",
+      "index": 36,
+      "level": "tight",
+      "reason": "comparator degree inconsistent across levels {'tight': 746, 'tighter': 466}",
+      "files": [
+        "r13_cases/timing_match/A/sobolA_036/fixed_time2_tight.json.quarantined.20260725T135550Z",
+        "r13_raw/timing_match/A/sobolA_036/fixed_time2_tight.npz.quarantined.20260725T135550Z"
+      ]
+    },
+    {
+      "design": "A",
+      "index": 36,
+      "level": "tighter",
+      "reason": "comparator degree inconsistent across levels {'tight': 746, 'tighter': 466}",
+      "files": [
+        "r13_cases/timing_match/A/sobolA_036/fixed_time2_tighter.json.quarantined.20260725T135550Z",
+        "r13_raw/timing_match/A/sobolA_036/fixed_time2_tighter.npz.quarantined.20260725T135550Z"
+      ]
+    }
+  ],
+  "attempts": [
+    {
+      "degree": 498,
+      "ratio": 0.9401233577428222,
+      "kernel_ns": 250111699200,
+      "n_rhs": 223094
+    },
+    {
+      "degree": 515,
+      "ratio": 1.0708791189784415,
+      "kernel_ns": 284898140100,
+      "n_rhs": 222761
+    }
+  ],
+  "estimate": {
+    "reference_points": [
+      {
+        "degree": 194,
+        "per_call_ns": 218118.25686075902
+      },
+      {
+        "degree": 466,
+        "per_call_ns": 1122816.6134222061
+      },
+      {
+        "degree": 746,
+        "per_call_ns": 2675364.951713682
+      }
+    ],
+    "local_exponent": 1.8612104098941271,
+    "target_per_call_ns": 1259224.337590049,
+    "atallah_serial_kernel_ns": 266041362700,
+    "first_guess_degree": 498
+  },
+  "accepted_degree": 515,
+  "tighter": {
+    "degree": 515,
+    "n_rhs": 261104,
+    "kernel_ns": 334954034700
+  },
+  "timing": {
+    "atallah_kernel_ns": [
+      315347049100,
+      316678167400,
+      321307786600
+    ],
+    "comparator_kernel_ns": [
+      287583456400,
+      291228769200,
+      293291045000
+    ],
+    "atallah_median_ns": 316678167400.0,
+    "comparator_median_ns": 291228769200.0,
+    "median_ratio": 0.919636398022177,
+    "ratio_spread": [
+      0.8950404204116478,
+      0.930057997488964
+    ]
+  },
+  "wall_min": 46.91165582338969
+}

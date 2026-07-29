@@ -1,0 +1,76 @@
+{
+  "schema": "r20_span_longarc_v1",
+  "created_utc": "2026-07-28T01:54:35.377375Z",
+  "config": {
+    "sobol_index": 5,
+    "design": "A",
+    "k": 0.25,
+    "beta": 1.0,
+    "arc": "60 days",
+    "duration_s": 5184000.0,
+    "degree_table": {
+      "130.0": 88,
+      "140.0": 85,
+      "150.0": 83,
+      "160.0": 82,
+      "170.0": 80,
+      "180.0": 79,
+      "190.0": 77,
+      "200.0": 76
+    },
+    "degree_span": 1.1578947368421053,
+    "table_source": "frozen R18 seven-day configuration, reused verbatim; only the arc length differs",
+    "adopted_truth_degree": 300,
+    "initial_state_si": [
+      1501972.583558775,
+      -1070621.2020044278,
+      -321833.95798036095,
+      -945.6749459067488,
+      -1328.4579300664507,
+      5.895537567261141
+    ],
+    "output_step_s": 300.0,
+    "max_step_s": 120.0,
+    "integrator": "InstrumentedDOP853",
+    "atol_kind": "vector",
+    "timing_comparable": false,
+    "source": {
+      "driver": "rev20_span_longarc.py",
+      "reuses": "r18 span tables (frozen), r17 60-day truths, r14 initial states and tolerances",
+      "lunaris_commit": "27e9ab86ed61d623f78c453ea2054348f1044c23"
+    }
+  },
+  "config_sha256": "1e7640aa56918c44808ab32b8e4de2e47428fc3c36c9b761d2d1c2a08345a330",
+  "status": "ok",
+  "event": null,
+  "telemetry": {
+    "n_rhs": 2267723,
+    "n_accepted_steps": 113863,
+    "n_attempted_steps": 160511,
+    "n_rejected_trials": 46648,
+    "switch_count_at_rhs_samples": 103336,
+    "degree_counts": {
+      "88": 927618,
+      "85": 268514,
+      "83": 245935,
+      "82": 198000,
+      "80": 153794,
+      "79": 99736,
+      "77": 74138,
+      "76": 299988
+    },
+    "degree_range": [
+      76,
+      88
+    ],
+    "mean_degree": 83.69322752382016,
+    "mean_degree_sq": 7023.836034207,
+    "gravity_kernel_ns": 255301310700,
+    "process_cpu_ns": 329921875000,
+    "total_wall_ns": 421690948200
+  },
+  "raw_path": "metrics\\r20_raw\\k_0.25\\sobolA_005\\span_tighter.npz",
+  "raw_sha256": "dcb056c23c63220b452bf77cbf95a2a20f10a350a73bf5acc4761703e67832fa",
+  "n_output_epochs": 17281,
+  "last_output_epoch_s": 5184000.0
+}

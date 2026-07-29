@@ -1,0 +1,60 @@
+{
+  "schema": "r23_oracle_vs_interior_v1",
+  "created_utc": "2026-07-28T19:21:17.867360Z",
+  "config": {
+    "sobol_index": 28,
+    "design": "A",
+    "beta": 1.0,
+    "policy": "constant degree (sat)",
+    "degree": 206,
+    "comparator_role": "the budget-saturating degree the paper nominates",
+    "ladder_source": "r15_fixed_oracle.json, offsets frozen in R15-A",
+    "adopted_truth_degree": 900,
+    "initial_state_si": [
+      -1183696.4206902138,
+      -1335139.7738645342,
+      -48724.582664034075,
+      -1290.8236806830837,
+      1148.9943797253309,
+      -125.7009381403307
+    ],
+    "duration_s": 604800.0,
+    "output_step_s": 120.0,
+    "integrator": "InstrumentedDOP853",
+    "max_step_s": 60.0,
+    "level": "tighter",
+    "atol_kind": "vector",
+    "timing_comparable": false,
+    "source": {
+      "driver": "rev23_oracle_vs_interior.py",
+      "reuses": "r15_fixed_oracle.json (frozen ladder and its argmin), r14_trajectory_{design}_beta_1.00.json (states, truths), r11 truths",
+      "preregistration": "r23_preregistration.json"
+    }
+  },
+  "config_sha256": "3ad0359c076ca642a06a177ee48ee253c707e153ad43470ee140c4ea694c465e",
+  "status": "ok",
+  "event": null,
+  "telemetry": {
+    "n_rhs": 240341,
+    "n_accepted_steps": 14865,
+    "n_attempted_steps": 16312,
+    "n_rejected_trials": 1447,
+    "switch_count_at_rhs_samples": 0,
+    "degree_counts": {
+      "206": 240341
+    },
+    "degree_range": [
+      206,
+      206
+    ],
+    "mean_degree": 206.0,
+    "mean_degree_sq": 42436.0,
+    "gravity_kernel_ns": 205126061900,
+    "process_cpu_ns": 172703125000,
+    "total_wall_ns": 236069856100
+  },
+  "raw_path": "metrics\\r23_raw\\oracle_vs_interior\\A\\sobolA_028\\sat_206_tighter.npz",
+  "raw_sha256": "5beec12fb89b8bfc3b177c5b89c3a85f694329480239878cb21348a803cec7b3",
+  "n_output_epochs": 5041,
+  "last_output_epoch_s": 604800.0
+}

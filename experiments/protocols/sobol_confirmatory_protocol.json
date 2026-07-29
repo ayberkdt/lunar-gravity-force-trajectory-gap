@@ -1,0 +1,144 @@
+{
+  "schema": "r10_sobol_confirmatory_protocol_v1",
+  "created_utc": "2026-07-22T17:02:34.517042Z",
+  "status": "frozen_before_formal_trajectory_inspection",
+  "purpose": "independent expanded-domain coverage confirmation of the 24-orbit exploratory population",
+  "sobol": {
+    "dimension": 5,
+    "sample_count": 64,
+    "generator": "scipy.stats.qmc.Sobol(scramble=True).random_base2(m=6)",
+    "seed_A": 20260723,
+    "seed_B": 20260724,
+    "seed_B_role": "frozen_unpropagated_future_replicate",
+    "no_rejection": true,
+    "no_replacement": true,
+    "no_candidate_selection": true,
+    "duplicate_tolerance_u_maxnorm": 1e-14
+  },
+  "transformations": {
+    "hp_km": "30 + 120*u0",
+    "ha_min_km": "max(180, hp_km + 30)",
+    "ha_km": "ha_min_km + u1*(600-ha_min_km)",
+    "incl_deg": "180*u2",
+    "argp_deg": "360*u3",
+    "perilune_lon_deg_bodyfixed_t0": "360*u4",
+    "raan_deg": "lambda_p - atan2(cos(i)*sin(omega), cos(omega)) mod 360",
+    "nu0_deg": 0.0,
+    "roundtrip_limit_deg": 1e-10
+  },
+  "force_contract": {
+    "gravity": "JGGRX_1800F",
+    "dynamics": "gravity-only",
+    "orientation": "uniform lunar sidereal rotation about polar axis",
+    "epoch": "t=0 body-fixed and inertial frames aligned",
+    "truth_rule": "N=600 when hp<50 km, otherwise N=300"
+  },
+  "population_baseline": {
+    "duration_s": 604800.0,
+    "output_step_s": 120.0,
+    "integrator": "DOP853 production kernel with direct trial-step instrumentation",
+    "rtol": 1e-12,
+    "atol": 1e-05,
+    "atol_kind": "scalar",
+    "max_step_s": null,
+    "surface_event": "norm(r)-r_ref, terminal downward crossing"
+  },
+  "policies": {
+    "primary": "empirical lookup schedule",
+    "primary_comparators": [
+      "fixed_work",
+      "fixed_critical"
+    ],
+    "secondary": [
+      "schedule_up",
+      "schedule_down"
+    ],
+    "empirical_lookup": {
+      "altitude_grid_km": [
+        20.0,
+        560.0,
+        10.0
+      ],
+      "tail_fraction": 0.001,
+      "floor": 60,
+      "cap": 250,
+      "degree_quantum": 10,
+      "degree_quantization": "downward",
+      "altitude_bin_convention": "floor",
+      "evaluation": "at every gravity RHS call including stages"
+    },
+    "fixed_critical": "unquantized empirical Nmin at own perilune, capped at 250",
+    "fixed_work": "round(sqrt(mean N_call^2)) from empirical schedule actual RHS calls",
+    "schedule_up_down": "existing Kaula p=2 upward/downward quantized sensitivity families"
+  },
+  "primary_metric": "full-common-grid Cartesian position RMS against truth",
+  "primary_ratios": {
+    "rho_work": "E_fixed_work/E_empirical",
+    "rho_crit": "E_fixed_critical/E_empirical",
+    "interpretation": "rho>1 favors the empirical schedule"
+  },
+  "failure_contract": {
+    "truth_impact": "exclude from full-seven-day accuracy ratios; retain in survival counts",
+    "policy_impact": "noncompetitive; report impact and last-common-arc error",
+    "numerical_failure": "separate from impact; preserve attempt; never replace design point"
+  },
+  "planned_convergence": {
+    "vector_tight": {
+      "rtol": 1e-12,
+      "atol_position_m": 1e-05,
+      "atol_velocity_m_s": 1e-08,
+      "max_step_s": 60.0
+    },
+    "vector_tighter": {
+      "rtol": 1e-13,
+      "atol_position_m": 1e-06,
+      "atol_velocity_m_s": 1e-09,
+      "max_step_s": 60.0
+    },
+    "selection": "frozen union A-F from the implementation plan; minimum 12; no truncation of raw-win or close cases",
+    "resolution": "abs(EA-EB) > (Eself,A+Eself,truth) + (Eself,B+Eself,truth)"
+  },
+  "planned_truth_audit": {
+    "cases": "four lowest-perilune truth survivors plus sub-50-km raw wins",
+    "degrees": [
+      600,
+      900
+    ],
+    "acceptance": "E600_900 < min(5 m, 0.05*smallest interpreted policy RMS vs N900)"
+  },
+  "planned_aggregates": [
+    "survival and impact counts",
+    "rho_work and rho_crit median, p10, p90",
+    "raw and resolved outcome counts",
+    "median gravity-time saving versus fixed critical",
+    "median in-track fraction",
+    "declared descriptive regime summaries"
+  ],
+  "timing": {
+    "wall_and_kernel_clock": "time.perf_counter_ns",
+    "cpu_clock": "time.process_time_ns",
+    "formal_baseline_requires_no_other_python_process": true,
+    "parallel_trajectory_timing_allowed_in_manuscript": false
+  },
+  "provenance": {
+    "lunaris_repo": "D:\\Masaustu\\LUNAR_SIMULATION",
+    "lunaris_commit": "27e9ab86ed61d623f78c453ea2054348f1044c23",
+    "lunaris_working_tree_clean": true,
+    "release_tag": "paper-truncation-v1.0",
+    "kernel_path": "D:\\Masaustu\\LUNAR_SIMULATION\\src\\lunaris\\physics\\spherical_harmonics.py",
+    "kernel_sha256": "6e2a0a85e18c9b400c003e6c2ad1e163c524c27f54bc0d404e0172709d16d740",
+    "gravity_path": "D:\\Masaustu\\LUNAR_SIMULATION\\data\\gravity_models\\jggrx_1800f_sha.tab.txt",
+    "gravity_sha256": "d2a552067a78bf1d2755807ae14ee1d6843a8f6a4228e01ce59a665516738fec",
+    "experiment_script": "C:\\Users\\ayber\\Desktop\\Makale\\codebase\\python_codes\\rev10_sobol_confirmatory.py",
+    "experiment_script_sha256": "e483912446449f0086be062844fe3e8070ed8868a4ecd9c15d17ccdf38fb6b25",
+    "python": "3.10.20 (main, Jun  2 2026, 22:31:55) [MSC v.1944 64 bit (AMD64)]",
+    "numpy": "2.2.6",
+    "scipy": "1.15.3",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "processor": "Intel64 Family 6 Model 158 Stepping 10, GenuineIntel",
+    "logical_cpu_count": 12
+  },
+  "doi_created": false,
+  "archival_deposit_created": false,
+  "protocol_sha256": "ebed6ac042e85fd1399b931bc849fb78a9f167cfc343f2165dde2e254d32e691"
+}

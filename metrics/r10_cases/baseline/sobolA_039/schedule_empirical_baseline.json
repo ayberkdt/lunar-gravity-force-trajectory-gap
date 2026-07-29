@@ -1,0 +1,124 @@
+{
+  "schema": "r10_trajectory_result_v1",
+  "created_utc": "2026-07-22T18:06:53.975986Z",
+  "config": {
+    "schema": "r10_trajectory_config_v1",
+    "protocol_sha256": "ebed6ac042e85fd1399b931bc849fb78a9f167cfc343f2165dde2e254d32e691",
+    "design_sha256": "ce8a845c2fcf4a73893ecf5a10e9a875d113d2eee2bf71008142fb7f7afba130",
+    "sobol_seed": 20260723,
+    "sobol_index": 39,
+    "original_sobol_coordinates": [
+      0.3610452953726053,
+      0.0514621390029788,
+      0.04521512985229492,
+      0.24271695595234632,
+      0.3263567350804806
+    ],
+    "initial_state_si": [
+      -827649.5594377448,
+      1590684.5530096437,
+      256161.4582016501,
+      -1483.4833419951237,
+      -773.6165612730845,
+      10.835273789906838
+    ],
+    "truth_degree_rule_result": 300,
+    "policy": "schedule_empirical",
+    "policy_spec": {
+      "kind": "empirical_lookup",
+      "floor": 60,
+      "cap": 250,
+      "quantum": 10,
+      "degree_quantization": "downward",
+      "altitude_bin": "10-km floor"
+    },
+    "duration_s": 604800.0,
+    "output_step_s": 120.0,
+    "integrator": "InstrumentedDOP853",
+    "rtol": 1e-12,
+    "atol": 1e-05,
+    "atol_kind": "scalar",
+    "max_step_s": null,
+    "surface_event": "norm(r)-r_ref downward terminal",
+    "timing_comparable": true,
+    "source": {
+      "lunaris_repo": "D:\\Masaustu\\LUNAR_SIMULATION",
+      "lunaris_commit": "27e9ab86ed61d623f78c453ea2054348f1044c23",
+      "lunaris_working_tree_clean": true,
+      "release_tag": "paper-truncation-v1.0",
+      "kernel_path": "D:\\Masaustu\\LUNAR_SIMULATION\\src\\lunaris\\physics\\spherical_harmonics.py",
+      "kernel_sha256": "6e2a0a85e18c9b400c003e6c2ad1e163c524c27f54bc0d404e0172709d16d740",
+      "gravity_path": "D:\\Masaustu\\LUNAR_SIMULATION\\data\\gravity_models\\jggrx_1800f_sha.tab.txt",
+      "gravity_sha256": "d2a552067a78bf1d2755807ae14ee1d6843a8f6a4228e01ce59a665516738fec",
+      "experiment_script": "C:\\Users\\ayber\\Desktop\\Makale\\codebase\\python_codes\\rev10_sobol_confirmatory.py",
+      "experiment_script_sha256": "e483912446449f0086be062844fe3e8070ed8868a4ecd9c15d17ccdf38fb6b25",
+      "python": "3.10.20 (main, Jun  2 2026, 22:31:55) [MSC v.1944 64 bit (AMD64)]",
+      "numpy": "2.2.6",
+      "scipy": "1.15.3",
+      "platform": "Windows-10-10.0.26200-SP0",
+      "processor": "Intel64 Family 6 Model 158 Stepping 10, GenuineIntel",
+      "logical_cpu_count": 12
+    }
+  },
+  "config_sha256": "0365983826a9a4ff29ba225cd9959ee8439e4b2e207cbcc27f955c74980b827b",
+  "status": "complete",
+  "event": null,
+  "failure_message": null,
+  "telemetry": {
+    "n_rhs": 132077,
+    "n_accepted_steps": 6409,
+    "n_attempted_steps": 9404,
+    "n_rejected_trials": 2995,
+    "switch_count_at_rhs_samples": 6649,
+    "degree_counts": {
+      "140": 3701,
+      "130": 21125,
+      "110": 17318,
+      "100": 12885,
+      "90": 18954,
+      "80": 10262,
+      "70": 23194,
+      "60": 24638
+    },
+    "degree_range": [
+      60,
+      140
+    ],
+    "mean_degree": 91.51139108247462,
+    "mean_degree_sq": 9006.12142916632,
+    "gravity_kernel_ns": 5289340600,
+    "process_cpu_ns": 7390625000,
+    "total_wall_ns": 7400754100
+  },
+  "raw_path": "metrics\\r10_raw\\baseline\\sobolA_039\\schedule_empirical_baseline.npz",
+  "raw_sha256": "ee73fe6718b44727b4caeed0e1cd6f62662bed95196434f85f85c8aa64e3174c",
+  "n_output_epochs": 5041,
+  "last_output_epoch_s": 604800.0,
+  "error_against_truth": {
+    "pos_rms_m": 180.14794843455857,
+    "pos_max_m": 314.784552347248,
+    "pos_final_m": 310.4356918280525,
+    "vel_rms_m_s": 0.15559678426953175,
+    "vel_max_m_s": 0.2786970400367153,
+    "vel_final_m_s": 0.271092684382876,
+    "ric_rms_m": {
+      "radial": 4.527256196781276,
+      "in_track": 180.0727229385865,
+      "cross_track": 2.5693831929372757
+    },
+    "ric_max_m": {
+      "radial": 12.03044810433708,
+      "in_track": 314.78080509086817,
+      "cross_track": 5.764347011766986
+    },
+    "ric_final_m": {
+      "radial": 9.034097579992228,
+      "in_track": 310.30343169769003,
+      "cross_track": 0.6957861120609241
+    },
+    "common_epoch_count": 5041,
+    "common_arc_end_s": 604800.0,
+    "in_track_fraction": 0.9995824237987401
+  },
+  "error_scope": "full_seven_day"
+}

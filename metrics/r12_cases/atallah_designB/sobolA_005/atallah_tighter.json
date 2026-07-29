@@ -1,0 +1,98 @@
+{
+  "schema": "r12_atallah_trajectory_v1",
+  "created_utc": "2026-07-25T00:26:15.454047Z",
+  "config": {
+    "sobol_index": 5,
+    "adopted_truth_degree": 300,
+    "original_truth_degree": 300,
+    "n_critical": 74,
+    "initial_state_si": [
+      -959177.9008466311,
+      1106545.0272547796,
+      -1190900.3280953171,
+      1200.9774865542458,
+      -129.20140515965105,
+      -1087.3439248958405
+    ],
+    "atallah_tol_accel_m_s2": 1.869577395715942e-06,
+    "atallah_reference": "Atallah et al. 2022, J.Astronaut.Sci. 69(3):745-766, Eq.28/20",
+    "perilune_match": "tol = actual worst-case accel truncation error of N_crit vs adopted truth at perilune; Atallah N_req binned on 10-km altitude bins, capped at adopted",
+    "atallah_degree_table": {
+      "140.0": 220,
+      "150.0": 204,
+      "160.0": 191,
+      "170.0": 178,
+      "180.0": 167,
+      "190.0": 158,
+      "200.0": 150,
+      "210.0": 142,
+      "220.0": 135
+    },
+    "duration_s": 604800.0,
+    "output_step_s": 120.0,
+    "integrator": "InstrumentedDOP853",
+    "max_step_s": 60.0,
+    "atol_kind": "vector",
+    "timing_comparable": false,
+    "source": {
+      "lunaris_repo": "D:\\Masaustu\\LUNAR_SIMULATION",
+      "lunaris_commit": "27e9ab86ed61d623f78c453ea2054348f1044c23",
+      "lunaris_working_tree_clean": true,
+      "release_tag": "paper-truncation-v1.0",
+      "kernel_path": "D:\\Masaustu\\LUNAR_SIMULATION\\src\\lunaris\\physics\\spherical_harmonics.py",
+      "kernel_sha256": "6e2a0a85e18c9b400c003e6c2ad1e163c524c27f54bc0d404e0172709d16d740",
+      "gravity_path": "D:\\Masaustu\\LUNAR_SIMULATION\\data\\gravity_models\\jggrx_1800f_sha.tab.txt",
+      "gravity_sha256": "d2a552067a78bf1d2755807ae14ee1d6843a8f6a4228e01ce59a665516738fec",
+      "experiment_script": "C:\\Users\\ayber\\Desktop\\Makale\\codebase\\python_codes\\rev10_sobol_confirmatory.py",
+      "experiment_script_sha256": "e483912446449f0086be062844fe3e8070ed8868a4ecd9c15d17ccdf38fb6b25",
+      "python": "3.10.20 (main, Jun  2 2026, 22:31:55) [MSC v.1944 64 bit (AMD64)]",
+      "numpy": "2.2.6",
+      "scipy": "1.15.3",
+      "platform": "Windows-10-10.0.26200-SP0",
+      "processor": "Intel64 Family 6 Model 158 Stepping 10, GenuineIntel",
+      "logical_cpu_count": 12
+    },
+    "policy": "atallah",
+    "level": "tighter",
+    "rtol": 1e-13,
+    "atol_position_m": 1e-06,
+    "atol_velocity_m_s": 1e-09,
+    "policy_spec": {
+      "kind": "atallah_radial_adaptive",
+      "tol": 1.869577395715942e-06
+    }
+  },
+  "config_sha256": "eb68def1fa3cb59172018819c3cfb72beca284ab3e4bc06cd324370c435748cb",
+  "status": "complete",
+  "event": null,
+  "telemetry": {
+    "n_rhs": 163184,
+    "n_accepted_steps": 10518,
+    "n_attempted_steps": 10969,
+    "n_rejected_trials": 451,
+    "switch_count_at_rhs_samples": 3129,
+    "degree_counts": {
+      "220": 4471,
+      "204": 42186,
+      "191": 20432,
+      "178": 16337,
+      "167": 15519,
+      "158": 17051,
+      "150": 23967,
+      "142": 23221
+    },
+    "degree_range": [
+      142,
+      220
+    ],
+    "mean_degree": 175.12884228845965,
+    "mean_degree_sq": 31258.987247524266,
+    "gravity_kernel_ns": 33550952500,
+    "process_cpu_ns": 39390625000,
+    "total_wall_ns": 39838262400
+  },
+  "raw_path": "metrics\\r12_raw\\atallah_designB\\sobolA_005\\atallah_tighter.npz",
+  "raw_sha256": "21603576ca9f4498f69855023bb5a7778d56d8332ce40f7d864f73073bc99c4e",
+  "n_output_epochs": 5041,
+  "last_output_epoch_s": 604800.0
+}

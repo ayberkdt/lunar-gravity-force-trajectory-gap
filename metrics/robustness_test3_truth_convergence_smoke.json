@@ -1,0 +1,548 @@
+{
+  "schema": "robustness_test3_truth_convergence_v1",
+  "formal_run": false,
+  "scenario": {
+    "duration_s": 14400.0,
+    "reference_degrees": [
+      300,
+      600,
+      900
+    ],
+    "orientation": "DE440/MOON_PA, 60 s quaternion table",
+    "orbit": {
+      "perilune_altitude_km": 30.0,
+      "apolune_altitude_km": 216.0,
+      "semi_major_axis_km": 1861.0,
+      "eccentricity_derived_from_apses": 0.04997313272434175,
+      "inclination_deg_moon_fixed": 90.0,
+      "raan_deg_moon_fixed_declared": 0.0,
+      "argument_of_periapsis_deg_moon_fixed": 270.0,
+      "true_anomaly_deg": 0.0,
+      "source_scope": "LRO commissioning-orbit design geometry; not a new differential correction"
+    },
+    "integrator": "SciPy DOP853",
+    "rtol": 1e-11,
+    "atol_position_m": 0.0001,
+    "atol_velocity_m_s": 1e-07,
+    "max_step_s": 60.0,
+    "coefficient_control": "single N=900 model parsed once; runtime truncation only"
+  },
+  "force_sets": [
+    {
+      "force_set": "moon_sh_only",
+      "runs": {
+        "reference_N300": {
+          "n_rhs": 4853,
+          "wall_s": 3.862678000004962,
+          "gravity_wall_s": 3.2523216,
+          "mean_active_degree": 300.0,
+          "mean_degree_squared": 90000.0,
+          "rms_active_degree": 300.0,
+          "min_active_degree": 300,
+          "max_active_degree": 300,
+          "degree_counts": {
+            "300": 4853
+          }
+        },
+        "reference_N600": {
+          "n_rhs": 4973,
+          "wall_s": 12.071492999995826,
+          "gravity_wall_s": 11.4945519,
+          "mean_active_degree": 600.0,
+          "mean_degree_squared": 360000.0,
+          "rms_active_degree": 600.0,
+          "min_active_degree": 600,
+          "max_active_degree": 600,
+          "degree_counts": {
+            "600": 4973
+          }
+        },
+        "reference_N900": {
+          "n_rhs": 4961,
+          "wall_s": 22.0065331000078,
+          "gravity_wall_s": 21.3917283,
+          "mean_active_degree": 900.0,
+          "mean_degree_squared": 810000.0,
+          "rms_active_degree": 900.0,
+          "min_active_degree": 900,
+          "max_active_degree": 900,
+          "degree_counts": {
+            "900": 4961
+          },
+          "component_rms_acceleration_m_s2": {
+            "earth_3b": 0.0,
+            "sun_3b": 0.0,
+            "srp": 0.0
+          }
+        },
+        "fixed_N194_critical": {
+          "n_rhs": 4625,
+          "wall_s": 1.5261220000102185,
+          "gravity_wall_s": 1.1714689,
+          "mean_active_degree": 194.0,
+          "mean_degree_squared": 37636.0,
+          "rms_active_degree": 194.0,
+          "min_active_degree": 194,
+          "max_active_degree": 194,
+          "degree_counts": {
+            "194": 4625
+          }
+        },
+        "schedule_down": {
+          "n_rhs": 4901,
+          "wall_s": 0.6418715000036173,
+          "gravity_wall_s": 0.3631765,
+          "mean_active_degree": 102.44643950214243,
+          "mean_degree_squared": 11375.168332993268,
+          "rms_active_degree": 106.65443419283264,
+          "min_active_degree": 60,
+          "max_active_degree": 130,
+          "degree_counts": {
+            "60": 1147,
+            "70": 263,
+            "80": 297,
+            "90": 238,
+            "100": 248,
+            "110": 240,
+            "120": 236,
+            "130": 2232
+          }
+        },
+        "schedule_up": {
+          "n_rhs": 4877,
+          "wall_s": 0.6611618000024464,
+          "gravity_wall_s": 0.3864763,
+          "mean_active_degree": 106.97518966577815,
+          "mean_degree_squared": 12514.743489850318,
+          "rms_active_degree": 111.86931433530071,
+          "min_active_degree": 60,
+          "max_active_degree": 138,
+          "degree_counts": {
+            "60": 919,
+            "70": 491,
+            "80": 279,
+            "90": 189,
+            "100": 322,
+            "110": 263,
+            "130": 173,
+            "138": 2241
+          }
+        }
+      },
+      "reference_self_convergence": {
+        "N300_minus_N600": {
+          "pos_rms_m": 0.18817758383933778,
+          "pos_max_m": 0.3756491096777359,
+          "pos_final_m": 0.07350979300710345,
+          "vel_rms_m_s": 0.00013128347253249417,
+          "vel_max_m_s": 0.00021562300977216086,
+          "vel_final_m_s": 3.358763680128351e-05,
+          "ric_rms_m": {
+            "radial": 0.05673525194044979,
+            "in_track": 0.1792836613190477,
+            "cross_track": 0.007020187383659958
+          },
+          "ric_max_m": {
+            "radial": 0.10735075574973477,
+            "in_track": 0.3756254940749622,
+            "cross_track": 0.0104556441905607
+          },
+          "ric_final_m": {
+            "radial": -0.01326497597782762,
+            "in_track": 0.0720792765544348,
+            "cross_track": -0.0056840101727704635
+          }
+        },
+        "N600_minus_N900": {
+          "pos_rms_m": 0.0024630631771862294,
+          "pos_max_m": 0.004938273493006089,
+          "pos_final_m": 0.004916947506564892,
+          "vel_rms_m_s": 2.0889406391315313e-06,
+          "vel_max_m_s": 4.2839091709122416e-06,
+          "vel_final_m_s": 4.158948831388231e-06,
+          "ric_rms_m": {
+            "radial": 0.0003898799723679023,
+            "in_track": 0.0024312875610096284,
+            "cross_track": 5.928421068866423e-05
+          },
+          "ric_max_m": {
+            "radial": 0.0007856476658020014,
+            "in_track": 0.00493775814037961,
+            "cross_track": 9.61987395183994e-05
+          },
+          "ric_final_m": {
+            "radial": -6.113660075153429e-05,
+            "in_track": -0.004916559659342562,
+            "cross_track": 8.730090985268506e-06
+          }
+        },
+        "N300_minus_N900": {
+          "pos_rms_m": 0.18946021868274648,
+          "pos_max_m": 0.3779856653331116,
+          "pos_final_m": 0.06870680185257654,
+          "vel_rms_m_s": 0.00013271914152120217,
+          "vel_max_m_s": 0.00021772296877158257,
+          "vel_final_m_s": 3.585957467057902e-05,
+          "ric_rms_m": {
+            "radial": 0.05654470568455291,
+            "in_track": 0.18068703660706473,
+            "cross_track": 0.007075699578039647
+          },
+          "ric_max_m": {
+            "radial": 0.1067001774900308,
+            "in_track": 0.37795832802495233,
+            "cross_track": 0.010542705908195192
+          },
+          "ric_final_m": {
+            "radial": -0.013326112378160861,
+            "in_track": 0.06716271693172415,
+            "cross_track": -0.005675280084976854
+          }
+        }
+      },
+      "policy_errors_vs_N900": {
+        "fixed_N194_critical": {
+          "pos_rms_m": 2.186352606114761,
+          "pos_max_m": 3.330589747122493,
+          "pos_final_m": 1.3965818559119483,
+          "vel_rms_m_s": 0.0017684631170368163,
+          "vel_max_m_s": 0.0031611411645634238,
+          "vel_final_m_s": 0.0031582709738126433,
+          "ric_rms_m": {
+            "radial": 0.4001003395166947,
+            "in_track": 1.1715856971408725,
+            "cross_track": 1.8020666998860972
+          },
+          "ric_max_m": {
+            "radial": 0.7697692310227058,
+            "in_track": 2.577260915439621,
+            "cross_track": 3.3051301620486706
+          },
+          "ric_final_m": {
+            "radial": -0.2819341261380696,
+            "in_track": 1.2658223875828072,
+            "cross_track": -0.5183123690163937
+          }
+        },
+        "schedule_down": {
+          "pos_rms_m": 8.628429361593243,
+          "pos_max_m": 14.084229055536165,
+          "pos_final_m": 5.0177859648881284,
+          "vel_rms_m_s": 0.006455295307173118,
+          "vel_max_m_s": 0.01048038051532537,
+          "vel_final_m_s": 0.0077914132092797095,
+          "ric_rms_m": {
+            "radial": 2.2591151914666505,
+            "in_track": 6.293722220470588,
+            "cross_track": 5.453003980490363
+          },
+          "ric_max_m": {
+            "radial": 4.123328959695248,
+            "in_track": 12.374176224608453,
+            "cross_track": 9.697492948017207
+          },
+          "ric_final_m": {
+            "radial": 0.8046443721524253,
+            "in_track": 4.628807044462373,
+            "cross_track": -1.7620637811745732
+          }
+        },
+        "schedule_up": {
+          "pos_rms_m": 10.976988978841998,
+          "pos_max_m": 14.877231063833984,
+          "pos_final_m": 12.096964474561453,
+          "vel_rms_m_s": 0.007827781239592237,
+          "vel_max_m_s": 0.01197399481970073,
+          "vel_final_m_s": 0.01197399481970073,
+          "ric_rms_m": {
+            "radial": 3.378755431182866,
+            "in_track": 8.415967893464984,
+            "cross_track": 6.184640910678451
+          },
+          "ric_max_m": {
+            "radial": 5.818543154819447,
+            "in_track": 14.769857902491772,
+            "cross_track": 11.206328635199087
+          },
+          "ric_final_m": {
+            "radial": -0.9879132311443279,
+            "in_track": 11.826088694944573,
+            "cross_track": -2.3461038182135208
+          }
+        }
+      },
+      "acceptance": {
+        "absolute_limit_m": 5.0,
+        "policy_fraction_limit": 0.05,
+        "smallest_policy_rms_m": 2.186352606114761,
+        "effective_rms_limit_m": 0.10931763030573804,
+        "N600_to_N900_rms_m": 0.0024630631771862294,
+        "N600_to_N900_fraction_of_each_policy": {
+          "fixed_N194_critical": 0.0011265626460697914,
+          "schedule_down": 0.0002854590417289368,
+          "schedule_up": 0.00022438422612373497
+        },
+        "N600_to_N900_in_track_fraction": 0.9870991469196089,
+        "passes": true
+      }
+    },
+    {
+      "force_set": "moon_sh_plus_earth_sun_srp_eclipse",
+      "runs": {
+        "reference_N300": {
+          "n_rhs": 4853,
+          "wall_s": 3.307448400009889,
+          "gravity_wall_s": 2.6926634,
+          "mean_active_degree": 300.0,
+          "mean_degree_squared": 90000.0,
+          "rms_active_degree": 300.0,
+          "min_active_degree": 300,
+          "max_active_degree": 300,
+          "degree_counts": {
+            "300": 4853
+          }
+        },
+        "reference_N600": {
+          "n_rhs": 4985,
+          "wall_s": 11.590328699996462,
+          "gravity_wall_s": 10.9192875,
+          "mean_active_degree": 600.0,
+          "mean_degree_squared": 360000.0,
+          "rms_active_degree": 600.0,
+          "min_active_degree": 600,
+          "max_active_degree": 600,
+          "degree_counts": {
+            "600": 4985
+          }
+        },
+        "reference_N900": {
+          "n_rhs": 4973,
+          "wall_s": 21.020037799986312,
+          "gravity_wall_s": 20.3143709,
+          "mean_active_degree": 900.0,
+          "mean_degree_squared": 810000.0,
+          "rms_active_degree": 900.0,
+          "min_active_degree": 900,
+          "max_active_degree": 900,
+          "degree_counts": {
+            "900": 4973
+          },
+          "component_rms_acceleration_m_s2": {
+            "earth_3b": 1.9899124175619457e-05,
+            "sun_3b": 1.1328936650167605e-07,
+            "srp": 4.899651363729055e-08
+          }
+        },
+        "fixed_N194_critical": {
+          "n_rhs": 4625,
+          "wall_s": 1.7513951000000816,
+          "gravity_wall_s": 1.2253452,
+          "mean_active_degree": 194.0,
+          "mean_degree_squared": 37636.0,
+          "rms_active_degree": 194.0,
+          "min_active_degree": 194,
+          "max_active_degree": 194,
+          "degree_counts": {
+            "194": 4625
+          }
+        },
+        "schedule_down": {
+          "n_rhs": 4925,
+          "wall_s": 0.7840573999856133,
+          "gravity_wall_s": 0.380446,
+          "mean_active_degree": 102.31472081218274,
+          "mean_degree_squared": 11343.269035532994,
+          "rms_active_degree": 106.50478409692681,
+          "min_active_degree": 60,
+          "max_active_degree": 130,
+          "degree_counts": {
+            "60": 1147,
+            "70": 263,
+            "80": 305,
+            "90": 253,
+            "100": 251,
+            "110": 250,
+            "120": 238,
+            "130": 2218
+          }
+        },
+        "schedule_up": {
+          "n_rhs": 4961,
+          "wall_s": 0.8802719000086654,
+          "gravity_wall_s": 0.4312198,
+          "mean_active_degree": 107.20943358193912,
+          "mean_degree_squared": 12547.596855472688,
+          "rms_active_degree": 112.01605623959757,
+          "min_active_degree": 60,
+          "max_active_degree": 138,
+          "degree_counts": {
+            "60": 899,
+            "70": 488,
+            "80": 313,
+            "90": 181,
+            "100": 348,
+            "110": 281,
+            "130": 189,
+            "138": 2262
+          }
+        }
+      },
+      "reference_self_convergence": {
+        "N300_minus_N600": {
+          "pos_rms_m": 0.19582670613000466,
+          "pos_max_m": 0.3922655693765463,
+          "pos_final_m": 0.05936301959637989,
+          "vel_rms_m_s": 0.000138698607030624,
+          "vel_max_m_s": 0.00022926215829229083,
+          "vel_final_m_s": 4.172554754976487e-05,
+          "ric_rms_m": {
+            "radial": 0.05667664840662041,
+            "in_track": 0.1873154817955354,
+            "cross_track": 0.0069833114513081045
+          },
+          "ric_max_m": {
+            "radial": 0.10738934568386227,
+            "in_track": 0.3922422051683323,
+            "cross_track": 0.010666330147502436
+          },
+          "ric_final_m": {
+            "radial": -0.014497184721083667,
+            "in_track": 0.057280978524510404,
+            "cross_track": -0.005717449609532
+          }
+        },
+        "N600_minus_N900": {
+          "pos_rms_m": 0.0027049692769933777,
+          "pos_max_m": 0.0051613168702417025,
+          "pos_final_m": 0.005121283006565403,
+          "vel_rms_m_s": 2.309423058958566e-06,
+          "vel_max_m_s": 4.616824739876366e-06,
+          "vel_final_m_s": 4.616824739876366e-06,
+          "ric_rms_m": {
+            "radial": 0.0003783846269667017,
+            "in_track": 0.002678114840567085,
+            "cross_track": 3.7212421147835846e-05
+          },
+          "ric_max_m": {
+            "radial": 0.000722423235480231,
+            "in_track": 0.005160389435327263,
+            "cross_track": 6.94246334690712e-05
+          },
+          "ric_final_m": {
+            "radial": -3.1645471672438804e-05,
+            "in_track": -0.005121181616255752,
+            "cross_track": 6.086935380195644e-06
+          }
+        },
+        "N300_minus_N900": {
+          "pos_rms_m": 0.19745892246766672,
+          "pos_max_m": 0.3952273757654935,
+          "pos_final_m": 0.054445853684515995,
+          "vel_rms_m_s": 0.00014040851842399746,
+          "vel_max_m_s": 0.00023176037010276882,
+          "vel_final_m_s": 4.512051546267515e-05,
+          "ric_rms_m": {
+            "radial": 0.05653904953612978,
+            "in_track": 0.18906124722207665,
+            "cross_track": 0.007014751490672526
+          },
+          "ric_max_m": {
+            "radial": 0.10683324579399966,
+            "in_track": 0.3952002495497079,
+            "cross_track": 0.010689771534382823
+          },
+          "ric_final_m": {
+            "radial": -0.014528830026858773,
+            "in_track": 0.05215979695021594,
+            "cross_track": -0.005711362674407427
+          }
+        }
+      },
+      "policy_errors_vs_N900": {
+        "fixed_N194_critical": {
+          "pos_rms_m": 2.1873352563776502,
+          "pos_max_m": 3.3315121124445435,
+          "pos_final_m": 1.4010391515919214,
+          "vel_rms_m_s": 0.0017689253170754822,
+          "vel_max_m_s": 0.0031626417792810285,
+          "vel_final_m_s": 0.0031626417792810285,
+          "ric_rms_m": {
+            "radial": 0.4010253727229027,
+            "in_track": 1.1724442009550995,
+            "cross_track": 1.8024951511368612
+          },
+          "ric_max_m": {
+            "radial": 0.7699820344941812,
+            "in_track": 2.577911002841048,
+            "cross_track": 3.3061689818987525
+          },
+          "ric_final_m": {
+            "radial": -0.2848774547605685,
+            "in_track": 1.269787868284106,
+            "cross_track": -0.5190320892016774
+          }
+        },
+        "schedule_down": {
+          "pos_rms_m": 8.63732691608117,
+          "pos_max_m": 14.102760658091004,
+          "pos_final_m": 5.034028140523563,
+          "vel_rms_m_s": 0.006460009613523949,
+          "vel_max_m_s": 0.010483481214878474,
+          "vel_final_m_s": 0.007781811575761154,
+          "ric_rms_m": {
+            "radial": 2.263101797381702,
+            "in_track": 6.304612559339559,
+            "cross_track": 5.452856772973762
+          },
+          "ric_max_m": {
+            "radial": 4.13480736199483,
+            "in_track": 12.40332880315859,
+            "cross_track": 9.697513975084979
+          },
+          "ric_final_m": {
+            "radial": 0.800044265124217,
+            "in_track": 4.6464598045609415,
+            "cross_track": -1.7640237464457431
+          }
+        },
+        "schedule_up": {
+          "pos_rms_m": 10.989754387635863,
+          "pos_max_m": 14.878111875548669,
+          "pos_final_m": 12.024015124063752,
+          "vel_rms_m_s": 0.007834260127885975,
+          "vel_max_m_s": 0.011924481901396293,
+          "vel_final_m_s": 0.011924481901396293,
+          "ric_rms_m": {
+            "radial": 3.3819698696751326,
+            "in_track": 8.430110318666175,
+            "cross_track": 6.186293018948369
+          },
+          "ric_max_m": {
+            "radial": 5.823440933909685,
+            "in_track": 14.770855006985624,
+            "cross_track": 11.20976980460527
+          },
+          "ric_final_m": {
+            "radial": -0.9737318919427604,
+            "in_track": 11.752975382014341,
+            "cross_track": -2.3444307573678342
+          }
+        }
+      },
+      "acceptance": {
+        "absolute_limit_m": 5.0,
+        "policy_fraction_limit": 0.05,
+        "smallest_policy_rms_m": 2.1873352563776502,
+        "effective_rms_limit_m": 0.10936676281888252,
+        "N600_to_N900_rms_m": 0.0027049692769933777,
+        "N600_to_N900_fraction_of_each_policy": {
+          "fixed_N194_critical": 0.0012366505176133623,
+          "schedule_down": 0.00031317203844133824,
+          "schedule_up": 0.00024613555331469753
+        },
+        "N600_to_N900_in_track_fraction": 0.9900721843110388,
+        "passes": true
+      }
+    }
+  ]
+}

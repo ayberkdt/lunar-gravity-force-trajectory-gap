@@ -1,0 +1,114 @@
+{
+  "schema": "r10_trajectory_result_v1",
+  "created_utc": "2026-07-22T17:25:47.937987Z",
+  "config": {
+    "schema": "r10_trajectory_config_v1",
+    "protocol_sha256": "ebed6ac042e85fd1399b931bc849fb78a9f167cfc343f2165dde2e254d32e691",
+    "design_sha256": "ce8a845c2fcf4a73893ecf5a10e9a875d113d2eee2bf71008142fb7f7afba130",
+    "sobol_seed": 20260723,
+    "sobol_index": 13,
+    "original_sobol_coordinates": [
+      0.8814231939613819,
+      0.3251114347949624,
+      0.059738810174167156,
+      0.6338283009827137,
+      0.24696654733270407
+    ],
+    "initial_state_si": [
+      35364.55794661941,
+      1855233.3768142364,
+      -260529.10365650512,
+      -1641.518581226825,
+      2.387148608697341,
+      -205.82292135268185
+    ],
+    "truth_degree_rule_result": 300,
+    "policy": "fixed_critical",
+    "policy_spec": {
+      "kind": "fixed_critical",
+      "degree": 81,
+      "definition": "unquantized empirical Nmin at own perilune, cap 250"
+    },
+    "duration_s": 604800.0,
+    "output_step_s": 120.0,
+    "integrator": "InstrumentedDOP853",
+    "rtol": 1e-12,
+    "atol": 1e-05,
+    "atol_kind": "scalar",
+    "max_step_s": null,
+    "surface_event": "norm(r)-r_ref downward terminal",
+    "timing_comparable": true,
+    "source": {
+      "lunaris_repo": "D:\\Masaustu\\LUNAR_SIMULATION",
+      "lunaris_commit": "27e9ab86ed61d623f78c453ea2054348f1044c23",
+      "lunaris_working_tree_clean": true,
+      "release_tag": "paper-truncation-v1.0",
+      "kernel_path": "D:\\Masaustu\\LUNAR_SIMULATION\\src\\lunaris\\physics\\spherical_harmonics.py",
+      "kernel_sha256": "6e2a0a85e18c9b400c003e6c2ad1e163c524c27f54bc0d404e0172709d16d740",
+      "gravity_path": "D:\\Masaustu\\LUNAR_SIMULATION\\data\\gravity_models\\jggrx_1800f_sha.tab.txt",
+      "gravity_sha256": "d2a552067a78bf1d2755807ae14ee1d6843a8f6a4228e01ce59a665516738fec",
+      "experiment_script": "C:\\Users\\ayber\\Desktop\\Makale\\codebase\\python_codes\\rev10_sobol_confirmatory.py",
+      "experiment_script_sha256": "e483912446449f0086be062844fe3e8070ed8868a4ecd9c15d17ccdf38fb6b25",
+      "python": "3.10.20 (main, Jun  2 2026, 22:31:55) [MSC v.1944 64 bit (AMD64)]",
+      "numpy": "2.2.6",
+      "scipy": "1.15.3",
+      "platform": "Windows-10-10.0.26200-SP0",
+      "processor": "Intel64 Family 6 Model 158 Stepping 10, GenuineIntel",
+      "logical_cpu_count": 12
+    }
+  },
+  "config_sha256": "c306f10610594f4d78403f0aa9c113ca874f4a262758b9a20e000a2f5106ca90",
+  "status": "complete",
+  "event": null,
+  "failure_message": null,
+  "telemetry": {
+    "n_rhs": 67478,
+    "n_accepted_steps": 3744,
+    "n_attempted_steps": 4687,
+    "n_rejected_trials": 943,
+    "switch_count_at_rhs_samples": 0,
+    "degree_counts": {
+      "81": 67478
+    },
+    "degree_range": [
+      81,
+      81
+    ],
+    "mean_degree": 81.0,
+    "mean_degree_sq": 6561.0,
+    "gravity_kernel_ns": 2105281500,
+    "process_cpu_ns": 3156250000,
+    "total_wall_ns": 3162571700
+  },
+  "raw_path": "metrics\\r10_raw\\baseline\\sobolA_013\\fixed_critical_baseline.npz",
+  "raw_sha256": "64930fe069dd741b71c5d51c7c6b5900071dfe85024b214338ed0529e1531acc",
+  "n_output_epochs": 5041,
+  "last_output_epoch_s": 604800.0,
+  "error_against_truth": {
+    "pos_rms_m": 25.374697465919578,
+    "pos_max_m": 51.78069101708729,
+    "pos_final_m": 49.87137634766697,
+    "vel_rms_m_s": 0.020363416599416,
+    "vel_max_m_s": 0.04223364589485572,
+    "vel_final_m_s": 0.038241842301437574,
+    "ric_rms_m": {
+      "radial": 0.8147821486082841,
+      "in_track": 25.340091363301347,
+      "cross_track": 1.0445914209849392
+    },
+    "ric_max_m": {
+      "radial": 1.5267040054176424,
+      "in_track": 51.75632899037595,
+      "cross_track": 1.871362911327048
+    },
+    "ric_final_m": {
+      "radial": -1.1501826800752273,
+      "in_track": 49.84399671485589,
+      "cross_track": 1.1862757278664944
+    },
+    "common_epoch_count": 5041,
+    "common_arc_end_s": 604800.0,
+    "in_track_fraction": 0.9986361964447178
+  },
+  "error_scope": "full_seven_day"
+}

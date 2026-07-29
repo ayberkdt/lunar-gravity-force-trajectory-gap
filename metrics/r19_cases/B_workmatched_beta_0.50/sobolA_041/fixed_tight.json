@@ -1,0 +1,62 @@
+{
+  "schema": "r19_equal_total_work_v1",
+  "created_utc": "2026-07-28T19:33:55.017554Z",
+  "config": {
+    "sobol_index": 41,
+    "design": "B",
+    "beta": 0.5,
+    "policy": "constant degree matched on realized total quadratic work",
+    "matched_to": "span-sweep member k=0.50",
+    "degree": 99,
+    "target_total_quadratic_work": 1548699812.0,
+    "constant_endpoint_degree": 70,
+    "constant_endpoint_total_work": 775758200.0,
+    "first_estimate_rule": "N* = round(N_0 * sqrt(W_k / W_0)); the achieved ratio is measured, not assumed",
+    "adopted_truth_degree": 300,
+    "initial_state_si": [
+      -1333392.8557212236,
+      -1275653.0611797487,
+      -45322.34289477832,
+      1028.7428771861082,
+      -1046.5566630280691,
+      -809.2077677753741
+    ],
+    "duration_s": 604800.0,
+    "output_step_s": 120.0,
+    "integrator": "InstrumentedDOP853",
+    "max_step_s": 60.0,
+    "atol_kind": "vector",
+    "timing_comparable": false,
+    "source": {
+      "driver": "rev19_equal_total_work.py",
+      "reuses": "r18_span_sweep_B_beta_0.50.json (realized work), r14_trajectory_B_beta_0.50.json, r11 truths",
+      "lunaris_commit": "27e9ab86ed61d623f78c453ea2054348f1044c23"
+    }
+  },
+  "config_sha256": "ffe87bdc721bef16d56602b864436a67b7c21030810525f6e0c7b2e7977bc412",
+  "status": "ok",
+  "event": null,
+  "telemetry": {
+    "n_rhs": 164192,
+    "n_accepted_steps": 10598,
+    "n_attempted_steps": 11033,
+    "n_rejected_trials": 435,
+    "switch_count_at_rhs_samples": 0,
+    "degree_counts": {
+      "99": 164192
+    },
+    "degree_range": [
+      99,
+      99
+    ],
+    "mean_degree": 99.0,
+    "mean_degree_sq": 9801.0,
+    "gravity_kernel_ns": 40166300200,
+    "process_cpu_ns": 34375000000,
+    "total_wall_ns": 61030202300
+  },
+  "raw_path": "metrics\\r19_raw\\B_workmatched_beta_0.50\\sobolA_041\\fixed_tight.npz",
+  "raw_sha256": "be20123888284fce5ffd4ad0350252edc828c51ff79149fdf327e83c511765d7",
+  "n_output_epochs": 5041,
+  "last_output_epoch_s": 604800.0
+}

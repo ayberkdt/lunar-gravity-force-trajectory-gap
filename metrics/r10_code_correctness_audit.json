@@ -1,0 +1,178 @@
+{
+  "schema": "r10_code_correctness_audit_v1",
+  "audit_type": "non-propagating independent recomputation and metamorphic audit",
+  "new_trajectory_propagations": 0,
+  "formal_trajectory_artifacts_checked": 536,
+  "checks_passed": 11,
+  "checks_total": 11,
+  "critical_failures": [],
+  "advisory_failures": [],
+  "overall_status": "PASS",
+  "checks": [
+    {
+      "id": "formal_trajectory_sidecar_hash_and_shape_contract",
+      "severity_if_failed": "critical",
+      "passed": true,
+      "details": {
+        "formal_sidecars": 536,
+        "expected": 536,
+        "failures": [],
+        "unique_kernel_hashes": [
+          "6e2a0a85e18c9b400c003e6c2ad1e163c524c27f54bc0d404e0172709d16d740"
+        ],
+        "unique_gravity_hashes": [
+          "d2a552067a78bf1d2755807ae14ee1d6843a8f6a4228e01ce59a665516738fec"
+        ]
+      }
+    },
+    {
+      "id": "independent_sobol_and_initial_state_reconstruction",
+      "severity_if_failed": "critical",
+      "passed": true,
+      "details": {
+        "orbits_reconstructed": 128,
+        "maximum_state_component_error_si": 2.3283064365386963e-10,
+        "maximum_perilune_longitude_error_deg": 5.684341886080802e-14,
+        "failures": []
+      }
+    },
+    {
+      "id": "independent_degree_telemetry_and_comparator_reconstruction",
+      "severity_if_failed": "critical",
+      "passed": true,
+      "details": {
+        "orbits": 64,
+        "maximum_mean_N2_absolute_error": 0.0,
+        "failures": []
+      }
+    },
+    {
+      "id": "independent_raw_metric_and_aggregate_recomputation",
+      "severity_if_failed": "critical",
+      "passed": true,
+      "details": {
+        "policy_truth_metric_pairs": 640,
+        "maximum_metric_absolute_error": 4.547473508864641e-13,
+        "maximum_metric_relative_error": 4.159634280565738e-13,
+        "metric_failures": [],
+        "summary_failures": [],
+        "recomputed": {
+          "raw_work_wins": 7,
+          "raw_critical_wins": 2,
+          "rho_work_median": 0.2859162708621043,
+          "rho_critical_median": 0.0727472708245849,
+          "gravity_saving_median": 0.23675693511679857
+        }
+      }
+    },
+    {
+      "id": "independent_extended_truth_audit_and_merged_population_recomputation",
+      "severity_if_failed": "critical",
+      "passed": true,
+      "details": {
+        "extended_indices": [
+          11,
+          35,
+          43,
+          52
+        ],
+        "extended_adopted_N900": [
+          11,
+          35,
+          43,
+          52
+        ],
+        "merged_raw_work_wins": 7,
+        "merged_raw_critical_wins": 2,
+        "merged_rho_work_median": 0.2859162708621043,
+        "merged_rho_critical_median": 0.0727472708245849,
+        "new_contested_indices": [],
+        "failures": []
+      }
+    },
+    {
+      "id": "independent_selective_convergence_recomputation",
+      "severity_if_failed": "critical",
+      "passed": true,
+      "details": {
+        "orbits": 17,
+        "comparisons": 34,
+        "maximum_absolute_metric_error": 2.2737367544323206e-13,
+        "counts": {
+          "fixed_work": {
+            "schedule": 7,
+            "fixed": 9,
+            "unresolved": 1
+          },
+          "fixed_critical": {
+            "schedule": 0,
+            "fixed": 17,
+            "unresolved": 0
+          }
+        },
+        "failures": []
+      }
+    },
+    {
+      "id": "independent_blend_convergence_recomputation",
+      "severity_if_failed": "critical",
+      "passed": true,
+      "details": {
+        "truth_self_difference_m": 64.01864484757103,
+        "baseline_gap_m": 146.55533462865446,
+        "resolution_threshold_m": 154.45601201519844,
+        "resolved": false,
+        "failures": []
+      }
+    },
+    {
+      "id": "instantaneous_point_mass_kernel_and_potential_identities",
+      "severity_if_failed": "critical",
+      "passed": true,
+      "details": {
+        "maximum_N0_point_mass_relative_error": 3.6084612590092234e-16,
+        "maximum_fixed_kernel_vs_potential_acceleration_relative_error": 3.764956120562311e-15,
+        "maximum_finite_difference_potential_gradient_relative_error": 1.5523134669935545e-09
+      }
+    },
+    {
+      "id": "corrected_blend_is_gradient_of_blended_potential",
+      "severity_if_failed": "critical",
+      "passed": true,
+      "details": {
+        "transition_altitudes_tested_km": [
+          60.0,
+          125.0,
+          190.0
+        ],
+        "maximum_relative_error": 4.125429244303769e-09
+      }
+    },
+    {
+      "id": "body_inertial_rotation_and_RIC_orthonormality",
+      "severity_if_failed": "critical",
+      "passed": true,
+      "details": {
+        "maximum_frame_covariance_relative_error": 3.9012195181211734e-16,
+        "maximum_RIC_orthonormality_error": 3.3306690738754696e-16
+      }
+    },
+    {
+      "id": "archived_external_kernel_and_trajectory_cross_validation",
+      "severity_if_failed": "critical",
+      "passed": true,
+      "details": {
+        "scope_note": "The audit separately confirmed by git diff that spherical_harmonics.py is unchanged between the R3 validation commit and the R10 release commit.",
+        "SHTOOLS_maximum_acceleration_relative_error": 1.9484392084895293e-13,
+        "Tudat_run_count": 5,
+        "Tudat_maximum_position_difference_m": 0.0008309527529599533,
+        "Tudat_maximum_acceleration_relative_error": 2.051405675055192e-13
+      }
+    }
+  ],
+  "limitations": [
+    "Instantaneous metamorphic checks exercise the production gravity kernel; they are not a second full propagator.",
+    "The archived Tudat and SHTOOLS comparisons are independent implementations but use the same public gravity coefficients and physical contract.",
+    "No finite validation suite can prove the absence of every software defect."
+  ]
+}

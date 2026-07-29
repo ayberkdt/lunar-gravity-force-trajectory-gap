@@ -1,0 +1,80 @@
+{
+  "schema": "r13_timing_match_trajectory_v1",
+  "created_utc": "2026-07-25T11:16:14.905946Z",
+  "config": {
+    "design": "A",
+    "sobol_index": 3,
+    "adopted_truth_degree": 300,
+    "initial_state_si": [
+      1628224.5719074158,
+      566856.0069452985,
+      474692.12854232604,
+      -518.241725081992,
+      1609.4344008625035,
+      -144.31173981647862
+    ],
+    "policy": "fixed_time_matched",
+    "level": "tight",
+    "policy_spec": {
+      "kind": "fixed_measured_cost_matched",
+      "degree": 237,
+      "source": "c^{-1} of the call-weighted mean per-call kernel cost of the tight Atallah degree history",
+      "cost_curve": "r12_kernel_cost_curve.json"
+    },
+    "n_work_proxy": 251,
+    "duration_s": 604800.0,
+    "output_step_s": 120.0,
+    "integrator": "InstrumentedDOP853",
+    "max_step_s": 60.0,
+    "atol_kind": "vector",
+    "rtol": 1e-12,
+    "atol_position_m": 1e-05,
+    "atol_velocity_m_s": 1e-08,
+    "timing_comparable": true,
+    "timing_note": "run serially on an otherwise idle machine so kernel times are comparable with the archived Atallah runs",
+    "source": {
+      "lunaris_repo": "D:\\Masaustu\\LUNAR_SIMULATION",
+      "lunaris_commit": "27e9ab86ed61d623f78c453ea2054348f1044c23",
+      "lunaris_working_tree_clean": true,
+      "release_tag": "paper-truncation-v1.0",
+      "kernel_path": "D:\\Masaustu\\LUNAR_SIMULATION\\src\\lunaris\\physics\\spherical_harmonics.py",
+      "kernel_sha256": "6e2a0a85e18c9b400c003e6c2ad1e163c524c27f54bc0d404e0172709d16d740",
+      "gravity_path": "D:\\Masaustu\\LUNAR_SIMULATION\\data\\gravity_models\\jggrx_1800f_sha.tab.txt",
+      "gravity_sha256": "d2a552067a78bf1d2755807ae14ee1d6843a8f6a4228e01ce59a665516738fec",
+      "experiment_script": "C:\\Users\\ayber\\Desktop\\Makale\\codebase\\python_codes\\rev10_sobol_confirmatory.py",
+      "experiment_script_sha256": "e483912446449f0086be062844fe3e8070ed8868a4ecd9c15d17ccdf38fb6b25",
+      "python": "3.10.20 (main, Jun  2 2026, 22:31:55) [MSC v.1944 64 bit (AMD64)]",
+      "numpy": "2.2.6",
+      "scipy": "1.15.3",
+      "platform": "Windows-10-10.0.26200-SP0",
+      "processor": "Intel64 Family 6 Model 158 Stepping 10, GenuineIntel",
+      "logical_cpu_count": 12
+    }
+  },
+  "config_sha256": "5555ce2d52b5e66d0ef1029a99e8394466fc3e356447f1356363859a1ba46a5d",
+  "status": "complete",
+  "event": null,
+  "telemetry": {
+    "n_rhs": 223139,
+    "n_accepted_steps": 13571,
+    "n_attempted_steps": 15202,
+    "n_rejected_trials": 1631,
+    "switch_count_at_rhs_samples": 0,
+    "degree_counts": {
+      "237": 223139
+    },
+    "degree_range": [
+      237,
+      237
+    ],
+    "mean_degree": 237.0,
+    "mean_degree_sq": 56169.0,
+    "gravity_kernel_ns": 63785282900,
+    "process_cpu_ns": 70000000000,
+    "total_wall_ns": 71379296500
+  },
+  "raw_path": "metrics\\r13_raw\\timing_match\\A\\sobolA_003\\fixed_time_tight.npz",
+  "raw_sha256": "1c197f9f9b79d478705edf5243e6435f6b83fa83f03423e92fda3497ddcd9109",
+  "n_output_epochs": 5041,
+  "last_output_epoch_s": 604800.0
+}

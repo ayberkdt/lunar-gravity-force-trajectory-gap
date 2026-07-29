@@ -1,0 +1,90 @@
+{
+  "schema": "r11_full_convergence_result_v1",
+  "created_utc": "2026-07-23T23:51:14.796499Z",
+  "config": {
+    "schema": "r11_full_convergence_config_v1",
+    "protocol_sha256": "ebed6ac042e85fd1399b931bc849fb78a9f167cfc343f2165dde2e254d32e691",
+    "corrected_baseline_sha256": "7b529d3701dde15311e3fab9fed40082ccb5ba15df742cdbf1d71f2245f2fc83",
+    "script_sha256": "81f78c8a6aa06d48a14efc64417f6380203b18480b7eb10b16b04f80d752f7a1",
+    "sobol_index": 22,
+    "initial_state_si": [
+      932135.5432558996,
+      -530118.8256650704,
+      -1490197.4374844483,
+      403.1934288141112,
+      1619.5244638204638,
+      -323.92317215788
+    ],
+    "adopted_truth_degree": 300,
+    "original_truth_degree": 300,
+    "policy": "schedule_empirical",
+    "policy_spec": {
+      "kind": "altitude_lookup_emp",
+      "lookup_source_degree": 300
+    },
+    "level": "tighter",
+    "duration_s": 604800.0,
+    "output_step_s": 120.0,
+    "integrator": "InstrumentedDOP853",
+    "rtol": 1e-13,
+    "atol_kind": "vector",
+    "atol_position_m": 1e-06,
+    "atol_velocity_m_s": 1e-09,
+    "max_step_s": 60.0,
+    "timing_comparable": false,
+    "execution": "parallel_process_pool",
+    "timing_note": "wall clocks are not comparable under parallel execution; manuscript cost claims use the serial R10 baseline",
+    "surface_event": "norm(r)-r_ref downward terminal",
+    "source": {
+      "lunaris_repo": "D:\\Masaustu\\LUNAR_SIMULATION",
+      "lunaris_commit": "27e9ab86ed61d623f78c453ea2054348f1044c23",
+      "lunaris_working_tree_clean": true,
+      "release_tag": "paper-truncation-v1.0",
+      "kernel_path": "D:\\Masaustu\\LUNAR_SIMULATION\\src\\lunaris\\physics\\spherical_harmonics.py",
+      "kernel_sha256": "6e2a0a85e18c9b400c003e6c2ad1e163c524c27f54bc0d404e0172709d16d740",
+      "gravity_path": "D:\\Masaustu\\LUNAR_SIMULATION\\data\\gravity_models\\jggrx_1800f_sha.tab.txt",
+      "gravity_sha256": "d2a552067a78bf1d2755807ae14ee1d6843a8f6a4228e01ce59a665516738fec",
+      "experiment_script": "C:\\Users\\ayber\\Desktop\\Makale\\codebase\\python_codes\\rev10_sobol_confirmatory.py",
+      "experiment_script_sha256": "e483912446449f0086be062844fe3e8070ed8868a4ecd9c15d17ccdf38fb6b25",
+      "python": "3.10.20 (main, Jun  2 2026, 22:31:55) [MSC v.1944 64 bit (AMD64)]",
+      "numpy": "2.2.6",
+      "scipy": "1.15.3",
+      "platform": "Windows-10-10.0.26200-SP0",
+      "processor": "Intel64 Family 6 Model 158 Stepping 10, GenuineIntel",
+      "logical_cpu_count": 12
+    }
+  },
+  "config_sha256": "c5a8e3694c0d2befb0d9ed7b9f2c187ffb0876eef346df6457ef3f985f5c31d6",
+  "status": "complete",
+  "event": null,
+  "failure_message": null,
+  "telemetry": {
+    "n_rhs": 357536,
+    "n_accepted_steps": 16854,
+    "n_attempted_steps": 25581,
+    "n_rejected_trials": 8727,
+    "switch_count_at_rhs_samples": 19819,
+    "degree_counts": {
+      "110": 41973,
+      "100": 47169,
+      "90": 48246,
+      "80": 39505,
+      "70": 46530,
+      "60": 124171,
+      "130": 9942
+    },
+    "degree_range": [
+      60,
+      130
+    ],
+    "mean_degree": 80.65282936543453,
+    "mean_degree_sq": 6897.823715653808,
+    "gravity_kernel_ns": 17460200500,
+    "process_cpu_ns": 27000000000,
+    "total_wall_ns": 27149312500
+  },
+  "raw_path": "metrics\\r11_raw\\convergence\\sobolA_022\\schedule_empirical_tighter.npz",
+  "raw_sha256": "8a69e5bc8b958d6087fa808f5362523436b014fa37054a6c53d8c1556b12dbb7",
+  "n_output_epochs": 5041,
+  "last_output_epoch_s": 604800.0
+}

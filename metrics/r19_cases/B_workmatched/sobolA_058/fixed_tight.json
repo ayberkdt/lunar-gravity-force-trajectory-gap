@@ -1,0 +1,62 @@
+{
+  "schema": "r19_equal_total_work_v1",
+  "created_utc": "2026-07-27T21:53:01.254722Z",
+  "config": {
+    "sobol_index": 58,
+    "design": "B",
+    "beta": 1.0,
+    "policy": "constant degree matched on realized total quadratic work",
+    "matched_to": "span-sweep member k=0.50",
+    "degree": 77,
+    "target_total_quadratic_work": 905387126.0,
+    "constant_endpoint_degree": 76,
+    "constant_endpoint_total_work": 879684800.0,
+    "first_estimate_rule": "N* = round(N_0 * sqrt(W_k / W_0)); the achieved ratio is measured, not assumed",
+    "adopted_truth_degree": 300,
+    "initial_state_si": [
+      -1620764.4779050034,
+      -794149.8615753417,
+      -543797.2888019385,
+      -749.2304064369773,
+      1509.0010861988749,
+      29.33634485867202
+    ],
+    "duration_s": 604800.0,
+    "output_step_s": 120.0,
+    "integrator": "InstrumentedDOP853",
+    "max_step_s": 60.0,
+    "atol_kind": "vector",
+    "timing_comparable": false,
+    "source": {
+      "driver": "rev19_equal_total_work.py",
+      "reuses": "r18_span_sweep_B_beta_1.00.json (realized work), r14_trajectory_B_beta_1.00.json, r11 truths",
+      "lunaris_commit": "27e9ab86ed61d623f78c453ea2054348f1044c23"
+    }
+  },
+  "config_sha256": "5ddd53f7cbf773677740ec8e84a6bf7d9418c4db15d7c56a71a62c2225ac278d",
+  "status": "ok",
+  "event": null,
+  "telemetry": {
+    "n_rhs": 152366,
+    "n_accepted_steps": 10132,
+    "n_attempted_steps": 10164,
+    "n_rejected_trials": 32,
+    "switch_count_at_rhs_samples": 0,
+    "degree_counts": {
+      "77": 152366
+    },
+    "degree_range": [
+      77,
+      77
+    ],
+    "mean_degree": 77.0,
+    "mean_degree_sq": 5929.0,
+    "gravity_kernel_ns": 14833063500,
+    "process_cpu_ns": 20265625000,
+    "total_wall_ns": 25992179700
+  },
+  "raw_path": "metrics\\r19_raw\\B_workmatched\\sobolA_058\\fixed_tight.npz",
+  "raw_sha256": "efc1f7cabbe21c38808e98aa57d41a9e41de67b424cb9c43c69a96ef1184fb5e",
+  "n_output_epochs": 5041,
+  "last_output_epoch_s": 604800.0
+}

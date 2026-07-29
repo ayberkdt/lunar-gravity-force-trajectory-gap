@@ -1,0 +1,315 @@
+{
+  "schema": "r11_geometric_verification_v1",
+  "created_utc": "2026-07-23T21:10:10.952823Z",
+  "smoke": true,
+  "hamiltonian": "H = |p|^2/2 - w.(q x p) - U(q); rotating-frame Jacobi integral of the production dynamics",
+  "splitting": "A drift / B kick / C exact rotation, symmetric composition",
+  "composition": {
+    "order_4_weights": [
+      1.3512071919596578,
+      -1.7024143839193155,
+      1.3512071919596578
+    ],
+    "order_6_weights": [
+      1.5872249277222432,
+      -1.9997780973551231,
+      1.5872249277222432,
+      -1.8232426634848289,
+      2.2971418107909307,
+      -1.8232426634848289,
+      1.5872249277222432,
+      -1.9997780973551231,
+      1.5872249277222432
+    ]
+  },
+  "omega_moon_rad_s": 2.6616995272150692e-06,
+  "duration_s": 43200.0,
+  "output_step_s": 120.0,
+  "reference_integrator": {
+    "method": "DOP853",
+    "rtol": 1e-13,
+    "atol_position_m": 1e-06,
+    "atol_velocity_m_s": 1e-09,
+    "max_step_s": 60.0
+  },
+  "cases": {
+    "c1_circ100_polar": {
+      "geometry": {
+        "hp_km": 100.0,
+        "ha_km": 100.0,
+        "incl_deg": 90.0,
+        "argp_deg": 0.0
+      },
+      "fixed_degree": 120,
+      "dop853_reference": {
+        "telemetry": {
+          "n_rhs": 21002,
+          "n_accepted_steps": 1264,
+          "n_attempted_steps": 1434,
+          "n_rejected_trials": 170,
+          "switch_count_at_rhs_samples": 0,
+          "degree_counts": {
+            "120": 21002
+          },
+          "degree_range": [
+            120,
+            120
+          ],
+          "mean_degree": 120.0,
+          "mean_degree_sq": 14400.0,
+          "gravity_kernel_ns": 2301457100,
+          "process_cpu_ns": 3093750000,
+          "total_wall_ns": 3122974200
+        },
+        "status": "complete",
+        "jacobi": {
+          "H0_m2_s2": -1334094.738782615,
+          "max_abs_relative_drift": 1.1342270598318151e-11,
+          "final_relative_drift": 6.8945437757587096e-12,
+          "std_relative": 3.5197631630938464e-12,
+          "mean_relative": 5.316914355975423e-12,
+          "secular_fraction": 0.4687698384452072
+        }
+      },
+      "symplectic_fixed_degree": [
+        {
+          "order": 4,
+          "step_s": 20.0,
+          "telemetry": {
+            "n_force_evaluations": 12960,
+            "n_steps": 2160,
+            "order": 4,
+            "step_s": 20.0,
+            "switch_count_at_force_samples": 0,
+            "mean_degree_sq": 14400.0,
+            "total_wall_ns": 1500605000
+          },
+          "jacobi": {
+            "H0_m2_s2": -1334094.738782615,
+            "max_abs_relative_drift": 8.15269949642026e-09,
+            "final_relative_drift": 4.721646409760215e-10,
+            "std_relative": 1.8900122404718708e-09,
+            "mean_relative": 1.5992051780665742e-09,
+            "secular_fraction": 0.1961565219923491
+          },
+          "position_rms_vs_dop853_m": 3.6779251524197543,
+          "position_max_vs_dop853_m": 6.242545016654638
+        },
+        {
+          "order": 4,
+          "step_s": 10.0,
+          "telemetry": {
+            "n_force_evaluations": 25920,
+            "n_steps": 4320,
+            "order": 4,
+            "step_s": 10.0,
+            "switch_count_at_force_samples": 0,
+            "mean_degree_sq": 14400.0,
+            "total_wall_ns": 3139646200
+          },
+          "jacobi": {
+            "H0_m2_s2": -1334094.738782615,
+            "max_abs_relative_drift": 5.066225253725738e-10,
+            "final_relative_drift": 2.735984642910814e-11,
+            "std_relative": 1.1724846125876504e-10,
+            "mean_relative": 9.864136150032784e-11,
+            "secular_fraction": 0.19470386048821317
+          },
+          "position_rms_vs_dop853_m": 0.23017500210361994,
+          "position_max_vs_dop853_m": 0.3907694551832315
+        },
+        {
+          "order": 6,
+          "step_s": 20.0,
+          "telemetry": {
+            "n_force_evaluations": 38880,
+            "n_steps": 2160,
+            "order": 6,
+            "step_s": 20.0,
+            "switch_count_at_force_samples": 0,
+            "mean_degree_sq": 14400.0,
+            "total_wall_ns": 4719499500
+          },
+          "jacobi": {
+            "H0_m2_s2": -1334094.738782615,
+            "max_abs_relative_drift": 5.550989954870813e-10,
+            "final_relative_drift": 4.368109283754198e-11,
+            "std_relative": 1.133665322432139e-10,
+            "mean_relative": 4.3142046863523734e-11,
+            "secular_fraction": 0.07771955491590828
+          },
+          "position_rms_vs_dop853_m": 0.002869459303935929,
+          "position_max_vs_dop853_m": 0.0048593054901790314
+        },
+        {
+          "order": 6,
+          "step_s": 10.0,
+          "telemetry": {
+            "n_force_evaluations": 77760,
+            "n_steps": 4320,
+            "order": 6,
+            "step_s": 10.0,
+            "switch_count_at_force_samples": 0,
+            "mean_degree_sq": 14400.0,
+            "total_wall_ns": 9181184300
+          },
+          "jacobi": {
+            "H0_m2_s2": -1334094.738782615,
+            "max_abs_relative_drift": 9.757773371635115e-12,
+            "final_relative_drift": 2.030404310522132e-12,
+            "std_relative": 1.871998562472197e-12,
+            "mean_relative": 1.3506678845438473e-12,
+            "secular_fraction": 0.1384196817349853
+          },
+          "position_rms_vs_dop853_m": 0.00020133778339151371,
+          "position_max_vs_dop853_m": 0.00041105009907692087
+        }
+      ],
+      "symplectic_switching_schedule": [
+        {
+          "order": 4,
+          "step_s": 20.0,
+          "telemetry": {
+            "n_force_evaluations": 12960,
+            "n_steps": 2160,
+            "order": 4,
+            "step_s": 20.0,
+            "switch_count_at_force_samples": 12,
+            "mean_degree_sq": 12038.425925925925,
+            "total_wall_ns": 1358314800
+          },
+          "jacobi": {
+            "H0_m2_s2": -1334094.7432016525,
+            "max_abs_relative_drift": 2.5035124511807584e-08,
+            "final_relative_drift": 2.053991130482063e-08,
+            "std_relative": 4.763912874159493e-09,
+            "mean_relative": 3.808527180542253e-09,
+            "secular_fraction": 0.15212735126386118
+          },
+          "distinct_degrees": [
+            100,
+            110
+          ]
+        },
+        {
+          "order": 4,
+          "step_s": 10.0,
+          "telemetry": {
+            "n_force_evaluations": 25920,
+            "n_steps": 4320,
+            "order": 4,
+            "step_s": 10.0,
+            "switch_count_at_force_samples": 8,
+            "mean_degree_sq": 12038.912037037036,
+            "total_wall_ns": 2735041500
+          },
+          "jacobi": {
+            "H0_m2_s2": -1334094.7432016525,
+            "max_abs_relative_drift": 1.804109600917651e-08,
+            "final_relative_drift": 1.7761368112273242e-08,
+            "std_relative": 3.825641791147454e-09,
+            "mean_relative": 5.073103046279861e-10,
+            "secular_fraction": 0.028119705386521157
+          },
+          "distinct_degrees": [
+            100,
+            110
+          ]
+        }
+      ],
+      "dop853_switching": {
+        "telemetry": {
+          "n_rhs": 21248,
+          "n_accepted_steps": 1270,
+          "n_attempted_steps": 1453,
+          "n_rejected_trials": 183,
+          "switch_count_at_rhs_samples": 73,
+          "degree_counts": {
+            "100": 854,
+            "110": 20394
+          },
+          "degree_range": [
+            100,
+            110
+          ],
+          "mean_degree": 109.5980798192771,
+          "mean_degree_sq": 12015.596762048193,
+          "gravity_kernel_ns": 1928197700,
+          "process_cpu_ns": 2718750000,
+          "total_wall_ns": 2743239200
+        },
+        "status": "complete",
+        "jacobi": {
+          "H0_m2_s2": -1334094.7432016525,
+          "max_abs_relative_drift": 1.5057054923381848e-08,
+          "final_relative_drift": 1.5055777761726768e-08,
+          "std_relative": 3.419214179854618e-09,
+          "mean_relative": 3.05041497925145e-10,
+          "secular_fraction": 0.020259041324970608
+        },
+        "distinct_degrees": [
+          100,
+          110
+        ]
+      }
+    }
+  },
+  "source": {
+    "lunaris_repo": "D:\\Masaustu\\LUNAR_SIMULATION",
+    "lunaris_commit": "27e9ab86ed61d623f78c453ea2054348f1044c23",
+    "lunaris_working_tree_clean": true,
+    "release_tag": "paper-truncation-v1.0",
+    "kernel_path": "D:\\Masaustu\\LUNAR_SIMULATION\\src\\lunaris\\physics\\spherical_harmonics.py",
+    "kernel_sha256": "6e2a0a85e18c9b400c003e6c2ad1e163c524c27f54bc0d404e0172709d16d740",
+    "gravity_path": "D:\\Masaustu\\LUNAR_SIMULATION\\data\\gravity_models\\jggrx_1800f_sha.tab.txt",
+    "gravity_sha256": "d2a552067a78bf1d2755807ae14ee1d6843a8f6a4228e01ce59a665516738fec",
+    "experiment_script": "C:\\Users\\ayber\\Desktop\\Makale\\codebase\\python_codes\\rev10_sobol_confirmatory.py",
+    "experiment_script_sha256": "e483912446449f0086be062844fe3e8070ed8868a4ecd9c15d17ccdf38fb6b25",
+    "python": "3.10.20 (main, Jun  2 2026, 22:31:55) [MSC v.1944 64 bit (AMD64)]",
+    "numpy": "2.2.6",
+    "scipy": "1.15.3",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "processor": "Intel64 Family 6 Model 158 Stepping 10, GenuineIntel",
+    "logical_cpu_count": 12
+  },
+  "summary": {
+    "c1_circ100_polar": {
+      "fixed_degree_order4_drift_vs_step": [
+        {
+          "step_s": 20.0,
+          "max_abs_relative_drift": 8.15269949642026e-09
+        },
+        {
+          "step_s": 10.0,
+          "max_abs_relative_drift": 5.066225253725738e-10
+        }
+      ],
+      "fixed_degree_order6_drift_vs_step": [
+        {
+          "step_s": 20.0,
+          "max_abs_relative_drift": 5.550989954870813e-10
+        },
+        {
+          "step_s": 10.0,
+          "max_abs_relative_drift": 9.757773371635115e-12
+        }
+      ],
+      "switching_order4_drift_vs_step": [
+        {
+          "step_s": 20.0,
+          "max_abs_relative_drift": 2.5035124511807584e-08
+        },
+        {
+          "step_s": 10.0,
+          "max_abs_relative_drift": 1.804109600917651e-08
+        }
+      ],
+      "dop853_jacobi_max_abs_relative_drift": 1.1342270598318151e-11,
+      "finest_symplectic_vs_dop853_position_rms_m": 0.00020133778339151371,
+      "force_evaluations_finest_symplectic": 77760,
+      "force_evaluations_dop853": 21002,
+      "switching_drift_reduction_coarse_to_fine": 1.3876720404943024,
+      "fixed_drift_reduction_coarse_to_fine": 16.092256242307243
+    }
+  }
+}

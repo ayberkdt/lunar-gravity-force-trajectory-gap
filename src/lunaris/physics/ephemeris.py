@@ -1,0 +1,1375 @@
+# lunaris.physics.ephemeris
+"""
+Ephemeris (SPICE) Tables + Runtime Interpolator.
+
+This module is the project's single, strict interface between:
+- CSPICE kernels (via spiceypy) used at initialization time, and
+- the allocation-free, Numba-compiled dynamics loop used at runtime.
+
+At startup, it samples SPICE on a uniform time grid and materializes all
+ephemeris/attitude data into contiguous float64 arrays. At runtime, it provides
+fast interpolation (no SPICE calls) and optional frame transforms.
+
+Responsibilities
+----------------
+1) Kernel lifecycle (initialization-time only)
+   - Resolves/normalizes kernel paths and optionally auto-fixes common path issues.
+   - Loads the requested SPICE kernels (LSK/SPK/PCK/BPC/FK/TF).
+   - Optionally starts from a clean SPICE state (`clean_kernels_before=True`).
+   - Optionally clears the SPICE kernel pool after table generation (`clear_kernels_after=True`).
+
+   Notes on kernel paths:
+   - Some distributions ship text-wrapped kernels (e.g., `.tls.txt`, `.tf.txt`, `.bpc.txt`).
+     Path resolution may transparently accept these variants depending on the resolver config.
+
+2) Table generation (one-time)
+   - Samples SPICE at a fixed step `output_dt_s` over `duration_s`.
+   - Uses a deterministic uniform grid: t[k] = k * dt, with the last sample
+     guaranteed >= duration_s so runtime interpolation never clamps inside the
+     requested propagation span.
+   - Stores:
+       * Observer→Earth and Observer→Sun position/velocity states in the
+         inertial frame (meters and meters/second)
+       * Inertial→body-fixed attitude as a quaternion time series [w, x, y, z]
+
+   Performance note:
+   - Third-body position sampling attempts a vectorized SPICE call for ET arrays when available;
+     if unsupported or shape-mismatched, it falls back to a robust scalar loop.
+
+3) Runtime table access (no SPICE calls)
+   - High-level: `EphemerisManager` interpolation + frame transforms (Python API)
+   - Low-level: `get_ephem_state()` allocation-free sampler for Numba loops
+   - The module imports `spiceypy` because table construction lives here; the
+     prebuilt provider returned by `EphemerisManager.get_data_provider()` is the
+     object used by the runtime dynamics loop.
+
+Data contract (strict, canonical keys)
+--------------------------------------
+`EphemerisManager.get_data_provider()` returns a dict intended for the
+dynamics-layer ephemeris extractor (e.g., `core.dynamics._extract_ephem_tables`).
+The provider contains only canonical keys (no aliases):
+
+- "dt_s"            : float
+    Sampling step in seconds (uniform).
+
+- "t_tab_s"         : ndarray (N,), float64
+    Uniform table timestamps in seconds relative to table start; the final
+    timestamp is at or beyond `duration_s`.
+
+- "et0"             : float
+    SPICE ephemeris time (ET) at table start.
+
+- "q_i2f_tab"       : ndarray (N, 4), float64
+    Inertial→fixed rotation quaternion series, scalar-first [w, x, y, z].
+    Convention: v_fixed = q ⊗ v_inertial ⊗ conj(q)
+
+- "r_earth_tab_m"   : ndarray (N, 3) or (1, 3), float64
+    Observer→Earth in the inertial frame, meters [m].
+    If third-body ephemerides are disabled, the table may be (1,3) zeros and
+    interpolation degenerates to a constant return.
+
+- "r_sun_tab_m"     : ndarray (N, 3) or (1, 3), float64
+    Observer→Sun in the inertial frame, meters [m].
+    Same degeneracy behavior as above when disabled.
+
+- "v_earth_tab_m_s" / "v_sun_tab_m_s" : ndarray matching position tables
+    SPICE state velocities in the same frame and epochs, meters/second. These
+    are mandatory in canonical schema-v2 artifacts and drive cubic Hermite
+    interpolation.
+
+- "mu_earth_m3s2"   : float
+    Earth GM in SI units [m^3/s^2] (from kernel pool if available; fallback otherwise).
+
+- "mu_sun_m3s2"     : float
+    Sun GM in SI units [m^3/s^2].
+
+- "inertial_frame"  : str
+    Inertial reference frame used for sampling (default: "J2000").
+
+- "fixed_frame"     : str
+    Body-fixed frame used for sampling (default: "MOON_PA" when available).
+    If `need_moon_fixed_rotation=False`, fixed_frame is set to the inertial frame
+    and quaternions are identity.
+
+- "observer"        : str
+    SPICE observer body (default: "MOON").
+
+Reference frames and kernels
+----------------------------
+- Inertial frame: "J2000" (SPICE inertial frame; often treated as ICRF for engineering use).
+- Moon-fixed frame (high-fidelity): requires BOTH
+  * a binary PCK (.bpc) for lunar orientation, AND
+  * a frame kernel (.tf/.fk) defining the requested lunar frame chain (e.g., MOON_PA / DE440).
+
+Auto-inclusion:
+- If enabled, the builder may auto-include an appropriate lunar frame kernel from the same
+  directory as provided kernels when a lunar fixed frame is requested.
+
+Typical kernel set:
+  1) LSK  (leapseconds)            e.g., naif0012.tls
+  2) SPK  (ephemerides)            e.g., de440.bsp
+  3) PCK  (planetary constants)    e.g., pck00011.tpc (optional but recommended)
+  4) BPC  (lunar orientation)      e.g., moon_pa_de440_*.bpc
+  5) FK/TF (frame definitions)     e.g., moon_de440_*.tf
+
+Typical usage
+-------------
+    # Build once (initialization)
+    tables = build_tables(
+        start_utc="2026-01-01T00:00:00",
+        duration_s=7 * DAY_S,
+        output_dt_s=60.0,
+        kernels=(...),
+        fixed_frame="MOON_PA",
+        include_third_body=True,
+        clean_kernels_before=True,
+        clear_kernels_after=True,
+    )
+
+    # Runtime (no SPICE calls)
+    mgr = EphemerisManager(tables)
+    r_sun = mgr.get_sun_position(t_s=1234.0)
+
+    # Inject into dynamics
+    provider = mgr.get_data_provider()
+"""
+
+
+# =============================================================================
+# 0.                                IMPORTS
+# =============================================================================
+
+from __future__ import annotations
+
+import json
+import warnings
+from collections.abc import Iterator, Mapping, Sequence
+from contextlib import contextmanager
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Any
+
+import numpy as np
+import spiceypy as spice
+from numba import njit
+from spiceypy.utils.exceptions import SpiceyError
+
+from lunaris.common.constants import KM3_TO_M3, KM_TO_M, MU_EARTH, MU_SUN
+from lunaris.common.math_utils import (
+    interp_quat_slerp,
+    interp_vec3_catmull,
+    quat_conj,
+    quat_rotate_vec,
+)
+from lunaris.common.type_defs import F64Array, TimeConfig
+from lunaris.loaders.spice_builder import maybe_autoinclude_lunar_fk, resolve_kernel_paths
+
+# =============================================================================
+# 1.                           CONSTANTS & CONFIG
+# =============================================================================
+
+DEFAULT_INERTIAL_FRAME = "J2000"
+DEFAULT_FIXED_FRAME = "MOON_PA"
+DEFAULT_OBSERVER = "MOON"
+
+
+# Fallback GM values (m^3/s^2) if the SPICE kernel pool is missing data.
+_FALLBACK_GM_M3S2: dict[str, float] = {
+    "EARTH": float(MU_EARTH),
+    "SUN": float(MU_SUN),
+}
+
+
+# =============================================================================
+# 2.                        DATA STRUCTURES (CONFIG)
+# =============================================================================
+
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class SpiceBuildConfig:
+    """
+    Configuration for SPICE kernels and frames (time-agnostic).
+
+    This recipe defines which kernels to load and what frames to use.
+    Simulation duration and step size belong to TimeConfig.
+    """
+
+    kernels: tuple[str, ...] = (
+        "naif0012.tls",
+        "de440.bsp",
+        "moon_pa_de440_200625.bpc",
+    )
+
+    inertial_frame: str = DEFAULT_INERTIAL_FRAME
+    fixed_frame: str = DEFAULT_FIXED_FRAME
+    observer: str = DEFAULT_OBSERVER
+
+    include_third_body: bool = True
+    clear_kernels_after: bool = True
+
+    earth_target: str = "EARTH"
+    sun_target: str = "SUN"
+
+    def __post_init__(self) -> None:
+        if not self.kernels:
+            raise ValueError("SpiceBuildConfig.kernels cannot be empty.")
+
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class EphemerisTables:
+    """
+    Immutable container holding precomputed, time-aligned ephemeris tables.
+
+    Intended for high-performance interpolation in the simulation loop.
+    Arrays are expected to be float64 and C-contiguous where possible.
+    """
+
+    dt_s: float
+    t_tab_s: F64Array  # shape (N,)
+    et0: float
+
+    q_i2f_tab: F64Array  # shape (N, 4) [w,x,y,z]
+    r_earth_tab_m: F64Array  # shape (N, 3) or (1, 3) if disabled
+    r_sun_tab_m: F64Array  # shape (N, 3) or (1, 3) if disabled
+    v_earth_tab_m_s: F64Array  # shape matches r_earth_tab_m
+    v_sun_tab_m_s: F64Array  # shape matches r_sun_tab_m
+
+    mu_earth_m3s2: float
+    mu_sun_m3s2: float
+
+    inertial_frame: str = DEFAULT_INERTIAL_FRAME
+    fixed_frame: str = DEFAULT_FIXED_FRAME
+    observer: str = DEFAULT_OBSERVER
+    # Initialization provenance only; runtime interpolation consumes the arrays
+    # above and never calls SPICE again.
+    third_body_sampling_mode: str = "not_requested"
+    third_body_sampling_fallback_reason: str | None = None
+    # SPICE provenance: the resolved kernels (name/kind/sha256) actually furnished
+    # to sample these tables, and the time-scale note. Provenance-only, so it is
+    # optional and never affects the numerical contract validated below.
+    kernel_provenance: tuple[Mapping[str, Any], ...] = ()
+    time_scale_note: str = ""
+    schema_version: int = 2
+    aberration_correction: str = "NONE"
+    interpolation_kind: str = "cubic_hermite_position_velocity"
+
+    def __post_init__(self) -> None:
+        # Strict contract validation. Runtime interpolation indexes tables by
+        # ``t_s / dt_s`` (it never re-reads ``t_tab_s``), so a table that is
+        # empty, non-uniform, offset, or non-finite would silently produce
+        # wrong physics. Externally loaded artifacts pass through here too, so
+        # every invariant the samplers rely on is enforced at construction.
+        if not (np.isfinite(self.dt_s) and self.dt_s > 0.0):
+            raise ValueError("EphemerisTables.dt_s must be finite and > 0.")
+        if not np.isfinite(self.et0):
+            raise ValueError("EphemerisTables.et0 must be finite.")
+        for gm_name in ("mu_earth_m3s2", "mu_sun_m3s2"):
+            gm = float(getattr(self, gm_name))
+            if not (np.isfinite(gm) and gm > 0.0):
+                raise ValueError(f"EphemerisTables.{gm_name} must be finite and > 0; got {gm!r}.")
+
+        if self.t_tab_s.ndim != 1 or self.t_tab_s.shape[0] < 1:
+            raise ValueError("EphemerisTables.t_tab_s must be 1D (N,) with N >= 1.")
+        if not np.all(np.isfinite(self.t_tab_s)):
+            raise ValueError("EphemerisTables.t_tab_s must contain only finite values.")
+        n = int(self.t_tab_s.shape[0])
+
+        # Table time is relative to the table start and uniformly spaced by
+        # dt_s — exactly the grid the ``t_s / dt_s`` samplers assume.
+        tol = 1.0e-9 * max(float(self.dt_s), abs(float(self.t_tab_s[-1])), 1.0)
+        if abs(float(self.t_tab_s[0])) > tol:
+            raise ValueError(
+                f"EphemerisTables.t_tab_s must start at 0.0 (table-relative time); got {float(self.t_tab_s[0])!r}."
+            )
+        if n >= 2:
+            dt_err = float(np.max(np.abs(np.diff(self.t_tab_s) - float(self.dt_s))))
+            if dt_err > tol:
+                raise ValueError(
+                    "EphemerisTables.t_tab_s must be uniformly spaced by dt_s "
+                    f"(max spacing error {dt_err:.6g} s exceeds tolerance {tol:.6g} s)."
+                )
+
+        if self.q_i2f_tab.shape != (n, 4):
+            raise ValueError(f"q_i2f_tab must have shape (N,4); got {self.q_i2f_tab.shape}.")
+        if not np.all(np.isfinite(self.q_i2f_tab)):
+            raise ValueError("q_i2f_tab must contain only finite values.")
+        q_norms = np.linalg.norm(np.asarray(self.q_i2f_tab, dtype=np.float64), axis=1)
+        if float(np.min(q_norms)) <= 0.0:
+            raise ValueError("q_i2f_tab rows must be nonzero quaternions.")
+        max_norm_error = float(np.max(np.abs(q_norms - 1.0)))
+        if max_norm_error > 1.0e-12:
+            raise ValueError(
+                "q_i2f_tab rows must be unit quaternions "
+                f"(max norm error {max_norm_error:.6g} exceeds 1e-12)."
+            )
+
+        if self.r_earth_tab_m.shape not in ((n, 3), (1, 3)):
+            raise ValueError(
+                f"r_earth_tab_m must be (N,3) or (1,3); got {self.r_earth_tab_m.shape}."
+            )
+        if not np.all(np.isfinite(self.r_earth_tab_m)):
+            raise ValueError("r_earth_tab_m must contain only finite values.")
+
+        if self.r_sun_tab_m.shape not in ((n, 3), (1, 3)):
+            raise ValueError(f"r_sun_tab_m must be (N,3) or (1,3); got {self.r_sun_tab_m.shape}.")
+        if not np.all(np.isfinite(self.r_sun_tab_m)):
+            raise ValueError("r_sun_tab_m must contain only finite values.")
+
+        if self.v_earth_tab_m_s.shape != self.r_earth_tab_m.shape:
+            raise ValueError("v_earth_tab_m_s must match r_earth_tab_m shape.")
+        if self.v_sun_tab_m_s.shape != self.r_sun_tab_m.shape:
+            raise ValueError("v_sun_tab_m_s must match r_sun_tab_m shape.")
+        if not np.all(np.isfinite(self.v_earth_tab_m_s)):
+            raise ValueError("v_earth_tab_m_s must contain only finite values.")
+        if not np.all(np.isfinite(self.v_sun_tab_m_s)):
+            raise ValueError("v_sun_tab_m_s must contain only finite values.")
+        if int(self.schema_version) != 2:
+            raise ValueError("EphemerisTables requires schema_version=2 (position+velocity tables).")
+        if str(self.aberration_correction).upper() != "NONE":
+            raise ValueError("EphemerisTables currently requires aberration_correction='NONE'.")
+        if self.interpolation_kind != "cubic_hermite_position_velocity":
+            raise ValueError("EphemerisTables interpolation_kind must declare cubic Hermite.")
+
+
+def save_ephemeris_tables_npz(path: str | Path, tables: EphemerisTables) -> Path:
+    """Serialize canonical schema-v2 ephemeris tables without pickle payloads."""
+    out = Path(path)
+    if out.suffix.lower() != ".npz":
+        out = out.with_suffix(".npz")
+    out.parent.mkdir(parents=True, exist_ok=True)
+    np.savez_compressed(
+        out,
+        schema_version=np.asarray(tables.schema_version, dtype=np.int64),
+        dt_s=np.asarray(tables.dt_s, dtype=np.float64),
+        t_tab_s=tables.t_tab_s,
+        et0=np.asarray(tables.et0, dtype=np.float64),
+        q_i2f_tab=tables.q_i2f_tab,
+        r_earth_tab_m=tables.r_earth_tab_m,
+        r_sun_tab_m=tables.r_sun_tab_m,
+        v_earth_tab_m_s=tables.v_earth_tab_m_s,
+        v_sun_tab_m_s=tables.v_sun_tab_m_s,
+        mu_earth_m3s2=np.asarray(tables.mu_earth_m3s2, dtype=np.float64),
+        mu_sun_m3s2=np.asarray(tables.mu_sun_m3s2, dtype=np.float64),
+        inertial_frame=np.asarray(tables.inertial_frame),
+        fixed_frame=np.asarray(tables.fixed_frame),
+        observer=np.asarray(tables.observer),
+        third_body_sampling_mode=np.asarray(tables.third_body_sampling_mode),
+        third_body_sampling_fallback_reason=np.asarray(
+            "" if tables.third_body_sampling_fallback_reason is None
+            else tables.third_body_sampling_fallback_reason
+        ),
+        kernel_provenance_json=np.asarray(
+            json.dumps(list(tables.kernel_provenance), sort_keys=True, default=str)
+        ),
+        time_scale_note=np.asarray(tables.time_scale_note),
+        aberration_correction=np.asarray(tables.aberration_correction),
+        interpolation_kind=np.asarray(tables.interpolation_kind),
+    )
+    return out
+
+
+def load_ephemeris_tables_npz(path: str | Path) -> EphemerisTables:
+    """Load only the complete schema-v2 position+velocity artifact contract.
+
+    Legacy position-only archives fail closed instead of silently changing the
+    interpolant used by a resumed propagation.
+    """
+    required = {
+        "schema_version", "dt_s", "t_tab_s", "et0", "q_i2f_tab",
+        "r_earth_tab_m", "r_sun_tab_m", "v_earth_tab_m_s", "v_sun_tab_m_s",
+        "mu_earth_m3s2", "mu_sun_m3s2", "inertial_frame", "fixed_frame",
+        "observer", "aberration_correction", "interpolation_kind",
+    }
+    with np.load(Path(path), allow_pickle=False) as data:
+        missing = sorted(required - set(data.files))
+        if missing:
+            raise ValueError(
+                "ephemeris archive is not schema v2; missing required keys: "
+                + ", ".join(missing)
+            )
+        schema_version = int(np.asarray(data["schema_version"]).item())
+        if schema_version != 2:
+            raise ValueError(f"unsupported ephemeris schema_version={schema_version}; expected 2")
+        provenance_raw = (
+            str(np.asarray(data["kernel_provenance_json"]).item())
+            if "kernel_provenance_json" in data.files else "[]"
+        )
+        provenance = json.loads(provenance_raw)
+        if not isinstance(provenance, list):
+            raise ValueError("kernel_provenance_json must decode to a list")
+        fallback = (
+            str(np.asarray(data["third_body_sampling_fallback_reason"]).item())
+            if "third_body_sampling_fallback_reason" in data.files else ""
+        )
+        return EphemerisTables(
+            dt_s=float(np.asarray(data["dt_s"]).item()),
+            t_tab_s=np.ascontiguousarray(data["t_tab_s"], dtype=np.float64),
+            et0=float(np.asarray(data["et0"]).item()),
+            q_i2f_tab=np.ascontiguousarray(data["q_i2f_tab"], dtype=np.float64),
+            r_earth_tab_m=np.ascontiguousarray(data["r_earth_tab_m"], dtype=np.float64),
+            r_sun_tab_m=np.ascontiguousarray(data["r_sun_tab_m"], dtype=np.float64),
+            v_earth_tab_m_s=np.ascontiguousarray(data["v_earth_tab_m_s"], dtype=np.float64),
+            v_sun_tab_m_s=np.ascontiguousarray(data["v_sun_tab_m_s"], dtype=np.float64),
+            mu_earth_m3s2=float(np.asarray(data["mu_earth_m3s2"]).item()),
+            mu_sun_m3s2=float(np.asarray(data["mu_sun_m3s2"]).item()),
+            inertial_frame=str(np.asarray(data["inertial_frame"]).item()),
+            fixed_frame=str(np.asarray(data["fixed_frame"]).item()),
+            observer=str(np.asarray(data["observer"]).item()),
+            third_body_sampling_mode=(
+                str(np.asarray(data["third_body_sampling_mode"]).item())
+                if "third_body_sampling_mode" in data.files else "not_requested"
+            ),
+            third_body_sampling_fallback_reason=fallback or None,
+            kernel_provenance=tuple(provenance),
+            time_scale_note=(
+                str(np.asarray(data["time_scale_note"]).item())
+                if "time_scale_note" in data.files else ""
+            ),
+            schema_version=schema_version,
+            aberration_correction=str(np.asarray(data["aberration_correction"]).item()),
+            interpolation_kind=str(np.asarray(data["interpolation_kind"]).item()),
+        )
+
+# =============================================================================
+# 3.                PRIVATE SPICE POOL QUERIES (GM, ETC)
+# =============================================================================
+
+
+def get_body_gm_m3s2(
+    body_name: str,
+    fallback_m3s2: float | None = None,
+    *,
+    allow_fallback: bool = True,
+    warn_on_fallback: bool = True,
+) -> float:
+    body = str(body_name).strip().upper()
+
+    effective_fallback = fallback_m3s2
+    if effective_fallback is None:
+        effective_fallback = _FALLBACK_GM_M3S2.get(body)
+
+    try:
+        dim, values = spice.bodvrd(body, "GM", 1)
+        if int(dim) != 1 or values is None or len(values) < 1:
+            raise SpiceyError("GM returned with unexpected dimension/values.")
+        gm_km3s2 = float(values[0])
+        return gm_km3s2 * KM3_TO_M3
+
+    except SpiceyError as e:
+        if (not allow_fallback) or (effective_fallback is None):
+            raise RuntimeError(
+                f"GM not found in kernel pool for '{body}'. "
+                f"Load a PCK (.tpc) or provide an explicit fallback. "
+                f"SPICE Error: {type(e).__name__}"
+            ) from e
+
+        if warn_on_fallback:
+            warnings.warn(
+                f"[SPICE] GM for '{body}' missing from kernel pool; using fallback "
+                f"{float(effective_fallback)} m^3/s^2.",
+                category=RuntimeWarning,
+                stacklevel=2,
+            )
+
+        return float(effective_fallback)
+
+
+# =============================================================================
+# 6.                       PUBLIC BUILDERS (MAIN API)
+# =============================================================================
+
+
+def _require_positive(name: str, value: float) -> float:
+    v = float(value)
+    if v <= 0.0:
+        raise ValueError(f"{name} must be positive. Got {value!r}")
+    return v
+
+
+def _build_time_grid(duration_s: float, output_dt_s: float) -> np.ndarray:
+    """Deterministic uniform grid that covers the requested duration."""
+    dur = float(duration_s)
+    dt = float(output_dt_s)
+    # The runtime samplers assume a uniform dt_s, so extend to the next dt node
+    # instead of appending a nonuniform final timestamp at exactly duration_s.
+    ratio = dur / dt
+    nearest = float(np.round(ratio))
+    tol = 1.0e-12 * max(1.0, abs(ratio))
+    steps = int(nearest) if abs(ratio - nearest) <= tol else int(np.ceil(ratio))
+    n = max(1, steps + 1)
+    return np.arange(n, dtype=np.float64) * dt
+
+
+def _normalize_quat_series_inplace(q_tab: np.ndarray) -> None:
+    """Normalizes quaternions and enforces sign continuity in-place."""
+    norms = np.linalg.norm(q_tab, axis=1, keepdims=True)
+    norms[norms == 0.0] = 1.0
+    q_tab /= norms
+    # Enforce sign continuity: q and -q are the same rotation.
+    for k in range(1, int(q_tab.shape[0])):
+        if float(np.dot(q_tab[k - 1], q_tab[k])) < 0.0:
+            q_tab[k] *= -1.0
+
+
+def _try_fill_spkezr_state_tables_si(
+    out_position_m: np.ndarray,
+    out_velocity_m_s: np.ndarray,
+    *,
+    spkezr,
+    target: str,
+    et_tab: np.ndarray,
+    frame: str,
+    observer: str,
+) -> tuple[bool, str | None]:
+    """
+    Attempts vectorized SPICE sampling for position and velocity.
+
+    CSPICE ``spkezr`` returns km and km/s. Both tables are converted to SI.
+    """
+    try:
+        state_km, _ = spkezr(target, et_tab, frame, "NONE", observer)
+        arr = np.asarray(state_km, dtype=np.float64)
+        if arr.ndim != 2:
+            return False, f"unexpected ndim={arr.ndim}"
+
+        n = int(out_position_m.shape[0])
+        if arr.shape == (6, n):
+            arr = arr.T
+        if arr.shape != (n, 6):
+            return False, f"unexpected shape={arr.shape}; expected {(n, 6)}"
+
+        out_position_m[:] = arr[:, :3] * KM_TO_M
+        out_velocity_m_s[:] = arr[:, 3:] * KM_TO_M
+        return True, None
+    except Exception as exc:
+        # Any failure here falls back to the scalar loop path, but the caller
+        # records the exact reason in table metadata and emits a warning.
+        detail = str(exc).strip()
+        return False, f"{type(exc).__name__}: {detail or 'no detail provided'}"
+
+
+# SPICE kernel-type classification by file extension. Recorded in provenance so a
+# manifest reader can see the leapseconds (LSK), ephemeris (SPK), orientation
+# (PCK/CK), and frame (FK/SCLK) kernels that produced a run without opening them.
+_KERNEL_KIND_BY_SUFFIX: dict[str, str] = {
+    ".tls": "LSK",
+    ".bsp": "SPK",
+    ".bpc": "PCK",
+    ".tpc": "PCK",
+    ".pck": "PCK",
+    ".bc": "CK",
+    ".ck": "CK",
+    ".tf": "FK",
+    ".fk": "FK",
+    ".tsc": "SCLK",
+    ".tm": "META",
+}
+
+
+def _classify_kernel(path: str) -> str:
+    """Return the SPICE kernel kind (LSK/SPK/PCK/CK/FK/...) for a path."""
+    suffix = Path(str(path)).suffix.lower()
+    # Detached-label style ``foo.bsp.txt`` etc.: peel one text suffix and retry.
+    if suffix in (".txt", ".label") and len(Path(str(path)).suffixes) >= 2:
+        suffix = Path(str(path)).suffixes[-2].lower()
+    return _KERNEL_KIND_BY_SUFFIX.get(suffix, "UNKNOWN")
+
+
+def _capture_kernel_provenance(kernels: Sequence[str]) -> tuple[Mapping[str, Any], ...]:
+    """Hash and classify each resolved kernel for the run manifest chain.
+
+    Runs once at table-build time. Never raises: an unreadable kernel yields a
+    ``None`` hash so provenance capture cannot abort a completed build.
+    """
+    from lunaris.common.provenance import sha256_file
+
+    provenance: list[Mapping[str, Any]] = [
+        {
+            "name": Path(str(k)).name,
+            "path": str(k),
+            "kind": _classify_kernel(str(k)),
+            "sha256": sha256_file(k, missing_ok=True, suppress_errors=True),
+        }
+        for k in kernels
+    ]
+    return tuple(provenance)
+
+
+@contextmanager
+def _spice_kernels_loaded(
+    kernels: Sequence[str],
+    *,
+    clean_before: bool = True,
+    clear_after: bool = True,
+) -> Iterator[None]:
+    """Loads kernels into a predictable SPICE state and guarantees cleanup."""
+    if clean_before:
+        spice.kclear()
+
+    try:
+        for k in kernels:
+            spice.furnsh(str(k))
+        yield
+    finally:
+        if clear_after:
+            spice.kclear()
+
+
+def build_tables(
+    *,
+    start_utc: str,
+    duration_s: float,
+    output_dt_s: float,
+    kernels: tuple[str, ...] | list[str],
+    inertial_frame: str = DEFAULT_INERTIAL_FRAME,
+    fixed_frame: str = DEFAULT_FIXED_FRAME,
+    observer: str = DEFAULT_OBSERVER,
+    include_third_body: bool = True,
+    clear_kernels_after: bool = True,
+    clean_kernels_before: bool = True,
+    earth_target: str = "EARTH",
+    sun_target: str = "SUN",
+    auto_fix_kernel_paths: bool = True,
+    need_moon_fixed_rotation: bool = True,
+) -> EphemerisTables:
+    """Core builder: samples SPICE at uniform output_dt_s to build ephemeris tables."""
+
+    dt = _require_positive("output_dt_s", output_dt_s)
+    _require_positive("duration_s", duration_s)
+    if not kernels:
+        raise ValueError("Kernel list cannot be empty.")
+
+    inertial_frame = str(inertial_frame).strip()
+    fixed_frame = str(fixed_frame).strip()
+    observer = str(observer).strip()
+    earth_target = str(earth_target).strip()
+    sun_target = str(sun_target).strip()
+
+    # Resolve and normalize kernel paths (and optionally auto-include lunar FK/TF).
+    k_list = resolve_kernel_paths(list(kernels), auto_fix=bool(auto_fix_kernel_paths))
+    k_list = maybe_autoinclude_lunar_fk(k_list, fixed_frame)
+
+    # Content-hash the exact kernels furnished below, for the manifest chain.
+    kernel_provenance = _capture_kernel_provenance(k_list)
+
+    # Deterministic time grid
+    t_tab = _build_time_grid(float(duration_s), dt)
+    Nt = int(t_tab.size)
+
+    # Pre-allocate outputs
+    q_tab = np.empty((Nt, 4), dtype=np.float64)
+    if need_moon_fixed_rotation:
+        out_fixed_frame = fixed_frame
+    else:
+        q_tab[:] = (1.0, 0.0, 0.0, 0.0)
+        out_fixed_frame = inertial_frame
+
+    if include_third_body:
+        rE = np.empty((Nt, 3), dtype=np.float64)
+        rS = np.empty((Nt, 3), dtype=np.float64)
+        vE = np.empty((Nt, 3), dtype=np.float64)
+        vS = np.empty((Nt, 3), dtype=np.float64)
+    else:
+        rE = np.zeros((1, 3), dtype=np.float64)
+        rS = np.zeros((1, 3), dtype=np.float64)
+        vE = np.zeros((1, 3), dtype=np.float64)
+        vS = np.zeros((1, 3), dtype=np.float64)
+
+    mu_earth = 0.0
+    mu_sun = 0.0
+
+    # Import here to avoid hard dependency at module import time in some environments.
+    try:
+        from spiceypy.utils.exceptions import SpiceyError
+    except Exception:  # pragma: no cover
+        SpiceyError = Exception
+
+    with _spice_kernels_loaded(
+        k_list,
+        clean_before=bool(clean_kernels_before),
+        clear_after=bool(clear_kernels_after),
+    ):
+        try:
+            et0 = float(spice.str2et(str(start_utc)))
+        except SpiceyError as e:
+            raise ValueError(f"SPICE failed to parse start_utc={start_utc!r}") from e
+
+        # Uniform ET grid
+        et_tab = et0 + t_tab
+
+        # Local bindings (tiny speedup in Python loops)
+        pxform = spice.pxform
+        m2q = spice.m2q
+        spkezr = spice.spkezr
+
+        # A) Attitude: inertial -> fixed (pxform is scalar ET; must loop)
+        if need_moon_fixed_rotation:
+            for i in range(Nt):
+                et = float(et_tab[i])
+                try:
+                    mat_i2f = pxform(inertial_frame, fixed_frame, et)
+                except SpiceyError as e:
+                    raise RuntimeError(
+                        f"Frame transform failed ({inertial_frame} -> {fixed_frame}). "
+                        "Likely missing .tf/.fk or .bpc kernel."
+                    ) from e
+                q_tab[i] = m2q(mat_i2f)
+
+        # B) Third-body states: target relative to observer
+        if include_third_body:
+            ok_e, earth_vectorized_reason = _try_fill_spkezr_state_tables_si(
+                rE,
+                vE,
+                spkezr=spkezr,
+                target=earth_target,
+                et_tab=et_tab,
+                frame=inertial_frame,
+                observer=observer,
+            )
+            ok_s, sun_vectorized_reason = _try_fill_spkezr_state_tables_si(
+                rS,
+                vS,
+                spkezr=spkezr,
+                target=sun_target,
+                et_tab=et_tab,
+                frame=inertial_frame,
+                observer=observer,
+            )
+
+            if not (ok_e and ok_s):
+                # Fallback scalar path (robust, slightly slower)
+                reasons = []
+                if not ok_e:
+                    reasons.append(f"Earth: {earth_vectorized_reason}")
+                if not ok_s:
+                    reasons.append(f"Sun: {sun_vectorized_reason}")
+                third_body_sampling_mode = "scalar_fallback"
+                third_body_sampling_fallback_reason = "; ".join(reasons)
+                warnings.warn(
+                    "[SPICE] Vectorized third-body state sampling unavailable "
+                    f"({third_body_sampling_fallback_reason}); using scalar SPICE calls.",
+                    RuntimeWarning,
+                    stacklevel=2,
+                )
+                for i in range(Nt):
+                    et = float(et_tab[i])
+                    try:
+                        state_earth_km, _ = spkezr(earth_target, et, inertial_frame, "NONE", observer)
+                        state_sun_km, _ = spkezr(sun_target, et, inertial_frame, "NONE", observer)
+                    except SpiceyError as e:
+                        raise RuntimeError(
+                            f"SPICE position lookup failed at i={i}, et={et:.3f}"
+                        ) from e
+
+                    rE[i, 0] = float(state_earth_km[0]) * KM_TO_M
+                    rE[i, 1] = float(state_earth_km[1]) * KM_TO_M
+                    rE[i, 2] = float(state_earth_km[2]) * KM_TO_M
+                    vE[i, 0] = float(state_earth_km[3]) * KM_TO_M
+                    vE[i, 1] = float(state_earth_km[4]) * KM_TO_M
+                    vE[i, 2] = float(state_earth_km[5]) * KM_TO_M
+
+                    rS[i, 0] = float(state_sun_km[0]) * KM_TO_M
+                    rS[i, 1] = float(state_sun_km[1]) * KM_TO_M
+                    rS[i, 2] = float(state_sun_km[2]) * KM_TO_M
+                    vS[i, 0] = float(state_sun_km[3]) * KM_TO_M
+                    vS[i, 1] = float(state_sun_km[4]) * KM_TO_M
+                    vS[i, 2] = float(state_sun_km[5]) * KM_TO_M
+            else:
+                third_body_sampling_mode = "vectorized"
+                third_body_sampling_fallback_reason = None
+        else:
+            third_body_sampling_mode = "not_requested"
+            third_body_sampling_fallback_reason = None
+
+        # GM retrieval (must occur while kernels are loaded).
+        # Populate even if third-body ephemerides are disabled (zeros hide misconfigurations).
+        mu_earth = get_body_gm_m3s2(earth_target, _FALLBACK_GM_M3S2.get("EARTH"))
+        mu_sun = get_body_gm_m3s2(sun_target, _FALLBACK_GM_M3S2.get("SUN"))
+
+    # Normalize quaternions (safety)
+    if need_moon_fixed_rotation:
+        _normalize_quat_series_inplace(q_tab)
+
+    return EphemerisTables(
+        dt_s=float(dt),
+        t_tab_s=t_tab,
+        et0=float(et0),
+        q_i2f_tab=q_tab,
+        r_earth_tab_m=rE,
+        r_sun_tab_m=rS,
+        v_earth_tab_m_s=vE,
+        v_sun_tab_m_s=vS,
+        mu_earth_m3s2=float(mu_earth),
+        mu_sun_m3s2=float(mu_sun),
+        inertial_frame=str(inertial_frame),
+        fixed_frame=str(out_fixed_frame),
+        observer=str(observer),
+        third_body_sampling_mode=third_body_sampling_mode,
+        third_body_sampling_fallback_reason=third_body_sampling_fallback_reason,
+        kernel_provenance=kernel_provenance,
+        time_scale_note=(
+            f"start_utc={start_utc!r} parsed to ET (TDB seconds past J2000) via the "
+            "furnished leapseconds kernel (LSK); table ET = et0 + t_tab_s"
+        ),
+        schema_version=2,
+        aberration_correction="NONE",
+        interpolation_kind="cubic_hermite_position_velocity",
+    )
+
+
+def build_spice_tables(
+    time_cfg: TimeConfig,
+    spice_cfg: SpiceBuildConfig,
+    *,
+    auto_fix_kernel_paths: bool = True,
+    need_moon_fixed_rotation: bool = True,
+) -> EphemerisTables:
+    """High-level public builder: merges TimeConfig + SpiceBuildConfig."""
+
+    sd = time_cfg.start_date
+    start_utc = sd.isoformat() if hasattr(sd, "isoformat") else str(sd)
+
+    dt = time_cfg.output_dt_s
+    if dt is None:
+        raise ValueError(
+            "TimeConfig.output_dt_s is None, but ephemeris tables require a fixed dt.\n"
+            "Set output_dt_s (e.g., 60.0) for SPICE sampling."
+        )
+
+    return build_tables(
+        start_utc=start_utc,
+        duration_s=_require_positive("duration_s", time_cfg.duration_s),
+        output_dt_s=_require_positive("output_dt_s", dt),
+        kernels=spice_cfg.kernels,
+        inertial_frame=str(spice_cfg.inertial_frame),
+        fixed_frame=str(spice_cfg.fixed_frame),
+        observer=str(spice_cfg.observer),
+        include_third_body=bool(spice_cfg.include_third_body),
+        clear_kernels_after=bool(spice_cfg.clear_kernels_after),
+        earth_target=str(spice_cfg.earth_target),
+        sun_target=str(spice_cfg.sun_target),
+        auto_fix_kernel_paths=bool(auto_fix_kernel_paths),
+        need_moon_fixed_rotation=bool(need_moon_fixed_rotation),
+    )
+
+
+# =============================================================================
+# 7.                  HIGH-LEVEL MANAGER (RUNTIME INTERFACE)
+# =============================================================================
+
+
+class EphemerisManager:
+    """Runtime interface for querying ephemeris tables (read-only)."""
+
+    __slots__ = ("tables",)
+
+    def __init__(self, tables: EphemerisTables) -> None:
+        self.tables = tables
+
+    # --- Strict factories -------------------------------------------------
+
+    @classmethod
+    def from_time_and_spice(
+        cls,
+        time_cfg: TimeConfig,
+        spice_cfg: SpiceBuildConfig,
+        *,
+        auto_fix_kernel_paths: bool = True,
+        need_moon_fixed_rotation: bool = True,
+    ) -> EphemerisManager:
+        tables = build_spice_tables(
+            time_cfg,
+            spice_cfg,
+            auto_fix_kernel_paths=auto_fix_kernel_paths,
+            need_moon_fixed_rotation=need_moon_fixed_rotation,
+        )
+        return cls(tables)
+
+    @classmethod
+    def from_tables(cls, tables: EphemerisTables) -> EphemerisManager:
+        return cls(tables)
+
+    # --- Canonical provider (no aliases) ----------------------------------
+
+    def get_data_provider(self) -> Mapping[str, Any]:
+        """
+        Returns direct references to internal arrays for performance.
+        Treat returned arrays as READ-ONLY.
+        """
+        t = self.tables
+        return {
+            "dt_s": float(t.dt_s),
+            "t_tab_s": t.t_tab_s,
+            "et0": float(t.et0),
+            "q_i2f_tab": t.q_i2f_tab,
+            "r_earth_tab_m": t.r_earth_tab_m,
+            "r_sun_tab_m": t.r_sun_tab_m,
+            "v_earth_tab_m_s": t.v_earth_tab_m_s,
+            "v_sun_tab_m_s": t.v_sun_tab_m_s,
+            "mu_earth_m3s2": float(t.mu_earth_m3s2),
+            "mu_sun_m3s2": float(t.mu_sun_m3s2),
+            "inertial_frame": t.inertial_frame,
+            "fixed_frame": t.fixed_frame,
+            "observer": t.observer,
+            "ephemeris_schema_version": int(t.schema_version),
+            "aberration_correction": t.aberration_correction,
+            "interpolation_kind": t.interpolation_kind,
+        }
+
+    def kernel_provenance(self) -> Mapping[str, Any]:
+        """Return the SPICE provenance chain for this run's ephemeris tables.
+
+        A single payload for the run manifest: the exact kernels (name/kind/
+        sha256) furnished to build the tables, the time-scale note, and the ET
+        coverage window actually sampled. A path string alone is not reproducible
+        evidence; the content hashes are what let a reader verify which
+        leapseconds/ephemeris/orientation kernels produced an archive.
+        """
+        t = self.tables
+        et0 = float(t.et0)
+        et_end = et0 + float(t.t_tab_s[-1]) if t.t_tab_s.size else et0
+        return {
+            "kernels": [dict(k) for k in t.kernel_provenance],
+            "time_scale_note": t.time_scale_note,
+            "et_start": et0,
+            "et_end": et_end,
+            "inertial_frame": t.inertial_frame,
+            "fixed_frame": t.fixed_frame,
+            "observer": t.observer,
+            "ephemeris_schema_version": int(t.schema_version),
+            "aberration_correction": t.aberration_correction,
+            "position_units": "m",
+            "velocity_units": "m/s",
+            "interpolation_kind": t.interpolation_kind,
+        }
+
+    # --- Properties --------------------------------------------------------
+
+    @property
+    def dt_ephem_s(self) -> float:
+        return float(self.tables.dt_s)
+
+    # --- Internals (DRY helpers) ------------------------------------------
+
+    @staticmethod
+    def _ensure_vec3(v: F64Array, *, name: str) -> np.ndarray:
+        arr = np.asarray(v, dtype=np.float64)
+        if arr.shape != (3,):
+            raise ValueError(f"{name} must be shape (3,), got {arr.shape}")
+        return arr
+
+    @staticmethod
+    def _write_vec3(out: F64Array | None, x: float, y: float, z: float) -> F64Array:
+        if out is None:
+            out = np.empty(3, dtype=np.float64)
+        out[0], out[1], out[2] = x, y, z
+        return out
+
+    def _interp_vec3_table(
+        self,
+        t_s: float,
+        tab: np.ndarray,
+        velocity_tab: np.ndarray,
+        *,
+        out: F64Array | None,
+    ) -> F64Array:
+        # third-body disabled: table holds a single zero row
+        if tab.shape[0] == 1:
+            if out is None:
+                return tab[0].copy()
+            out[:] = tab[0]
+            return out
+
+        x, y, z = interp_vec3_hermite(
+            float(t_s), float(self.tables.dt_s), tab, velocity_tab
+        )
+        return self._write_vec3(out, x, y, z)
+
+    def _interp_quat_i2f(self, t_s: float) -> tuple[float, float, float, float]:
+        # interp_quat_slerp -> (w,x,y,z)
+        return interp_quat_slerp(float(t_s), float(self.tables.dt_s), self.tables.q_i2f_tab)
+
+    # --- Interpolation: public --------------------------------------------
+
+    def get_inertial_to_fixed_rotation(
+        self,
+        t_s: float,
+        *,
+        out: F64Array | None = None,
+    ) -> F64Array:
+        w, x, y, z = self._interp_quat_i2f(t_s)
+        if out is None:
+            out = np.empty(4, dtype=np.float64)
+        out[0], out[1], out[2], out[3] = w, x, y, z
+        return out
+
+    def get_earth_position(
+        self,
+        t_s: float,
+        *,
+        out: F64Array | None = None,
+    ) -> F64Array:
+        return self._interp_vec3_table(
+            t_s,
+            self.tables.r_earth_tab_m,
+            self.tables.v_earth_tab_m_s,
+            out=out,
+        )
+
+    def get_sun_position(
+        self,
+        t_s: float,
+        *,
+        out: F64Array | None = None,
+    ) -> F64Array:
+        return self._interp_vec3_table(
+            t_s,
+            self.tables.r_sun_tab_m,
+            self.tables.v_sun_tab_m_s,
+            out=out,
+        )
+
+    # --- Frame transforms --------------------------------------------------
+
+    def transform_inertial_to_fixed(
+        self,
+        t_s: float,
+        v_inertial: F64Array,
+        *,
+        out: F64Array | None = None,
+    ) -> F64Array:
+        v = self._ensure_vec3(v_inertial, name="v_inertial")
+
+        w, x, y, z = self._interp_quat_i2f(t_s)
+        xo, yo, zo = quat_rotate_vec(
+            float(w),
+            float(x),
+            float(y),
+            float(z),
+            float(v[0]),
+            float(v[1]),
+            float(v[2]),
+        )
+        return self._write_vec3(out, xo, yo, zo)
+
+    def transform_fixed_to_inertial(
+        self,
+        t_s: float,
+        v_fixed: F64Array,
+        *,
+        out: F64Array | None = None,
+    ) -> F64Array:
+        v = self._ensure_vec3(v_fixed, name="v_fixed")
+
+        w, x, y, z = self._interp_quat_i2f(t_s)
+        cw, cx, cy, cz = quat_conj(float(w), float(x), float(y), float(z))
+
+        xo, yo, zo = quat_rotate_vec(
+            cw,
+            cx,
+            cy,
+            cz,
+            float(v[0]),
+            float(v[1]),
+            float(v[2]),
+        )
+        return self._write_vec3(out, xo, yo, zo)
+
+
+# =============================================================================
+# 8.           NUMBA-FRIENDLY EPHEMERIS SAMPLER (CORE KERNEL API)
+# =============================================================================
+
+
+@njit(cache=True, nogil=True, inline="always")
+def _row3(tab: np.ndarray, i: int) -> tuple[float, float, float]:
+    return float(tab[i, 0]), float(tab[i, 1]), float(tab[i, 2])
+
+
+@njit(cache=True, nogil=True, inline="always")
+def _row4(tab: np.ndarray, i: int) -> tuple[float, float, float, float]:
+    return float(tab[i, 0]), float(tab[i, 1]), float(tab[i, 2]), float(tab[i, 3])
+
+
+@njit(cache=True, nogil=True, inline="always")
+def _clamp_u_to_index_and_frac(u: float, n: int) -> tuple[int, float]:
+    """
+    For a table of length n (n>=2), clamp u to [0, n-1] and return:
+      i0 in [0, n-2] and frac f in [0,1], so that i0+1 is valid.
+    """
+    if u <= 0.0:
+        return 0, 0.0
+    umax = float(n - 1)
+    if u >= umax:
+        return n - 2, 1.0
+
+    i0 = int(u)  # truncation == floor for u>=0
+    if i0 > n - 2:
+        i0 = n - 2
+        return i0, 1.0
+    f = u - float(i0)  # in [0,1)
+    return i0, f
+
+
+@njit(cache=True, nogil=True, inline="always")
+def _lerp(a: float, b: float, f: float) -> float:
+    return a + (b - a) * f
+
+
+@njit(cache=True, nogil=True)
+def interp_vec3_hermite(
+    t_s: float,
+    dt_s: float,
+    position_tab: np.ndarray,
+    velocity_tab: np.ndarray,
+) -> tuple[float, float, float]:
+    """Cubic Hermite position interpolation on a uniform SI state table."""
+    n = int(position_tab.shape[0])
+    if n <= 1 or dt_s <= 0.0:
+        return _row3(position_tab, 0)
+    u = t_s / dt_s
+    i, f = _clamp_u_to_index_and_frac(u, n)
+    p0x, p0y, p0z = _row3(position_tab, i)
+    p1x, p1y, p1z = _row3(position_tab, i + 1)
+    v0x, v0y, v0z = _row3(velocity_tab, i)
+    v1x, v1y, v1z = _row3(velocity_tab, i + 1)
+    f2 = f * f
+    f3 = f2 * f
+    h00 = 2.0 * f3 - 3.0 * f2 + 1.0
+    h10 = f3 - 2.0 * f2 + f
+    h01 = -2.0 * f3 + 3.0 * f2
+    h11 = f3 - f2
+    return (
+        h00 * p0x + h10 * dt_s * v0x + h01 * p1x + h11 * dt_s * v1x,
+        h00 * p0y + h10 * dt_s * v0y + h01 * p1y + h11 * dt_s * v1y,
+        h00 * p0z + h10 * dt_s * v0z + h01 * p1z + h11 * dt_s * v1z,
+    )
+
+
+@njit(cache=True, nogil=True)
+def interp_vec3_hermite_derivative(
+    t_s: float,
+    dt_s: float,
+    position_tab: np.ndarray,
+    velocity_tab: np.ndarray,
+) -> tuple[float, float, float]:
+    """Analytic time derivative of :func:`interp_vec3_hermite`."""
+    n = int(position_tab.shape[0])
+    if n <= 1 or dt_s <= 0.0:
+        return _row3(velocity_tab, 0) if velocity_tab.shape[0] else (0.0, 0.0, 0.0)
+    u = t_s / dt_s
+    i, f = _clamp_u_to_index_and_frac(u, n)
+    p0x, p0y, p0z = _row3(position_tab, i)
+    p1x, p1y, p1z = _row3(position_tab, i + 1)
+    v0x, v0y, v0z = _row3(velocity_tab, i)
+    v1x, v1y, v1z = _row3(velocity_tab, i + 1)
+    f2 = f * f
+    dh00 = (6.0 * f2 - 6.0 * f) / dt_s
+    dh10 = 3.0 * f2 - 4.0 * f + 1.0
+    dh01 = (-6.0 * f2 + 6.0 * f) / dt_s
+    dh11 = 3.0 * f2 - 2.0 * f
+    return (
+        dh00 * p0x + dh10 * v0x + dh01 * p1x + dh11 * v1x,
+        dh00 * p0y + dh10 * v0y + dh01 * p1y + dh11 * v1y,
+        dh00 * p0z + dh10 * v0z + dh01 * p1z + dh11 * v1z,
+    )
+
+
+@njit(cache=True, nogil=True)
+def interp_vec3_safe(
+    t_s: float,
+    dt_s: float,
+    tab: np.ndarray,
+    velocity_tab: np.ndarray | None = None,
+) -> tuple[float, float, float]:
+    """
+    Safe vec3 interpolation:
+      - n<=1 or dt<=0 : constant tab[0]
+      - a matching velocity table: cubic Hermite
+      - otherwise n<4: linear, n>=4: legacy Catmull-Rom
+    """
+    n = int(tab.shape[0])
+
+    if n <= 1 or dt_s <= 0.0:
+        return _row3(tab, 0)
+
+    if velocity_tab is not None and velocity_tab.shape == tab.shape:
+        return interp_vec3_hermite(t_s, dt_s, tab, velocity_tab)
+
+    if n < 4:
+        u = t_s / dt_s
+        i0, f = _clamp_u_to_index_and_frac(u, n)
+
+        x0, y0, z0 = _row3(tab, i0)
+        x1, y1, z1 = _row3(tab, i0 + 1)
+
+        return _lerp(x0, x1, f), _lerp(y0, y1, f), _lerp(z0, z1, f)
+
+    return interp_vec3_catmull(t_s, dt_s, tab)
+
+
+@njit(cache=True, nogil=True)
+def interp_vec3_derivative_safe(
+    t_s: float,
+    dt_s: float,
+    tab: np.ndarray,
+    velocity_tab: np.ndarray | None = None,
+) -> tuple[float, float, float]:
+    """
+    Analytic derivative of :func:`interp_vec3_safe` for a uniform vec3 table.
+
+    For ``n >= 4`` this differentiates the same clamped-control-point
+    Catmull-Rom polynomial used by ``interp_vec3_safe``. Position and velocity
+    therefore describe one C1 interpolant at interior table knots, which is
+    required by the external 1PN terms. The ``n < 4`` fallback differentiates
+    the linear position interpolation exactly (with its unavoidable knot
+    discontinuities); degenerate/constant tables return zero.
+    """
+    n = int(tab.shape[0])
+    if n <= 1 or dt_s <= 0.0:
+        if velocity_tab is not None and velocity_tab.shape == tab.shape:
+            return _row3(velocity_tab, 0)
+        return 0.0, 0.0, 0.0
+
+    if velocity_tab is not None and velocity_tab.shape == tab.shape:
+        return interp_vec3_hermite_derivative(t_s, dt_s, tab, velocity_tab)
+
+    u = t_s / dt_s
+    if u <= 0.0:
+        i = 0
+        f = 0.0
+    elif u >= float(n - 1):
+        i = n - 2
+        f = 1.0
+    else:
+        i = int(u)
+        if i > n - 2:
+            i = n - 2
+            f = 1.0
+        else:
+            f = u - float(i)
+
+    if n < 4:
+        x0, y0, z0 = _row3(tab, i)
+        x1, y1, z1 = _row3(tab, i + 1)
+        inv_dt = 1.0 / dt_s
+        return (x1 - x0) * inv_dt, (y1 - y0) * inv_dt, (z1 - z0) * inv_dt
+
+    i0 = i - 1 if i > 0 else 0
+    i3 = i + 2 if i < n - 2 else n - 1
+    p0x, p0y, p0z = _row3(tab, i0)
+    p1x, p1y, p1z = _row3(tab, i)
+    p2x, p2y, p2z = _row3(tab, i + 1)
+    p3x, p3y, p3z = _row3(tab, i3)
+
+    f2 = f * f
+    dw0 = -1.0 + 4.0 * f - 3.0 * f2
+    dw1 = -10.0 * f + 9.0 * f2
+    dw2 = 1.0 + 8.0 * f - 9.0 * f2
+    dw3 = -2.0 * f + 3.0 * f2
+    scale = 0.5 / dt_s
+    return (
+        scale * (p0x * dw0 + p1x * dw1 + p2x * dw2 + p3x * dw3),
+        scale * (p0y * dw0 + p1y * dw1 + p2y * dw2 + p3y * dw3),
+        scale * (p0z * dw0 + p1z * dw1 + p2z * dw2 + p3z * dw3),
+    )
+
+
+@njit(cache=True, nogil=True)
+def interp_quat_safe(t_s: float, dt_s: float, tab: np.ndarray) -> tuple[float, float, float, float]:
+    """
+    Safe quaternion interpolation:
+      - n<=1 or dt<=0 : constant tab[0]
+      - else          : SLERP (via interp_quat_slerp)
+    """
+    n = int(tab.shape[0])
+    if n <= 1 or dt_s <= 0.0:
+        return _row4(tab, 0)
+    return interp_quat_slerp(t_s, dt_s, tab)
+
+
+@njit(cache=True, nogil=True)
+def get_ephem_state(
+    t_s: float,
+    dt_s: float,
+    sun_tab_m: np.ndarray,
+    earth_tab_m: np.ndarray,
+    q_i2f_tab: np.ndarray,
+) -> tuple[float, float, float, float, float, float, float, float, float, float]:
+    """
+    Unified, allocation-free ephemeris sampler for Numba loops.
+
+    Returns:
+      (sx, sy, sz, ex, ey, ez, qw, qx, qy, qz)
+    """
+    sx, sy, sz = interp_vec3_safe(t_s, dt_s, sun_tab_m)
+    ex, ey, ez = interp_vec3_safe(t_s, dt_s, earth_tab_m)
+    qw, qx, qy, qz = interp_quat_safe(t_s, dt_s, q_i2f_tab)
+    return sx, sy, sz, ex, ey, ez, qw, qx, qy, qz
+
+
+@njit(cache=True, nogil=True)
+def get_ephem_state_with_velocity(
+    t_s: float,
+    dt_s: float,
+    sun_tab_m: np.ndarray,
+    earth_tab_m: np.ndarray,
+    sun_velocity_tab_m_s: np.ndarray,
+    earth_velocity_tab_m_s: np.ndarray,
+    q_i2f_tab: np.ndarray,
+    use_hermite: bool,
+) -> tuple[float, float, float, float, float, float, float, float, float, float]:
+    """Sample position/attitude using the schema-v2 position+velocity contract."""
+    if use_hermite:
+        sx, sy, sz = interp_vec3_hermite(t_s, dt_s, sun_tab_m, sun_velocity_tab_m_s)
+        ex, ey, ez = interp_vec3_hermite(t_s, dt_s, earth_tab_m, earth_velocity_tab_m_s)
+    else:
+        # Compatibility path for explicit in-memory providers without velocity
+        # tables. Serialized ephemeris artifacts are schema v2 and never enter
+        # this branch.
+        sx, sy, sz = interp_vec3_safe(t_s, dt_s, sun_tab_m)
+        ex, ey, ez = interp_vec3_safe(t_s, dt_s, earth_tab_m)
+    qw, qx, qy, qz = interp_quat_safe(t_s, dt_s, q_i2f_tab)
+    return sx, sy, sz, ex, ey, ez, qw, qx, qy, qz
+
+
+@njit(cache=True, nogil=True)
+def interp_vec3_state_derivative(
+    t_s: float,
+    dt_s: float,
+    position_tab: np.ndarray,
+    velocity_tab: np.ndarray,
+    use_hermite: bool,
+) -> tuple[float, float, float]:
+    """Differentiate the canonical state interpolant or its legacy fallback."""
+    if use_hermite:
+        return interp_vec3_hermite_derivative(t_s, dt_s, position_tab, velocity_tab)
+    return interp_vec3_derivative_safe(t_s, dt_s, position_tab)
+
+
+# =============================================================================
+# 9.                          PUBLIC API
+# =============================================================================
+
+__all__ = (
+    # --- Configuration & data structures ---
+    "SpiceBuildConfig",  # Build recipe: which kernels/frames to load (time-agnostic)
+    "EphemerisTables",  # Immutable precomputed tables (quats + Sun/Earth positions + GM)
+    # --- Builders ---
+    "build_spice_tables",  # Recommended builder: TimeConfig + SpiceBuildConfig -> EphemerisTables
+    "build_tables",  # Low-level/legacy builder: explicit args -> EphemerisTables
+    "save_ephemeris_tables_npz",
+    "load_ephemeris_tables_npz",
+    # --- Runtime manager ---
+    "EphemerisManager",  # Runtime interface: interpolation, queries, and frame transforms
+    # --- Low-level kernel (dynamics loop) ---
+    "get_ephem_state",  # Numba-friendly, allocation-free ephemeris sampler for the integrator loop
+    "get_ephem_state_with_velocity",
+    "interp_vec3_hermite",
+    "interp_vec3_hermite_derivative",
+    "interp_vec3_state_derivative",
+    "interp_vec3_derivative_safe",
+    # --- Utilities (debug/tools) ---
+    "resolve_kernel_paths",  # Validates kernel paths and tries common extension fixes (e.g., .tls vs .tls.txt)
+    "get_body_gm_m3s2",  # Reads GM from SPICE kernel pool; falls back to defaults (returns SI m^3/s^2)
+)

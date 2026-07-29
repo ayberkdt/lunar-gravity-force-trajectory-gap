@@ -1,0 +1,76 @@
+{
+  "schema": "r20_span_longarc_v1",
+  "created_utc": "2026-07-28T01:52:11.240970Z",
+  "config": {
+    "sobol_index": 5,
+    "design": "A",
+    "k": 0.75,
+    "beta": 1.0,
+    "arc": "60 days",
+    "duration_s": 5184000.0,
+    "degree_table": {
+      "130.0": 99,
+      "140.0": 92,
+      "150.0": 86,
+      "160.0": 80,
+      "170.0": 76,
+      "180.0": 71,
+      "190.0": 67,
+      "200.0": 64
+    },
+    "degree_span": 1.546875,
+    "table_source": "frozen R18 seven-day configuration, reused verbatim; only the arc length differs",
+    "adopted_truth_degree": 300,
+    "initial_state_si": [
+      1501972.583558775,
+      -1070621.2020044278,
+      -321833.95798036095,
+      -945.6749459067488,
+      -1328.4579300664507,
+      5.895537567261141
+    ],
+    "output_step_s": 300.0,
+    "max_step_s": 120.0,
+    "integrator": "InstrumentedDOP853",
+    "atol_kind": "vector",
+    "timing_comparable": false,
+    "source": {
+      "driver": "rev20_span_longarc.py",
+      "reuses": "r18 span tables (frozen), r17 60-day truths, r14 initial states and tolerances",
+      "lunaris_commit": "27e9ab86ed61d623f78c453ea2054348f1044c23"
+    }
+  },
+  "config_sha256": "ec5165d58a32c06987343de6572a244fda36b65387f51106fc9fd843230ead1b",
+  "status": "ok",
+  "event": null,
+  "telemetry": {
+    "n_rhs": 1480043,
+    "n_accepted_steps": 80187,
+    "n_attempted_steps": 103290,
+    "n_rejected_trials": 23103,
+    "switch_count_at_rhs_samples": 57171,
+    "degree_counts": {
+      "99": 675609,
+      "92": 96912,
+      "86": 115471,
+      "80": 106709,
+      "76": 94561,
+      "71": 79863,
+      "67": 71571,
+      "64": 239347
+    },
+    "degree_range": [
+      64,
+      99
+    ],
+    "mean_degree": 85.9696610166056,
+    "mean_degree_sq": 7587.137227094077,
+    "gravity_kernel_ns": 177678296700,
+    "process_cpu_ns": 225640625000,
+    "total_wall_ns": 286775258800
+  },
+  "raw_path": "metrics\\r20_raw\\k_0.75\\sobolA_005\\span_tight.npz",
+  "raw_sha256": "4046a549997f255e736aa92ec821bf22f64ff8a03ff7002aa13bf26758cc3bd6",
+  "n_output_epochs": 17281,
+  "last_output_epoch_s": 5184000.0
+}

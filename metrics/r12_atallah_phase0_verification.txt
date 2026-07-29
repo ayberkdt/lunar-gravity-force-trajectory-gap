@@ -1,0 +1,23 @@
+precomputed S_n up to 300
+
+=== Check 1: bounding property a_hat_n(r) >= actual |a_n| (Eq 29) ===
+  h=   50km: violations=0  tightest actual/bound=0.124 @n=2
+  h=  100km: violations=0  tightest actual/bound=0.124 @n=2
+  h=  300km: violations=0  tightest actual/bound=0.124 @n=2
+
+=== Check 2: actual truncation error < tol at N_req (Fig 4) ===
+  tol=1e-06: h=  50:N=300,err=0.0e+00OK | h= 150:N=212,err=1.0e-11OK | h= 500:N= 58,err=1.5e-10OK
+  tol=1e-09: h=  50:N=300,err=0.0e+00OK | h= 150:N=292,err=6.5e-15OK | h= 500:N= 87,err=7.9e-14OK
+  tol=1e-12: h=  50:N=300,err=0.0e+00OK | h= 150:N=300,err=0.0e+00OK | h= 500:N=116,err=1.7e-16OK
+
+=== Check 3: monotonicity ===
+  N vs altitude [30..500km] @tol=1e-9: [300, 300, 300, 222, 146, 87]  monotone-decreasing=True
+  N vs tol [1e-4..1e-12] @h=100km: [242, 297, 300, 300, 300]  monotone-increasing=True
+
+=== Perilune-fidelity matching (tol so N_req(r_p)=N_target) ===
+  hp=   30km: N_crit(emp)=250  matched tol=2.301e+00  N_req(r_p,tol)=250  match=True
+  hp=   50km: N_crit(emp)=196  matched tol=5.093e-01  N_req(r_p,tol)=196  match=True
+  hp=  100km: N_crit(emp)=107  matched tol=8.934e-02  N_req(r_p,tol)=107  match=True
+
+GATE: bounding=True  error<tol=True  monotone_r=True  monotone_tol=True
+PHASE-0 PASS

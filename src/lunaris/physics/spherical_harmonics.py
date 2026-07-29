@@ -1,0 +1,2045 @@
+"""
+Spherical Harmonic Gravity Kernels (High-Performance Lunar Engine)
+
+This module serves as the primary numerical engine for evaluating gravitational
+acceleration using Spherical Harmonic models. It is strictly 'compute-only',
+meaning it contains no I/O, file parsing, or dataset management.
+
+Core Philosophy:
+----------------
+1. Separation of Concerns: Numerical kernels live here; I/O lives in loaders/.
+2. Frame Integrity: All calculations are performed in the BODY-FIXED frame.
+3. Speed: All kernels are JIT-compiled via Numba with high-degree optimizations.
+4. Stability: The serial kernel uses Kahan summation; all kernels use pole-safe
+   guards for high-degree models.
+
+Component Overview:
+-------------------
+- Foundations & Infrastructure:
+    * SHWorkspace                  : Pre-allocated scratch buffers (zero-allocation per call).
+    * get_legendre_recurrence_tables: Precomputes recurrence constants for stable ALFs.
+    * slice_gravity_model          : Normalizes and truncates coefficient matrices.
+
+- Numerical Acceleration Kernels (Body-Fixed):
+    * sh_accel_fixed_numba          : Deterministic, Kahan-compensated serial kernel.
+    * sh_accel_adaptive_blend_numba : Altitude-aware, dual-fidelity blended kernel.
+    * compute_point_mass_acceleration: High-performance Newtonian monopole baseline.
+
+- Dispatch & API:
+    * GravityModel (Class)         : The high-level container managing data and state.
+    * sh_accel_fixed               : Python-level dispatch (Serial/Parallel) logic.
+
+Data Flow & Design:
+-------------------
+- Input: Position (x, y, z) in the BODY-FIXED frame.
+- Output: Acceleration vector (ax, ay, az) in the BODY-FIXED frame.
+- Rotations: Frame transformations (Inertial <-> Body-Fixed) must be handled
+  upstream by specialized frame/attitude modules.
+
+Numerical Specifications:
+-------------------------
+- Normalization: Fully-normalized (4π) Associated Legendre Functions (ALFs).
+- Precision: The serial kernel (sh_accel_fixed_numba) uses compensated (Kahan)
+  summation against rounding error in large sums. The optional parallel path
+  (_compute_sh_acceleration_parallel) uses plain block sums compiled with
+  ``fastmath`` and can differ from the serial path at floating-point roundoff;
+  it is reachable only through the sh_accel_fixed dispatcher, which no
+  production RHS uses (propagation calls the serial kernel directly).
+- Singularity Protection: Pole-safe Cartesian mapping prevents divergence at latitudes ±90°.
+
+Unit System (SI):
+-----------------
+- Reference Radius (r_ref)       : Meters [m]
+- Gravitational Parameter (mu)   : [m^3 / s^2]
+- Position & Distance            : Meters [m]
+- Acceleration Output            : [m / s^2]
+
+Dependencies:
+-------------
+- NumPy: Array operations and data storage.
+- Numba: Just-In-Time compilation (nopython=True; ``parallel=True`` only in the
+  optional test-only parallel kernel).
+"""
+
+
+# =============================================================================
+# 0.                               IMPORTS
+# =============================================================================
+
+from __future__ import annotations
+
+import contextlib
+import logging
+import math
+from dataclasses import dataclass
+from typing import TypeAlias
+
+import numpy as np
+from numba import njit, prange
+
+from lunaris.common.constants import EPS_1E12, EPS_1E24, NEARLY_UNIT
+from lunaris.common.math_utils import clamp
+from lunaris.common.type_defs import F64, Arr1, Arr2, Vec3
+
+logger = logging.getLogger(__name__)
+
+
+
+# =============================================================================
+# 1.                       SETUP & PRECOMPUTATION
+# =============================================================================
+
+@dataclass(frozen=True, slots=True)
+class SHWorkspace:
+    """Reusable work arrays for SH evaluation (fully-normalized, real form)."""
+    P: Arr2      # (N+1, N+1)
+    dP: Arr2     # (N+1, N+1)
+    cos_m: Arr1  # (N+1,)
+    sin_m: Arr1  # (N+1,)
+
+
+def build_legendre_coeffs(n_max: int) -> tuple[Arr1, Arr1, Arr2, Arr2, Arr1]:
+    """
+    Precompute recurrence constants for fully-normalized associated Legendre functions (P̄_n^m).
+
+    Convention
+    ----------
+    - Normalization: fully-normalized (4π, geodesy convention)
+    - Condon–Shortley phase: NOT applied (geodesy/GRAIL convention)
+    - Real-harmonic scaling: m>0 multiplied by sqrt(2)
+
+    Parameters
+    ----------
+    n_max:
+        Maximum degree N (>= 0).
+
+    Returns
+    -------
+    diag:
+        (N+1,) float64
+        Diagonal recurrence coefficients for P̄_n^n.
+    subdiag:
+        (N+1,) float64
+        Sub-diagonal recurrence coefficients for P̄_n^{n-1}.
+    A:
+        (N+1, N+1) float64
+        Vertical recursion coefficient A[n, m] valid for n>=2, m<=n-2.
+    B:
+        (N+1, N+1) float64
+        Vertical recursion coefficient B[n, m] valid for n>=2, m<=n-2.
+    scale_m:
+        (N+1,) float64
+        Per-order scaling = sqrt(2) for m>0 (no Condon–Shortley phase).
+    """
+    N = int(n_max)
+    if N < 0:
+        raise ValueError(f"n_max must be >= 0. Got {n_max}.")
+
+    diag: Arr1 = np.zeros(N + 1, dtype=F64)
+    subdiag: Arr1 = np.zeros(N + 1, dtype=F64)
+    A: Arr2 = np.zeros((N + 1, N + 1), dtype=F64)
+    B: Arr2 = np.zeros((N + 1, N + 1), dtype=F64)
+
+    # 1) Diagonal & sub-diagonal coefficients
+    if N >= 1:
+        n_arr = np.arange(1, N + 1, dtype=F64)
+        diag[1:] = np.sqrt((2.0 * n_arr + 1.0) / (2.0 * n_arr))
+        subdiag[1:] = np.sqrt(2.0 * n_arr + 1.0)
+
+    # 2) Vertical recursion coefficients A, B for n>=2 and m=0..n-2
+    for n_int in range(2, N + 1):
+        n = float(n_int)
+        m = np.arange(0.0, n - 1.0, dtype=F64)  # 0..n-2
+
+        # A[n,m] = sqrt(((2n-1)(2n+1))/((n-m)(n+m)))
+        anm = np.sqrt(((2.0 * n - 1.0) * (2.0 * n + 1.0)) / ((n - m) * (n + m)))
+
+        # B[n,m] = sqrt(((2n+1)(n-m-1)(n+m-1))/((2n-3)(n+m)(n-m)))
+        bnm = np.sqrt(
+            ((2.0 * n + 1.0) * (n - m - 1.0) * (n + m - 1.0))
+            / ((2.0 * n - 3.0) * (n + m) * (n - m))
+        )
+
+        A[n_int, : n_int - 1] = anm
+        B[n_int, : n_int - 1] = bnm
+
+    # 3) Order scaling: sqrt(2) for m>0 (real-harmonic 4pi normalization).
+    #
+    # NO Condon-Shortley (-1)^m phase is applied. Lunar/geodesy gravity models
+    # (GRAIL JGGRX, EGM, GRACE, ICGEM) define their fully-normalized coefficients
+    # WITHOUT the Condon-Shortley phase, and the normalized recurrence above
+    # already produces a positive sectoral seed. Multiplying scale_m by (-1)^m
+    # would flip every odd-order term and corrupt the tesseral/sectoral field
+    # (verified against pyshtools and an independent oracle, which both exclude
+    # the phase; m=0 zonal terms are unaffected so J2 tests do not catch it).
+    scale_m: Arr1 = np.ones(N + 1, dtype=F64)
+    if N >= 1:
+        scale_m[1:] *= math.sqrt(2.0)
+
+    return diag, subdiag, A, B, scale_m
+
+
+def slice_gravity_model(
+    Cnm_full: np.ndarray,
+    Snm_full: np.ndarray,
+    degree: int,
+) -> tuple[Arr2, Arr2]:
+    """
+    Extract coefficient matrices up to degree N and return strict square blocks.
+
+    The Numba kernels in this module assume coefficient arrays are always shaped (N+1, N+1).
+    Therefore this helper *always* returns square, C-contiguous float64 arrays.
+
+    - Square inputs:      (N_full+1, N_full+1) -> sliced
+    - Rectangular inputs: (n_max+1, m_max+1)   -> padded with zeros in the order dimension
+
+    Parameters
+    ----------
+    Cnm_full, Snm_full:
+        Full coefficient arrays.
+    degree:
+        Target degree N for truncation (>= 0).
+
+    Returns
+    -------
+    Cnm, Snm:
+        (N+1, N+1) contiguous float64 coefficient blocks.
+    """
+    N = int(degree)
+    if N < 0:
+        raise ValueError(f"degree must be >= 0. Got {degree}.")
+
+    C = np.asarray(Cnm_full)
+    S = np.asarray(Snm_full)
+
+    if C.ndim != 2 or S.ndim != 2:
+        raise ValueError("Cnm_full and Snm_full must be 2D arrays.")
+    if C.shape != S.shape:
+        raise ValueError(f"Cnm_full shape {C.shape} and Snm_full shape {S.shape} must match.")
+
+    need = N + 1
+    n0, m0 = C.shape
+    if n0 < need:
+        raise ValueError(f"Not enough degree rows: Cnm_full has {n0} rows, need {need} (degree={N}).")
+
+    # Always return (need, need)
+    outC: Arr2 = np.zeros((need, need), dtype=F64)
+    outS: Arr2 = np.zeros((need, need), dtype=F64)
+
+    m_copy = min(need, m0)
+    outC[:, :m_copy] = C[:need, :m_copy]
+    outS[:, :m_copy] = S[:need, :m_copy]
+
+    return np.ascontiguousarray(outC), np.ascontiguousarray(outS)
+
+
+def make_sh_workspace(degree: int) -> SHWorkspace:
+    """
+    Allocate reusable workspace arrays for SH evaluation (typed dataclass form).
+
+    Safer than dict; no string keys.
+    """
+    N = int(degree)
+    if N < 0:
+        raise ValueError(f"degree must be >= 0. Got {degree}.")
+
+    P: Arr2 = np.zeros((N + 1, N + 1), dtype=F64)
+    dP: Arr2 = np.zeros((N + 1, N + 1), dtype=F64)
+    cos_m: Arr1 = np.zeros(N + 1, dtype=F64)
+    sin_m: Arr1 = np.zeros(N + 1, dtype=F64)
+
+    return SHWorkspace(P=P, dP=dP, cos_m=cos_m, sin_m=sin_m)
+
+
+# Cache: degree -> (diag, subdiag, A, B, scale_m)
+_LEGENDRE_CACHE: dict[int, tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]] = {}
+
+
+def _get_legendre_tables(
+    degree: int,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    """
+    Cached access to Legendre recurrence constants for a given degree.
+
+    Returned arrays should be treated as read-only.
+    """
+    N = int(degree)
+    if N < 0:
+        raise ValueError(f"degree must be >= 0. Got {degree}.")
+
+    try:
+        return _LEGENDRE_CACHE[N]
+    except KeyError:
+        tables = build_legendre_coeffs(N)
+        # Reduce accidental mutation bugs (best-effort)
+        for a in tables:
+            with contextlib.suppress(Exception):
+                a.flags.writeable = False
+        _LEGENDRE_CACHE[N] = tables
+        return tables
+
+
+
+# =============================================================================
+# 2.                           THE CORE KERNELS
+# =============================================================================
+
+LOG_UNDERFLOW_LIMIT = -690.7755278982137  # ln(1e-300)
+
+
+@njit(cache=True)
+def _imin(a: int, b: int) -> int:
+    return a if a < b else b
+
+
+@njit(cache=True)
+def _imax(a: int, b: int) -> int:
+    return a if a > b else b
+
+
+@njit(cache=True)
+def _compute_stable_m_limit(cos_phi: float, max_degree: int) -> int:
+    """
+    Computes the maximum order 'm' where cos(phi)^m stays above float64 floor.
+    Used to skip underflowing sectoral terms near the poles for performance.
+    """
+    if max_degree <= 0:
+        return 0
+
+    # abs_cos_phi represents the magnitude of the cosine of geocentric latitude
+    abs_cos_phi = abs(cos_phi)
+
+    # Handle singularities: exact pole (cos=0) or equator (cos=1)
+    if abs_cos_phi == 0.0:
+        return 0
+    if abs_cos_phi >= NEARLY_UNIT:
+        return max_degree
+
+    # Mathematical justification:
+    # We require: cos(phi)^m > exp(LOG_UNDERFLOW_LIMIT)
+    # m * ln|cos_phi| > LOG_UNDERFLOW_LIMIT
+    # m < LOG_UNDERFLOW_LIMIT / ln|cos_phi|
+
+    ln_cos_phi = math.log(abs_cos_phi)
+    m_suggested = int(LOG_UNDERFLOW_LIMIT / ln_cos_phi)
+
+    # Return the stable order limit within [0, max_degree]
+    return int(clamp(m_suggested, 0, max_degree))
+
+
+@njit(cache=True)
+def _fill_longitude_trig_tables(
+    cos_lon: float,
+    sin_lon: float,
+    max_order: int,
+    cos_m_lon: np.ndarray,
+    sin_m_lon: np.ndarray
+) -> None:
+    """
+    Computes cos(m*lambda) and sin(m*lambda) tables using trigonometric addition formulas.
+    This avoids repeated expensive calls to transcendental functions in the hot loop.
+    """
+    # Base case: m = 0
+    cos_m_lon[0] = 1.0
+    sin_m_lon[0] = 0.0
+
+    if max_order <= 0:
+        return
+
+    # Base case: m = 1
+    cos_m_lon[1] = cos_lon
+    sin_m_lon[1] = sin_lon
+
+    # Recursion using:
+    # cos(m*L) = cos((m-1)*L)*cos(L) - sin((m-1)*L)*sin(L)
+    # sin(m*L) = sin((m-1)*L)*cos(L) + cos((m-1)*L)*sin(L)
+    for m in range(2, max_order + 1):
+        cos_prev = cos_m_lon[m - 1]
+        sin_prev = sin_m_lon[m - 1]
+
+        cos_m_lon[m] = cos_prev * cos_lon - sin_prev * sin_lon
+        sin_m_lon[m] = sin_prev * cos_lon + cos_prev * sin_lon
+
+
+@njit(cache=True)
+def _apply_legendre_normalization(
+    p_matrix: np.ndarray,
+    dp_matrix: np.ndarray,
+    max_degree: int,
+    max_order: int,
+    stable_m_limit: int,
+    scale_m_table: np.ndarray
+) -> None:
+    """
+    Applies per-order sqrt(2) scaling in-place for fully normalized real
+    geodesy harmonics.
+
+    No Condon-Shortley phase is applied. The ALF recurrence is intentionally
+    built for the GRAIL/geodesy convention, where that phase is absent.
+    """
+    for n in range(max_degree + 1):
+        # Accessing rows directly for better cache locality in Numba
+        p_row = p_matrix[n]
+        dp_row = dp_matrix[n]
+
+        # 1. Scale Legendre Polynomials (P)
+        # Limit by the smaller of current degree 'n' or model order
+        p_limit = _imin(max_order, n)
+        for m in range(p_limit + 1):
+            p_row[m] *= scale_m_table[m]
+
+        # 2. Scale Derivatives (dP)
+        # Limit by the stable 'm' cutoff to avoid unnecessary scaling of underflown terms
+        dp_limit = _imin(stable_m_limit, n)
+        for m in range(dp_limit + 1):
+            dp_row[m] *= scale_m_table[m]
+
+
+@njit(cache=True)
+def _compute_legendre_polynomials_inplace(
+    sin_phi: float,
+    cos_phi: float,
+    max_degree: int,
+    max_order: int,
+    stable_m_limit: int,
+    diag_coeffs: np.ndarray,
+    subdiag_coeffs: np.ndarray,
+    A_coeffs: np.ndarray,
+    B_coeffs: np.ndarray,
+    scale_m_table: np.ndarray,
+    p_matrix: np.ndarray,
+    dp_matrix: np.ndarray
+) -> None:
+    """
+    Computes fully-normalized associated Legendre polynomials (ALFs) and their
+    derivatives dP/dphi using stable recursive algorithms.
+
+    This is the core numerical hot-path. It performs zero heap allocations.
+    """
+
+    # 1. Coordinate and Range Setup
+    workspace_n_max = p_matrix.shape[0] - 1
+    max_degree = int(clamp(max_degree, 0, workspace_n_max))
+
+    # Derivative dP[n,m] requires P[n,m+1].
+    # We must ensure max_order is sufficient for derivative calculation.
+    safe_order_for_deriv = _imin(stable_m_limit + 1, max_degree)
+    max_order = _imax(max_order, safe_order_for_deriv)
+
+    # 2. Base Case: n=0, m=0
+    p_matrix[0, 0] = 1.0
+    dp_matrix[0, 0] = 0.0
+
+    # 3. Main Recurrence Loop (Degree-by-Degree)
+    for n in range(1, max_degree + 1):
+        p_curr = p_matrix[n]
+        p_prev = p_matrix[n - 1]
+
+        # Sectoral terms (Diagonal): P[n,n]
+        if n <= max_order:
+            p_curr[n] = diag_coeffs[n] * cos_phi * p_prev[n - 1]
+
+        # Tesseral terms (Sub-diagonal): P[n,n-1]
+        if (n - 1) <= max_order:
+            p_curr[n - 1] = subdiag_coeffs[n] * sin_phi * p_prev[n - 1]
+
+        # Vertical recursion: P[n,m] for m = 0..n-2
+        if n >= 2:
+            p_prev2 = p_matrix[n - 2]
+            vertical_limit = _imin(max_order, n - 2)
+            for m in range(vertical_limit + 1):
+                p_curr[m] = A_coeffs[n, m] * sin_phi * p_prev[m] - B_coeffs[n, m] * p_prev2[m]
+
+        # 4. Derivative Computation (dP/dphi)
+        dp_curr = dp_matrix[n]
+
+        # Case m = 0: dP[n,0] = sqrt(n*(n+1)) * P[n,1]
+        if max_order >= 1:
+            dp_curr[0] = math.sqrt(n * (n + 1.0)) * p_curr[1]
+        else:
+            dp_curr[0] = 0.0
+
+        # Case m > 0: Standard derivative recurrence
+        derivative_limit = _imin(stable_m_limit, n)
+        for m in range(1, derivative_limit + 1):
+            # Term involving P[n, m-1]
+            coeff_minus = math.sqrt((n + m) * (n - m + 1.0))
+            term_minus = coeff_minus * p_curr[m - 1]
+
+            # Term involving P[n, m+1]
+            m_plus_1 = m + 1
+            if m_plus_1 <= n and m_plus_1 <= max_order:
+                coeff_plus = math.sqrt((n - m) * (n + m + 1.0))
+                term_plus = coeff_plus * p_curr[m_plus_1]
+            else:
+                term_plus = 0.0
+
+            dp_curr[m] = 0.5 * (term_plus - term_minus)
+
+    # 5. Final Normalization Scaling
+    # Apply sqrt(2) and phase factor to bring ALFs to the geodesy convention.
+    _apply_legendre_normalization(
+        p_matrix, dp_matrix,
+        max_degree, max_order, stable_m_limit,
+        scale_m_table
+    )
+
+
+
+# =============================================================================
+# 3.               ACCELERATION FUNCTIONS (SERIAL / PARALLEL)
+# =============================================================================
+
+@njit(cache=True)
+def _determine_effective_degree(c_coeffs: np.ndarray, s_coeffs: np.ndarray) -> int:
+    """
+    Determines the maximum safe degree (N) based on the coefficient array dimensions.
+    Supports rectangular inputs by selecting the most conservative bound.
+    """
+    # n_rows corresponds to Degree (N), m_cols corresponds to Order (M)
+    n_rows_c, m_cols_c = c_coeffs.shape
+    n_rows_s, m_cols_s = s_coeffs.shape
+
+    # Max usable index is (size - 1) for 0-based indexing.
+    # We find the global minimum across all four dimensions to stay within bounds.
+    min_dim = _imin(_imin(n_rows_c, m_cols_c),
+                    _imin(n_rows_s, m_cols_s))
+
+    max_safe_degree = min_dim - 1
+
+    return _imax(0, max_safe_degree)
+
+
+@njit(cache=True)
+def _transform_cartesian_to_spherical_basis(x: float, y: float, z: float):
+    """
+    Transforms Cartesian (x, y, z) to Spherical components and calculates
+    the radial (u_r) and meridional (u_phi) basis vectors.
+    """
+    # Radial distance calculation
+    rho_sq = x*x + y*y     # Planar distance squared (x-y plane)
+    r_sq = rho_sq + z*z    # Total distance squared
+    r = math.sqrt(r_sq)
+
+    # Collision/Center Guard: Avoid division by zero near the origin
+    if r <= 1.0:
+        return (False,
+                0.0, 0.0, 0.0, 0.0,
+                0.0, 0.0, 1.0, 0.0,
+                0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+
+    # Precompute inverses for performance
+    inv_r = 1.0 / r
+    inv_r_sq = inv_r * inv_r
+
+    rho = math.sqrt(rho_sq)
+
+    # Latitude components (sin_phi is z-component, cos_phi is planar component)
+    sin_phi = z * inv_r
+    cos_phi = rho * inv_r
+
+    # Longitude components with Pole-Safety
+    if rho > EPS_1E12:
+        inv_rho = 1.0 / rho
+        cos_lon = x * inv_rho
+        sin_lon = y * inv_rho
+    else:
+        # At the exact pole, longitude is undefined; default to 0 degrees
+        cos_lon = 1.0
+        sin_lon = 0.0
+
+    # u_r: Radial Unit Vector (points away from center)
+    u_r_x = x * inv_r
+    u_r_y = y * inv_r
+    u_r_z = z * inv_r
+
+    # u_phi: Meridional Unit Vector (points North along the meridian)
+    # Formula: [-sin(phi)cos(lambda), -sin(phi)sin(lambda), cos(phi)]
+    u_phi_x = -sin_phi * cos_lon
+    u_phi_y = -sin_phi * sin_lon
+    u_phi_z = cos_phi
+
+    return (True,
+            r, inv_r, inv_r_sq, rho_sq,
+            sin_phi, cos_phi,
+            cos_lon, sin_lon,
+            u_r_x, u_r_y, u_r_z,
+            u_phi_x, u_phi_y, u_phi_z)
+
+
+@njit(cache=True)
+def _compute_pole_safe_inv_rho_sq(rho_sq: float, _r: float) -> float:
+    """
+    Computes 1/rho^2 safely near the planetary poles.
+
+    The current guard uses the absolute ``EPS_1E24`` rho^2 floor. The radial
+    argument is retained for call-site symmetry with the Cartesian conversion
+    helper, but no radial relative softening is applied.
+    """
+
+    # If we are effectively at the pole, return 0 to bypass longitudinal forces
+    if rho_sq < EPS_1E24:
+        return 0.0
+
+    # Standard inverse with the same tiny absolute floor used for the cutoff.
+    return 1.0 / (rho_sq + EPS_1E24)
+
+
+@njit(cache=True)
+def _convert_spherical_gradients_to_cartesian(
+    x: float, y: float,
+    r: float, inv_r: float, rho_sq: float,
+    dv_dr: float, dv_dphi: float, dv_dlambda: float,
+    u_r_x: float, u_r_y: float, u_r_z: float,
+    u_phi_x: float, u_phi_y: float, u_phi_z: float
+) -> tuple[float, float, float]:
+    """
+    Converts spherical potential gradients (dV/dr, dV/dphi, dV/dlambda)
+    into Cartesian acceleration components (ax, ay, az).
+    """
+    # 1. Radial and Meridional scaling
+    # The meridional (phi) gradient is scaled by 1/r
+    phi_factor = dv_dphi * inv_r
+
+    # 2. Longitudinal scaling (The most sensitive part near poles)
+    # The term (1 / rho^2) is used to project the dV/dlambda component
+    inv_rho_sq = _compute_pole_safe_inv_rho_sq(rho_sq, r)
+
+    # 3. Vector Recomposition
+    # Radial component + Meridional component + Longitudinal component
+    ax = dv_dr * u_r_x + phi_factor * u_phi_x - dv_dlambda * y * inv_rho_sq
+    ay = dv_dr * u_r_y + phi_factor * u_phi_y + dv_dlambda * x * inv_rho_sq
+    az = dv_dr * u_r_z + phi_factor * u_phi_z
+
+    return ax, ay, az
+
+
+@njit(cache=True)
+def _kahan_sum_step(running_sum: float, error_compensation: float, value: float):
+    """
+    Performs one step of Kahan Summation to minimize floating-point errors.
+
+    This is critical for high-degree models where thousands of small
+    harmonic terms are accumulated.
+    """
+    # 1. Adjust the current value by subtracting the previously accumulated error
+    # (Note: error_compensation is subtracted because it's effectively a 'loss')
+    corrected_value = value - error_compensation
+
+    # 2. Add the corrected value to the running total.
+    # High-order bits are stored in 'new_sum'.
+    new_sum = running_sum + corrected_value
+
+    # 3. Calculate the new error compensation.
+    # (new_sum - running_sum) gives the actual increase seen by the large number.
+    # Subtracting corrected_value from this recovery gives the lost low-order bits.
+    new_error = (new_sum - running_sum) - corrected_value
+
+    return new_sum, new_error
+
+
+@njit(cache=True)
+def _axis_transverse_m1(
+    z_positive: bool,
+    inv_r: float, inv_r_sq: float,
+    r_ref: float, mu: float,
+    c_coeffs: np.ndarray, s_coeffs: np.ndarray,
+    degree_min: int,
+    eval_degree: int,
+) -> tuple[float, float]:
+    """
+    Closed-form transverse acceleration on the polar axis (removable m=1 limit).
+
+    On the axis (rho -> 0) the longitude is undefined and both the dV/dphi and
+    dV/dlambda transverse contributions become 0/0 forms whose sum has a finite,
+    longitude-independent limit carried entirely by the m=1 sector:
+
+        a_x = sum_n (mu/r^2) (R/r)^n * lambda_n * sigma_n * C_n1
+        a_y = sum_n (mu/r^2) (R/r)^n * lambda_n * sigma_n * S_n1
+
+    with lambda_n = lim_{theta->0} P_n1(cos theta)/theta
+                  = sqrt(n(n+1)(2n+1)/2)          (4pi geodesy, no C-S phase)
+    and sigma_n = 1 at the north pole, (-1)^(n+1) at the south pole (from the
+    parity P_nm(-x) = (-1)^(n+m) P_nm(x)). The m=0 sector contributes only the
+    axial component and m>=2 sectors vanish as O(rho^(m-1)); both are handled
+    by the calling kernel. Only degrees in ``(degree_min, eval_degree]`` are
+    accumulated, so the same expression is valid for both a full field and a
+    residual degree band. Kahan-compensated to match the serial kernel.
+    """
+    ax, ay = 0.0, 0.0
+    kx, ky = 0.0, 0.0
+    r_ratio_base = r_ref * inv_r
+    r_ratio_n = r_ratio_base
+    mu_inv_r_sq = mu * inv_r_sq
+    for n in range(1, eval_degree + 1):
+        if n <= degree_min:
+            r_ratio_n *= r_ratio_base
+            continue
+        lam = math.sqrt(0.5 * n * (n + 1.0) * (2.0 * n + 1.0))
+        k = mu_inv_r_sq * r_ratio_n * lam
+        if (not z_positive) and (n % 2 == 0):
+            k = -k
+        ax, kx = _kahan_sum_step(ax, kx, k * c_coeffs[n, 1])
+        ay, ky = _kahan_sum_step(ay, ky, k * s_coeffs[n, 1])
+        r_ratio_n *= r_ratio_base
+    return ax, ay
+
+
+@njit(cache=True)
+def _prepare_evaluation_tables(
+    sin_phi: float, cos_phi: float,
+    cos_lon: float, sin_lon: float,
+    max_degree: int,
+    diag_coeffs: np.ndarray, subdiag_coeffs: np.ndarray,
+    A_coeffs: np.ndarray, B_coeffs: np.ndarray,
+    scale_m_table: np.ndarray,
+    p_matrix: np.ndarray, dp_matrix: np.ndarray,
+    cos_m_table: np.ndarray, sin_m_table: np.ndarray
+) -> int:
+    """
+    Coordinates the computation of all reusable tables (Legendre and Trigonometric).
+
+    1. Computes the stability limit (m_cutoff) for the current latitude.
+    2. Fills Legendre polynomials (P) and their derivatives (dP) in-place.
+    3. Fills the longitude recurrence tables (cos/sin m*lambda) in-place.
+    """
+
+    # 1. Determine the stable order limit for this latitude
+    stable_m_limit = _compute_stable_m_limit(cos_phi, max_degree)
+
+    # 2. Derivative dP[n,m] needs P[n,m+1].
+    # We ensure P is computed up to (m_limit + 1) to avoid index errors or zeroed derivatives.
+    max_required_order = _imin(stable_m_limit + 1, max_degree)
+
+    # 3. Compute Legendre Polynomials (In-place)
+    _compute_legendre_polynomials_inplace(
+        sin_phi, cos_phi, max_degree, max_required_order, stable_m_limit,
+        diag_coeffs, subdiag_coeffs, A_coeffs, B_coeffs, scale_m_table,
+        p_matrix, dp_matrix
+    )
+
+    # 4. Compute Trigonometric Longitude Tables (In-place)
+    _fill_longitude_trig_tables(
+        cos_lon, sin_lon, stable_m_limit,
+        cos_m_table, sin_m_table
+    )
+
+    return stable_m_limit
+
+
+@njit(cache=True)
+def _prepare_simulation_preamble(
+    x: float, y: float, z: float,
+    requested_degree: int,
+    c_coeffs: np.ndarray, s_coeffs: np.ndarray
+):
+    """
+    Common setup for gravity evaluation.
+    Validates position, transforms coordinates, and determines safe evaluation degree.
+
+    Returns a flat tuple of all geometric and administrative constants.
+    """
+    # 1. Coordinate transformation and basis vector calculation
+    # Refactored call to our previously optimized basis function
+    (valid_position, r, inv_r, inv_r_sq, rho_sq,
+     sin_phi, cos_phi, cos_lon, sin_lon,
+     u_r_x, u_r_y, u_r_z,
+     u_phi_x, u_phi_y, u_phi_z) = _transform_cartesian_to_spherical_basis(x, y, z)
+
+    # 2. Safety Guard: If position is invalid (e.g., too close to center)
+    if not valid_position:
+        return (False,
+                0.0, 0.0, 0.0, 0.0,
+                0.0, 0.0, 1.0, 0.0,
+                0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                0)
+
+    # 3. Determine the maximum degree supported by the data vs requested by the user
+    # Refactored call to our optimized degree checker
+    available_n_max = _determine_effective_degree(c_coeffs, s_coeffs)
+    effective_eval_degree = int(clamp(requested_degree, 0, available_n_max))
+
+    return (True,
+            r, inv_r, inv_r_sq, rho_sq,
+            sin_phi, cos_phi, cos_lon, sin_lon,
+            u_r_x, u_r_y, u_r_z,
+            u_phi_x, u_phi_y, u_phi_z,
+            effective_eval_degree)
+
+# ------------------------ SERIAL (accurate, Kahan) ------------------------
+
+@njit(cache=True)
+def _compute_sh_acceleration_serial(
+    x: float, y: float, z: float,
+    requested_degree: int,
+    r_ref: float, mu: float,
+    c_coeffs: np.ndarray, s_coeffs: np.ndarray,
+    diag_coeffs: np.ndarray, subdiag_coeffs: np.ndarray,
+    a_coeffs: np.ndarray, b_coeffs: np.ndarray,
+    scale_m_table: np.ndarray,
+    p_matrix: np.ndarray, dp_matrix: np.ndarray,
+    cos_m_table: np.ndarray, sin_m_table: np.ndarray
+) -> tuple[float, float, float]:
+    """
+    Computes the gravitational acceleration vector using a high-degree
+    Spherical Harmonics model. Optimized for serial execution with
+    Kahan summation for double-precision stability.
+
+    Twin-kernel maintenance contract: ``sh_potential_accel_batch_serial`` in
+    this module re-implements the same ALF recurrence, longitude recurrence,
+    and polar-axis limit for the dataset/potential path. Any convention or
+    correctness fix here (phase, derivative sign, axis limit) must be mirrored
+    there, and vice versa; cross-path agreement is pinned by
+    ``tests/test_st_lrps_generator_phase_parity.py``.
+    """
+
+    # 1. Preamble: Coordinate transformation and degree validation
+    (is_valid, r, inv_r, inv_r_sq, rho_sq,
+     sin_phi, cos_phi, cos_lon, sin_lon,
+     u_r_x, u_r_y, u_r_z,
+     u_phi_x, u_phi_y, u_phi_z,
+     eval_degree) = _prepare_simulation_preamble(x, y, z, requested_degree, c_coeffs, s_coeffs)
+
+    if not is_valid:
+        return 0.0, 0.0, 0.0
+
+    # 2. Initialize Potentials and Gradients
+    # Central gravity term: dV/dr = -GM/r^2
+    dv_dr = -mu * inv_r_sq
+    dv_dphi = 0.0
+    dv_dlambda = 0.0
+
+    # Global error compensators for Kahan summation
+    err_dr, err_dphi, err_dlambda = 0.0, 0.0, 0.0
+
+    # 3. Non-Spherical Terms (Perturbations)
+    if eval_degree >= 1:
+        # Precompute Legendre and Trigonometric lookup tables
+        m_cutoff = _prepare_evaluation_tables(
+            sin_phi, cos_phi, cos_lon, sin_lon, eval_degree,
+            diag_coeffs, subdiag_coeffs, a_coeffs, b_coeffs, scale_m_table,
+            p_matrix, dp_matrix, cos_m_table, sin_m_table
+        )
+
+        r_ratio_base = r_ref * inv_r
+        # r_ratio starts at (R_ref/r)^1 for degree n=1.
+        r_ratio_n = r_ratio_base
+        mu_inv_r = mu * inv_r
+        mu_inv_r_sq = mu * inv_r_sq
+
+        # Outer Loop: Summation by Degree (n)
+        for n in range(1, eval_degree + 1):
+            m_limit = _imin(m_cutoff, n)
+
+            # Row access for current degree
+            c_row, s_row = c_coeffs[n], s_coeffs[n]
+            p_row, dp_row = p_matrix[n], dp_matrix[n]
+
+            # Per-degree partial sums and their Kahan compensators
+            s_r, k_r = 0.0, 0.0
+            s_p, k_p = 0.0, 0.0
+            s_l, k_l = 0.0, 0.0
+
+            # Inner Loop: Summation by Order (m)
+            for m in range(m_limit + 1):
+                cos_m_lon = cos_m_table[m]
+                sin_m_lon = sin_m_table[m]
+
+                # Longitudinal terms: C*cos(mL) + S*sin(mL)
+                term_lon = c_row[m] * cos_m_lon + s_row[m] * sin_m_lon
+                deriv_lon = -c_row[m] * sin_m_lon + s_row[m] * cos_m_lon
+
+                p_nm = p_row[m]
+                dp_nm = dp_row[m]
+
+                # Accumulate partial sums for each gradient component
+                s_r, k_r = _kahan_sum_step(s_r, k_r, p_nm * term_lon)
+                s_p, k_p = _kahan_sum_step(s_p, k_p, dp_nm * term_lon)
+                s_l, k_l = _kahan_sum_step(s_l, k_l, (m * p_nm) * deriv_lon)
+
+            # Apply common factors for the current degree 'n'
+            delta_dr = -mu_inv_r_sq * (n + 1.0) * r_ratio_n * s_r
+            delta_dp =  mu_inv_r * r_ratio_n * s_p
+            delta_dl =  mu_inv_r * r_ratio_n * s_l
+
+            # Update global gradients using global Kahan compensators
+            dv_dr, err_dr = _kahan_sum_step(dv_dr, err_dr, delta_dr)
+            dv_dphi, err_dphi = _kahan_sum_step(dv_dphi, err_dphi, delta_dp)
+            dv_dlambda, err_dlambda = _kahan_sum_step(dv_dlambda, err_dlambda, delta_dl)
+
+            # Advance (R_ref/r)^n for the next degree
+            r_ratio_n *= r_ratio_base
+
+    # 4. Final Conversion to Cartesian Acceleration
+    ax, ay, az = _convert_spherical_gradients_to_cartesian(
+        x, y, r, inv_r, rho_sq,
+        dv_dr, dv_dphi, dv_dlambda,
+        u_r_x, u_r_y, u_r_z,
+        u_phi_x, u_phi_y, u_phi_z
+    )
+
+    # 5. Polar-axis limit: inside the pole-safe cutoff the longitudinal term is
+    # bypassed and the lambda=0 fallback contaminates the transverse components,
+    # so replace them with the analytic m=1 limit (the axial component from the
+    # m=0 sector is already correct).
+    if rho_sq < EPS_1E24 and eval_degree >= 1:
+        ax, ay = _axis_transverse_m1(
+            sin_phi >= 0.0, inv_r, inv_r_sq, r_ref, mu,
+            c_coeffs, s_coeffs, -1, eval_degree,
+        )
+
+    return ax, ay, az
+
+
+# ------------------------ PARALLEL (race-free reduction) ------------------------
+
+@njit(cache=True)
+def _get_optimal_block_size(max_degree: int) -> int:
+    """Heuristic to determine how many degrees each thread should process."""
+    return 16 if max_degree > 256 else 8
+
+
+@njit(parallel=True, fastmath=True, cache=True)
+def _compute_sh_acceleration_parallel(
+    x: float, y: float, z: float,
+    requested_degree: int,
+    r_ref: float, mu: float,
+    c_coeffs: np.ndarray, s_coeffs: np.ndarray,
+    diag_coeffs: np.ndarray, subdiag_coeffs: np.ndarray,
+    a_coeffs: np.ndarray, b_coeffs: np.ndarray,
+    scale_m_table: np.ndarray,
+    p_matrix: np.ndarray, dp_matrix: np.ndarray,
+    cos_m_table: np.ndarray, sin_m_table: np.ndarray
+) -> tuple[float, float, float]:
+    """
+    Parallel implementation of SH acceleration.
+    Distributes degree-blocks across multiple CPU cores using a race-free
+    partial-sum reduction strategy.
+    """
+
+    # 1. Preamble and Setup
+    (is_valid, r, inv_r, inv_r_sq, rho_sq,
+     sin_phi, cos_phi, cos_lon, sin_lon,
+     u_r_x, u_r_y, u_r_z,
+     u_phi_x, u_phi_y, u_phi_z,
+     eval_degree) = _prepare_simulation_preamble(x, y, z, requested_degree, c_coeffs, s_coeffs)
+
+    if not is_valid:
+        return 0.0, 0.0, 0.0
+
+    # Initialize global gradients (central body term)
+    dv_dr = -mu * inv_r_sq
+    dv_dphi = 0.0
+    dv_dlambda = 0.0
+
+    if eval_degree >= 1:
+        # Precompute shared tables (Legendre/Trig) - Note: This part is serial!
+        m_cutoff = _prepare_evaluation_tables(
+            sin_phi, cos_phi, cos_lon, sin_lon, eval_degree,
+            diag_coeffs, subdiag_coeffs, a_coeffs, b_coeffs, scale_m_table,
+            p_matrix, dp_matrix, cos_m_table, sin_m_table
+        )
+
+        r_ratio_base = r_ref * inv_r
+        mu_inv_r = mu * inv_r
+        mu_inv_r_sq = mu * inv_r_sq
+
+        # 2. Parallel Partitioning
+        block_size = _get_optimal_block_size(eval_degree)
+        n_start, n_stop = 1, eval_degree + 1
+        num_blocks = (n_stop - n_start + block_size - 1) // block_size
+
+        # Race-free partial sum buffers
+        partial_dr = np.zeros(num_blocks, dtype=F64)
+        partial_dp = np.zeros(num_blocks, dtype=F64)
+        partial_dl = np.zeros(num_blocks, dtype=F64)
+
+        # 3. Parallel Work Loop
+        for block_idx in prange(num_blocks):
+            deg_0 = n_start + block_idx * block_size
+            deg_1 = _imin(deg_0 + block_size, n_stop)
+
+            # Calculate (R/r)^n for the start of this specific block
+            r_ratio_n = math.pow(r_ratio_base, deg_0)
+
+            # Local accumulators for this thread's block
+            block_sum_dr = 0.0
+            block_sum_dp = 0.0
+            block_sum_dl = 0.0
+
+            for n in range(deg_0, deg_1):
+                m_limit = _imin(m_cutoff, n)
+
+                c_row, s_row = c_coeffs[n], s_coeffs[n]
+                p_row, dp_row = p_matrix[n], dp_matrix[n]
+
+                s_r, s_p, s_l = 0.0, 0.0, 0.0
+
+                # Inner Order Summation
+                for m in range(m_limit + 1):
+                    cos_ml = cos_m_table[m]
+                    sin_ml = sin_m_table[m]
+
+                    term_lon = c_row[m] * cos_ml + s_row[m] * sin_ml
+                    deriv_lon = -c_row[m] * sin_ml + s_row[m] * cos_ml
+
+                    p_nm = p_row[m]
+                    s_r += p_nm * term_lon
+                    s_p += dp_row[m] * term_lon
+                    s_l += (m * p_nm) * deriv_lon
+
+                # Accumulate local gradients
+                block_sum_dr += -mu_inv_r_sq * (n + 1.0) * r_ratio_n * s_r
+                block_sum_dp +=  mu_inv_r * r_ratio_n * s_p
+                block_sum_dl +=  mu_inv_r * r_ratio_n * s_l
+
+                r_ratio_n *= r_ratio_base
+
+            # Store block results in shared buffers
+            partial_dr[block_idx] = block_sum_dr
+            partial_dp[block_idx] = block_sum_dp
+            partial_dl[block_idx] = block_sum_dl
+
+        # 4. Final Reduction (Deterministic Serial Combine)
+        for i in range(num_blocks):
+            dv_dr += partial_dr[i]
+            dv_dphi += partial_dp[i]
+            dv_dlambda += partial_dl[i]
+
+    # 5. Transform to Cartesian
+    ax, ay, az = _convert_spherical_gradients_to_cartesian(
+        x, y, r, inv_r, rho_sq,
+        dv_dr, dv_dphi, dv_dlambda,
+        u_r_x, u_r_y, u_r_z,
+        u_phi_x, u_phi_y, u_phi_z
+    )
+
+    # 6. Polar-axis limit (parity with the serial kernel; see _axis_transverse_m1).
+    if rho_sq < EPS_1E24 and eval_degree >= 1:
+        ax, ay = _axis_transverse_m1(
+            sin_phi >= 0.0, inv_r, inv_r_sq, r_ref, mu,
+            c_coeffs, s_coeffs, -1, eval_degree,
+        )
+
+    return ax, ay, az
+
+
+
+# =============================================================================
+# 4.           HIGH-LEVEL ACCELERATION WRAPPERS (FIXED & ADAPTIVE)
+# =============================================================================
+
+SERIAL_PARALLEL_THRESHOLD = 80  # degrees; heuristic
+
+# ------------------------ Interpolation Helpers ------------------------
+
+@njit(cache=True)
+def _apply_smoothstep(t: float) -> float:
+    """
+    Applies Cubic Hermite interpolation.
+    Expects t in [0, 1]. Clamps internally to ensure stability.
+    """
+    # Clamp t to [0, 1] using the existing clamp helper.
+    t_clamped = clamp(t, 0.0, 1.0)
+
+    # S-curve (smoothstep) formula
+    return t_clamped * t_clamped * (3.0 - 2.0 * t_clamped)
+
+
+# ------------------------ dispatch wrapper ------------------------
+
+def sh_accel_fixed(
+    x: float, y: float, z: float,
+    degree: int,
+    r_ref: float, mu: float,
+    c_coeffs: np.ndarray, s_coeffs: np.ndarray,
+    diag_coeffs: np.ndarray, subdiag_coeffs: np.ndarray,
+    a_coeffs: np.ndarray, b_coeffs: np.ndarray,
+    scale_m_table: np.ndarray,
+    p_matrix: np.ndarray, dp_matrix: np.ndarray,
+    cos_m_table: np.ndarray, sin_m_table: np.ndarray,
+    *,
+    use_parallel: bool = False,
+    parallel_threshold: int = SERIAL_PARALLEL_THRESHOLD,
+) -> tuple[float, float, float]:
+    """
+    Evaluate fixed-degree SH acceleration in the coefficient body-fixed frame.
+
+    Position and reference radius are metres, ``mu`` is m³/s², and the returned
+    tuple is acceleration [m/s²]. Coefficients and Legendre tables must use the
+    fully normalized geodesy convention without the Condon–Shortley phase.
+    ``degree`` is safely bounded by the supplied coefficient arrays.
+
+    The default serial path uses compensated summation. The optional parallel
+    path uses a deterministic block reduction with ``fastmath`` (plain sums, no
+    Kahan compensation) and is selected only above ``parallel_threshold``; it
+    can differ at floating-point roundoff level, not in the represented gravity
+    model. Production RHS paths call the serial kernel
+    (``sh_accel_fixed_numba``) directly — the parallel path is not reachable
+    from propagation, so recorded ``rhs_path`` provenance always reflects the
+    serial, Kahan-compensated kernel.
+    """
+    # 1. Determine safe evaluation degree
+    max_safe_n = _determine_effective_degree(c_coeffs, s_coeffs)
+    eval_degree = int(clamp(degree, 0, max_safe_n))
+
+    # 2. Decision Logic: Parallel vs Serial
+    # Parallel is only triggered if requested AND degree is high enough.
+    if use_parallel and (eval_degree > int(parallel_threshold)):
+        return _compute_sh_acceleration_parallel(
+            x, y, z, eval_degree,
+            r_ref, mu, c_coeffs, s_coeffs,
+            diag_coeffs, subdiag_coeffs, a_coeffs, b_coeffs, scale_m_table,
+            p_matrix, dp_matrix, cos_m_table, sin_m_table
+        )
+
+    # Default to high-precision serial kernel
+    return _compute_sh_acceleration_serial(
+        x, y, z, eval_degree,
+        r_ref, mu, c_coeffs, s_coeffs,
+        diag_coeffs, subdiag_coeffs, a_coeffs, b_coeffs, scale_m_table,
+        p_matrix, dp_matrix, cos_m_table, sin_m_table
+    )
+
+
+@njit(cache=True)
+def sh_accel_fixed_numba(
+    x: float, y: float, z: float,
+    degree: int,
+    r_ref: float, mu: float,
+    c_coeffs: np.ndarray, s_coeffs: np.ndarray,
+    diag_coeffs: np.ndarray, subdiag_coeffs: np.ndarray,
+    a_coeffs: np.ndarray, b_coeffs: np.ndarray,
+    scale_m_table: np.ndarray,
+    p_matrix: np.ndarray, dp_matrix: np.ndarray,
+    cos_m_table: np.ndarray, sin_m_table: np.ndarray
+) -> tuple[float, float, float]:
+    """
+    Jit-compatible fixed-degree wrapper. Always uses the serial kernel
+    to ensure deterministic results when called from within other Numba kernels.
+    """
+    # Quick limit check
+    max_safe_n = _determine_effective_degree(c_coeffs, s_coeffs)
+    eval_degree = int(clamp(degree, 0, max_safe_n))
+
+    return _compute_sh_acceleration_serial(
+        x, y, z, eval_degree,
+        r_ref, mu, c_coeffs, s_coeffs,
+        diag_coeffs, subdiag_coeffs, a_coeffs, b_coeffs, scale_m_table,
+        p_matrix, dp_matrix, cos_m_table, sin_m_table
+    )
+
+
+# ------------------------ dual-degree in one pass ------------------------
+
+@njit(cache=True)
+def _compute_sh_acceleration_dual_numba(
+    x: float, y: float, z: float,
+    degree_low: int, degree_high: int,
+    r_ref: float, mu: float,
+    c_coeffs: np.ndarray, s_coeffs: np.ndarray,
+    diag_coeffs: np.ndarray, subdiag_coeffs: np.ndarray,
+    a_coeffs: np.ndarray, b_coeffs: np.ndarray,
+    scale_m_table: np.ndarray,
+    p_matrix: np.ndarray, dp_matrix: np.ndarray,
+    cos_m_table: np.ndarray, sin_m_table: np.ndarray
+) -> tuple[float, float, float, float, float, float]:
+    """
+    Computes two different gravity solutions (Low-Degree and High-Degree)
+    simultaneously in a single pass.
+
+    Optimized for blending/interpolation between different model resolutions
+    without redundant Legendre or Trigonometric calculations.
+    """
+
+    # 1. Preamble (Calculates coordinates and validates the highest degree)
+    (is_valid, r, inv_r, inv_r_sq, rho_sq,
+     sin_phi, cos_phi, cos_lon, sin_lon,
+     u_r_x, u_r_y, u_r_z,
+     u_phi_x, u_phi_y, u_phi_z,
+     max_safe_degree) = _prepare_simulation_preamble(x, y, z, degree_high, c_coeffs, s_coeffs)
+
+    if not is_valid:
+        return 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+
+    # Ensure degrees are within safe limits and lo <= hi
+    n_lo = int(clamp(degree_low, 0, max_safe_degree))
+    n_hi = int(clamp(degree_high, n_lo, max_safe_degree))
+
+    # 2. Initialize Two Sets of Potential Gradients
+    # Low-degree accumulators
+    dv_dr_lo, dv_dp_lo, dv_dl_lo = -mu * inv_r_sq, 0.0, 0.0
+    err_dr_lo, err_dp_lo, err_dl_lo = 0.0, 0.0, 0.0
+
+    # High-degree accumulators
+    dv_dr_hi, dv_dp_hi, dv_dl_hi = -mu * inv_r_sq, 0.0, 0.0
+    err_dr_hi, err_dp_hi, err_dl_hi = 0.0, 0.0, 0.0
+
+    if n_hi >= 1:
+        # Precompute tables for the HIGHER degree (covers both)
+        m_cutoff = _prepare_evaluation_tables(
+            sin_phi, cos_phi, cos_lon, sin_lon, n_hi,
+            diag_coeffs, subdiag_coeffs, a_coeffs, b_coeffs, scale_m_table,
+            p_matrix, dp_matrix, cos_m_table, sin_m_table
+        )
+
+        r_ratio_base = r_ref * inv_r
+        r_ratio_n = r_ratio_base
+        mu_inv_r = mu * inv_r
+        mu_inv_r_sq = mu * inv_r_sq
+
+        # 3. Main Loop: Unified Summation
+        for n in range(1, n_hi + 1):
+            m_limit = _imin(m_cutoff, n)
+
+            c_row, s_row = c_coeffs[n], s_coeffs[n]
+            p_row, dp_row = p_matrix[n], dp_matrix[n]
+
+            s_r, k_r = 0.0, 0.0
+            s_p, k_p = 0.0, 0.0
+            s_l, k_l = 0.0, 0.0
+
+            # Compute harmonic terms for degree 'n'
+            for m in range(m_limit + 1):
+                cos_ml = cos_m_table[m]
+                sin_ml = sin_m_table[m]
+
+                term_lon = c_row[m] * cos_ml + s_row[m] * sin_ml
+                deriv_lon = -c_row[m] * sin_ml + s_row[m] * cos_ml
+
+                p_nm = p_row[m]
+                s_r, k_r = _kahan_sum_step(s_r, k_r, p_nm * term_lon)
+                s_p, k_p = _kahan_sum_step(s_p, k_p, dp_row[m] * term_lon)
+                s_l, k_l = _kahan_sum_step(s_l, k_l, (m * p_nm) * deriv_lon)
+
+            # Calculate physical delta for this degree
+            delta_dr = -mu_inv_r_sq * (n + 1.0) * r_ratio_n * s_r
+            delta_dp =  mu_inv_r * r_ratio_n * s_p
+            delta_dl =  mu_inv_r * r_ratio_n * s_l
+
+            # UPDATE HIGH: Always added
+            dv_dr_hi, err_dr_hi = _kahan_sum_step(dv_dr_hi, err_dr_hi, delta_dr)
+            dv_dp_hi, err_dp_hi = _kahan_sum_step(dv_dp_hi, err_dp_hi, delta_dp)
+            dv_dl_hi, err_dl_hi = _kahan_sum_step(dv_dl_hi, err_dl_hi, delta_dl)
+
+            # UPDATE LOW: Only added if degree n is within n_lo range
+            if n <= n_lo:
+                dv_dr_lo, err_dr_lo = _kahan_sum_step(dv_dr_lo, err_dr_lo, delta_dr)
+                dv_dp_lo, err_dp_lo = _kahan_sum_step(dv_dp_lo, err_dp_lo, delta_dp)
+                dv_dl_lo, err_dl_lo = _kahan_sum_step(dv_dl_lo, err_dl_lo, delta_dl)
+
+            r_ratio_n *= r_ratio_base
+
+    # 4. Final Projection to Cartesian (Two independent results)
+    ax_lo, ay_lo, az_lo = _convert_spherical_gradients_to_cartesian(
+        x, y, r, inv_r, rho_sq, dv_dr_lo, dv_dp_lo, dv_dl_lo,
+        u_r_x, u_r_y, u_r_z, u_phi_x, u_phi_y, u_phi_z
+    )
+    ax_hi, ay_hi, az_hi = _convert_spherical_gradients_to_cartesian(
+        x, y, r, inv_r, rho_sq, dv_dr_hi, dv_dp_hi, dv_dl_hi,
+        u_r_x, u_r_y, u_r_z, u_phi_x, u_phi_y, u_phi_z
+    )
+
+    # 5. Polar-axis limit for both truncations (see _axis_transverse_m1).
+    if rho_sq < EPS_1E24:
+        if n_lo >= 1:
+            ax_lo, ay_lo = _axis_transverse_m1(
+                sin_phi >= 0.0, inv_r, inv_r_sq, r_ref, mu,
+                c_coeffs, s_coeffs, -1, n_lo,
+            )
+        if n_hi >= 1:
+            ax_hi, ay_hi = _axis_transverse_m1(
+                sin_phi >= 0.0, inv_r, inv_r_sq, r_ref, mu,
+                c_coeffs, s_coeffs, -1, n_hi,
+            )
+
+    return ax_lo, ay_lo, az_lo, ax_hi, ay_hi, az_hi
+
+# ------------------------ adaptive blend ------------------------
+
+@njit(cache=True)
+def sh_accel_adaptive_blend_numba(
+    x: float, y: float, z: float,
+    degree_far: int, degree_near: int,
+    alt_limit_far: float, alt_limit_near: float,
+    degree_step: int,
+    r_ref: float, mu: float,
+    c_coeffs: np.ndarray, s_coeffs: np.ndarray,
+    diag_coeffs: np.ndarray, subdiag_coeffs: np.ndarray,
+    a_coeffs: np.ndarray, b_coeffs: np.ndarray,
+    scale_m_table: np.ndarray,
+    p_matrix: np.ndarray, dp_matrix: np.ndarray,
+    cos_m_table: np.ndarray, sin_m_table: np.ndarray
+) -> tuple[float, float, float]:
+    """
+    Computes gravity acceleration with a dynamic degree that scales with altitude.
+    Uses 'Dual-Fidelity' evaluation to blend between two discrete degrees.
+
+    Continuity/physics contract (heuristic, not a field model):
+
+    * The blended acceleration is **C0 continuous, piecewise smooth**. At the
+      band edges the smoothstep derivative vanishes, but wherever the discrete
+      ladder switches its (deg_lo, deg_hi) pair inside the band the spatial
+      derivative jumps — the result is *not* C1 in general.
+    * Blending two conservative accelerations with a position-dependent weight
+      ``a = (1-w(r)) a_lo + w(r) a_hi`` is **non-conservative**: it omits the
+      ``(U_hi - U_lo) * grad(w)`` term of the blended-potential gradient, so
+      the field is not curl-free inside the transition band and carries no
+      energy-conservation guarantee. Do not use it for symplectic/energy-drift
+      studies (the propagator's symplectic guard rejects adaptive-degree
+      gravity for exactly this class of reason).
+    * This kernel is not routed into the production RHS; the propagator's
+      adaptive-degree path uses discrete switching (see
+      ``core/dynamics/adaptive_degree.py`` and ``docs/ARCHITECTURE.md``).
+    """
+
+    # 1. Degree Limits & Step Validation
+    max_safe_n = _determine_effective_degree(c_coeffs, s_coeffs)
+    n_min = int(clamp(degree_far, 0, max_safe_n))
+    n_max = int(clamp(degree_near, n_min, max_safe_n))
+
+    step = _imax(1, int(degree_step))
+
+    # 2. Geometry: Distance and Altitude
+    r = math.sqrt(x*x + y*y + z*z)
+    altitude = r - r_ref
+
+    # 3. Transition Logic (Determine Blending Factor 's')
+    # If altitude limits are invalid, fallback to discrete selection
+    if alt_limit_far <= alt_limit_near:
+        target_degree = n_max if altitude <= alt_limit_near else n_min
+        return sh_accel_fixed_numba(
+            x, y, z, target_degree, r_ref, mu, c_coeffs, s_coeffs,
+            diag_coeffs, subdiag_coeffs, a_coeffs, b_coeffs, scale_m_table,
+            p_matrix, dp_matrix, cos_m_table, sin_m_table
+        )
+
+    # Handle cases outside the transition band
+    if altitude >= alt_limit_far:
+        return sh_accel_fixed_numba(
+            x, y, z, n_min, r_ref, mu, c_coeffs, s_coeffs,
+            diag_coeffs, subdiag_coeffs, a_coeffs, b_coeffs, scale_m_table,
+            p_matrix, dp_matrix, cos_m_table, sin_m_table
+        )
+    if altitude <= alt_limit_near:
+        return sh_accel_fixed_numba(
+            x, y, z, n_max, r_ref, mu, c_coeffs, s_coeffs,
+            diag_coeffs, subdiag_coeffs, a_coeffs, b_coeffs, scale_m_table,
+            p_matrix, dp_matrix, cos_m_table, sin_m_table
+        )
+
+    # 4. Smoothstep Interpolation
+    # t moves from 0 (at far limit) to 1 (at near limit)
+    t = (alt_limit_far - altitude) / (alt_limit_far - alt_limit_near)
+    s = _apply_smoothstep(t)
+
+    # Desired floating-point degree (e.g., 42.7)
+    desired_degree = n_min + s * (n_max - n_min)
+
+    # 5. Discrete Ladder Selection (The 'Dual' steps)
+    # Example: If desired is 42.7 and step is 10, we blend between degree 40 and 50.
+    k = int(math.floor((desired_degree - n_min) / step))
+    deg_lo = int(clamp(n_min + k * step, n_min, n_max))
+    deg_hi = int(clamp(deg_lo + step, n_min, n_max))
+
+    # If steps collapsed to the same value, no blending needed
+    if deg_hi == deg_lo:
+        return sh_accel_fixed_numba(
+            x, y, z, deg_lo, r_ref, mu, c_coeffs, s_coeffs,
+            diag_coeffs, subdiag_coeffs, a_coeffs, b_coeffs, scale_m_table,
+            p_matrix, dp_matrix, cos_m_table, sin_m_table
+        )
+
+    # 6. Final Dual Evaluation and Linear Blend
+    # 'w' is the weight between the two discrete degree steps
+    weight = (desired_degree - deg_lo) / (deg_hi - deg_lo)
+    weight = clamp(weight, 0.0, 1.0)
+
+    # Execute both degrees in a single optimized pass
+    (ax_lo, ay_lo, az_lo,
+     ax_hi, ay_hi, az_hi) = _compute_sh_acceleration_dual_numba(
+        x, y, z, deg_lo, deg_hi, r_ref, mu, c_coeffs, s_coeffs,
+        diag_coeffs, subdiag_coeffs, a_coeffs, b_coeffs, scale_m_table,
+        p_matrix, dp_matrix, cos_m_table, sin_m_table
+    )
+
+    # Blend the results
+    ax = (1.0 - weight) * ax_lo + weight * ax_hi
+    ay = (1.0 - weight) * ay_lo + weight * ay_hi
+    az = (1.0 - weight) * az_lo + weight * az_hi
+
+    return ax, ay, az
+
+
+
+# =============================================================================
+# 5.                 BASIC POINT MASS GRAVITY (BASELINE)
+# =============================================================================
+
+@njit(cache=True)
+def compute_point_mass_acceleration(
+    x: float, y: float, z: float,
+    mu: float
+) -> tuple[float, float, float]:
+    """
+    Computes the standard Newtonian point-mass acceleration (monopole).
+
+    This serves as the baseline gravity model, representing the planet
+    as a single point mass at the origin.
+    """
+    # Calculate squared distance to avoid early square root
+    dist_sq = x*x + y*y + z*z
+
+    # Numerical Safety Guard: Avoid singularity at the center (r -> 0)
+    # Using a threshold (e.g., 1e-24 m^2) to prevent division by zero.
+    if dist_sq <= EPS_1E24:
+        return 0.0, 0.0, 0.0
+
+    # Optimization: Calculate 1/r first, then cube it to minimize divisions.
+    inv_dist = 1.0 / math.sqrt(dist_sq)
+    inv_dist_cubed = inv_dist * inv_dist * inv_dist
+
+    # Gravitational magnitude factor: -mu / r^3
+    accel_factor = -mu * inv_dist_cubed
+
+    # Return Cartesian components
+    return accel_factor * x, accel_factor * y, accel_factor * z
+
+
+
+# =============================================================================
+# 5b.        SCALAR POTENTIAL + ACCELERATION (geodesy U and a=grad U)
+# =============================================================================
+# Promoted from st_lrps/data/spatial_cloud_generator.py so the shared scaling
+# layer can subtract an SH baseline without importing the data layer. The
+# generator now imports these back from here (single source of SH math).
+
+def precompute_legendre_constants(N: int) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    """Build fully normalized Legendre-recurrence tables through degree ``N``.
+
+    The returned ``(a_nm, b_nm, diag_f, subdiag_f, k_ratio)`` arrays are
+    dimensionless and use the geodesy/GRAIL 4-pi normalization without the
+    Condon–Shortley ``(-1)^m`` phase. Shapes are ``(N+1, N+1)`` for the matrix
+    tables and ``(N+1,)`` for the diagonal tables. They are consumed by the
+    potential/acceleration batch kernel below; changing their convention would
+    change every tesseral and sectoral term.
+    """
+    N = int(N)
+    a_nm = np.zeros((N + 1, N + 1), dtype=np.float64)
+    b_nm = np.zeros_like(a_nm)
+    diag_f = np.zeros(N + 1, dtype=np.float64)
+    subdiag_f = np.zeros(N + 1, dtype=np.float64)
+    k_ratio = np.zeros_like(a_nm)
+
+    for n in range(1, N + 1):
+        diag_f[n] = math.sqrt((2.0 * n + 1.0) / (2.0 * n))
+        subdiag_f[n] = math.sqrt(2.0 * n + 1.0)
+
+    for n in range(2, N + 1):
+        for m in range(0, n - 1):
+            if m <= n - 2:
+                num_a = (2.0 * n + 1.0) * (2.0 * n - 1.0)
+                den_a = (n - m) * (n + m)
+                a_nm[n, m] = math.sqrt(num_a / den_a)
+
+                num_b = (2.0 * n + 1.0) * (n + m - 1.0) * (n - m - 1.0)
+                den_b = (2.0 * n - 3.0) * (n - m) * (n + m)
+                b_nm[n, m] = math.sqrt(num_b / den_b)
+
+    for n in range(1, N + 1):
+        for m in range(0, n + 1):
+            if n == 0 or (n + m) == 0:
+                k_ratio[n, m] = 0.0
+            else:
+                if (2 * n - 1) > 0:
+                    k_ratio[n, m] = math.sqrt(((2.0 * n + 1.0) / (2.0 * n - 1.0)) * ((n - m) / (n + m)))
+                else:
+                    k_ratio[n, m] = 0.0
+
+    return a_nm, b_nm, diag_f, subdiag_f, k_ratio
+
+
+@njit(cache=True, fastmath=True)
+def sh_potential_accel_batch_serial(
+    xyz_m: np.ndarray,   # (M,3) [m]
+    C: np.ndarray,       # (N+1,N+1)
+    S: np.ndarray,       # (N+1,N+1)
+    a_nm: np.ndarray,    # (N+1,N+1)
+    b_nm: np.ndarray,    # (N+1,N+1)
+    diag_f: np.ndarray,  # (N+1,)
+    subdiag_f: np.ndarray,  # (N+1,)
+    k_ratio: np.ndarray, # (N+1,N+1)
+    mu_si: float,
+    r_ref_m: float,
+    degree_max: int,
+    degree_min: int,
+) -> tuple[np.ndarray, np.ndarray]:
+    """Evaluate body-fixed SH potential and acceleration for ``M`` positions.
+
+    ``xyz_m`` has shape ``(M, 3)`` in the coefficient field's body-fixed frame
+    [m]. ``C`` and ``S`` are square, fully normalized coefficient arrays using
+    the geodesy/GRAIL convention without the Condon–Shortley phase. The result
+    is ``(V, a)`` with shapes ``(M,)`` [m²/s²] and ``(M, 3)`` [m/s²], using
+    the convention ``a = +grad(V)``. Terms in ``(degree_min, degree_max]`` are
+    included; ``degree_min < 0`` includes the structural ``mu/r`` monopole and
+    intentionally ignores stored ``C[0,0]``.
+
+    At a polar-axis point, the removable transverse 0/0 form is evaluated with
+    its analytic, longitude-independent m=1 limit; it is generally nonzero for
+    tesseral fields. Positions within the kernel's near-origin guard return zero
+    rather than a singular field. This serial Numba kernel performs no shape
+    validation; callers must provide recurrence tables through ``degree_max``.
+
+    Twin-kernel maintenance contract: this is a deliberate second
+    implementation of the ALF/longitude recurrences and polar-axis limit used
+    by ``_compute_sh_acceleration_serial`` (the propagation hot path); it
+    additionally returns the potential and allocates per-sample work arrays
+    instead of using ``SHWorkspace``. Any convention or correctness fix in
+    either kernel must be mirrored in the other; cross-path agreement is
+    pinned by ``tests/test_st_lrps_generator_phase_parity.py``.
+    """
+    M = xyz_m.shape[0]
+    N = degree_max
+    V_out = np.empty(M, dtype=np.float64)
+    a_out = np.empty((M, 3), dtype=np.float64)
+
+    eps_r = 1e-12
+    eps_rho = 1e-14
+    eps_c = 1e-14
+
+    for k in range(M):
+        x = float(xyz_m[k, 0])
+        y = float(xyz_m[k, 1])
+        z = float(xyz_m[k, 2])
+
+        r2 = x * x + y * y + z * z
+        r = math.sqrt(r2)
+        if r < eps_r:
+            V_out[k] = 0.0
+            a_out[k, 0] = 0.0
+            a_out[k, 1] = 0.0
+            a_out[k, 2] = 0.0
+            continue
+
+        rho2 = x * x + y * y
+        rho = math.sqrt(rho2)
+
+        s = z / r
+        c = rho / r
+
+        if rho > eps_rho:
+            cosl = x / rho
+            sinl = y / rho
+        else:
+            cosl = 1.0
+            sinl = 0.0
+
+        cos_m = np.empty(N + 1, dtype=np.float64)
+        sin_m = np.empty(N + 1, dtype=np.float64)
+        cos_m[0] = 1.0
+        sin_m[0] = 0.0
+        for m in range(1, N + 1):
+            cos_m[m] = cos_m[m - 1] * cosl - sin_m[m - 1] * sinl
+            sin_m[m] = sin_m[m - 1] * cosl + cos_m[m - 1] * sinl
+
+        P_nm2 = np.zeros(N + 1, dtype=np.float64)
+        P_nm1 = np.zeros(N + 1, dtype=np.float64)
+        P_n = np.zeros(N + 1, dtype=np.float64)
+
+        P_nm1[0] = 1.0
+
+        q = r_ref_m / r
+        qpow = 1.0
+
+        V_sum = 0.0
+        dr_sum = 0.0
+        dphi_sum = 0.0
+        dlam_sum = 0.0
+
+        # Structural monopole: the degree-0 term is mu/r by definition and does
+        # NOT read the stored C[0,0]. This matches the acceleration kernel
+        # (_compute_sh_acceleration_serial adds -mu/r^2 unconditionally) and the
+        # independent field oracles. Real gravity products differ in whether
+        # they store a degree-0 row at all (ICGEM .gfc stores C00=1; GRAIL
+        # SHADR .tab starts at degree 1, leaving the loaded C00=0), so honoring
+        # the stored value would silently drop the monopole for SHADR models.
+        if degree_min < 0:
+            V_sum += 1.0
+            dr_sum += 1.0
+
+        for n in range(1, N + 1):
+            qpow *= q
+
+            for i in range(n + 1):
+                P_n[i] = 0.0
+
+            # Fully-normalized ALFs WITHOUT the Condon-Shortley phase (geodesy/
+            # GRAIL convention), matching lunaris.physics.spherical_harmonics. The
+            # sectoral seed and sectoral recurrence use a POSITIVE sign; a negative
+            # sign here would re-introduce the (-1)^m phase and flip every odd-m
+            # (tesseral/sectoral) label relative to the runtime engine. The first
+            # sub-diagonal and the vertical recurrence keep m fixed, so they are
+            # phase-agnostic and unchanged. (Guarded by the parity test against
+            # GravityModel; zonal-only checks cannot catch a phase error.)
+            if n == 1:
+                P_n[0] = math.sqrt(3.0) * s
+                P_n[1] = math.sqrt(3.0) * c
+            else:
+                P_n[n] = diag_f[n] * c * P_nm1[n - 1]
+                P_n[n - 1] = subdiag_f[n] * s * P_nm1[n - 1]
+                for m in range(0, n - 1):
+                    if m <= n - 2:
+                        P_n[m] = a_nm[n, m] * s * P_nm1[m] - b_nm[n, m] * P_nm2[m]
+
+            nn = float(n)
+            for m in range(0, n + 1):
+                cnm = float(C[n, m])
+                snm = float(S[n, m])
+
+                term_cs = cnm * cos_m[m] + snm * sin_m[m]
+                P = P_n[m]
+
+                if n > degree_min:
+                    V_sum += qpow * P * term_cs
+                    dr_sum += (nn + 1.0) * qpow * P * term_cs
+
+                    if m > 0:
+                        term_lon = (-cnm * sin_m[m] + snm * cos_m[m]) * float(m)
+                        dlam_sum += qpow * P * term_lon
+
+                    if c > eps_c:
+                        P_nm1_m = 0.0
+                        if m <= n - 1:
+                            P_nm1_m = P_nm1[m]
+                        kfac = 0.0
+                        if m <= n:
+                            kfac = k_ratio[n, m]
+                        # Correct derivative: dP̄_n^m/dφ = [-n sinφ P̄_n^m + (n+m) k_{n,m} P̄_{n-1}^m] / cosφ
+                        # WARNING: datasets generated before this fix have sign-flipped latitude
+                        # acceleration components and must be regenerated.
+                        dP_dphi = (-nn * s * P + (nn + float(m)) * kfac * P_nm1_m) / c
+                        dphi_sum += qpow * dP_dphi * term_cs
+
+            P_nm2, P_nm1, P_n = P_nm1, P_n, P_nm2
+
+        V = (mu_si / r) * V_sum
+
+        inv_r2 = 1.0 / r2
+        a_r = -mu_si * inv_r2 * dr_sum
+        a_phi = mu_si * inv_r2 * dphi_sum
+        a_lam = 0.0
+        if c > eps_c:
+            a_lam = mu_si * inv_r2 * (dlam_sum / c)
+
+        rx = c * cosl
+        ry = c * sinl
+        rz = s
+        phix = -s * cosl
+        phiy = -s * sinl
+        phiz = c
+        lamx = -sinl
+        lamy = cosl
+
+        ax = a_r * rx + a_phi * phix + a_lam * lamx
+        ay = a_r * ry + a_phi * phiy + a_lam * lamy
+        az = a_r * rz + a_phi * phiz
+
+        # On the axis the separate latitude/longitude expressions are 0/0.
+        # Their sum has a finite, longitude-independent value carried by m=1.
+        # Preserve degree-band semantics for residual-field evaluation.
+        if rho <= eps_rho and N >= 1:
+            ax, ay = _axis_transverse_m1(
+                s >= 0.0, 1.0 / r, inv_r2, r_ref_m, mu_si,
+                C, S, degree_min, N,
+            )
+
+        V_out[k] = V
+        a_out[k, 0] = ax
+        a_out[k, 1] = ay
+        a_out[k, 2] = az
+
+    return V_out, a_out
+
+
+def sh_potential_accel_fixed(
+    xyz_m: np.ndarray,
+    c_coeffs: np.ndarray,
+    s_coeffs: np.ndarray,
+    mu_si: float,
+    r_ref_m: float,
+    degree_max: int,
+    degree_min: int = -1,
+) -> tuple[np.ndarray, np.ndarray]:
+    """Batch geodesy potential V and acceleration a for an SH field (body-fixed, SI).
+
+    Returns ``(V, a)`` with ``V`` shape (M,) [m^2/s^2] and ``a`` shape (M, 3)
+    [m/s^2], where ``a = +grad(V)``. Degrees in the inclusive range
+    ``(degree_min, degree_max]`` are summed (``degree_min < 0`` includes the
+    degree-0 monopole), so one call serves both full-field evaluation and
+    residual-baseline subtraction. The monopole is structural (``mu/r``); the
+    stored ``C[0,0]`` is ignored, exactly as in :func:`sh_accel_fixed` --
+    GRAIL SHADR files omit the degree-0 row (loaded ``C00 = 0``) while ICGEM
+    ``.gfc`` files store ``C00 = 1``, and both must yield the same field.
+    This is the scalar-potential companion to
+    :func:`sh_accel_fixed`; both use the geodesy 4-pi normalization WITHOUT the
+    Condon-Shortley phase. Validated against the independent field oracle
+    (potential, ~1e-16 rel) and ``GravityModel.accel_fixed`` (acceleration,
+    ~1e-16 rel off-pole; the analytic polar value matches the reference kernel).
+    """
+    xyz = np.ascontiguousarray(np.asarray(xyz_m, dtype=np.float64).reshape(-1, 3))
+    N = int(degree_max)
+    if N < 0:
+        raise ValueError(f"degree_max must be >= 0. Got {degree_max}.")
+    c_sq, s_sq = slice_gravity_model(c_coeffs, s_coeffs, N)
+    a_nm, b_nm, diag_f, subdiag_f, k_ratio = precompute_legendre_constants(N)
+    return sh_potential_accel_batch_serial(
+        xyz, c_sq, s_sq, a_nm, b_nm, diag_f, subdiag_f, k_ratio,
+        float(mu_si), float(r_ref_m), N, int(degree_min),
+    )
+
+
+
+# =============================================================================
+# 6.                 HIGH-LEVEL WRAPPER: GRAVITY MODEL
+# =============================================================================
+
+Workspace: TypeAlias = "SHWorkspace"
+
+
+@dataclass(frozen=True, slots=True)
+class GravityModelMetadata:
+    """Physical and reproducibility contract attached to a gravity field."""
+
+    model_id: str
+    source_sha256: str
+    normalization: str
+    coefficient_frame: str
+    tide_system: str
+    source_gm_m3s2: float
+    source_radius_m: float
+
+    def __post_init__(self) -> None:
+        for field_name in ("model_id", "normalization", "coefficient_frame", "tide_system"):
+            if not str(getattr(self, field_name)).strip():
+                raise ValueError(f"GravityModelMetadata.{field_name} cannot be empty.")
+        digest = str(self.source_sha256).strip().lower()
+        if digest and (len(digest) != 64 or any(ch not in "0123456789abcdef" for ch in digest)):
+            raise ValueError("GravityModelMetadata.source_sha256 must be empty or a SHA-256 hex digest.")
+        if not math.isfinite(self.source_gm_m3s2) or self.source_gm_m3s2 <= 0.0:
+            raise ValueError("GravityModelMetadata.source_gm_m3s2 must be finite and > 0.")
+        if not math.isfinite(self.source_radius_m) or self.source_radius_m <= 0.0:
+            raise ValueError("GravityModelMetadata.source_radius_m must be finite and > 0.")
+
+
+@dataclass(frozen=True, slots=True)
+class GravityModel:
+    """
+    High-level container for a spherical-harmonic gravity model.
+
+    Coordinates the numerical kernels, manages precomputed recurrence tables,
+    and handles thread-local workspaces for orbital simulations.
+    """
+
+    max_degree: int
+    r_ref: float  # Reference radius (m)
+    mu: float     # Gravitational parameter (m^3/s^2)
+
+    # Precomputed Kernel Data (Read-only arrays)
+    c_coeffs: np.ndarray
+    s_coeffs: np.ndarray
+    diag_coeffs: np.ndarray
+    subdiag_coeffs: np.ndarray
+    a_coeffs: np.ndarray
+    b_coeffs: np.ndarray
+    scale_m_table: np.ndarray
+
+    # Default workspace for single-threaded usage
+    workspace: Workspace
+    metadata: GravityModelMetadata
+
+    @property
+    def degree_max(self) -> int:
+        return self.max_degree
+
+    @property
+    def R_ref_m(self) -> float:
+        return self.r_ref
+
+    @property
+    def GM_m3s2(self) -> float:
+        return self.mu
+
+    @property
+    def Cnm(self) -> np.ndarray:
+        return self.c_coeffs
+
+    @property
+    def Snm(self) -> np.ndarray:
+        return self.s_coeffs
+
+    @property
+    def diag(self) -> np.ndarray:
+        return self.diag_coeffs
+
+    @property
+    def subdiag(self) -> np.ndarray:
+        return self.subdiag_coeffs
+
+    @property
+    def A(self) -> np.ndarray:
+        return self.a_coeffs
+
+    @property
+    def B(self) -> np.ndarray:
+        return self.b_coeffs
+
+    @property
+    def scale_m(self) -> np.ndarray:
+        return self.scale_m_table
+
+    @property
+    def ws(self) -> Workspace:
+        """Default workspace under the name the dynamics core expects.
+
+        Exposing ``ws`` here completes the canonical gravity contract
+        (``degree_max``, ``R_ref_m``, ``GM_m3s2``, ``Cnm`` ... ``ws``) directly on
+        the model, so no external name-bridging adapter is needed.
+        """
+        return self.workspace
+
+    # --------------------------- Internal Helpers ---------------------------
+
+    @staticmethod
+    def _ensure_positive_finite(name: str, value: float) -> float:
+        val = float(value)
+        if not math.isfinite(val) or val <= 0.0:
+            raise ValueError(f"Parameter '{name}' must be finite and > 0. Got {value}.")
+        return val
+
+    # --------------------------- Factories ---------------------------
+
+    @classmethod
+    def from_file(
+        cls,
+        path: str,
+        requested_degree: int | None = None,
+    ) -> GravityModel:
+        """
+        Factory: Loads coefficients from a file and prepares kernel arrays.
+        Separation of concerns: parsing is handled by loaders.io_gravity.
+        """
+        from lunaris.loaders.io_gravity import load_gravity_model as _load_file
+        from lunaris.loaders.io_gravity import read_gravity_model_metadata
+
+        # Load raw data via the external IO utility
+        n_file, r_val, mu_val, c_raw, s_raw = _load_file(path, degree_max=requested_degree)
+        metadata_values = read_gravity_model_metadata(path)
+        metadata = GravityModelMetadata(
+            model_id=str(metadata_values["model_id"]),
+            source_sha256=str(metadata_values["source_sha256"]),
+            normalization=str(metadata_values["normalization"]),
+            coefficient_frame=str(metadata_values["coefficient_frame"]),
+            tide_system=str(metadata_values["tide_system"]),
+            source_gm_m3s2=float(metadata_values["source_gm_m3s2"]),
+            source_radius_m=float(metadata_values["source_radius_m"]),
+        )
+
+        return cls.from_arrays(
+            degree_max=requested_degree if requested_degree is not None else n_file,
+            r_ref=r_val,
+            mu=mu_val,
+            c_coeffs_full=c_raw,
+            s_coeffs_full=s_raw,
+            metadata=metadata,
+        )
+
+    @classmethod
+    def from_arrays(
+        cls,
+        degree_max: int,
+        r_ref: float,
+        mu: float,
+        c_coeffs_full: np.ndarray,
+        s_coeffs_full: np.ndarray,
+        *,
+        metadata: GravityModelMetadata | None = None,
+    ) -> GravityModel:
+        """
+        Factory: Build a model from in-memory arrays and precompute tables.
+        """
+        c_full = np.asarray(c_coeffs_full, dtype=np.float64)
+        s_full = np.asarray(s_coeffs_full, dtype=np.float64)
+        if not np.all(np.isfinite(c_full)):
+            raise ValueError("c_coeffs_full must contain only finite values.")
+        if not np.all(np.isfinite(s_full)):
+            raise ValueError("s_coeffs_full must contain only finite values.")
+
+        # 1. Determine safe bounds
+        n_supported = _determine_effective_degree(c_full, s_full)
+        final_degree = int(clamp(degree_max, 0, n_supported))
+
+        # 2. Slice and precompute tables
+        c_sliced, s_sliced = slice_gravity_model(c_full, s_full, final_degree)
+        diag, subdiag, a, b, scale_m = _get_legendre_tables(final_degree)
+
+        # 3. Allocation
+        ws = make_sh_workspace(final_degree)
+        model_metadata = metadata or GravityModelMetadata(
+            model_id="in_memory",
+            source_sha256="",
+            normalization="fully_normalized_4pi",
+            coefficient_frame="unspecified",
+            tide_system="unspecified",
+            source_gm_m3s2=float(mu),
+            source_radius_m=float(r_ref),
+        )
+        if not math.isclose(model_metadata.source_gm_m3s2, float(mu), rel_tol=1.0e-15):
+            raise ValueError("GravityModel metadata source GM does not match the model GM.")
+        if not math.isclose(model_metadata.source_radius_m, float(r_ref), rel_tol=1.0e-15):
+            raise ValueError(
+                "GravityModel metadata source radius does not match the model reference radius."
+            )
+
+        return cls(
+            max_degree=final_degree,
+            r_ref=cls._ensure_positive_finite("r_ref", r_ref),
+            mu=cls._ensure_positive_finite("mu", mu),
+            c_coeffs=c_sliced,
+            s_coeffs=s_sliced,
+            diag_coeffs=diag,
+            subdiag_coeffs=subdiag,
+            a_coeffs=a,
+            b_coeffs=b,
+            scale_m_table=scale_m,
+            workspace=ws,
+            metadata=model_metadata,
+        )
+
+    # --------------------------- Workspace Management ---------------------------
+
+    def make_workspace(self) -> Workspace:
+        """Allocates an independent workspace. Essential for multi-threaded solvers."""
+        return make_sh_workspace(self.max_degree)
+
+    def _resolve_ws(self, ws: Workspace | None) -> Workspace:
+        """Selects between the default workspace or a user-provided one."""
+        return self.workspace if ws is None else ws
+
+    # --------------------------- Acceleration APIs ---------------------------
+
+    def accel_fixed(
+        self,
+        r_body_fixed: Vec3,
+        degree: int | None = None,
+        workspace: Workspace | None = None,
+    ) -> np.ndarray:
+        """
+        Fixed-degree gravity acceleration in the Body-Fixed frame.
+        """
+        # Convert input to raw floats for Numba speed
+        x = float(r_body_fixed[0])
+        y = float(r_body_fixed[1])
+        z = float(r_body_fixed[2])
+
+        n_eval = int(clamp(degree if degree is not None else self.max_degree, 0, self.max_degree))
+        ws = self._resolve_ws(workspace)
+
+        ax, ay, az = sh_accel_fixed_numba(
+            x, y, z, n_eval,
+            self.r_ref, self.mu,
+            self.c_coeffs, self.s_coeffs,
+            self.diag_coeffs, self.subdiag_coeffs,
+            self.a_coeffs, self.b_coeffs, self.scale_m_table,
+            ws.P, ws.dP, ws.cos_m, ws.sin_m
+        )
+        return np.array([ax, ay, az], dtype=np.float64)
+
+    def accel_adaptive(
+        self,
+        r_body_fixed: Vec3,
+        degree_far: int,
+        degree_near: int,
+        alt_far: float,
+        alt_near: float,
+        degree_step: int = 10,
+        workspace: Workspace | None = None,
+    ) -> np.ndarray:
+        """
+        Altitude-based adaptive blending (smooth transitions between resolutions).
+        """
+        x = float(r_body_fixed[0])
+        y = float(r_body_fixed[1])
+        z = float(r_body_fixed[2])
+
+        ws = self._resolve_ws(workspace)
+
+        ax, ay, az = sh_accel_adaptive_blend_numba(
+            x, y, z,
+            int(degree_far), int(degree_near),
+            float(alt_far), float(alt_near),
+            int(degree_step),
+            self.r_ref, self.mu,
+            self.c_coeffs, self.s_coeffs,
+            self.diag_coeffs, self.subdiag_coeffs,
+            self.a_coeffs, self.b_coeffs, self.scale_m_table,
+            ws.P, ws.dP, ws.cos_m, ws.sin_m
+        )
+        return np.array([ax, ay, az], dtype=np.float64)
+
+    # --------------------------- Potential APIs ---------------------------
+
+    def potential_accel_fixed(
+        self,
+        r_body_fixed: Vec3,
+        degree: int | None = None,
+        degree_min: int = -1,
+    ) -> tuple[float, np.ndarray]:
+        """Geodesy potential ``U`` and acceleration ``a = +grad(U)`` (body-fixed, SI).
+
+        Degrees in ``(degree_min, degree]`` are summed (``degree_min < 0``
+        includes the monopole), so the same call serves full-field evaluation
+        and residual-baseline subtraction. ``a`` agrees with
+        :meth:`accel_fixed` to machine precision.
+        """
+        n_eval = int(clamp(degree if degree is not None else self.max_degree, 0, self.max_degree))
+        V, a = sh_potential_accel_fixed(
+            np.asarray(r_body_fixed, dtype=np.float64).reshape(1, 3),
+            self.c_coeffs, self.s_coeffs, self.mu, self.r_ref, n_eval, int(degree_min),
+        )
+        return float(V[0]), a[0]
+
+    def potential_fixed(
+        self,
+        r_body_fixed: Vec3,
+        degree: int | None = None,
+        degree_min: int = -1,
+    ) -> float:
+        """Geodesy potential ``U`` in the Body-Fixed frame (SI, m^2/s^2)."""
+        return self.potential_accel_fixed(r_body_fixed, degree=degree, degree_min=degree_min)[0]
+
+
+
+# =============================================================================
+# 7.                                 PUBLIC API
+# =============================================================================
+
+__all__ = (
+    # --- Core Containers & Factories ---
+    "GravityModel",                    # Main container: coefficients + tables + API
+    "SHWorkspace",                    # Thread-local scratch buffers (pre-allocated)
+    "make_sh_workspace",              # Factory for SHWorkspace buffers
+
+    # --- High-Level Acceleration APIs (Python Dispatch) ---
+    "sh_accel_fixed",                 # Smart dispatch (Serial/Parallel) for fixed degree
+
+    # --- Numerical JIT-Kernels (Numba-Safe) ---
+    "sh_accel_fixed_numba",           # Serial Kahan-compensated fixed-degree kernel
+    "sh_accel_adaptive_blend_numba",  # Altitude-based adaptive resolution kernel
+    "compute_point_mass_acceleration",# Newtonian monopole baseline (point-mass)
+    "sh_potential_accel_fixed",       # Batch geodesy potential V + acceleration a
+    "sh_potential_accel_batch_serial",# Numba kernel: (V, a) for an SH field
+    "precompute_legendre_constants",  # SH potential recurrence tables
+
+    # --- Utility & Setup Functions ---
+    "slice_gravity_model",            # Truncates/pads coefficient arrays to degree N
+)

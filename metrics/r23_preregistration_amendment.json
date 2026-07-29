@@ -1,0 +1,59 @@
+{
+  "schema": "r23_preregistration_amendment_v1",
+  "amends": "r23_preregistration.json",
+  "status": "additive amendment; the R23 protocol is unchanged and its hash remains valid. Written after R23-A and R23-B completed and before any R23-C or R23-D aggregate was inspected.",
+  "what_triggered_it": {
+    "R23-A outcome": "outcome D. At beta = 0.5 the work-matched constant degree is more accurate on both designs: design A 18 interior against 32 fixed of 50 resolved, design B 20 against 35 of 55, median error ratios 0.67 and 0.43, achieved work ratios 0.983 and 0.985",
+    "consequence": "the constructive claim is restricted to beta near 1, so the only surviving controlled evidence for it is the beta = 1 realized-work comparison, whose median resolution threshold is a fraction of a metre"
+  },
+  "R23-C: third tolerance level for the surviving comparison": {
+    "frozen_before": "any ultra-level propagation of the span comparison",
+    "question": "Are the beta = 1 realized-work separations between the interior member and its work-matched constant comparator truncation signal, or are they integration noise that a tighter tolerance dissolves?",
+    "level": {
+      "name": "ultra",
+      "rtol": 3e-14,
+      "atol_position_m": 1e-07,
+      "atol_velocity_m_s": 1e-10,
+      "inherited_from": "the R13 retest of the Atallah comparison, reused unchanged"
+    },
+    "max_step_s": 60.0,
+    "why_max_step_is_held": "keeping the campaign's 60 s cap makes the tighter-to-ultra difference isolate the tolerance change; step sensitivity is a separate control and is not folded in here",
+    "panel_selection_rule": "every orbit whose R19 beta = 1 comparison already resolves (M_res > 1), as a validation set, plus every orbit with 0.5 < M_res <= 1, which one more decade of tolerance could reach if the gap is physical. This is the R13 rule applied to the constructive comparison instead of the Atallah one, and it is not a new rule invented for this panel",
+    "panel_size_at_registration": {
+      "resolved": 60,
+      "borderline": 23,
+      "total": 83
+    },
+    "ordering_rule": "group first, then design, then Sobol index. None of the three correlates with the cost of an orbit, so a run stopped by the clock truncates the panel without tilting it",
+    "objects_are_not_rebuilt": "the interior degree table and the comparator degree are read out of the archived R18 and R19 sidecars, so what is propagated at ultra is the object the archive already scored. Where the comparator degree rounded back to the constant endpoint, the archived endpoint trajectory is located and its recorded degree must equal the degree R19 scored; a mismatch reports the orbit as missing rather than comparing the wrong object",
+    "truth_reuse": "an archived R13 ultra truth is reused only when the truth degree, both tolerances, the maximum step, the duration and the output grid all match exactly; the integrator is deterministic, so an exact match is the same trajectory. Anything less is re-propagated",
+    "scoring_rule": "errors stay at the tighter level against the tighter truth, exactly as archived. Each policy's envelope is rebuilt as its own tighter-to-ultra self-difference plus the truth's. The resolution criterion is unchanged",
+    "incomplete_panel_rule": "if the clock stops the run, the aggregate is computed over the completed orbits only, the incomplete ones are listed by name in the record, and the completion fraction is reported wherever the result is quoted. A partial panel is never presented as the panel",
+    "decision_logic": {
+      "separations_survive": "if the resolved set stays resolved with the same winners under shrinking envelopes, the beta = 1 constructive result is reported as a truncation signal and the restriction to beta near 1 stands as the only limitation",
+      "separations_dissolve": "if resolved comparisons become unresolved as the envelope shrinks, the separations were integration noise and the constructive claim is withdrawn to a statement about the per-call accounting, said plainly in the main text",
+      "verdicts_flip": "if any winner changes side, that orbit is reported by name and the claim is not stated at population level until the flip is explained"
+    }
+  },
+  "R23-D: one cost curve under both archived protocols": {
+    "frozen_before": "any re-measured timing being compared with the text",
+    "question": "The manuscript quotes two measured curves for one kernel and calls them one curve. Is the 1.16-1.40x gap between them explained by the timing protocol, by the model degree the kernel is evaluated with, or by neither?",
+    "protocol": "measure both archived protocols -- r1's block timing and r12's per-call timing -- at both archived model degrees, 300 and 900, on one degree ladder, in one session, on an exclusively idle machine. Per-degree repeat counts are calibrated from a measured per-call cost rather than assumed",
+    "dispersion_is_reported": "median, p10, p90, minimum and the p90/p10 spread are recorded for every cell. The archived r13 repeatability check found a factor of 1.78 at degree 100 between an archived value and a re-measurement, and a curve quoted without dispersion cannot support a 4% end-to-end wall-clock claim",
+    "decision_logic": {
+      "gap_is_explained": "if protocol or model degree accounts for the archived gap, Section 5 names the two curves separately, states which result rests on which, and cites this decomposition",
+      "gap_is_not_explained": "if neither accounts for it, the archived curves are reported as irreproducible at that precision, and every claim that depends on their difference is withdrawn or re-derived from this session's curve"
+    }
+  },
+  "prohibited": [
+    "extending or trimming the R23-C panel after seeing any of its results",
+    "presenting a clock-truncated panel as the full panel",
+    "reusing an archived ultra truth whose configuration differs in any field that can move the trajectory",
+    "quoting a re-measured timing without its dispersion",
+    "dropping a degree from the cost ladder because it disagrees",
+    "reporting the third tolerance level only if it is favorable"
+  ],
+  "created_utc": "2026-07-28T20:20:43.957039Z",
+  "frozen_sha256": "4491fd11c74338174e4494cb6d85b917c57f5aeabc5135a7c68455742a93224f",
+  "parent_frozen_sha256": "0a30eaa4a6611925e48448ce5503c2c06d5f6c687a6dd99b949bd7e3e51cc14a"
+}

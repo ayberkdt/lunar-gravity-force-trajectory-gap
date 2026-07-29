@@ -1,0 +1,1015 @@
+{
+  "scenario": {
+    "plan": "ROBUSTNESS_EXPERIMENT_PLAN.md Test 9 / Stage 3 long-arc",
+    "duration_s": 2419200.0,
+    "output_step_s": 300.0,
+    "checkpoint_days": [
+      7,
+      14,
+      21,
+      28
+    ],
+    "integrator": "DOP853",
+    "rtol": 1e-11,
+    "atol": 1e-06,
+    "max_step_s": 120.0,
+    "tolerance_note": "long-arc family (Test 3 seven-day settings); looser than rev7 stage-1/2 rtol=1e-12 to keep the 28-day adaptive step from collapsing",
+    "surface_impact_handling": "terminal event at r = R_ref; impacting reference orbits are flagged and their policy comparison is omitted",
+    "rotation": "uniform sidereal about polar axis; epoch degenerate with body-fixed perilune longitude",
+    "truth_rule": "N=600 if perilune < 50 km else N=300 (LRO N=600->900 adequacy shown in Test 3)",
+    "representative_orbits": {
+      "c2_50x300_polar": "polar, scheduling loses badly",
+      "c6_lro_30x216": "LRO-like, scheduling beats work-matched fixed",
+      "c3_50x300_i60": "intermediate inclination",
+      "c4_50x300_i5": "near-equatorial / non-polar"
+    },
+    "smoke": false
+  },
+  "rows": [
+    {
+      "name": "c2_50x300_polar",
+      "family": "canonical",
+      "hp_km": 50.0,
+      "ha_km": 300.0,
+      "incl_deg": 90.0,
+      "argp_deg": 0.0,
+      "raan_deg": 0.0,
+      "perilune_lon_deg_bodyfixed_t0": 0.0,
+      "perilune_lat_deg_bodyfixed_t0": 0.0,
+      "eccentricity": 0.06534239414532149,
+      "dwell_ratio_ra_over_rp": 1.139821029082774,
+      "truth_degree": 300,
+      "n_critical_empirical": 196,
+      "impacted": false,
+      "truth_altitude_range_km": [
+        35.61863994105533,
+        313.43312209496787
+      ],
+      "policies": {
+        "sched_emp": {
+          "pos_rms_m": 3473.5224491347094,
+          "pos_max_m": 7525.862048460717,
+          "pos_final_m": 6735.716274117896,
+          "vel_rms_m_s": 2.9294290449091127,
+          "vel_max_m_s": 6.792366200631184,
+          "vel_final_m_s": 5.40780311971524,
+          "ric_rms_m": {
+            "radial": 170.95812844211352,
+            "in_track": 3469.3103400796354,
+            "cross_track": 4.157785334062192
+          },
+          "ric_max_m": {
+            "radial": 505.5492508211576,
+            "in_track": 7525.606503298994,
+            "cross_track": 10.722595457390735
+          },
+          "ric_final_m": {
+            "radial": 354.0203852930231,
+            "in_track": 6726.405106373466,
+            "cross_track": -4.199662678354801
+          },
+          "n_rhs": 742805,
+          "wall_s": 105.26099270000122,
+          "grav_s": 83.2389492,
+          "mean_deg_sq": 19731.813463829672,
+          "checkpoints": {
+            "d7": {
+              "pos_rms_m": 844.86753003465,
+              "pos_at_checkpoint_m": 1567.7852363538054,
+              "in_track_rms_m": 844.0032402217439,
+              "in_track_at_checkpoint_m": 1566.7860108753089
+            },
+            "d14": {
+              "pos_rms_m": 1587.0749989136366,
+              "pos_at_checkpoint_m": 2354.9082979128984,
+              "in_track_rms_m": 1585.332103733842,
+              "in_track_at_checkpoint_m": 2350.934050071831
+            },
+            "d21": {
+              "pos_rms_m": 2165.6258407776963,
+              "pos_at_checkpoint_m": 4278.287644649738,
+              "in_track_rms_m": 2163.2686655237294,
+              "in_track_at_checkpoint_m": 4267.408408886451
+            },
+            "d28": {
+              "pos_rms_m": 3473.5224491347094,
+              "pos_at_checkpoint_m": 6735.716274117896,
+              "in_track_rms_m": 3469.3103400796354,
+              "in_track_at_checkpoint_m": 6726.405106373466
+            }
+          }
+        },
+        "fixed_work": {
+          "pos_rms_m": 25.13001137082611,
+          "pos_max_m": 49.90588783317419,
+          "pos_final_m": 44.17425498212677,
+          "vel_rms_m_s": 0.021194950768357788,
+          "vel_max_m_s": 0.04504886048604249,
+          "vel_final_m_s": 0.035534283617312756,
+          "ric_rms_m": {
+            "radial": 1.307998717041731,
+            "in_track": 25.094451971247256,
+            "cross_track": 0.27402758407063543
+          },
+          "ric_max_m": {
+            "radial": 3.73676239059151,
+            "in_track": 49.904193342632844,
+            "cross_track": 1.314022908740391
+          },
+          "ric_final_m": {
+            "radial": 2.5884169016697953,
+            "in_track": 44.09787915483422,
+            "cross_track": 0.20482972132778535
+          },
+          "n_rhs": 493025,
+          "wall_s": 69.33432110000285,
+          "grav_s": 54.800518,
+          "mean_deg_sq": 19600.0,
+          "checkpoints": {
+            "d7": {
+              "pos_rms_m": 5.593772161397409,
+              "pos_at_checkpoint_m": 9.71823009943505,
+              "in_track_rms_m": 5.582848124470881,
+              "in_track_at_checkpoint_m": 9.70732324114456
+            },
+            "d14": {
+              "pos_rms_m": 13.981506052779936,
+              "pos_at_checkpoint_m": 24.74898655729453,
+              "in_track_rms_m": 13.96038291465138,
+              "in_track_at_checkpoint_m": 24.677188132839134
+            },
+            "d21": {
+              "pos_rms_m": 18.83748752312969,
+              "pos_at_checkpoint_m": 29.19649078721924,
+              "in_track_rms_m": 18.810882606466517,
+              "in_track_at_checkpoint_m": 29.11838881510499
+            },
+            "d28": {
+              "pos_rms_m": 25.13001137082611,
+              "pos_at_checkpoint_m": 44.17425498212677,
+              "in_track_rms_m": 25.094451971247256,
+              "in_track_at_checkpoint_m": 44.09787915483422
+            }
+          }
+        },
+        "fixed_crit": {
+          "pos_rms_m": 12.212320375358052,
+          "pos_max_m": 22.050139642279046,
+          "pos_final_m": 19.61891567232594,
+          "vel_rms_m_s": 0.010296529719584616,
+          "vel_max_m_s": 0.01991331854286753,
+          "vel_final_m_s": 0.01577699328560117,
+          "ric_rms_m": {
+            "radial": 0.5929607684927105,
+            "in_track": 12.1978221841954,
+            "cross_track": 0.047962904045990254
+          },
+          "ric_max_m": {
+            "radial": 1.474931658597424,
+            "in_track": 22.049831633290324,
+            "cross_track": 0.3078652479599894
+          },
+          "ric_final_m": {
+            "radial": -1.0848877015136758,
+            "in_track": -19.588869198196367,
+            "cross_track": -0.03277756693839372
+          },
+          "n_rhs": 514169,
+          "wall_s": 122.17547119999654,
+          "grav_s": 105.3681998,
+          "mean_deg_sq": 38416.0,
+          "checkpoints": {
+            "d7": {
+              "pos_rms_m": 0.7997325581222305,
+              "pos_at_checkpoint_m": 1.8113338437803679,
+              "in_track_rms_m": 0.7985248482932913,
+              "in_track_at_checkpoint_m": -1.8095221304211864
+            },
+            "d14": {
+              "pos_rms_m": 4.598115456673512,
+              "pos_at_checkpoint_m": 10.408965485204808,
+              "in_track_rms_m": 4.592719865934753,
+              "in_track_at_checkpoint_m": -10.391284689746689
+            },
+            "d21": {
+              "pos_rms_m": 9.527822359391273,
+              "pos_at_checkpoint_m": 17.301082162618254,
+              "in_track_rms_m": 9.51726251781937,
+              "in_track_at_checkpoint_m": -17.257357453454276
+            },
+            "d28": {
+              "pos_rms_m": 12.212320375358052,
+              "pos_at_checkpoint_m": 19.61891567232594,
+              "in_track_rms_m": 12.1978221841954,
+              "in_track_at_checkpoint_m": -19.588869198196367
+            }
+          }
+        },
+        "sched_down": {
+          "pos_rms_m": 3492.599101884488,
+          "pos_max_m": 7836.994638344001,
+          "pos_final_m": 7032.290492963732,
+          "vel_rms_m_s": 2.945343452942526,
+          "vel_max_m_s": 7.077014791987805,
+          "vel_final_m_s": 5.64173255244212,
+          "ric_rms_m": {
+            "radial": 170.12455539166493,
+            "in_track": 3488.452499067448,
+            "cross_track": 2.298670745234352
+          },
+          "ric_max_m": {
+            "radial": 523.6062839627159,
+            "in_track": 7836.704650596088,
+            "cross_track": 5.9718343898906
+          },
+          "ric_final_m": {
+            "radial": 367.17798203275197,
+            "in_track": 7022.698030155627,
+            "cross_track": -1.5113526083370092
+          },
+          "n_rhs": 739793,
+          "wall_s": 114.58053700000164,
+          "grav_s": 92.6456574,
+          "mean_deg_sq": 22428.728171258717,
+          "checkpoints": {
+            "d7": {
+              "pos_rms_m": 585.8768505047465,
+              "pos_at_checkpoint_m": 1311.754197604851,
+              "in_track_rms_m": 585.3002436529886,
+              "in_track_at_checkpoint_m": 1310.8557694798467
+            },
+            "d14": {
+              "pos_rms_m": 1459.4956336354205,
+              "pos_at_checkpoint_m": 2386.0129653059003,
+              "in_track_rms_m": 1457.9388483971927,
+              "in_track_at_checkpoint_m": 2382.11361050437
+            },
+            "d21": {
+              "pos_rms_m": 2109.397622553817,
+              "pos_at_checkpoint_m": 4253.491900497707,
+              "in_track_rms_m": 2107.170133515521,
+              "in_track_at_checkpoint_m": 4242.922700685248
+            },
+            "d28": {
+              "pos_rms_m": 3492.599101884488,
+              "pos_at_checkpoint_m": 7032.290492963732,
+              "in_track_rms_m": 3488.452499067448,
+              "in_track_at_checkpoint_m": 7022.698030155627
+            }
+          }
+        },
+        "sched_up": {
+          "pos_rms_m": 331.8373233767123,
+          "pos_max_m": 622.5046956199975,
+          "pos_final_m": 556.1880465911521,
+          "vel_rms_m_s": 0.2797769231896924,
+          "vel_max_m_s": 0.5594079812703242,
+          "vel_final_m_s": 0.44411411022150965,
+          "ric_rms_m": {
+            "radial": 16.495914641044518,
+            "in_track": 331.42626543544895,
+            "cross_track": 0.7242689330850078
+          },
+          "ric_max_m": {
+            "radial": 41.21585830194549,
+            "in_track": 622.504355887317,
+            "cross_track": 2.1734350773707454
+          },
+          "ric_final_m": {
+            "radial": -30.672577144834435,
+            "in_track": -555.3411941070533,
+            "cross_track": 0.7030717800192953
+          },
+          "n_rhs": 716345,
+          "wall_s": 116.9007512999815,
+          "grav_s": 95.4725171,
+          "mean_deg_sq": 24069.25322295821,
+          "checkpoints": {
+            "d7": {
+              "pos_rms_m": 80.63557057398175,
+              "pos_at_checkpoint_m": 216.78113292357628,
+              "in_track_rms_m": 80.51723949808446,
+              "in_track_at_checkpoint_m": 216.46673014472208
+            },
+            "d14": {
+              "pos_rms_m": 350.2752694488972,
+              "pos_at_checkpoint_m": 460.9085459167482,
+              "in_track_rms_m": 349.8336319521119,
+              "in_track_at_checkpoint_m": 459.8594209427414
+            },
+            "d21": {
+              "pos_rms_m": 323.20909945446294,
+              "pos_at_checkpoint_m": 62.68140889059452,
+              "in_track_rms_m": 322.79713109750395,
+              "in_track_at_checkpoint_m": -62.59499452676951
+            },
+            "d28": {
+              "pos_rms_m": 331.8373233767123,
+              "pos_at_checkpoint_m": 556.1880465911521,
+              "in_track_rms_m": 331.42626543544895,
+              "in_track_at_checkpoint_m": -555.3411941070533
+            }
+          }
+        }
+      },
+      "n_work_matched": 140,
+      "ratios": {
+        "sched_emp": {
+          "rho_crit": 0.003515831710948138,
+          "rho_work": 0.007234734117548674,
+          "grav_time_saving_vs_crit": 0.21001830383363929
+        },
+        "sched_down": {
+          "rho_crit": 0.003496628161179077,
+          "rho_work": 0.007195217841425548,
+          "grav_time_saving_vs_crit": 0.12074366292817684
+        },
+        "sched_up": {
+          "rho_crit": 0.03680213018562182,
+          "rho_work": 0.07572991222056635,
+          "grav_time_saving_vs_crit": 0.09391526778271864
+        }
+      },
+      "sched_emp_in_track_growth": {
+        "checkpoint_days": [
+          7,
+          14,
+          21,
+          28
+        ],
+        "abs_in_track_m": [
+          1566.7860108753089,
+          2350.934050071831,
+          4267.408408886451,
+          6726.405106373466
+        ],
+        "d28_over_d7": 4.2931230300018175
+      },
+      "orbit_wall_s": 800.897377300018
+    },
+    {
+      "name": "c3_50x300_i60",
+      "family": "canonical",
+      "hp_km": 50.0,
+      "ha_km": 300.0,
+      "incl_deg": 60.0,
+      "argp_deg": 0.0,
+      "raan_deg": 0.0,
+      "perilune_lon_deg_bodyfixed_t0": 0.0,
+      "perilune_lat_deg_bodyfixed_t0": 0.0,
+      "eccentricity": 0.06534239414532149,
+      "dwell_ratio_ra_over_rp": 1.139821029082774,
+      "truth_degree": 300,
+      "n_critical_empirical": 196,
+      "impacted": false,
+      "truth_altitude_range_km": [
+        30.94262182294065,
+        318.30471546904676
+      ],
+      "policies": {
+        "sched_emp": {
+          "pos_rms_m": 111.62514687468033,
+          "pos_max_m": 300.75712083445825,
+          "pos_final_m": 262.65730781981654,
+          "vel_rms_m_s": 0.09413455458171836,
+          "vel_max_m_s": 0.2719942701437831,
+          "vel_final_m_s": 0.21194795493284432,
+          "ric_rms_m": {
+            "radial": 5.921871267514548,
+            "in_track": 111.45637176777868,
+            "cross_track": 1.6068751811033222
+          },
+          "ric_max_m": {
+            "radial": 21.979170167610388,
+            "in_track": 300.73082939750395,
+            "cross_track": 5.356934539291828
+          },
+          "ric_final_m": {
+            "radial": 14.40896761974858,
+            "in_track": 262.24538371150516,
+            "cross_track": 2.932869804870535
+          },
+          "n_rhs": 586613,
+          "wall_s": 73.78127179999137,
+          "grav_s": 57.0190493,
+          "mean_deg_sq": 17173.601505592273,
+          "checkpoints": {
+            "d7": {
+              "pos_rms_m": 21.015597907678476,
+              "pos_at_checkpoint_m": 16.45723977365362,
+              "in_track_rms_m": 20.918793735781076,
+              "in_track_at_checkpoint_m": 15.951324010810334
+            },
+            "d14": {
+              "pos_rms_m": 80.14613900830068,
+              "pos_at_checkpoint_m": 89.6119457195111,
+              "in_track_rms_m": 80.05312717195199,
+              "in_track_at_checkpoint_m": 89.40913022443033
+            },
+            "d21": {
+              "pos_rms_m": 73.83849797011429,
+              "pos_at_checkpoint_m": 10.155033088449347,
+              "in_track_rms_m": 73.75016660461239,
+              "in_track_at_checkpoint_m": 9.765623222551499
+            },
+            "d28": {
+              "pos_rms_m": 111.62514687468033,
+              "pos_at_checkpoint_m": 262.65730781981654,
+              "in_track_rms_m": 111.45637176777868,
+              "in_track_at_checkpoint_m": 262.24538371150516
+            }
+          }
+        },
+        "fixed_work": {
+          "pos_rms_m": 10.909508002149215,
+          "pos_max_m": 18.855440034919038,
+          "pos_final_m": 2.13563806398344,
+          "vel_rms_m_s": 0.009177982931422883,
+          "vel_max_m_s": 0.016933033933875234,
+          "vel_final_m_s": 0.001938662393943058,
+          "ric_rms_m": {
+            "radial": 0.5952186812542619,
+            "in_track": 10.890351153103285,
+            "cross_track": 0.25165717264895243
+          },
+          "ric_max_m": {
+            "radial": 2.0325002722351138,
+            "in_track": 18.85326786714753,
+            "cross_track": 1.6206931273986331
+          },
+          "ric_final_m": {
+            "radial": -0.8040347006467229,
+            "in_track": -1.5935897164956567,
+            "cross_track": -1.1725826009156721
+          },
+          "n_rhs": 436973,
+          "wall_s": 55.325508199981414,
+          "grav_s": 42.7424011,
+          "mean_deg_sq": 17161.0,
+          "checkpoints": {
+            "d7": {
+              "pos_rms_m": 12.36262186618285,
+              "pos_at_checkpoint_m": 14.954426842777892,
+              "in_track_rms_m": 12.355289420810498,
+              "in_track_at_checkpoint_m": 14.952638016860634
+            },
+            "d14": {
+              "pos_rms_m": 10.749095520717972,
+              "pos_at_checkpoint_m": 13.08149451206924,
+              "in_track_rms_m": 10.740519464016339,
+              "in_track_at_checkpoint_m": -13.04244615572859
+            },
+            "d21": {
+              "pos_rms_m": 11.978927245591745,
+              "pos_at_checkpoint_m": 9.279455994423705,
+              "in_track_rms_m": 11.963965922183199,
+              "in_track_at_checkpoint_m": -9.225409642182793
+            },
+            "d28": {
+              "pos_rms_m": 10.909508002149215,
+              "pos_at_checkpoint_m": 2.13563806398344,
+              "in_track_rms_m": 10.890351153103285,
+              "in_track_at_checkpoint_m": -1.5935897164956567
+            }
+          }
+        },
+        "fixed_crit": {
+          "pos_rms_m": 18.17520542759229,
+          "pos_max_m": 39.82837758743127,
+          "pos_final_m": 32.20702292233879,
+          "vel_rms_m_s": 0.015334422742144898,
+          "vel_max_m_s": 0.03615978687070267,
+          "vel_final_m_s": 0.025815698943739144,
+          "ric_rms_m": {
+            "radial": 0.9166975859640804,
+            "in_track": 18.15205316700693,
+            "cross_track": 0.02690154682240456
+          },
+          "ric_max_m": {
+            "radial": 2.9024766460983313,
+            "in_track": 39.82837523483867,
+            "cross_track": 0.21561766389314174
+          },
+          "ric_final_m": {
+            "radial": 2.0597562405972756,
+            "in_track": 32.14054576610176,
+            "cross_track": -0.18721005981153205
+          },
+          "n_rhs": 454577,
+          "wall_s": 107.97627390001435,
+          "grav_s": 93.0404925,
+          "mean_deg_sq": 38416.0,
+          "checkpoints": {
+            "d7": {
+              "pos_rms_m": 2.9652838524266047,
+              "pos_at_checkpoint_m": 0.7517220790483359,
+              "in_track_rms_m": 2.962078591210229,
+              "in_track_at_checkpoint_m": 0.7510737204598092
+            },
+            "d14": {
+              "pos_rms_m": 2.51288275772618,
+              "pos_at_checkpoint_m": 5.669221362521592,
+              "in_track_rms_m": 2.5103871814934857,
+              "in_track_at_checkpoint_m": 5.664520486182175
+            },
+            "d21": {
+              "pos_rms_m": 8.96856324311419,
+              "pos_at_checkpoint_m": 23.582205214057286,
+              "in_track_rms_m": 8.959556759274374,
+              "in_track_at_checkpoint_m": 23.524351803353305
+            },
+            "d28": {
+              "pos_rms_m": 18.17520542759229,
+              "pos_at_checkpoint_m": 32.20702292233879,
+              "in_track_rms_m": 18.15205316700693,
+              "in_track_at_checkpoint_m": 32.14054576610176
+            }
+          }
+        },
+        "sched_down": {
+          "pos_rms_m": 380.0556038011255,
+          "pos_max_m": 933.4505225471644,
+          "pos_final_m": 821.3801109916624,
+          "vel_rms_m_s": 0.32070834885573274,
+          "vel_max_m_s": 0.8476608835928509,
+          "vel_final_m_s": 0.6555138354165864,
+          "ric_rms_m": {
+            "radial": 19.262758500446196,
+            "in_track": 379.56429561355435,
+            "cross_track": 1.4675186465308052
+          },
+          "ric_max_m": {
+            "radial": 64.19438892516754,
+            "in_track": 933.4413671304369,
+            "cross_track": 4.304649881744979
+          },
+          "ric_final_m": {
+            "radial": 48.67137183487097,
+            "in_track": 819.9330935346796,
+            "cross_track": 2.4711177709114622
+          },
+          "n_rhs": 564845,
+          "wall_s": 78.56882699998096,
+          "grav_s": 62.1053798,
+          "mean_deg_sq": 19587.428409563687,
+          "checkpoints": {
+            "d7": {
+              "pos_rms_m": 101.00171694823936,
+              "pos_at_checkpoint_m": 146.91311935382672,
+              "in_track_rms_m": 100.90201233190963,
+              "in_track_at_checkpoint_m": -146.8698330233809
+            },
+            "d14": {
+              "pos_rms_m": 124.95863627612148,
+              "pos_at_checkpoint_m": 151.04625039902191,
+              "in_track_rms_m": 124.83834149160468,
+              "in_track_at_checkpoint_m": -150.81680598604035
+            },
+            "d21": {
+              "pos_rms_m": 129.22383322494872,
+              "pos_at_checkpoint_m": 315.98475281052725,
+              "in_track_rms_m": 129.08939180072596,
+              "in_track_at_checkpoint_m": 315.20821528094143
+            },
+            "d28": {
+              "pos_rms_m": 380.0556038011255,
+              "pos_at_checkpoint_m": 821.3801109916624,
+              "in_track_rms_m": 379.56429561355435,
+              "in_track_at_checkpoint_m": 819.9330935346796
+            }
+          }
+        },
+        "sched_up": {
+          "pos_rms_m": 562.8872144116654,
+          "pos_max_m": 1153.053551068056,
+          "pos_final_m": 1024.0981834478775,
+          "vel_rms_m_s": 0.4747767975824912,
+          "vel_max_m_s": 1.0451300828492058,
+          "vel_final_m_s": 0.8190736425201076,
+          "ric_rms_m": {
+            "radial": 28.084946943404788,
+            "in_track": 562.1856869431494,
+            "cross_track": 0.7108442652254541
+          },
+          "ric_max_m": {
+            "radial": 81.45040877444511,
+            "in_track": 1152.9753338923574,
+            "cross_track": 2.583850953725232
+          },
+          "ric_final_m": {
+            "radial": 61.13372562709617,
+            "in_track": 1022.2714662929975,
+            "cross_track": 0.8978504097323139
+          },
+          "n_rhs": 533105,
+          "wall_s": 79.80814859998645,
+          "grav_s": 63.8378943,
+          "mean_deg_sq": 21405.142326558558,
+          "checkpoints": {
+            "d7": {
+              "pos_rms_m": 35.67253349835425,
+              "pos_at_checkpoint_m": 28.58913787976869,
+              "in_track_rms_m": 35.63830869570717,
+              "in_track_at_checkpoint_m": -28.556925938323673
+            },
+            "d14": {
+              "pos_rms_m": 128.54219696981534,
+              "pos_at_checkpoint_m": 388.84850655308196,
+              "in_track_rms_m": 128.43062592963884,
+              "in_track_at_checkpoint_m": 388.31454003794465
+            },
+            "d21": {
+              "pos_rms_m": 390.1001972957617,
+              "pos_at_checkpoint_m": 772.6748538122947,
+              "in_track_rms_m": 389.6881683825749,
+              "in_track_at_checkpoint_m": 770.8588018519639
+            },
+            "d28": {
+              "pos_rms_m": 562.8872144116654,
+              "pos_at_checkpoint_m": 1024.0981834478775,
+              "in_track_rms_m": 562.1856869431494,
+              "in_track_at_checkpoint_m": 1022.2714662929975
+            }
+          }
+        }
+      },
+      "n_work_matched": 131,
+      "ratios": {
+        "sched_emp": {
+          "rho_crit": 0.1628235745839357,
+          "rho_work": 0.09773342573423116,
+          "grav_time_saving_vs_crit": 0.3871587760565648
+        },
+        "sched_down": {
+          "rho_crit": 0.047822490303558216,
+          "rho_work": 0.028705031298151606,
+          "grav_time_saving_vs_crit": 0.3324908528402297
+        },
+        "sched_up": {
+          "rho_crit": 0.032289249004508254,
+          "rho_work": 0.019381339143671843,
+          "grav_time_saving_vs_crit": 0.31386977234670155
+        }
+      },
+      "sched_emp_in_track_growth": {
+        "checkpoint_days": [
+          7,
+          14,
+          21,
+          28
+        ],
+        "abs_in_track_m": [
+          15.951324010810334,
+          89.40913022443033,
+          9.765623222551499,
+          262.24538371150516
+        ],
+        "d28_over_d7": 16.440352132135207
+      },
+      "orbit_wall_s": 634.271248199977
+    },
+    {
+      "name": "c4_50x300_i5",
+      "family": "canonical",
+      "hp_km": 50.0,
+      "ha_km": 300.0,
+      "incl_deg": 5.0,
+      "argp_deg": 0.0,
+      "raan_deg": 0.0,
+      "perilune_lon_deg_bodyfixed_t0": 0.0,
+      "perilune_lat_deg_bodyfixed_t0": 0.0,
+      "eccentricity": 0.06534239414532149,
+      "dwell_ratio_ra_over_rp": 1.139821029082774,
+      "truth_degree": 300,
+      "n_critical_empirical": 196,
+      "impacted": true,
+      "impact_day": 8.163487674118574,
+      "note": "reference orbit reaches the surface before the arc ends; not a viable month-long geometry, policy comparison omitted",
+      "orbit_wall_s": 86.64797839999665
+    },
+    {
+      "name": "c6_lro_30x216",
+      "family": "canonical",
+      "hp_km": 30.0,
+      "ha_km": 216.0,
+      "incl_deg": 90.0,
+      "argp_deg": 270.0,
+      "raan_deg": 0.0,
+      "perilune_lon_deg_bodyfixed_t0": -161.565051177078,
+      "perilune_lat_deg_bodyfixed_t0": -90.0,
+      "eccentricity": 0.04997313272434175,
+      "dwell_ratio_ra_over_rp": 1.1052036199095023,
+      "truth_degree": 600,
+      "n_critical_empirical": 250,
+      "impacted": false,
+      "truth_altitude_range_km": [
+        19.499888487337156,
+        228.03911207740825
+      ],
+      "policies": {
+        "sched_emp": {
+          "pos_rms_m": 1117.1422373883563,
+          "pos_max_m": 1893.666768465094,
+          "pos_final_m": 1753.8728237974406,
+          "vel_rms_m_s": 0.9772772035557246,
+          "vel_max_m_s": 1.7450437186042473,
+          "vel_final_m_s": 1.4622337349667,
+          "ric_rms_m": {
+            "radial": 36.88704406793166,
+            "in_track": 1116.5311682581548,
+            "cross_track": 2.0675698471242603
+          },
+          "ric_max_m": {
+            "radial": 91.9983507250065,
+            "in_track": 1893.6666930167232,
+            "cross_track": 7.509852729788431
+          },
+          "ric_final_m": {
+            "radial": -39.57350346220812,
+            "in_track": 1753.4244128881146,
+            "cross_track": 2.5784039453824605
+          },
+          "n_rhs": 944333,
+          "wall_s": 196.61674809997203,
+          "grav_s": 166.0491322,
+          "mean_deg_sq": 31002.546029843284,
+          "checkpoints": {
+            "d7": {
+              "pos_rms_m": 85.23018587650836,
+              "pos_at_checkpoint_m": 204.63384601964617,
+              "in_track_rms_m": 85.18607516233963,
+              "in_track_at_checkpoint_m": 204.56163307366424
+            },
+            "d14": {
+              "pos_rms_m": 393.8227170443136,
+              "pos_at_checkpoint_m": 952.0366876926215,
+              "in_track_rms_m": 393.58775830723147,
+              "in_track_at_checkpoint_m": 950.7090680585318
+            },
+            "d21": {
+              "pos_rms_m": 821.8476540167779,
+              "pos_at_checkpoint_m": 1595.328368227143,
+              "in_track_rms_m": 821.424641354273,
+              "in_track_at_checkpoint_m": 1593.9943226922774
+            },
+            "d28": {
+              "pos_rms_m": 1117.1422373883563,
+              "pos_at_checkpoint_m": 1753.8728237974406,
+              "in_track_rms_m": 1116.5311682581548,
+              "in_track_at_checkpoint_m": 1753.4244128881146
+            }
+          }
+        },
+        "fixed_work": {
+          "pos_rms_m": 139.63399945428063,
+          "pos_max_m": 362.6093994344952,
+          "pos_final_m": 202.79870746441352,
+          "vel_rms_m_s": 0.0906957991438139,
+          "vel_max_m_s": 0.16739777447446325,
+          "vel_final_m_s": 0.09388289932672186,
+          "ric_rms_m": {
+            "radial": 55.15504912686885,
+            "in_track": 125.76641254822266,
+            "cross_track": 25.266258808161364
+          },
+          "ric_max_m": {
+            "radial": 154.35880587913792,
+            "in_track": 362.4592924388312,
+            "cross_track": 79.61055423067111
+          },
+          "ric_final_m": {
+            "radial": 76.28495291827058,
+            "in_track": 187.81398334684303,
+            "cross_track": -5.816301822101775
+          },
+          "n_rhs": 658973,
+          "wall_s": 136.38525419999496,
+          "grav_s": 114.6477418,
+          "mean_deg_sq": 30976.0,
+          "checkpoints": {
+            "d7": {
+              "pos_rms_m": 35.161691578988034,
+              "pos_at_checkpoint_m": 77.62995627491985,
+              "in_track_rms_m": 32.12135495146965,
+              "in_track_at_checkpoint_m": -75.96414489273846
+            },
+            "d14": {
+              "pos_rms_m": 68.01104304528447,
+              "pos_at_checkpoint_m": 159.25373630266148,
+              "in_track_rms_m": 65.48098584122383,
+              "in_track_at_checkpoint_m": -158.2447250597851
+            },
+            "d21": {
+              "pos_rms_m": 99.9547850302496,
+              "pos_at_checkpoint_m": 132.34709170419308,
+              "in_track_rms_m": 92.52801265030948,
+              "in_track_at_checkpoint_m": 55.78642958384669
+            },
+            "d28": {
+              "pos_rms_m": 139.63399945428063,
+              "pos_at_checkpoint_m": 202.79870746441352,
+              "in_track_rms_m": 125.76641254822266,
+              "in_track_at_checkpoint_m": 187.81398334684303
+            }
+          }
+        },
+        "fixed_crit": {
+          "pos_rms_m": 129.8950128117613,
+          "pos_max_m": 261.3457780628079,
+          "pos_final_m": 250.90181345247382,
+          "vel_rms_m_s": 0.11303154232076836,
+          "vel_max_m_s": 0.24290432765134282,
+          "vel_final_m_s": 0.20752969928846074,
+          "ric_rms_m": {
+            "radial": 2.8706071885329774,
+            "in_track": 129.84298017798233,
+            "cross_track": 2.296620612304616
+          },
+          "ric_max_m": {
+            "radial": 9.58001870631169,
+            "in_track": 261.33442902059795,
+            "cross_track": 7.011499465686719
+          },
+          "ric_final_m": {
+            "radial": -3.4236349709787817,
+            "in_track": 250.86130665444114,
+            "cross_track": 2.9331793248816345
+          },
+          "n_rhs": 696833,
+          "wall_s": 265.4914935999841,
+          "grav_s": 239.4094179,
+          "mean_deg_sq": 62500.0,
+          "checkpoints": {
+            "d7": {
+              "pos_rms_m": 17.869377014052354,
+              "pos_at_checkpoint_m": 33.205824703224714,
+              "in_track_rms_m": 17.840783472192836,
+              "in_track_at_checkpoint_m": 33.16599811622711
+            },
+            "d14": {
+              "pos_rms_m": 42.655677312596886,
+              "pos_at_checkpoint_m": 80.59552163547231,
+              "in_track_rms_m": 42.61308937319141,
+              "in_track_at_checkpoint_m": 80.40220686579089
+            },
+            "d21": {
+              "pos_rms_m": 85.41499844461175,
+              "pos_at_checkpoint_m": 180.52566079359087,
+              "in_track_rms_m": 85.36081272055678,
+              "in_track_at_checkpoint_m": 180.41044740456317
+            },
+            "d28": {
+              "pos_rms_m": 129.8950128117613,
+              "pos_at_checkpoint_m": 250.90181345247382,
+              "in_track_rms_m": 129.84298017798233,
+              "in_track_at_checkpoint_m": 250.86130665444114
+            }
+          }
+        },
+        "sched_down": {
+          "pos_rms_m": 393.05596796544637,
+          "pos_max_m": 1077.6689601417536,
+          "pos_final_m": 966.8278037596428,
+          "vel_rms_m_s": 0.3443065801029298,
+          "vel_max_m_s": 0.984055820175187,
+          "vel_final_m_s": 0.8126709432327934,
+          "ric_rms_m": {
+            "radial": 19.34306369630508,
+            "in_track": 392.5742275995904,
+            "cross_track": 2.0774177913116945
+          },
+          "ric_max_m": {
+            "radial": 56.94991218269631,
+            "in_track": 1077.664584016233,
+            "cross_track": 7.3792845375910545
+          },
+          "ric_final_m": {
+            "radial": 29.345992669439227,
+            "in_track": -966.3784600506208,
+            "cross_track": 2.7361993951989447
+          },
+          "n_rhs": 919601,
+          "wall_s": 201.0022209000017,
+          "grav_s": 170.6471201,
+          "mean_deg_sq": 32594.56492544049,
+          "checkpoints": {
+            "d7": {
+              "pos_rms_m": 48.53054523918754,
+              "pos_at_checkpoint_m": 123.74363119542991,
+              "in_track_rms_m": 48.478894835239956,
+              "in_track_at_checkpoint_m": -123.66300906462537
+            },
+            "d14": {
+              "pos_rms_m": 108.2887595658753,
+              "pos_at_checkpoint_m": 75.63101671658424,
+              "in_track_rms_m": 108.20445322158358,
+              "in_track_at_checkpoint_m": -75.49421314042824
+            },
+            "d21": {
+              "pos_rms_m": 150.04090353283556,
+              "pos_at_checkpoint_m": 371.6268174170889,
+              "in_track_rms_m": 149.6787941864106,
+              "in_track_at_checkpoint_m": -370.05632746613577
+            },
+            "d28": {
+              "pos_rms_m": 393.05596796544637,
+              "pos_at_checkpoint_m": 966.8278037596428,
+              "in_track_rms_m": 392.5742275995904,
+              "in_track_at_checkpoint_m": -966.3784600506208
+            }
+          }
+        },
+        "sched_up": {
+          "pos_rms_m": 163.27987351544024,
+          "pos_max_m": 300.22071878378387,
+          "pos_final_m": 70.33386161262666,
+          "vel_rms_m_s": 0.14314749144634994,
+          "vel_max_m_s": 0.264688469756042,
+          "vel_final_m_s": 0.06276998712627559,
+          "ric_rms_m": {
+            "radial": 11.28956532279966,
+            "in_track": 162.87550406561758,
+            "cross_track": 2.1054656044201114
+          },
+          "ric_max_m": {
+            "radial": 28.393018749319072,
+            "in_track": 300.2139814538728,
+            "cross_track": 7.319796114278089
+          },
+          "ric_final_m": {
+            "radial": 4.859096988277866,
+            "in_track": -70.10269640206451,
+            "cross_track": 2.975436600332733
+          },
+          "n_rhs": 894053,
+          "wall_s": 201.13415739999618,
+          "grav_s": 171.6814233,
+          "mean_deg_sq": 34196.83933726524,
+          "checkpoints": {
+            "d7": {
+              "pos_rms_m": 14.852505248630306,
+              "pos_at_checkpoint_m": 26.29199686116867,
+              "in_track_rms_m": 14.810600440708834,
+              "in_track_at_checkpoint_m": -26.228383532092025
+            },
+            "d14": {
+              "pos_rms_m": 99.1196508566081,
+              "pos_at_checkpoint_m": 222.5388466440216,
+              "in_track_rms_m": 99.03170423708838,
+              "in_track_at_checkpoint_m": -222.22347062404717
+            },
+            "d21": {
+              "pos_rms_m": 153.66176336620302,
+              "pos_at_checkpoint_m": 238.6133540659049,
+              "in_track_rms_m": 153.3037078049513,
+              "in_track_at_checkpoint_m": -237.23417555003095
+            },
+            "d28": {
+              "pos_rms_m": 163.27987351544024,
+              "pos_at_checkpoint_m": 70.33386161262666,
+              "in_track_rms_m": 162.87550406561758,
+              "in_track_at_checkpoint_m": -70.10269640206451
+            }
+          }
+        }
+      },
+      "n_work_matched": 176,
+      "ratios": {
+        "sched_emp": {
+          "rho_crit": 0.11627437264875824,
+          "rho_work": 0.12499214046432938,
+          "grav_time_saving_vs_crit": 0.30642188742400345
+        },
+        "sched_down": {
+          "rho_crit": 0.33047459750866925,
+          "rho_work": 0.35525220537182095,
+          "grav_time_saving_vs_crit": 0.2872163442990435
+        },
+        "sched_up": {
+          "rho_crit": 0.7955359715505783,
+          "rho_work": 0.8551819428073995,
+          "grav_time_saving_vs_crit": 0.2828961165942503
+        }
+      },
+      "sched_emp_in_track_growth": {
+        "checkpoint_days": [
+          7,
+          14,
+          21,
+          28
+        ],
+        "abs_in_track_m": [
+          204.56163307366424,
+          950.7090680585318,
+          1593.9943226922774,
+          1753.4244128881146
+        ],
+        "d28_over_d7": 8.571619157228241
+      },
+      "orbit_wall_s": 2635.8854426000034
+    }
+  ],
+  "complete": true,
+  "repo_commit_sha": "c63de18580bbcc108f8825c4c271cbbfeae10123",
+  "repo_working_tree_clean": true
+}

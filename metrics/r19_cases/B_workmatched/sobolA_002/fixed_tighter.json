@@ -1,0 +1,62 @@
+{
+  "schema": "r19_equal_total_work_v1",
+  "created_utc": "2026-07-27T21:37:14.483897Z",
+  "config": {
+    "sobol_index": 2,
+    "design": "B",
+    "beta": 1.0,
+    "policy": "constant degree matched on realized total quadratic work",
+    "matched_to": "span-sweep member k=0.50",
+    "degree": 90,
+    "target_total_quadratic_work": 1261101849.0,
+    "constant_endpoint_degree": 86,
+    "constant_endpoint_total_work": 1161046268.0,
+    "first_estimate_rule": "N* = round(N_0 * sqrt(W_k / W_0)); the achieved ratio is measured, not assumed",
+    "adopted_truth_degree": 300,
+    "initial_state_si": [
+      -1545108.7989431515,
+      533777.9761728663,
+      -896796.1075741115,
+      643.5861483059264,
+      1538.5549069953897,
+      -193.09171245959848
+    ],
+    "duration_s": 604800.0,
+    "output_step_s": 120.0,
+    "integrator": "InstrumentedDOP853",
+    "max_step_s": 60.0,
+    "atol_kind": "vector",
+    "timing_comparable": false,
+    "source": {
+      "driver": "rev19_equal_total_work.py",
+      "reuses": "r18_span_sweep_B_beta_1.00.json (realized work), r14_trajectory_B_beta_1.00.json, r11 truths",
+      "lunaris_commit": "27e9ab86ed61d623f78c453ea2054348f1044c23"
+    }
+  },
+  "config_sha256": "429b98a0880b9a96e5d609c7a6c47b4fd9db1f6b63d6ac4eef4622593de58752",
+  "status": "ok",
+  "event": null,
+  "telemetry": {
+    "n_rhs": 172091,
+    "n_accepted_steps": 11059,
+    "n_attempted_steps": 11576,
+    "n_rejected_trials": 517,
+    "switch_count_at_rhs_samples": 0,
+    "degree_counts": {
+      "90": 172091
+    },
+    "degree_range": [
+      90,
+      90
+    ],
+    "mean_degree": 90.0,
+    "mean_degree_sq": 8100.0,
+    "gravity_kernel_ns": 21156767700,
+    "process_cpu_ns": 25937500000,
+    "total_wall_ns": 33239409100
+  },
+  "raw_path": "metrics\\r19_raw\\B_workmatched\\sobolA_002\\fixed_tighter.npz",
+  "raw_sha256": "882647e59325f7f90fa61313c585102274c3ebc5f2dc9a4b3bf16afa1e6a39b9",
+  "n_output_epochs": 5041,
+  "last_output_epoch_s": 604800.0
+}
