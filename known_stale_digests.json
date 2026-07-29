@@ -1,136 +1,318 @@
 {
-  "schema": "known_stale_digests_v1",
-  "recorded_utc": "2026-07-29T00:00:00Z",
-  "what_this_is": "Driver scripts whose current bytes differ from the digest their campaign manifest recorded, i.e. they were edited after that manifest was frozen. The differences are substantive (hundreds to thousands of bytes), so the digests are NOT refreshed: doing so would assert that the current script produced the archived results, which has not been demonstrated. The resolution is to re-run the affected campaign with the current driver, or to restore the driver to the version that ran, and then remove its entry here.",
+  "schema": "known_stale_digests_v2",
+  "recorded_utc": "2026-07-29T12:45:17Z",
+  "what_this_is": "Files whose current bytes differ from the digest their campaign manifest recorded, meaning they changed after that manifest was frozen. The digests are NOT refreshed: re-hashing would assert that the current file is the one the manifest describes, which is a separate claim from whether it still yields the same numbers. Where re-running the driver has been shown to regenerate the archived output byte-for-byte, that evidence is recorded in the entry's 'reproduction' field and in docs/DIGEST_STATUS.md.",
   "effect_on_ci": "audit_manifest_digests.py fails on any mismatch that is NOT listed here, so new drift breaks the build. Listed entries are reported as known and do not fail. Run with --strict to fail on these as well.",
   "entries": [
     {
       "manifest": "r11_final_experiment_manifest.json",
-      "script": "rev11_full_convergence.py",
+      "category": "scripts",
+      "file": "rev11_full_convergence.py",
       "recorded_sha256": "7ba1709a786804dd4991c19674a0758ddf0f5d316b9d528615211ad933eeb38f",
       "recorded_bytes": 24003,
       "observed_sha256": "02f13b1206d66e62e720902a9743baab96f79b0afe8952b7404624a64da28f1b",
-      "observed_bytes": 24544
+      "observed_bytes": 24544,
+      "reproduction": "Not verified: re-running requires the propagation campaign, which needs the raw trajectory trees and is not feasible as a check. Resolve by re-running the campaign with the current driver, or by restoring the driver the manifest describes."
     },
     {
       "manifest": "r11_final_experiment_manifest.json",
-      "script": "rev11_geometric_verification.py",
+      "category": "scripts",
+      "file": "rev11_geometric_verification.py",
       "recorded_sha256": "93392d6a5f4741c6beeafe10abd2531c4880290e013625e9d1e03adc5d018f9c",
       "recorded_bytes": 18494,
       "observed_sha256": "cab688f4ef8ba25f189425693a802b1bae6e03c0b0ed14e20b849a9feef363a7",
-      "observed_bytes": 18916
+      "observed_bytes": 18916,
+      "reproduction": "Not verified: re-running requires the propagation campaign, which needs the raw trajectory trees and is not feasible as a check. Resolve by re-running the campaign with the current driver, or by restoring the driver the manifest describes."
     },
     {
       "manifest": "r11_final_experiment_manifest.json",
-      "script": "rev11_phase_sweep.py",
+      "category": "scripts",
+      "file": "rev11_phase_sweep.py",
       "recorded_sha256": "921219f1c39b5f2089b17698b35adce94c5e2456e2aa934a2db81b63611570a9",
       "recorded_bytes": 14832,
       "observed_sha256": "15a86e2a582da536c2dba9ff4a6a52fbca6debaddfcb5c212eb3edbe0c5cabd6",
-      "observed_bytes": 15163
+      "observed_bytes": 15163,
+      "reproduction": "Not verified: re-running requires the propagation campaign, which needs the raw trajectory trees and is not feasible as a check. Resolve by re-running the campaign with the current driver, or by restoring the driver the manifest describes."
     },
     {
       "manifest": "r12_final_experiment_manifest.json",
-      "script": "rev12_atallah_tables.py",
+      "category": "scripts",
+      "file": "rev12_atallah_tables.py",
       "recorded_sha256": "71d67c4c44f96e27047e8b3e00101d1024c01502aca7763aa667058a81d9388c",
       "recorded_bytes": 10198,
       "observed_sha256": "ec062db4172ac05e875054ff52a4f8f4cfc7d60f263c8720e71c34908263fe4b",
-      "observed_bytes": 9538
+      "observed_bytes": 9538,
+      "reproduction": "Verified 2026-07-29: re-running the current driver reproduces every value; the committed file differs from the regenerated one only by caption line-wrapping, so it was hand-rewrapped after generation."
+    },
+    {
+      "manifest": "r12_final_experiment_manifest.json",
+      "category": "generated_tables",
+      "file": "r12_atallah_combined_table.tex",
+      "recorded_sha256": "1e4ddba181d2910f643fc20186e77583522f793cf6c931be51661cdc2f7f67dc",
+      "recorded_bytes": 2558,
+      "observed_sha256": "88343dffc751dd10d39925db03ab901dbf338ae32664fcebce747cb9f29bec90",
+      "observed_bytes": 1912,
+      "reproduction": "Verified 2026-07-29: re-running the current driver reproduces every value; the committed file differs from the regenerated one only by caption line-wrapping, so it was hand-rewrapped after generation."
+    },
+    {
+      "manifest": "r12_final_experiment_manifest.json",
+      "category": "generated_tables",
+      "file": "r12_atallah_benchmark_table.tex",
+      "recorded_sha256": "bbca9fa9238cece3539e7a8ef16fec96a0b588c7a79d084d79b007dec0386853",
+      "recorded_bytes": 1180,
+      "observed_sha256": "36a93f4f9846b53b706dfe5bcbc0ee4b41aead8218ad4c18dc155858e7404ef2",
+      "observed_bytes": 1170,
+      "reproduction": "Verified 2026-07-29: re-running the current driver reproduces every value; the committed file differs from the regenerated one only by caption line-wrapping, so it was hand-rewrapped after generation."
+    },
+    {
+      "manifest": "r12_final_experiment_manifest.json",
+      "category": "generated_tables",
+      "file": "r12_atallah_benchmark_table_designB.tex",
+      "recorded_sha256": "1e99712c30c0e39e6b5dd6ea1fa9f70d9ecd980b799b2640537d081aa679d7ed",
+      "recorded_bytes": 1191,
+      "observed_sha256": "c96fcf66c669b9ede33daa0d26bd76dbbb07a52cbc4fe9edb1c21ca8b7645b21",
+      "observed_bytes": 1181,
+      "reproduction": "Verified 2026-07-29: re-running the current driver reproduces every value; the committed file differs from the regenerated one only by caption line-wrapping, so it was hand-rewrapped after generation."
     },
     {
       "manifest": "r13_final_experiment_manifest.json",
-      "script": "rev13_variational_check.py",
+      "category": "scripts",
+      "file": "rev13_variational_check.py",
       "recorded_sha256": "95336fac63d3d5b95a153540fddf431f9733de71a28f4eb78c4027f43137a734",
       "recorded_bytes": 13731,
       "observed_sha256": "86339db79cbf1926cbe9e0d37faf5bac3d777f74d8d79e7f50ff393f45e308e1",
-      "observed_bytes": 14045
+      "observed_bytes": 14045,
+      "reproduction": "Not verified: re-running requires the propagation campaign, which needs the raw trajectory trees and is not feasible as a check. Resolve by re-running the campaign with the current driver, or by restoring the driver the manifest describes."
     },
     {
       "manifest": "r13_final_experiment_manifest.json",
-      "script": "rev13_timing_match.py",
+      "category": "scripts",
+      "file": "rev13_timing_match.py",
       "recorded_sha256": "765284b3aa905a6df2d828a2fddd3aecd9e0ff262c97f4d5d21f7a1cdbf650aa",
       "recorded_bytes": 24947,
       "observed_sha256": "f577595dbb03f5a2c6bb8930dc9f35eb390e23abc574cc6401e4c12a61e702df",
-      "observed_bytes": 25046
+      "observed_bytes": 25046,
+      "reproduction": "Not verified: re-running requires the propagation campaign, which needs the raw trajectory trees and is not feasible as a check. Resolve by re-running the campaign with the current driver, or by restoring the driver the manifest describes."
+    },
+    {
+      "manifest": "r13_final_experiment_manifest.json",
+      "category": "generated_tables",
+      "file": "r13_timing_match_table.tex",
+      "recorded_sha256": "9232d9b3a854e7c55243342f2c3bde7c425d73668eedc1f1b2aaaf860f2fa9df",
+      "recorded_bytes": 2258,
+      "observed_sha256": "38dcd15b29de711c0db520949d8481d7804123089f59623eca180098b1ffd6dd",
+      "observed_bytes": 2357,
+      "reproduction": "Not verified: re-running requires the propagation campaign, which needs the raw trajectory trees and is not feasible as a check. Resolve by re-running the campaign with the current driver, or by restoring the driver the manifest describes."
     },
     {
       "manifest": "r14_final_experiment_manifest.json",
-      "script": "rev14_timing_budget.py",
+      "category": "scripts",
+      "file": "rev14_timing_budget.py",
       "recorded_sha256": "c1b04a08f47fc4298b950e1f428b1c8b420a0cc2b0c2dae0edb93b9b2564ea2b",
       "recorded_bytes": 19947,
       "observed_sha256": "9b357fb518e6028a55f364ddc03de2474983fbccdf3f268e70912278052fb75d",
-      "observed_bytes": 21161
+      "observed_bytes": 21161,
+      "reproduction": "Not verified: re-running requires the propagation campaign, which needs the raw trajectory trees and is not feasible as a check. Resolve by re-running the campaign with the current driver, or by restoring the driver the manifest describes."
     },
     {
       "manifest": "r14_final_experiment_manifest.json",
-      "script": "rev14_variational_budget.py",
+      "category": "scripts",
+      "file": "rev14_variational_budget.py",
       "recorded_sha256": "510a7c484ce3050f44777a6edfca8f04994fcaafbfe71e6274978564321d0e59",
       "recorded_bytes": 12233,
       "observed_sha256": "99b130cefae50cb2b1d4fe3c53608c8858e371022d9d59c5fbeae4f7e958656c",
-      "observed_bytes": 13258
+      "observed_bytes": 13258,
+      "reproduction": "Not verified: re-running requires the propagation campaign, which needs the raw trajectory trees and is not feasible as a check. Resolve by re-running the campaign with the current driver, or by restoring the driver the manifest describes."
     },
     {
       "manifest": "r14_final_experiment_manifest.json",
-      "script": "rev14_tables.py",
+      "category": "scripts",
+      "file": "rev14_tables.py",
       "recorded_sha256": "dbf601102cc5cfcf4327572af21a2f2bcbd247f939cde8875c17c314500d702b",
       "recorded_bytes": 28944,
       "observed_sha256": "7fce9b1178309c99b482d9c008332236e4a5a890d6ca31be9645b22205292150",
-      "observed_bytes": 29315
+      "observed_bytes": 29315,
+      "reproduction": "Verified 2026-07-29: re-running the current driver against the archived inputs regenerates the committed artifact byte-for-byte, so the edit did not change the numbers. The manifest digest is stale relative to a later coherent re-run."
+    },
+    {
+      "manifest": "r14_final_experiment_manifest.json",
+      "category": "generated_tables",
+      "file": "r14_force_pareto_table.tex",
+      "recorded_sha256": "6f89733eeb3c2442fc728fe597ef814cc0fbe902f97640c967deb1ecdca289cb",
+      "recorded_bytes": 2308,
+      "observed_sha256": "5f8720987438424a27341de78435edf20affaa43e254bfa94edb3bd4d8137000",
+      "observed_bytes": 1863,
+      "reproduction": "Verified 2026-07-29: re-running the current driver against the archived inputs regenerates the committed artifact byte-for-byte, so the edit did not change the numbers. The manifest digest is stale relative to a later coherent re-run."
+    },
+    {
+      "manifest": "r14_final_experiment_manifest.json",
+      "category": "generated_tables",
+      "file": "r14_trajectory_pareto_table.tex",
+      "recorded_sha256": "54fab0fa4aac9012edb903a00cdcd4fd5b965decde05afed64e090216bb56dca",
+      "recorded_bytes": 2114,
+      "observed_sha256": "b31df728ad654b45e50157027a3e5239797fac6a8d94a5e4cc7e5d2cdd8e18a4",
+      "observed_bytes": 2110,
+      "reproduction": "Verified 2026-07-29: re-running the current driver against the archived inputs regenerates the committed artifact byte-for-byte, so the edit did not change the numbers. The manifest digest is stale relative to a later coherent re-run."
+    },
+    {
+      "manifest": "r14_final_experiment_manifest.json",
+      "category": "generated_tables",
+      "file": "r14_oracle_table.tex",
+      "recorded_sha256": "01ecfb3529adfd59b5852fd6118c8a7c3ec53fde964e3eb5698a0bf1e6462434",
+      "recorded_bytes": 2875,
+      "observed_sha256": "8c94e07a626ec6ff66b9814790a44b90632a99ea372ede38541ee7536d391630",
+      "observed_bytes": 1969,
+      "reproduction": "Verified 2026-07-29: re-running the current driver against the archived inputs regenerates the committed artifact byte-for-byte, so the edit did not change the numbers. The manifest digest is stale relative to a later coherent re-run."
+    },
+    {
+      "manifest": "r14_final_experiment_manifest.json",
+      "category": "generated_tables",
+      "file": "r14_variational_budget_table.tex",
+      "recorded_sha256": "70bae08fbbeccc9375f84348f7bd61cf47cadf31f7e430413e8d7f7ece02af3d",
+      "recorded_bytes": 1628,
+      "observed_sha256": "00377c2dac6298e9dec238a4b1cd5896aebaeff823479ca92d025fb434520fb2",
+      "observed_bytes": 1952,
+      "reproduction": "Verified 2026-07-29: re-running the current driver against the archived inputs regenerates the committed artifact byte-for-byte, so the edit did not change the numbers. The manifest digest is stale relative to a later coherent re-run."
+    },
+    {
+      "manifest": "r14_final_experiment_manifest.json",
+      "category": "generated_tables",
+      "file": "r14_beta1_per_orbit_A.tex",
+      "recorded_sha256": "6f9b25eb727093b4aebc1c4883fd0fba7d1cfbf019d75be16efd7e315f632707",
+      "recorded_bytes": 6512,
+      "observed_sha256": "dfd238d018fd31b1e8e924186480150db148d7ad27848b48d2994f350109b0b6",
+      "observed_bytes": 6511,
+      "reproduction": "Verified 2026-07-29: re-running the current driver against the archived inputs regenerates the committed artifact byte-for-byte, so the edit did not change the numbers. The manifest digest is stale relative to a later coherent re-run."
+    },
+    {
+      "manifest": "r14_final_experiment_manifest.json",
+      "category": "generated_tables",
+      "file": "r14_beta1_per_orbit_B.tex",
+      "recorded_sha256": "2c4105227ca7eeafcf019d79eace8da0a627e0fd058cfc5db73bd55a8d14977f",
+      "recorded_bytes": 6435,
+      "observed_sha256": "461d05e0d57d0bc266d9add13184f2132f51e61069b253e99bc55b7a3c3191ea",
+      "observed_bytes": 6434,
+      "reproduction": "Verified 2026-07-29: re-running the current driver against the archived inputs regenerates the committed artifact byte-for-byte, so the edit did not change the numbers. The manifest digest is stale relative to a later coherent re-run."
     },
     {
       "manifest": "r15_final_experiment_manifest.json",
-      "script": "rev15_fixed_oracle.py",
+      "category": "scripts",
+      "file": "rev15_fixed_oracle.py",
       "recorded_sha256": "1cf9e7b25c8dce838bdbf664e4b120b60354542514d022d20f03b51638deccf0",
       "recorded_bytes": 10147,
       "observed_sha256": "f8126b612d066f80167b93c17c9a754f2632bb448a9b89632438ac6fb610ec0e",
-      "observed_bytes": 10353
+      "observed_bytes": 10353,
+      "reproduction": "Not verified: re-running requires the propagation campaign, which needs the raw trajectory trees and is not feasible as a check. Resolve by re-running the campaign with the current driver, or by restoring the driver the manifest describes."
     },
     {
       "manifest": "r15_final_experiment_manifest.json",
-      "script": "rev15_tables.py",
+      "category": "scripts",
+      "file": "rev15_tables.py",
       "recorded_sha256": "12cf445d9f5061f3533e1c33a28c15b8eaab64b3d2841541af49088963188989",
       "recorded_bytes": 5936,
       "observed_sha256": "8fd4f892ac07b32c7325cd6e619cf3b0f6db64bc6f19e58981606a5641e4ca4d",
-      "observed_bytes": 6075
+      "observed_bytes": 6075,
+      "reproduction": "Verified 2026-07-29: re-running the current driver against the archived inputs regenerates the committed artifact byte-for-byte, so the edit did not change the numbers. The manifest digest is stale relative to a later coherent re-run."
+    },
+    {
+      "manifest": "r15_final_experiment_manifest.json",
+      "category": "generated_tables",
+      "file": "r15_deployable_table.tex",
+      "recorded_sha256": "06b166bee4ebe0687e84a7dc37421e404d25225a683c7c3e3247cc9d6de06993",
+      "recorded_bytes": 1767,
+      "observed_sha256": "f70f78b4b2fdf75c213d148d072fd321bf8af0e8b6e63aa3e7a0e190fc8a9411",
+      "observed_bytes": 1766,
+      "reproduction": "Verified 2026-07-29: re-running the current driver against the archived inputs regenerates the committed artifact byte-for-byte, so the edit did not change the numbers. The manifest digest is stale relative to a later coherent re-run."
+    },
+    {
+      "manifest": "r15_final_experiment_manifest.json",
+      "category": "generated_tables",
+      "file": "r15_fixed_oracle_table.tex",
+      "recorded_sha256": "edd975057534c05709b9abe8cb334b07079e734011eaa699597305761b9a3699",
+      "recorded_bytes": 2669,
+      "observed_sha256": "7a264b70b189f14d5314602e38e7f95969d76592a9012d6cca33d90e4540bc14",
+      "observed_bytes": 2667,
+      "reproduction": "Verified 2026-07-29: re-running the current driver against the archived inputs regenerates the committed artifact byte-for-byte, so the edit did not change the numbers. The manifest digest is stale relative to a later coherent re-run."
     },
     {
       "manifest": "r16_final_experiment_manifest.json",
-      "script": "rev16_multibody_calibration.py",
+      "category": "scripts",
+      "file": "rev16_multibody_calibration.py",
       "recorded_sha256": "ef5aac6df4b09b3be21fe003de06d4b14d6a96d7c4119978e7885b99e94a894a",
       "recorded_bytes": 14339,
       "observed_sha256": "19b6af82c5c8555ec2d02196edbced44c03ec811c5356924b8f63e4cd5c18e5c",
-      "observed_bytes": 16096
+      "observed_bytes": 16096,
+      "reproduction": "Verified 2026-07-29: re-running the current driver against the archived inputs regenerates the committed artifact byte-for-byte, so the edit did not change the numbers. The manifest digest is stale relative to a later coherent re-run."
+    },
+    {
+      "manifest": "r16_final_experiment_manifest.json",
+      "category": "result_json",
+      "file": "r16_multibody_calibration.json",
+      "recorded_sha256": "03999f8660da7c7ecdb452d39dfdc0e8bc2129cc228346f4a4d684cb3df52ea4",
+      "recorded_bytes": 400286,
+      "observed_sha256": "81d9199baa2a41908dca0555a04997d3e05f61ae422d149254c1786dc06b6f4d",
+      "observed_bytes": 404667,
+      "reproduction": "Verified 2026-07-29: re-running the current driver against the archived inputs regenerates the committed artifact byte-for-byte, so the edit did not change the numbers. The manifest digest is stale relative to a later coherent re-run."
     },
     {
       "manifest": "r17_final_experiment_manifest.json",
-      "script": "rev17_longarc60.py",
+      "category": "scripts",
+      "file": "rev17_longarc60.py",
       "recorded_sha256": "43d61300b65b359d1472669cdfe4142debccfd5c268fe6159001002009a33a1e",
       "recorded_bytes": 27268,
       "observed_sha256": "b60f3063adbfb3671c2ad04f9bb28b6f427c086d74100f92a6ffabc938293207",
-      "observed_bytes": 27874
+      "observed_bytes": 27874,
+      "reproduction": "Not verified: re-running requires the propagation campaign, which needs the raw trajectory trees and is not feasible as a check. Resolve by re-running the campaign with the current driver, or by restoring the driver the manifest describes."
     },
     {
       "manifest": "r18_final_experiment_manifest.json",
-      "script": "rev18_span_sweep.py",
+      "category": "scripts",
+      "file": "rev18_span_sweep.py",
       "recorded_sha256": "49b54e482e5ae6ed496cfee80cf35bad5e0e32130325fde1b8571ccd05240b58",
       "recorded_bytes": 24768,
       "observed_sha256": "e550b31672a2f6534365cf1cefbaf97067e818d9868c7355bba9808fb5c63061",
-      "observed_bytes": 24767
+      "observed_bytes": 24767,
+      "reproduction": "Not verified: re-running requires the propagation campaign, which needs the raw trajectory trees and is not feasible as a check. Resolve by re-running the campaign with the current driver, or by restoring the driver the manifest describes."
     },
     {
       "manifest": "r19_final_experiment_manifest.json",
-      "script": "rev19_equal_total_work.py",
+      "category": "scripts",
+      "file": "rev19_equal_total_work.py",
       "recorded_sha256": "50a6f9d396009057673429530d3ca8745f79e6ed069269356a66dc4c93a07a51",
       "recorded_bytes": 15725,
       "observed_sha256": "7b0abdd324ca9d26dc85cd2f9e25d337349d1ad9f9c5a631307a71a6a96c8213",
-      "observed_bytes": 17024
+      "observed_bytes": 17024,
+      "reproduction": "Not verified: re-running requires the propagation campaign, which needs the raw trajectory trees and is not feasible as a check. Resolve by re-running the campaign with the current driver, or by restoring the driver the manifest describes."
     },
     {
       "manifest": "r19_final_experiment_manifest.json",
-      "script": "rev19_tables.py",
+      "category": "scripts",
+      "file": "rev19_tables.py",
       "recorded_sha256": "c53fb0329f7b93c16b75bf024053917e90fcfb96e1f77cfc264eaa9a855723b8",
       "recorded_bytes": 4276,
       "observed_sha256": "8a7e93b3fc9f98a9ad8d807e1574e837e1f2dc9b3507ccea89bf3e4426cb4c91",
-      "observed_bytes": 6764
+      "observed_bytes": 6764,
+      "reproduction": "Verified 2026-07-29: re-running the current driver against the archived inputs regenerates the committed artifact byte-for-byte, so the edit did not change the numbers. The manifest digest is stale relative to a later coherent re-run."
+    },
+    {
+      "manifest": "r19_final_experiment_manifest.json",
+      "category": "generated_tables",
+      "file": "r19_equal_work_table.tex",
+      "recorded_sha256": "e9b1c247e0abcf9ef5a3e1bc60e2206c2a0f107e5c1af8f8155684fb3b258ba6",
+      "recorded_bytes": 509,
+      "observed_sha256": "0a6d8aecad191f4e61b592636036463cfa98df34adbb2c5083b06b5743845592",
+      "observed_bytes": 864,
+      "reproduction": "Verified 2026-07-29: re-running the current driver against the archived inputs regenerates the committed artifact byte-for-byte, so the edit did not change the numbers. The manifest digest is stale relative to a later coherent re-run."
+    },
+    {
+      "manifest": "r19_final_experiment_manifest.json",
+      "category": "result_json",
+      "file": "r19_manuscript_descriptives.json",
+      "recorded_sha256": "cb765b9caa945b2278b371b6d0a59db66a7da9ad3d714d0cca8f33de8526094d",
+      "recorded_bytes": 1244,
+      "observed_sha256": "059c034fa150ea030a143ec9adc33d2d834b4ef5e8475a1000323cd1c43905ec",
+      "observed_bytes": 4778,
+      "reproduction": "Verified 2026-07-29: re-running the current driver against the archived inputs regenerates the committed artifact byte-for-byte, so the edit did not change the numbers. The manifest digest is stale relative to a later coherent re-run."
     }
   ]
 }

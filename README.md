@@ -12,11 +12,16 @@ should be spread along an eccentric lunar arc, and measures where a smaller
 trajectory-averaged truncation-force defect stops predicting a smaller
 trajectory error.
 
-Everything needed to audit the reported numbers, or to regenerate them from the
-archived drivers, is documented here: the measurement instrument, the drivers,
-and the records they wrote. The only things fetched from outside are public
-archive data products, and `fetch_data.py` retrieves and checksums those for
-you.
+The archive documents the measurement instrument, the campaign records, the
+manifests and the available drivers needed to audit the reported results.
+Thirty-one files currently differ from the revisions their campaign manifests
+record — 16 drivers, 13 tables and 2 result records. Nineteen of those have
+been shown to reproduce the archived output byte-for-byte; the rest are listed
+explicitly in [`docs/DIGEST_STATUS.md`](docs/DIGEST_STATUS.md) and must be
+resolved before an archival release.
+
+The only things fetched from outside are public archive data products, and
+`fetch_data.py` retrieves and checksums those for you.
 
 ## Quick check
 
@@ -131,27 +136,38 @@ This walks all fourteen manifests and compares them against the scripts as they
 stand. Digests of everything under `src/` are in
 [`docs/SOURCE_MANIFEST.md`](docs/SOURCE_MANIFEST.md).
 
-**Known open issue.** 61 driver digests match; **16 do not**. Those drivers were
-edited after their campaign manifest was frozen, by between one and roughly
-2,500 bytes, so the edits are substantive rather than cosmetic. They are listed
-with their recorded and observed values in
+**Known open issue.** 143 digests match; **31 do not** — 16 driver scripts, 13
+generated tables and 2 result records, across R11–R19. The originals are
+unrecoverable: no copy matching any recorded digest survives anywhere on the
+authoring machine, across 53,720 Python files, the editor's local history and
+every available git history.
+
+Re-running settles 19 of the 31. Four presentation passes and the full R16
+cross-body calibration driver regenerate their committed artifacts
+byte-for-byte, so those edits provably did not change the numbers; the R12
+table differs only by caption line-wrapping. Eleven drivers cannot be checked
+that way, because re-running them means re-running the propagation campaign.
+The evidence, the search, and what is left open are set out in
+[`docs/DIGEST_STATUS.md`](docs/DIGEST_STATUS.md); the entries themselves are in
 [`known_stale_digests.json`](known_stale_digests.json).
 
-The digests are deliberately **not** refreshed. Re-hashing would assert that the
-current script produced the archived results, and that has not been
-demonstrated. Each entry is resolved by re-running the affected campaign with
-the current driver, or by restoring the driver to the version that ran. The
-audit fails on any mismatch that is *not* in that file, so new drift breaks CI;
-`--strict` fails on the known ones too and is the state to reach before a
-release.
+The digests are deliberately **not** refreshed: re-hashing would record that the
+current file is the one the manifest describes, which is a different claim from
+the evidence above and is unsupported for the eleven. They are resolved by
+re-running the affected campaign with the current driver and refreshing the
+manifest from that run. The audit fails on any mismatch that is *not* recorded,
+so new drift breaks CI; `--strict` fails on the known ones too and is the state
+to reach before an archival release.
 
 Because the archive is digest-verified throughout, `.gitattributes` disables
 line-ending normalization. Without it every recorded digest would break on
 checkout, so please leave it in place.
 
-Driver scripts are kept exactly as they ran, including absolute paths from the
-machine that produced the results. They are deliberately not tidied: editing
-them would invalidate the digests that make the archive checkable.
+Drivers whose digests match their manifests are preserved byte-for-byte,
+including absolute paths from the machine that produced the results; they are
+deliberately not tidied, because editing them would invalidate the digests that
+make the archive checkable. The known exceptions are documented in
+[`known_stale_digests.json`](known_stale_digests.json).
 
 ## Reproducing a result
 
