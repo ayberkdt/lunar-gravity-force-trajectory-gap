@@ -2,11 +2,19 @@
 
     python tools/compare_records.py ARCHIVE_DIR RERUN_DIR
     python tools/compare_records.py ARCHIVE_DIR RERUN_DIR --rtol 1e-12
+    python tools/compare_records.py ARCHIVE_DIR RERUN_DIR --per-orbit
 
 Answers the only question that matters when a driver is re-run: did any
 reported number change? Wall-clock telemetry, timestamps, interpreter and
 platform strings and absolute script paths are expected to differ on any
 re-run and are ignored; everything else is compared value by value.
+
+``--per-orbit`` is for re-runs that are still in progress or that stopped at a
+deadline. A campaign covering a subset of the orbits has legitimately different
+aggregates, which would swamp the report, so this mode compares the per-orbit
+rows on the orbits both sides have and reports the coverage separately. That is
+the comparison that establishes whether the driver still behaves identically;
+the aggregates follow once coverage is complete.
 
 Exit status is 0 when no scientific difference was found.
 """
@@ -21,10 +29,14 @@ from pathlib import Path
 # Keys whose values legitimately change on any re-run.
 IGNORE_KEYS = {
     "created_utc", "recorded_utc", "generated_utc", "timestamp",
+    "started_utc", "ended_utc",
     "repo_commit_sha", "repo_working_tree_clean",
     "source", "provenance", "environment", "telemetry",
     "wall_time_s", "elapsed_s", "runtime_s", "duration_s",
     "experiment_script", "platform", "python", "host", "machine",
+    # The driver's own digest is the thing under investigation, not evidence
+    # about the numbers, so comparing it here would only restate the question.
+    "script_sha256",
 }
 
 # Suffixes that mark a timing measurement.
@@ -81,6 +93,36 @@ def compare(a, b, path: str, rtol: float, out: Diff) -> None:
         out.structural.append(f"{path}: {str(a)[:70]!r} vs {str(b)[:70]!r}")
 
 
+ROW_KEYS = ("sobol_index", "orbit_index", "index", "name", "orbit")
+
+
+def row_index(record: dict) -> tuple[str, dict] | None:
+    """Return (key name, {key value: row}) if the record has per-orbit rows."""
+    rows = record.get("rows")
+    if not isinstance(rows, list) or not rows:
+        return None
+    if not all(isinstance(r, dict) for r in rows):
+        return None
+    for key in ROW_KEYS:
+        if all(key in r for r in rows):
+            return key, {r[key]: r for r in rows}
+    return None
+
+
+def compare_per_orbit(a: dict, b: dict, rtol: float, diff: Diff) -> tuple[int, int, int] | None:
+    """Compare only the rows both sides carry. Returns coverage counts."""
+    left, right = row_index(a), row_index(b)
+    if left is None or right is None or left[0] != right[0]:
+        return None
+    key, archive_rows = left
+    _, rerun_rows = right
+    common = sorted(set(archive_rows) & set(rerun_rows), key=str)
+    for value in common:
+        compare(archive_rows[value], rerun_rows[value], f"{key}={value}",
+                rtol, diff)
+    return len(archive_rows), len(rerun_rows), len(common)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("archive", type=Path)
@@ -89,6 +131,9 @@ def main() -> int:
                         help="relative tolerance for floats (default: exact)")
     parser.add_argument("--quiet", action="store_true",
                         help="only report files that differ")
+    parser.add_argument("--per-orbit", action="store_true",
+                        help="compare per-orbit rows on the shared orbits and "
+                             "report coverage, instead of whole records")
     args = parser.parse_args()
 
     names = sorted(p.name for p in args.archive.glob("*.json"))
@@ -107,11 +152,25 @@ def main() -> int:
             print(f"[error]  {name}: {exc}")
             continue
         diff = Diff()
-        compare(a, b, "", args.rtol, diff)
+        coverage = None
+        if args.per_orbit:
+            coverage = compare_per_orbit(a, b, args.rtol, diff)
+        if coverage is None:
+            compare(a, b, "", args.rtol, diff)
         if diff:
             differing.append((name, diff))
         else:
             identical.append(name)
+        if coverage and not args.quiet:
+            n_archive, n_rerun, n_common = coverage
+            partial = "" if n_common == n_archive else "  (partial re-run)"
+            print(f"[rows]    {name}: archive {n_archive}, re-run {n_rerun}, "
+                  f"compared {n_common}{partial}")
+        elif coverage:
+            n_archive, n_rerun, n_common = coverage
+            if n_common != n_archive:
+                print(f"[rows]    {name}: compared {n_common} of "
+                      f"{n_archive} orbit(s)")
 
     for name, diff in differing:
         print(f"[differs] {name}")
