@@ -12,10 +12,11 @@ should be spread along an eccentric lunar arc, and measures where a smaller
 trajectory-averaged truncation-force defect stops predicting a smaller
 trajectory error.
 
-Everything needed to check a reported number is here: the measurement
-instrument, the drivers that produced it, and the records they wrote. The only
-things fetched from outside are public archive data products, and
-`fetch_data.py` retrieves and checksums those for you.
+Everything needed to audit the reported numbers, or to regenerate them from the
+archived drivers, is documented here: the measurement instrument, the drivers,
+and the records they wrote. The only things fetched from outside are public
+archive data products, and `fetch_data.py` retrieves and checksums those for
+you.
 
 ## Quick check
 
@@ -119,11 +120,23 @@ python audit_manifest_digests.py
 ```
 
 Every driver script is hashed in the manifest of the campaign it belongs to.
-This walks all fourteen manifests and reports any script whose current bytes
-differ from what was recorded — the signal that a driver was edited after its
-manifest was finalized and that the manifest needs refreshing with the
-campaign's own `revNN_finalize_manifest.py`. Digests of everything under `src/`
-are in [`SOURCE_MANIFEST.md`](SOURCE_MANIFEST.md).
+This walks all fourteen manifests and compares them against the scripts as they
+stand. Digests of everything under `src/` are in
+[`SOURCE_MANIFEST.md`](SOURCE_MANIFEST.md).
+
+**Known open issue.** 61 driver digests match; **16 do not**. Those drivers were
+edited after their campaign manifest was frozen, by between one and roughly
+2,500 bytes, so the edits are substantive rather than cosmetic. They are listed
+with their recorded and observed values in
+[`known_stale_digests.json`](known_stale_digests.json).
+
+The digests are deliberately **not** refreshed. Re-hashing would assert that the
+current script produced the archived results, and that has not been
+demonstrated. Each entry is resolved by re-running the affected campaign with
+the current driver, or by restoring the driver to the version that ran. The
+audit fails on any mismatch that is *not* in that file, so new drift breaks CI;
+`--strict` fails on the known ones too and is the state to reach before a
+release.
 
 Because the archive is digest-verified throughout, `.gitattributes` disables
 line-ending normalization. Without it every recorded digest would break on

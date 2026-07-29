@@ -6,10 +6,13 @@ gravity file against the SHA-256 recorded in the campaign manifest, so a
 mismatch is caught immediately rather than surfacing as a wrong number later.
 
     python fetch_data.py --list          # show what is needed, and its status
-    python fetch_data.py --group lunar   # primary field only (189 MB)
-    python fetch_data.py                 # everything (~360 MB)
+    python fetch_data.py --group lunar   # all lunar gravity fields (~365 MB)
+    python fetch_data.py                 # all products (~430 MB)
 
-Downloads resume-safely: a file whose digest already matches is skipped.
+Downloads are safe to rerun: a file whose digest already matches is skipped,
+and an incomplete download stays in a temporary ``.part`` file that is only
+moved into place once the transfer finishes. Interrupted transfers restart
+from the beginning rather than resuming.
 """
 
 from __future__ import annotations

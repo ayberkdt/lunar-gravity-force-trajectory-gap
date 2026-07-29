@@ -27,9 +27,10 @@ jobs:
         run: python verify_snapshot.py
 
       - name: Manifest digests
-        # Reports drivers edited after their manifest was finalized. Not fatal
-        # yet: refreshing the affected manifests is tracked separately.
-        continue-on-error: true
+        # Fails on any driver drift that is not already recorded in
+        # known_stale_digests.json, so new breakage cannot pass unnoticed.
+        # The known entries are listed in that file and in the README; once
+        # they are resolved, drop the file and this becomes unconditional.
         run: python audit_manifest_digests.py
 
       - name: Source digests match SOURCE_MANIFEST.md
@@ -69,7 +70,10 @@ jobs:
           sys.exit(1 if bad else 0)
           PY
 
-      - name: Data product sources reachable
+      - name: External data inventory loads
+        # Offline check: reads the recorded digests and resolves the expected
+        # paths. It deliberately makes no network request, so a transient
+        # archive outage cannot turn this build red.
         run: python fetch_data.py --list
 
       - name: Environment table regenerates
