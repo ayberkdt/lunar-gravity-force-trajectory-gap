@@ -1,9 +1,9 @@
-"""Self-contained check that the vendored measurement instrument works.
+"""Self-contained check that the measurement instrument works.
 
 Loads the Lunar Prospector LP150Q product shipped in ``data/`` (1.4 MB, no
 external download needed), evaluates the spherical-harmonic acceleration at a
 few fixed points and degrees, and compares against values recorded from the
-Lunaris working tree that produced the published results.
+source tree that produced the published results.
 
     python verify_snapshot.py
 
@@ -28,7 +28,7 @@ GRAVITY_FILE = ROOT / "data" / "jgl150q1.sha"
 POINTS = [(1.9e6, 3.0e5, 7.0e5), (1.2e6, -1.1e6, 1.0e6), (1.0e5, 2.0e5, 1.85e6)]
 DEGREES = (20, 50, 80)
 
-# Recorded from D:/.../LUNAR_SIMULATION/src/lunaris at the published snapshot.
+# Recorded from the source tree that produced the published results.
 EXPECTED = [
     [-1.086496168467129, -0.17146674522897332, -0.4003022727720085],
     [-0.8433169411912707, 0.7735600592964192, -0.703384692735618],
@@ -75,7 +75,7 @@ def main() -> int:
     if ok:
         print(f"[ok] {len(got)} accelerations bitwise-identical to the "
               f"published snapshot")
-        print(f"[ok] vendored kernel: {Path(sh_accel_fixed_numba.__module__)}")
+        print(f"[ok] kernel: {sh_accel_fixed_numba.__module__}")
         return 0
     print(json.dumps(got, indent=2))
     return 1

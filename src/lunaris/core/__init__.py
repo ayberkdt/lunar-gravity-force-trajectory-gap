@@ -1,8 +1,7 @@
-"""Trimmed package initializer for the paper source snapshot.
+"""Minimal package initializer.
 
-The upstream Lunaris initializer eagerly imports the full propagation stack,
-which is outside the scope of this snapshot. Only the submodules the published
-experiments import are carried here; the modules themselves are verbatim.
+Only the submodules the published experiments import are exposed here; the
+broader propagation stack is outside the scope of this archive.
 """
 
 from __future__ import annotations
