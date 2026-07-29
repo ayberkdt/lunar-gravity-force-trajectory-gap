@@ -9,6 +9,7 @@ campaign records; they only rebuild documentation from what is already there.
 | `build_claim_map.py` | `docs/claim_to_artifact_map.md` | yes, for the captions |
 | `show_environments.py` | the table in `environments/README.md` | no |
 | `record_known_stale.py` | `known_stale_digests.json` | no |
+| `compare_records.py` | nothing; reports whether a re-run changed any number | no |
 
 Run them from the repository root:
 
