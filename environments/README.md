@@ -7,7 +7,7 @@ nothing to do with the science.
 
 Every version below is read from the archived provenance records themselves
 (`metrics/*.json`), not from a recollection of how the machine was set up.
-`show_environments.py` regenerates this table from those records.
+`../tools/show_environments.py` regenerates this table from those records.
 
 | Campaign family | Python | Key packages | Records |
 |---|---|---|---|

@@ -33,24 +33,8 @@ jobs:
         # they are resolved, drop the file and this becomes unconditional.
         run: python audit_manifest_digests.py
 
-      - name: Source digests match SOURCE_MANIFEST.md
-        run: |
-          python - <<'PY'
-          import hashlib, re, sys
-          from pathlib import Path
-          recorded = dict(re.findall(r"\| `([^`]+)` \| `([0-9a-f]{64})` \|",
-                                     Path("SOURCE_MANIFEST.md").read_text(encoding="utf-8")))
-          bad = 0
-          for path in sorted(Path("src").rglob("*.py")):
-              key = path.as_posix()
-              digest = hashlib.sha256(path.read_bytes()).hexdigest()
-              if key not in recorded:
-                  print(f"[missing] {key} absent from SOURCE_MANIFEST.md"); bad += 1
-              elif recorded[key] != digest:
-                  print(f"[differs] {key}"); bad += 1
-          print(f"checked {len(list(Path('src').rglob('*.py')))} modules, {bad} problem(s)")
-          sys.exit(1 if bad else 0)
-          PY
+      - name: Source digests match docs/SOURCE_MANIFEST.md
+        run: python tools/build_source_manifest.py --check
 
       - name: Every JSON record parses
         run: |
@@ -77,4 +61,4 @@ jobs:
         run: python fetch_data.py --list
 
       - name: Environment table regenerates
-        run: python environments/show_environments.py
+        run: python tools/show_environments.py

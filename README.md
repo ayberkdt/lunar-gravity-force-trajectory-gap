@@ -52,7 +52,7 @@ python verify_snapshot.py --strict-bitwise
 
 ## Where does a given result come from?
 
-[`REPRODUCIBILITY_INDEX.csv`](REPRODUCIBILITY_INDEX.csv) maps every manuscript
+[`docs/REPRODUCIBILITY_INDEX.csv`](docs/REPRODUCIBILITY_INDEX.csv) maps every manuscript
 figure and table to the artifact file, the script that writes it, and the
 campaign manifest that covers it. The readable version is
 [`docs/claim_to_artifact_map.md`](docs/claim_to_artifact_map.md).
@@ -75,7 +75,7 @@ the science.
 
 Requirement files and the full derivation are in
 [`environments/`](environments/README.md); the table there is regenerated from
-the archived provenance records by `environments/show_environments.py`.
+the archived provenance records by `tools/show_environments.py`.
 `requirements-smoke-test.txt` at the root is for the quick check only and is
 not the environment of any campaign.
 
@@ -94,6 +94,13 @@ that snapshot is what `src/` contains.
 | `figures/` | the 29 figure PDFs used in the manuscript |
 | `data/` | LP150Q gravity product, the external cross-validation record, and the download target for fetched products |
 | `experiments/` | experiment protocol definitions |
+| `environments/` | one requirement file per campaign family, and how they were derived |
+| `docs/` | the reproducibility index, the claim-to-artifact map, the source manifest and the external-data table |
+| `tools/` | generators for the derived files above; see [`tools/README.md`](tools/README.md) |
+
+At the root are the three things a reader runs — `verify_snapshot.py`,
+`audit_manifest_digests.py` and `fetch_data.py` — plus the audit's input,
+`known_stale_digests.json`.
 
 ## External data
 
@@ -109,7 +116,7 @@ immediately instead of turning into a wrong number later. Files that already
 verify are skipped, so the command is safe to re-run.
 
 Exact filenames, byte counts, sources and expected paths are in
-[`EXTERNAL_DATA.md`](EXTERNAL_DATA.md). Note that for several products the PDS
+[`docs/EXTERNAL_DATA.md`](docs/EXTERNAL_DATA.md). Note that for several products the PDS
 copy and the Tudat resource copy are not byte-identical, and only the one
 listed there verifies against the recorded digest.
 
@@ -122,7 +129,7 @@ python audit_manifest_digests.py
 Every driver script is hashed in the manifest of the campaign it belongs to.
 This walks all fourteen manifests and compares them against the scripts as they
 stand. Digests of everything under `src/` are in
-[`SOURCE_MANIFEST.md`](SOURCE_MANIFEST.md).
+[`docs/SOURCE_MANIFEST.md`](docs/SOURCE_MANIFEST.md).
 
 **Known open issue.** 61 driver digests match; **16 do not**. Those drivers were
 edited after their campaign manifest was frozen, by between one and roughly
