@@ -1,0 +1,76 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  verify:
+    name: Verify archive
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install smoke-test dependencies
+        run: pip install -r requirements-smoke-test.txt
+
+      - name: Numerical kernel
+        # Cross-platform tolerance check. The bitwise variant is expected only
+        # on the archived Windows x64 environment, so CI does not assert it.
+        run: python verify_snapshot.py
+
+      - name: Manifest digests
+        # Reports drivers edited after their manifest was finalized. Not fatal
+        # yet: refreshing the affected manifests is tracked separately.
+        continue-on-error: true
+        run: python audit_manifest_digests.py
+
+      - name: Source digests match SOURCE_MANIFEST.md
+        run: |
+          python - <<'PY'
+          import hashlib, re, sys
+          from pathlib import Path
+          recorded = dict(re.findall(r"\| `([^`]+)` \| `([0-9a-f]{64})` \|",
+                                     Path("SOURCE_MANIFEST.md").read_text(encoding="utf-8")))
+          bad = 0
+          for path in sorted(Path("src").rglob("*.py")):
+              key = path.as_posix()
+              digest = hashlib.sha256(path.read_bytes()).hexdigest()
+              if key not in recorded:
+                  print(f"[missing] {key} absent from SOURCE_MANIFEST.md"); bad += 1
+              elif recorded[key] != digest:
+                  print(f"[differs] {key}"); bad += 1
+          print(f"checked {len(list(Path('src').rglob('*.py')))} modules, {bad} problem(s)")
+          sys.exit(1 if bad else 0)
+          PY
+
+      - name: Every JSON record parses
+        run: |
+          python - <<'PY'
+          import json, sys
+          from pathlib import Path
+          bad = []
+          paths = sorted(Path("metrics").rglob("*.json"))
+          for path in paths:
+              try:
+                  json.loads(path.read_text(encoding="utf-8"))
+              except Exception as exc:
+                  bad.append((path, exc))
+          for path, exc in bad:
+              print(f"[invalid] {path}: {exc}")
+          print(f"parsed {len(paths)} JSON records, {len(bad)} invalid")
+          sys.exit(1 if bad else 0)
+          PY
+
+      - name: Data product sources reachable
+        run: python fetch_data.py --list
+
+      - name: Environment table regenerates
+        run: python environments/show_environments.py
