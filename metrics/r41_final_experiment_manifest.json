@@ -1,0 +1,90 @@
+{
+  "schema": "r41_final_experiment_manifest_v1",
+  "created_utc": "2026-08-06T16:21:25.737423Z",
+  "scope": "R41: the reference-degree control (O41). Every truncation error in the paper is measured against an adopted reference degree, 300 on most coverage-design orbits. This repeats the equal-budget comparison of (O25) on a perilune-stratified subset of sixteen orbits with the reference raised to 600. The cap audit licenses reusing both policy trajectories unchanged, so only the reference is re-propagated, at both tolerance levels, and the truth-inclusive resolution rule is re-applied.",
+  "registration_status": "pre-registered. The four bands, the per-band selection rule, the submission order, the admissibility self-check and four outcomes were fixed in r41_preregistration.json before any orbit was solved with the raised gradient. One band is declared outcome-dependent in the registration itself: it ranks on the archived prediction, and is adversarial by construction.",
+  "partition_note": "this campaign claims no trajectory record. The augmented solve returns a prediction and spools nothing to a cases or raw tree, and the reference trajectories it integrates along stay indexed under R11 and R14. The trajectory partition is unchanged.",
+  "panel_note": "the subset is drawn from r14_trajectory_A_beta_1.00.json, which is sealed under the R37 manifest and is read, never written. Its digest as read is recorded under reused_inputs; a mismatch against the R37 manifest would mean it had been modified.",
+  "partial_band_note": "band L returned one of its four declared orbits. The registration forbids reporting a partial band as the band, so band_status carries solved and declared counts per band and the supplement reports L as partial. The three that did not return are named under completion.orbits_unfinished and are a compute bound, not a result.",
+  "reporting_limit": "the panel's reported predictions remain the degree-120 ones. This campaign reports only whether they would change side, which the registration fixes and this manifest repeats so that a later reader cannot mistake a reference-degree ratio for a panel number.",
+  "numerical_kernel": {
+    "lunaris_release_tag": "paper-truncation-v1.0",
+    "lunaris_commit": "27e9ab86ed61d623f78c453ea2054348f1044c23"
+  },
+  "registration": {
+    "r41_preregistration.json": {
+      "sha256": "67861de265546591bb80d01e5913a77149a108e3502bf9033ab36afebef80b8a",
+      "bytes": 7762
+    }
+  },
+  "scripts": {
+    "rev41_reference_degree_control.py": {
+      "sha256": "210348ebdc7c5e7bc21656ef39c598889d39a3c1fb9d4481724d648f784ce5ec",
+      "bytes": 19723
+    },
+    "rev41_finalize_manifest.py": {
+      "sha256": "d77d3da7aeaaf8a0cad6533ccfacf326cfe1b4acc968a714a0e16af41989a486",
+      "bytes": 8333
+    },
+    "rev14_budget_trajectory.py": {
+      "sha256": "d344072bc53b321cb6b979653caabacc2a046ac6224b42bcd43dc1b5628d1ad0",
+      "bytes": 22394
+    },
+    "rev12_atallah.py": {
+      "sha256": "05ab2043dfd986e0eaa946fc84309a6a9996b68882f05c1332494fd916baa089",
+      "bytes": 8628
+    },
+    "rev10_sobol_confirmatory.py": {
+      "sha256": "e483912446449f0086be062844fe3e8070ed8868a4ecd9c15d17ccdf38fb6b25",
+      "bytes": 44268
+    }
+  },
+  "reused_inputs": {
+    "r14_trajectory_A_beta_1.00.json": {
+      "sha256": "a036cfa6ac4f20d9ac7fc8663b414106a11932d780837574ae49d62fead39e00",
+      "bytes": 412475
+    },
+    "r14_trajectory_B_beta_1.00.json": {
+      "sha256": "419d0c089da696507b73fd3c6346b9d077552349fbccb01657762b873a092227",
+      "bytes": 412487
+    },
+    "r14_budget_pareto.json": {
+      "sha256": "bbce69671cea4ec0f230f3d58332f562baf2d50cc48e69eae08d832aa7ec53d9",
+      "bytes": 7478407
+    },
+    "r10_sobolA_baseline_truth_corrected.json": {
+      "sha256": "7b529d3701dde15311e3fab9fed40082ccb5ba15df742cdbf1d71f2245f2fc83",
+      "bytes": 407180
+    },
+    "r11_designB_rows.json": {
+      "sha256": "8751a7df501e19cc9a982fd07955cc7154af1ba954866b6b58296e6101cdd2fa",
+      "bytes": 104145
+    }
+  },
+  "result_json": {
+    "r41_reference_degree_control.json": {
+      "sha256": "0504451af11037802ee0662521d689c3e4f6ec17e5982a646cd8e60853356d37",
+      "bytes": 22053
+    }
+  },
+  "generated_tables": {},
+  "completion": {
+    "orbits": 16,
+    "verdict_changes": 0,
+    "decidability_changes": 0,
+    "resolved_now": 14,
+    "base_reference": 300,
+    "new_reference": 600,
+    "ratios_moving_more_than_2_percent": [
+      {
+        "orbit": "B020",
+        "rho_at_300": 156708.8655008464,
+        "rho_at_600": 18.924268696454448,
+        "factor": 0.00012076067704256486
+      }
+    ],
+    "reuse_note": "policy trajectories reused unchanged; only the reference was re-propagated, at both tolerance levels, and the truth-inclusive resolution rule re-applied",
+    "registration_sha256": "6cb2e52293f58ff5c51bc6a8af07b52a46d95dac3f2bb59c9c8e3c9221fafbd1"
+  },
+  "manifest_sha256": "66ec9697d8a646c309c9448f69e0cce67ad7ce59d7e6e55ca5318826088d60a5"
+}

@@ -54,7 +54,8 @@ ARCHIVE_ONLY = [
 
 
 def excluded(rel: str) -> bool:
-    return ("_raw/" in rel or rel.endswith(".log") or "__pycache__" in rel
+    return ("_raw/" in rel or rel.endswith((".log", ".err", ".out"))
+            or "__pycache__" in rel
             or rel.endswith(".pyc") or "/.lock" in rel)
 
 
