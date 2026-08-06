@@ -46,17 +46,40 @@ def index_files(names, base: Path) -> dict:
     return out
 
 
+# Later campaigns reuse this campaign's driver with a budget argument, so their
+# trajectories land under r19_cases/ and r19_raw/ carrying a beta suffix: R23's
+# half-budget control at beta_0.50, R25's midpoint and upper budgets at
+# beta_0.75, beta_1.25 and beta_1.50. They belong to those manifests and are
+# indexed only there. Sweeping the tree blindly would put hundreds of sidecars
+# under two manifests and turn the stated partition into overlapping
+# inventories, which the integrity check reports as a failure.
+#
+# R19 is the beta = 1 campaign and beta = 1 is the unsuffixed case, so ownership
+# is stated as the absence of any budget suffix rather than as a list of the
+# suffixes that exist today. A budget added later is then excluded without this
+# file having to learn about it.
+BETA_SUFFIX = "_beta_"
+
+
+def owned_by_r19(path: Path) -> bool:
+    return not any(BETA_SUFFIX in part for part in path.parts)
+
+
 def index_tree() -> dict:
     sidecars = {}
     root = METRICS / "r19_cases"
     if root.exists():
         for p in sorted(root.rglob("*.json")):
+            if not owned_by_r19(p):
+                continue
             sidecars[str(p.relative_to(METRICS)).replace("\\", "/")] = sha(p)
     roll = hashlib.sha256()
     n = 0
     raw = METRICS / "r19_raw"
     if raw.exists():
         for p in sorted(raw.rglob("*.npz")):
+            if not owned_by_r19(p):
+                continue
             roll.update(sha(p).encode())
             n += 1
     return {"n_sidecars": len(sidecars), "n_raw_arrays": n,
@@ -116,7 +139,8 @@ def main() -> int:
                              "reused_inputs")
                for k, v in payload[sec].items() if v.get("missing")]
     if missing:
-        print("[note] not produced: " + ", ".join(missing))
+        print("[error] recorded as missing: " + ", ".join(missing))
+        return 1
     return 0
 
 

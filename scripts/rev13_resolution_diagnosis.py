@@ -1,7 +1,7 @@
 """Why the matched-work Atallah comparisons are unresolved (R13 diagnosis).
 
 The benchmark resolves a comparison only when the error gap exceeds the summed
-truth-inclusive envelopes. Against the critical fixed degree that happens almost
+reference-inclusive envelopes. Against the critical fixed degree that happens almost
 always; against the rule's own work-matched fixed degree it rarely does. Before
 spending compute on tighter runs, this script separates the two possible causes:
 
@@ -14,7 +14,7 @@ For every orbit of both populations it records the resolution margin
   M_res = |E_At - E_fixed| / (E_num,At + E_num,fixed),
 
 the absolute errors next to the threshold, the composition of the envelope
-(truth self-difference versus policy self-difference), a hypothetical in which
+(reference self-difference versus policy self-difference), a hypothetical in which
 the policy self-differences are zero (an upper bound on what a perfect policy
 integration could buy), and---the decisive test---whether the measured error of
 each policy is stable under a one-decade tolerance refinement. A physical
@@ -71,7 +71,7 @@ def per_design(design: str) -> dict:
         c = r["comparisons"][COMPARISON]
         pa, pf = r["policies"]["atallah"], r["policies"]["fixed_work_atallah"]
         pc = r["policies"]["fixed_critical"]
-        # the truth self-difference is the part of each envelope that is common
+        # the reference self-difference is the part of each envelope that is common
         truth_self = pa["truth_inclusive_envelope_m"] - pa["self_difference_rms_m"]
         m_res = c["absolute_error_difference_m"] / c["resolution_threshold_m"]
         # gap at each tolerance level: a physical difference keeps its size and
@@ -183,7 +183,7 @@ def build_table(designs: dict) -> str:
   is the resolution margin, and a comparison resolves at
   $M_{{\\mathrm{{res}}}}>1$. Column ``$\\to0$ self'' counts the comparisons that
   would resolve if both policy self-differences were driven to zero, leaving only
-  the truth envelope; it bounds what a more accurate policy integration alone
+  the reference envelope; it bounds what a more accurate policy integration alone
   could buy. The stability columns give the median relative change of each
   policy's measured seven-day error under a one-decade tolerance refinement, a
   physical truncation signal being tolerance-stable and integration noise not.

@@ -5,10 +5,12 @@ quotes, so no number is transcribed by hand.
 
 Two things this reports that the first version did not:
 
-Budget scale. The campaign now runs at beta = 1 and at beta = 0.5. The second
-is the scale at which the constructive claim is strongest, so a table that
-showed only beta = 1 would be showing the claim everywhere except where it is
-actually made.
+Budget scale. The comparison runs at beta = 1, 0.75 and 0.5, and the table
+carries all three because the verdict is not the same at all three. Showing
+only the anchor would show the claim everywhere except where it turns over.
+The midpoint was added last, to locate a sign change that the two original
+budgets could only bracket; a budget whose records are absent is skipped
+rather than faked, so this generator is safe to run mid-campaign.
 
 A like-for-like ratio. The manuscript contrasted the realized-work median rho,
 which is a median of per-orbit ratios, against a per-call "sixfold", which is a
@@ -31,7 +33,7 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 METRICS = ROOT / "metrics"
 
-BETAS = (1.00, 0.50)
+BETAS = (1.50, 1.25, 1.00, 0.75, 0.50)
 K = "0.50"
 
 
@@ -83,12 +85,17 @@ def per_call(design: str, beta: float) -> dict | None:
 
 
 def table() -> str:
-    lines = ["\\begin{tabular}{@{}l l r r r r r@{}}", "\\toprule",
-             "$\\beta$ & budget held equal & interior & fixed & unres. & "
-             "median $\\rho$ & work match \\\\",
-             "\\midrule"]
+    """Design label as a rotated spanning cell rather than a banner row.
+
+    With four budgets and two accountings each, a design occupies eight rows.
+    A full-width ``Design A`` row above them costs a line, breaks the rules of
+    the table twice, and still leaves the reader to work out how far the group
+    extends. A rotated label spanning the block says the same thing in the
+    margin and lets the eye see the group boundary directly.
+    """
+    blocks = []
     for design in ("A", "B"):
-        block = []
+        rows = []
         for beta in BETAS:
             d = load(design, beta)
             pc = per_call(design, beta)
@@ -96,21 +103,30 @@ def table() -> str:
                 continue
             s = d["summary"]
             a = s["achieved_work_ratio"]
-            block.append(
+            rows.append(
                 f"{beta:.2f} & nominal per call & {pc['interior']} & "
                 f"{pc['fixed']} & {pc['unresolved']} & "
                 f"{pc['median_of_ratios']:.2f} & target-matched by "
                 f"construction \\\\")
-            block.append(
+            rows.append(
                 f" & realized total & {s['resolved_interior_wins']} & "
                 f"{s['resolved_fixed_wins']} & {s['unresolved']} & "
                 f"{s['median_rho']:.2f} & "
                 f"${a['median']:.3f}$ $[{a['min']:.3f},{a['max']:.3f}]$ \\\\")
-        if not block:
-            continue
-        lines.append(f"\\multicolumn{{7}}{{@{{}}l}}"
-                     f"{{\\emph{{Design {design}}}}}\\\\")
-        lines += block
+        if rows:
+            blocks.append((design, rows))
+
+    lines = ["\\begin{tabular}{@{}c l l r r r r r@{}}", "\\toprule",
+             "& $\\beta$ & budget held equal & interior & fixed & unres. & "
+             "median $\\rho$ & work match \\\\",
+             "\\midrule"]
+    for i, (design, rows) in enumerate(blocks):
+        if i:
+            lines.append("\\midrule")
+        label = (f"\\multirow{{{len(rows)}}}{{*}}"
+                 f"{{\\rotatebox[origin=c]{{90}}{{\\emph{{Design {design}}}}}}}")
+        lines.append(f"{label} & {rows[0]}")
+        lines += [f" & {r}" for r in rows[1:]]
     lines += ["\\bottomrule", "\\end{tabular}"]
     return "\n".join(lines) + "\n"
 

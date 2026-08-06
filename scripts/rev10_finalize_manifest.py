@@ -2,12 +2,24 @@
 
 This script hashes existing evidence and manuscript files. It does not run
 propagations or alter scientific outputs.
+
+R10 carries the manuscript-state half of the package: the sources, the two
+PDFs, and the assets the document pulls in that belong to no later campaign.
+That last group is derived from the manuscript rather than listed by hand,
+because listing it by hand is what left the figures and the surviving pre-R10
+tables hashed by nothing at all while the supplement claimed the manifests were
+jointly exhaustive. Generated tables whose names carry a later campaign's
+prefix stay with that campaign and are not duplicated here. Figures and
+figure-generation code are indexed here even where a campaign also lists its
+own copy: the non-duplication convention the supplement states is about
+trajectories, and a file hashed under two manifests has to satisfy both.
 """
 
 from __future__ import annotations
 
 import hashlib
 import json
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -66,6 +78,36 @@ for fixed in (
         selected.add(path)
 
 selected.update(ROOT.glob("chapters/*.tex"))
+
+# Manuscript assets no later campaign owns. The \input targets are filtered by
+# prefix so an r14_* or r23_* table stays under its own manifest; the figures
+# and the figure-generation code have no campaign home at all, and the
+# supplement's source-snapshot statement promises both.
+OWNED_BY_LATER_CAMPAIGN = re.compile(r"^r(1[0-9]|2[0-9])_")
+
+_tex = [ROOT / "main.tex", ROOT / "supplement.tex"] + \
+    sorted(ROOT.glob("chapters/*.tex"))
+_body = "\n".join(p.read_text(encoding="utf-8") for p in _tex if p.is_file())
+
+for target in re.findall(r"\\input\{(metrics/[^}]+)\}", _body):
+    stem = Path(target.strip()).name
+    if OWNED_BY_LATER_CAMPAIGN.match(stem):
+        continue
+    for candidate in (ROOT / target.strip(), ROOT / (target.strip() + ".tex")):
+        if candidate.is_file():
+            selected.add(candidate)
+            break
+
+for target in re.findall(r"\\includegraphics(?:\[[^\]]*\])?\{([^}]+)\}", _body):
+    t = target.strip()
+    for candidate in (ROOT / t, ROOT / f"{t}.pdf", ROOT / f"{t}.png",
+                      ROOT / "figures" / t, ROOT / "figures" / f"{t}.pdf",
+                      ROOT / "figures" / f"{t}.png"):
+        if candidate.is_file():
+            selected.add(candidate)
+            break
+
+selected.update(ROOT.glob("python_codes/make_figures*.py"))
 
 
 def category(path: Path) -> str:

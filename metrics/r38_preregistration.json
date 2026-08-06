@@ -1,0 +1,79 @@
+{
+  "schema": "r38_preregistration_v1",
+  "created_utc": "2026-08-04T21:52:57.569224Z",
+  "campaign": "R38: the operational elliptical population re-run with its reference degree raised from 300 to 600, so that the calibrated radial schedule is never clamped to the reference model",
+  "question": "the radial rule wins 49-10 on this population at the declared budget, at a median error ratio of 81, and it is the only population where the paper's negative result reverses. Thirty-eight of the sixty-four orbits reach the reference degree, where the radial force model is the reference model and its defect vanishes by construction, and all thirty-seven resolved capped comparisons fall to the radial rule. Does the reversal survive when the ceiling is removed?",
+  "why_not_the_subset": "the cap-free subset of the capped run answers a weaker question. It is twenty-six orbits, it resolves 12-10, and it is drawn from a comparison whose calibration was itself computed against the ceiling. Removing the ceiling recalibrates the schedule on all sixty-four orbits at equal realized work, which is the comparison the paper claims to be making.",
+  "why_a_paired_control": "same orbits, same initial states, same comparator degrees, same tolerances, same arc. One number differs. Anything that moves is attributable to the ceiling and to nothing else.",
+  "not_blind": "the capped result is known and so is the cap-free subset of it. The protections are that no orbit is drawn, no parameter is chosen, the reference degree was fixed by a demand probe rather than by preference, and the four outcomes below are written before the first trajectory.",
+  "ceiling_probe": {
+    "method": "the calibration bisection of rev14_budget_pareto re-run at cap 600 on the archived R31 truth altitude histories; no propagation, no new trajectory, nothing written to the archive",
+    "orbits_probed": 64,
+    "budget_probed": 1.0,
+    "max_requested_degree": 522,
+    "orbits_touching_cap_600": 0,
+    "all_budgets_spot_checked": [
+      1.0,
+      0.75,
+      0.5
+    ],
+    "max_requested_degree_six_lowest_perilune_all_budgets": 522,
+    "conclusion": "600 clears the demand on every orbit at every budget, so the control removes the ceiling rather than raising it"
+  },
+  "protocol": "identical to R31 in every respect except the adopted reference degree: seven-day arc, the same two tolerance levels, the same output grid, the same resolution rule, the same two-policy base scope inherited from r30_preregistration.json, the same R12-rule operating point regeneration, the same calibration and the same R19 ladder",
+  "budget": "beta = 1.00 first, because it carries the published 49-10 and the median ratio of 81; then 0.75, then 0.50, in that order, and only in that order",
+  "population": "operational_elliptical_uncapped",
+  "design": {
+    "seed": 20260731,
+    "design_key": "OEU",
+    "design_sha256": "800259f347fbec1f34d6654f2c989f618ea7053b3d649aa24249e71edf8f70f1",
+    "file": "r38_operational_elliptical_uncapped_design_frozen.json",
+    "factor_box": {
+      "hp_km": [
+        80.0,
+        120.0
+      ],
+      "ha_km": [
+        700.0,
+        2500.0
+      ],
+      "incl_deg": [
+        0.0,
+        180.0
+      ],
+      "argp_deg": [
+        0.0,
+        360.0
+      ]
+    },
+    "derived_from": {
+      "population": "operational_elliptical",
+      "design_key": "OE",
+      "file": "r31_operational_elliptical_design_frozen.json",
+      "design_sha256": "c522e608839dedbb23cb87702356acb5e432daf97a99e5e3b88494d6e8b96a2f",
+      "orbits_identical": true,
+      "initial_states_identical": true,
+      "what_differs": "the adopted reference degree only: 300 -> 600"
+    }
+  },
+  "outcomes": {
+    "P_ceiling_carried_it": "The uncapped tally collapses towards the cap-free subset, that is, it no longer resolves in favour of the radial rule. The 49-10 result and the median ratio of 81 are then reported as artefacts of the ceiling. The uncapped tally becomes the operational-elliptical result everywhere it is quoted -- Section 8.3, the recommendation table, the regime-map figure and the conclusion -- and the capped numbers stay only as the audit that retired them.",
+    "Q_survives_intact": "The uncapped tally still favours the radial rule by a margin of the same order. The ceiling is then reported as having flattered the magnitude without creating the direction, both tallies are printed side by side, and the reversal stands as the paper's bound on its own negative claim.",
+    "R_direction_holds_magnitude_falls": "The uncapped tally favours the radial rule but the median ratio drops by an order of magnitude or more. The uncapped numbers are the ones quoted; the sentence that carries them says the magnitude was a ceiling effect and the direction was not.",
+    "S_reversal": "The uncapped tally favours the constant degree. The paper's one positive geometry result is withdrawn, the recommendation-table row is rewritten against it, and the negative claim is reported as holding on this geometry too."
+  },
+  "verdict_rule": "the R19 realized-work tally, as everywhere else: radial if resolved_atallah_wins exceeds resolved_fixed_wins, constant if the reverse, split if equal, undecided if nothing resolves. The resolution rule is the archive's and is not recomputed here.",
+  "reporting_commitment": "whatever comes out is printed next to the capped numbers it controls, in the main text and not only in the supplement, including the case where the reversal survives untouched. The out-of-box qualifier that R31 attached to this population travels with the control as well.",
+  "prohibited": [
+    "choosing between the capped and the uncapped tally after seeing both",
+    "quoting the capped 49-10 or the median ratio 81 without the uncapped tally in the same sentence, whatever the outcome",
+    "dropping an orbit, changing a budget or re-deriving n_critical or n_work after propagation starts",
+    "pooling this population with the strata, the coverage designs or its own capped parent",
+    "treating the cap-free subset of the capped run as a substitute for this control; it is a subset of a confounded comparison, not a clean one"
+  ],
+  "parent_registration": {
+    "file": "r31_preregistration.json",
+    "sha256": "405cf0520c150cd8344d32d213085e334aac9e7e5271a1e4bc6328dc7008f8ee"
+  },
+  "preregistration_sha256": "fc2d7b43f515aa873efb2fedabde36f5373c26e8b1f0ac78923feafd3adfbd6f"
+}

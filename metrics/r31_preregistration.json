@@ -1,0 +1,64 @@
+{
+  "schema": "r31_preregistration_v1",
+  "created_utc": "2026-08-01T04:53:16.748534Z",
+  "campaign": "R31: one 64-orbit population of operational elliptical lunar orbits, propagated to test whether the allocation result survives outside the near-circular box the paper samples",
+  "question": "every orbit in designs A, B and C is near-circular (eccentricity below 0.14). Relay and communications orbits are not. Does the declared-budget result hold on the geometry that is actually flown for those roles?",
+  "why_separate_from_R30": "an R30 stratum is a sub-box of a range already sampled and can only locate an existing claim inside it; the R30 registration says so explicitly. This population widens the range, so it is a scope extension and is registered, reported and bounded as one. It is never pooled with the strata or with the coverage designs.",
+  "not_blind": "the coverage-design results are known. The protections are the arithmetic seed, the single-draw commitment, and outcomes fixed before propagation.",
+  "single_draw_commitment": "one draw. If the numbers disagree with the coverage designs, the disagreement is the result; the seed is not changed, the box is not redrawn, and no orbit is dropped after its numbers are known.",
+  "protocol": "identical to the R30 strata: same truth-degree rule, tolerance levels, seven-day arc, output grid, resolution rule, calibration and ladder, and the same two-policy base scope, which is declared in r30_preregistration.json and inherited here",
+  "budget": "the declared budget beta = 1 first; further budgets only after",
+  "population": "operational_elliptical",
+  "design": {
+    "seed": 20260731,
+    "design_key": "OE",
+    "design_sha256": "c522e608839dedbb23cb87702356acb5e432daf97a99e5e3b88494d6e8b96a2f",
+    "file": "r31_operational_elliptical_design_frozen.json",
+    "factor_box": {
+      "hp_km": [
+        80.0,
+        120.0
+      ],
+      "ha_km": [
+        700.0,
+        2500.0
+      ],
+      "incl_deg": [
+        0.0,
+        180.0
+      ],
+      "argp_deg": [
+        0.0,
+        360.0
+      ]
+    },
+    "flown_reference_orbits": [
+      {
+        "spacecraft": "Ouna (VRAD/Vstar), SELENE/Kaguya subsatellite",
+        "perilune_km": 100,
+        "apolune_km": 800,
+        "note": "near-polar"
+      },
+      {
+        "spacecraft": "Okina (Rstar), SELENE/Kaguya subsatellite",
+        "perilune_km": 100,
+        "apolune_km": 2400,
+        "note": "near-polar"
+      }
+    ]
+  },
+  "outcomes": {
+    "N_extends": "The realized-work tally at the declared budget favours the interior member here as it does on the coverage designs. The allocation result is then reported as holding on a flown elliptical geometry outside the sampled box, stated as an extension of scope and kept separate from the population-level statements, which remain about the box.",
+    "O_boundary": "The tally favours the constant degree here. The coverage-design result is then reported as bounded by geometry: it holds on near-circular low lunar orbits and does not carry to the wide elliptical arcs a relay flies. This is a limitation of the paper's claim and is written as one, in the main text and not only in the supplement.",
+    "P_undecided": "Too few comparisons resolve to produce a tally. Reported as a geometry on which the measurement does not decide, with its resolved and unresolved counts."
+  },
+  "verdict_rule": "the R19 realized-work tally, as everywhere else: interior if resolved_interior_wins exceeds resolved_fixed_wins, constant if the reverse, split if equal, undecided if nothing resolves",
+  "reporting_commitment": "the phrase 'outside the sampled factor box' travels with every number from this population, in the table caption and in the sentence that quotes it. A favourable result here does not widen any abstract claim; an unfavourable one does bound it, and that bound goes in the main text rather than only in the supplement.",
+  "prohibited": [
+    "re-seeding or redrawing the box",
+    "pooling this population with the strata or the coverage designs",
+    "quoting it without its out-of-box qualifier",
+    "widening an abstract or conclusion claim on the strength of it"
+  ],
+  "preregistration_sha256": "405cf0520c150cd8344d32d213085e334aac9e7e5271a1e4bc6328dc7008f8ee"
+}

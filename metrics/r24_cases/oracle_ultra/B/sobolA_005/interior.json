@@ -1,0 +1,84 @@
+{
+  "schema": "r24_oracle_ultra_v1",
+  "created_utc": "2026-07-30T13:26:39.114497Z",
+  "config": {
+    "design": "B",
+    "sobol_index": 5,
+    "beta": 1.0,
+    "policy": "interior",
+    "level": "ultra",
+    "adopted_truth_degree": 300,
+    "interior_k": 0.5,
+    "policy_spec": {
+      "kind": "binned_span_member",
+      "k": 0.5,
+      "degree_table": {
+        "140.0": 86,
+        "150.0": 82,
+        "160.0": 78,
+        "170.0": 76,
+        "180.0": 73,
+        "190.0": 70,
+        "200.0": 67,
+        "210.0": 65,
+        "220.0": 63
+      }
+    },
+    "initial_state_si": [
+      -959177.9008466311,
+      1106545.0272547796,
+      -1190900.3280953171,
+      1200.9774865542458,
+      -129.20140515965105,
+      -1087.3439248958405
+    ],
+    "duration_s": 604800.0,
+    "output_step_s": 120.0,
+    "integrator": "InstrumentedDOP853",
+    "max_step_s": 60.0,
+    "atol_kind": "vector",
+    "rtol": 3e-14,
+    "atol_position_m": 1e-07,
+    "atol_velocity_m_s": 1e-10,
+    "timing_comparable": false,
+    "purpose": "third tolerance level for the oracle control on the interior member at beta = 1",
+    "source": {
+      "driver": "rev24_oracle_ultra.py",
+      "reuses": "r23_oracle_vs_interior.json panel and degrees, r23_cases/ultra_span ultra truths and interior members, r18 span sidecars for states and tables",
+      "preregistration": "r24_preregistration.json"
+    }
+  },
+  "config_sha256": "c1e176b7b14f92a749fe55828ac905d56200b81f42e358eca293e376219bf508",
+  "status": "ok",
+  "event": null,
+  "telemetry": {
+    "n_rhs": 426656,
+    "n_accepted_steps": 19070,
+    "n_attempted_steps": 30787,
+    "n_rejected_trials": 11717,
+    "switch_count_at_rhs_samples": 25751,
+    "degree_counts": {
+      "86": 13351,
+      "82": 80345,
+      "78": 64459,
+      "76": 57052,
+      "73": 53876,
+      "70": 53992,
+      "67": 60667,
+      "65": 42914
+    },
+    "degree_range": [
+      65,
+      86
+    ],
+    "mean_degree": 74.22072348683717,
+    "mean_degree_sq": 5545.4429352921325,
+    "gravity_kernel_ns": 22526101200,
+    "process_cpu_ns": 37375000000,
+    "total_wall_ns": 38016264300
+  },
+  "raw_path": "metrics\\r24_raw\\oracle_ultra\\B\\sobolA_005\\interior.npz",
+  "raw_sha256": "4b72592546b16c1c9f6ee9493da13c727700ee3478c89996724681ea6a38f34a",
+  "n_output_epochs": 5041,
+  "last_output_epoch_s": 604800.0
+}

@@ -382,7 +382,7 @@ def aggregate() -> int:
   end-to-end propagation time of the radial policy over the comparator's, so a
   value above unity means that matching the kernel time did not make the run as a
   whole equally expensive. $\\rho = E_{{\\mathrm{{fix}}}}/E_{{\\mathrm{{At}}}}$ is a
-  raw error ratio: the truth-inclusive resolution rule used elsewhere in the
+  raw error ratio: the reference-inclusive resolution rule used elsewhere in the
   paper is not applied to this panel. Degrees, errors in meters and the proxy
   comparator are in Supplementary
   Table~\\ref*{{supp-tab:budget-timing-full}}.}}
@@ -412,7 +412,7 @@ def aggregate() -> int:
   are serial on an idle machine and each configuration is repeated; medians are
   compared. A pair counts as matched only inside the declared
   $0.90$--$1.10$ band. $\\rho = E_{{\\mathrm{{fix}}}}/E_{{\\mathrm{{At}}}}$ is a raw
-  error ratio; the truth-inclusive resolution rule is not applied to this
+  error ratio; the reference-inclusive resolution rule is not applied to this
   panel.}}
   \\label{{tab:budget-timing-full}}
   \\begin{{tabular}}{{l r r r r r r r r r r c}}

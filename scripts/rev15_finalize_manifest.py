@@ -148,7 +148,8 @@ def main() -> int:
     missing = [k for sec in ("scripts", "result_json", "generated_tables")
                for k, v in payload[sec].items() if v.get("missing")]
     if missing:
-        print("[note] not produced: " + ", ".join(missing))
+        print("[error] recorded as missing: " + ", ".join(missing))
+        return 1
     return 0
 
 

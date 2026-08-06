@@ -221,7 +221,7 @@ for run, color, ls, lbl in runs:
             eb.append(e[m].max())
     ax.semilogy(tb, eb, ls, color=color, lw=1.5, label=lbl)
 ax.set_xlabel("Time [days]")
-ax.set_ylabel("Position error envelope vs. $N=300$ truth [m]")
+ax.set_ylabel("Position error envelope vs. $N=300$ reference [m]")
 ax.legend(frameon=False, fontsize=7.5, loc="lower right")
 fig.savefig(FIGS / "fig_longarc_growth.pdf")
 plt.close(fig)

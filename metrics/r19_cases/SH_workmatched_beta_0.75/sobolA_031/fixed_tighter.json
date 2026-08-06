@@ -1,0 +1,62 @@
+{
+  "schema": "r19_equal_total_work_v1",
+  "created_utc": "2026-08-03T03:30:16.715710Z",
+  "config": {
+    "sobol_index": 31,
+    "design": "SH",
+    "beta": 0.75,
+    "policy": "constant degree matched on realized total quadratic work",
+    "matched_to": "span-sweep member k=0.50",
+    "degree": 83,
+    "target_total_quadratic_work": 1034656361.0,
+    "constant_endpoint_degree": 82,
+    "constant_endpoint_total_work": 1018094288.0,
+    "first_estimate_rule": "N* = round(N_0 * sqrt(W_k / W_0)); the achieved ratio is measured, not assumed",
+    "adopted_truth_degree": 300,
+    "initial_state_si": [
+      1737524.4105356855,
+      637117.6207904574,
+      -4809.739650224116,
+      574.8818705373494,
+      -1570.385469968957,
+      -342.83999496498075
+    ],
+    "duration_s": 604800.0,
+    "output_step_s": 120.0,
+    "integrator": "InstrumentedDOP853",
+    "max_step_s": 60.0,
+    "atol_kind": "vector",
+    "timing_comparable": false,
+    "source": {
+      "driver": "rev19_equal_total_work.py",
+      "reuses": "r18_span_sweep_SH_beta_0.75.json (realized work), r14_trajectory_SH_beta_0.75.json, r11 truths",
+      "lunaris_commit": "27e9ab86ed61d623f78c453ea2054348f1044c23"
+    }
+  },
+  "config_sha256": "e4003ab0dfa9617c4beb9eff860486cf54cf53232876db9d3954117a108be3e4",
+  "status": "ok",
+  "event": null,
+  "telemetry": {
+    "n_rhs": 158639,
+    "n_accepted_steps": 10355,
+    "n_attempted_steps": 10631,
+    "n_rejected_trials": 276,
+    "switch_count_at_rhs_samples": 0,
+    "degree_counts": {
+      "83": 158639
+    },
+    "degree_range": [
+      83,
+      83
+    ],
+    "mean_degree": 83.0,
+    "mean_degree_sq": 6889.0,
+    "gravity_kernel_ns": 15260845400,
+    "process_cpu_ns": 21890625000,
+    "total_wall_ns": 25101293700
+  },
+  "raw_path": "metrics\\r19_raw\\SH_workmatched_beta_0.75\\sobolA_031\\fixed_tighter.npz",
+  "raw_sha256": "d9daa36695be1fb28f7ae0ebcab02b84bb199a0bc62ec31922f81298f88dfc4b",
+  "n_output_epochs": 5041,
+  "last_output_epoch_s": 604800.0
+}

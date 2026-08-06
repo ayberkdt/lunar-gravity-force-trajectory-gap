@@ -138,7 +138,7 @@ def claim_matrix() -> str:
         f"{fmt(fB('beta_0.50', 'R_a_median'))} and {fmt(fB('beta_0.75', 'R_a_median'))} "
         "(design B); replicated bracket, not interpolated")
 
-    add("The force-level ordering is not an artifact of the truth-degree cap",
+    add("The force-level ordering is not an artifact of the reference-degree cap",
         "Results 7.12, Supplement S8.6",
         "r14_cap_audit_table.tex, r14_descriptives.json",
         f"cap-free subpopulation at beta=1: R_a "

@@ -11,8 +11,8 @@ seven-day trajectory error against the binned run.
 
 Everything else is frozen to the campaign: the same per-orbit acceleration
 tolerance (read from the archived binned sidecar, not recomputed), the same
-degree floor and truth-degree cap, the same vector tolerances, arc, and output
-grid, and the same reused truth trajectories.
+degree floor and reference-degree cap, the same vector tolerances, arc, and output
+grid, and the same reused reference trajectories.
 
 Usage:
     python rev12_atallah_bincontrol.py pilot --workers 2
@@ -60,7 +60,7 @@ def binned_sidecar(index: int, level: str) -> Path:
 
 def select_orbits(rows: list[dict], n: int = N_ORBITS) -> list[dict]:
     """Representative orbits: evenly spaced in perilune altitude over the
-    truth-surviving population, so the control spans the regimes where the bin
+    reference-surviving population, so the control spans the regimes where the bin
     width is a larger and a smaller fraction of the perilune--apolune span."""
     ok = sorted(rows, key=lambda r: r["design_point"]["hp_km"])
     if len(ok) <= n:
@@ -218,7 +218,7 @@ def aggregate(rows: list[dict], extra: dict) -> dict:
         "schema": "r12_atallah_bincontrol_v1",
         "protocol": ("continuous-radius Atallah versus the archived 10-km binned "
                      "Atallah on representative design-A orbits; identical "
-                     "tolerance, cap, integrator settings, arc and truth"),
+                     "tolerance, cap, integrator settings, arc and reference"),
         "orbits": len(rows), "rows": rows,
         "summary": {
             "resolved_error_differences": sum(c["resolved"] for c in cmpv),
@@ -266,13 +266,13 @@ def build_table(payload: dict) -> str:
   {payload['orbits']} design-A orbits spanning the perilune range, the published
   rule evaluated at the exact instantaneous radius on every right-hand-side call
   (cont) is compared with the archived 10-km binned application (bin) at
-  identical tolerance, degree cap, integrator settings, arc and truth.
+  identical tolerance, degree cap, integrator settings, arc and reference.
   $\\bar N$ is the call-weighted mean degree, $n_{{\\mathrm{{lev}}}}$ the number of
   distinct degrees used, and $n_{{\\mathrm{{sw}}}}$ the degree changes seen at
   right-hand-side samples. $w$ is the ratio of $\\langle N^2\\rangle$ and
   $n_{{\\mathrm{{rhs}}}}$ the ratio of right-hand-side calls (cont/bin). $E$ is the
-  seven-day position RMS against the same-tolerance truth; the last column
-  reports whether the two error values are separated by the truth-inclusive
+  seven-day position RMS against the same-tolerance reference; the last column
+  reports whether the two error values are separated by the reference-inclusive
   envelope rule. Median mutual trajectory difference
   {md['median']:.3f}~m; median work ratio {wr['median']:.3f}.}}
   \\label{{tab:atallah-bincontrol}}

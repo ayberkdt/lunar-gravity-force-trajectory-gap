@@ -1,0 +1,85 @@
+{
+  "schema": "r28_calibration_amendment_v1",
+  "created_utc": "2026-07-31T14:20:39.862419Z",
+  "campaign": "R28 -- Phase-A calibration extension enabling the R25 (O33) bisection step at beta = 0.62",
+  "beta": 0.62,
+  "amends": {
+    "file": "r14_preregistration.json",
+    "protocol_sha256": "810eaf5c8f1f521f32f0dc1df21788c70f0bfc94a0717c027b84a28c1c7c42d3",
+    "frozen_budget_grid": [
+      0.5,
+      0.75,
+      1.0,
+      1.25,
+      1.5,
+      2.0,
+      3.0
+    ],
+    "executes": "r25_preregistration_amendment.json",
+    "executes_sha256": "736a71ab078152fe8a9a0e6dd22caaa19ae6eedd97c6ac7831b7032aa64c09cd"
+  },
+  "blocking_fact": "rev14_budget_trajectory.build_specs reads the calibrated Atallah tolerance and the constant comparator degree out of r14_budget_pareto.json rather than computing them, so a beta outside the frozen grid raises KeyError before any orbit is propagated. The R25 amendment's protocol clause is incomplete for this reason, and this file supplies the missing step.",
+  "written_after_seeing": "the complete beta = 0.50 / 0.75 / 1.00 realized-work results on both designs, which bracket the sign change at (0.50, 0.75]. This amendment is post hoc and is not presented as blind.",
+  "what_is_added": "one deterministic, integration-noise-free Phase-A calibration point. For each of the 128 orbits it bisects eps_A in log space until the 10-km-binned degree history consumes <N_A^2> = beta * N_crit^2 on the archived truth epochs, and selects the integer constant degree nearest the same work. The construction carries no free parameter, no stopping choice and no outcome.",
+  "rules_inherited_verbatim": {
+    "calibration_rule": {
+      "method": "log-space bisection on eps_A",
+      "target": "|W_A_sampled / (beta * N_crit^2) - 1| < 0.01",
+      "degree_history": "10-km binned altitude table, identical to the binning convention used by the archived Atallah campaign and by the paper's other altitude schedules, so that the calibrated policy is the one actually propagated",
+      "floor": 2,
+      "cap": "the orbit's adopted truth degree",
+      "on_failure": "if integer-degree discretization prevents the 1% target, take the nearest attainable point and record the achieved mismatch; never interpolate degree"
+    },
+    "fixed_comparator_rule": {
+      "definition": "N_F(beta) = argmin_N |N^2 - beta * N_crit^2| over integers",
+      "note": "equivalently round(N_crit*sqrt(beta)) up to the integer tie rule; never interpolated",
+      "cap": "the orbit's adopted truth degree"
+    },
+    "censoring_rule": {
+      "statement": "a budget point is censored for an orbit when the comparator or the calibrated Atallah history would need degrees above the adopted truth degree, because the defect against that truth is then not a meaningful measure of truncation error",
+      "handling": "censored points are flagged and counted in every table (cap-bound orbit count) and are excluded from the population statistics of that budget, never silently dropped and never joined across in a figure"
+    },
+    "resolution_rule": {
+      "inherited_from": "R11/R12 truth-inclusive pairwise resolution",
+      "criterion": "|E_A - E_B| > (E_self,A + E_self,T) + (E_self,B + E_self,T)",
+      "unresolved_handling": "reported as unresolved; never counted as a tie or as a win"
+    },
+    "numerical_contract": {
+      "tight": {
+        "rtol": 1e-12,
+        "atol_position_m": 1e-05,
+        "atol_velocity_m_s": 1e-08
+      },
+      "tighter": {
+        "rtol": 1e-13,
+        "atol_position_m": 1e-06,
+        "atol_velocity_m_s": 1e-09
+      },
+      "atol_kind": "vector",
+      "max_step_s": 60.0,
+      "duration_s": 604800.0,
+      "output_step_s": 120.0,
+      "truth_reuse": "archived R11 truth trajectories are reused only where the tolerance, force model, frame, output grid, truth degree, initial state, and code identity contract match exactly"
+    },
+    "note": "none of these is relaxed, reparameterized or reinterpreted"
+  },
+  "departure_from_parent_registration": "R14's adaptive_extension_rule permits added trajectory budgets only at grid values bracketing a crossing, and its prohibited list includes 'quoting a crossover budget more precisely than the sampled grid supports'. Both bracketing grid values, 0.50 and 0.75, are already propagated on both designs, so that rule is satisfied and spent. This run goes beyond it and is therefore not a pre-registered result.",
+  "reporting_commitment": "the manuscript's headline bracket remains the pre-registered (0.50, 0.75] on both designs. The beta = 0.62 point is reported as a declared post-hoc localization, labelled as such wherever it appears, alongside the pre-registered bracket rather than in place of it. Both halves of the bracket are equally reportable and the wording for each is already fixed in the R25 amendment's outcomes E, F and G. Nothing recorded at 0.50, 0.75, 1.00, 1.25 or 1.50 is touched, recomputed or restated by this run.",
+  "single_draw_commitment": "beta = 0.62 is the only calibration point this amendment adds. If its result is inconvenient, no further bisection is run and no third value is drawn: the bracket is reported at whatever width this step leaves it. A truncated chain is reported with its completion fraction rather than as a located crossing.",
+  "archive_integrity": {
+    "archived_calibration_record": "r14_budget_pareto.json",
+    "archived_sha256": "bbce69671cea4ec0f230f3d58332f562baf2d50cc48e69eae08d832aa7ec53d9",
+    "pinned_in_manifests": [
+      "r14_final_experiment_manifest.json",
+      "r18_final_experiment_manifest.json",
+      "r21_final_experiment_manifest.json"
+    ],
+    "rule": "the archived record is not edited and no archived script is modified, because both are sha256-pinned in sealed manifests. The new budget is written to its own record, r28_budget_pareto_beta_0.62.json, and rev14_budget_trajectory is pointed at it in the parent process only, where build_specs runs. Worker processes receive their specs through the task payload and never read either record."
+  },
+  "admissibility_self_check": "before writing any beta = 0.62 record, the extension script recomputes an archived budget (beta = 0.75, both designs, all 128 orbits) with the same worker and requires exact reproduction of the archived calibration -- tolerance, comparator degree, achieved work and censoring flag, every orbit. If reproduction fails anywhere, no 0.62 record is written and the campaign does not start.",
+  "outcomes": {
+    "unchanged_from": "r25_preregistration_amendment.json",
+    "note": "outcomes E (crossing in the upper half), F (crossing in the lower half) and G (unresolved or split) were fixed before any 0.62 number existed and are not restated, reweighted or reordered here"
+  },
+  "amendment_sha256": "4d8a78eb43604971e6116fe364bd211c71aedea37bb4e781b9c8980c16d1b466"
+}

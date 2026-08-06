@@ -104,8 +104,8 @@ def build():
   set, perilune-tolerance matched to the critical fixed degree's perilune
   error target and applied
   on the same 10-km altitude bins as the other schedules. Errors are seven-day
-  position RMS against the same-tolerance truth; a comparison is resolved by the
-  truth-inclusive envelope rule. $\\rho>1$ favors Atallah. The last row is
+  position RMS against the same-tolerance reference; a comparison is resolved by the
+  reference-inclusive envelope rule. $\\rho>1$ favors Atallah. The last row is
   Atallah's mean $\\langle N^2\\rangle$ relative to the critical fixed degree, the
   work its conservative bound spends for its accuracy.}}
   \\label{{tab:{_LABEL}}}
@@ -182,11 +182,11 @@ def combined():
   \\caption{{Direct benchmark of the published Atallah radial-adaptive rule
   \\citep{{atallah2022radial}} on both 64-orbit scrambled-Sobol designs, at
   the perilune-matched error target defined in the text. Errors are seven-day
-  position RMS against the same-tolerance truth, $\\rho>1$ favors Atallah, and
-  only comparisons the truth-inclusive envelope rule resolves are counted. The
+  position RMS against the same-tolerance reference, $\\rho>1$ favors Atallah, and
+  only comparisons the reference-inclusive envelope rule resolves are counted. The
   lower panel records what the match produces at perilune: the two degrees, the
   factor by which the delivered acceleration error undershoots the target
-  (median over the orbits below the truth-degree cap), the quadratic work ratio,
+  (median over the orbits below the reference-degree cap), the quadratic work ratio,
   and the number of orbits touching the cap. The third-tolerance retest of the
   contested orbits is in Supplementary
   Section~\\ref*{{supp-sec:atallah-ultratight}}.}}

@@ -18,9 +18,9 @@ both populations:
   E_crit/E_At           how much extra real accuracy the conservative bound buys
   <N^2>_At/N_crit^2     the work it spends for it
 
-It also records truth-degree cap contact. The rule is capped at the adopted
+It also records reference-degree cap contact. The rule is capped at the adopted
 truth degree of each orbit; where it selects that cap in the perilune bin, its
-model there coincides with the truth model, so its measured error is zero by
+model there coincides with the reference model, so its measured error is zero by
 construction in those bins. The decision counts are therefore also recomputed on
 the cap-free subgroup as a sensitivity check.
 
@@ -95,7 +95,7 @@ def per_orbit(design: str) -> list[dict]:
         n_at = perilune_bin_degree(cfg["atallah_degree_table"], hp_km)
         at_cap = bool(n_at >= adopted)
         # actual worst-case acceleration truncation error of each degree at
-        # perilune, against the same adopted truth degree used for the matching
+        # perilune, against the same adopted reference degree used for the matching
         err_at = (0.0 if at_cap else
                   at.actual_truncation_error_max(model, args, r_p, n_at, adopted,
                                                  **GRID))
@@ -205,14 +205,14 @@ def longtable(design: str, rows: list[dict]) -> str:
   \\caption{{Per-orbit matching record for the Atallah benchmark, design~{design}.
   $N_{{\\mathrm{{crit}}}}$ is the critical-altitude fixed degree,
   $N_{{\\mathrm{{At}}}}(r_p)$ the degree the published rule selects in the perilune
-  bin, and $N_{{\\mathrm{{truth}}}}$ the adopted truth degree at which the rule is
+  bin, and $N_{{\\mathrm{{truth}}}}$ the adopted reference degree at which the rule is
   capped; $f_{{\\mathrm{{cap}}}}$ is the percentage of right-hand-side calls made at
   that cap. The tolerance $\\varepsilon_a$ handed to the rule is the actual
   worst-case acceleration truncation error of $N_{{\\mathrm{{crit}}}}$ at perilune,
   and $E_{{\\mathrm{{At}}}}$ is the actual worst-case error the selected degree
-  delivers there (both against the same adopted truth degree, on the same
+  delivers there (both against the same adopted reference degree, on the same
   $25\\times48$ lat/lon grid). Entries marked * are exactly zero because the rule
-  sits at the truth-degree cap in that bin. The last two columns are the
+  sits at the reference-degree cap in that bin. The last two columns are the
   delivered accuracy gain $\\varepsilon_a/E_{{\\mathrm{{At}}}}$ and the quadratic
   work ratio $\\langle N^2\\rangle_{{\\mathrm{{At}}}}/N_{{\\mathrm{{crit}}}}^2$.}}
   \\label{{tab:atallah-matching-{design}}}\\\\

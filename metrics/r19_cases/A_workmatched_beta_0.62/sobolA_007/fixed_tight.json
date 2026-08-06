@@ -1,0 +1,62 @@
+{
+  "schema": "r19_equal_total_work_v1",
+  "created_utc": "2026-07-31T16:13:33.358883Z",
+  "config": {
+    "sobol_index": 7,
+    "design": "A",
+    "beta": 0.62,
+    "policy": "constant degree matched on realized total quadratic work",
+    "matched_to": "span-sweep member k=0.50",
+    "degree": 130,
+    "target_total_quadratic_work": 3086647106.0,
+    "constant_endpoint_degree": 115,
+    "constant_endpoint_total_work": 2411750675.0,
+    "first_estimate_rule": "N* = round(N_0 * sqrt(W_k / W_0)); the achieved ratio is measured, not assumed",
+    "adopted_truth_degree": 300,
+    "initial_state_si": [
+      -1492781.680357479,
+      310482.0391760043,
+      -971742.3560517405,
+      937.1905916939129,
+      744.2088612262321,
+      -1201.9209147403872
+    ],
+    "duration_s": 604800.0,
+    "output_step_s": 120.0,
+    "integrator": "InstrumentedDOP853",
+    "max_step_s": 60.0,
+    "atol_kind": "vector",
+    "timing_comparable": false,
+    "source": {
+      "driver": "rev19_equal_total_work.py",
+      "reuses": "r18_span_sweep_A_beta_0.62.json (realized work), r14_trajectory_A_beta_0.62.json, r11 truths",
+      "lunaris_commit": "27e9ab86ed61d623f78c453ea2054348f1044c23"
+    }
+  },
+  "config_sha256": "30c556f6e8ba6d26e5718873d2abea55dfbf229a450ba50b6acf29bdd7ddc4a5",
+  "status": "ok",
+  "event": null,
+  "telemetry": {
+    "n_rhs": 184544,
+    "n_accepted_steps": 11634,
+    "n_attempted_steps": 12470,
+    "n_rejected_trials": 836,
+    "switch_count_at_rhs_samples": 0,
+    "degree_counts": {
+      "130": 184544
+    },
+    "degree_range": [
+      130,
+      130
+    ],
+    "mean_degree": 130.0,
+    "mean_degree_sq": 16900.0,
+    "gravity_kernel_ns": 38125961400,
+    "process_cpu_ns": 46593750000,
+    "total_wall_ns": 50834647400
+  },
+  "raw_path": "metrics\\r19_raw\\A_workmatched_beta_0.62\\sobolA_007\\fixed_tight.npz",
+  "raw_sha256": "746eae21d8ef402c30a5eb1b32dd85a02d19371a8015e9fcb826e94a704f8b91",
+  "n_output_epochs": 5041,
+  "last_output_epoch_s": 604800.0
+}

@@ -5,7 +5,7 @@ The seven-day trajectory comparison at matched work is limited by the numerical
 resolution of the experiment, not by the difference between the two force models
 (rev13_resolution_diagnosis.py). The quantity that separates them without any
 integration noise is the truncation acceleration defect itself, evaluated along
-the common archived truth trajectory:
+the common archived reference trajectory:
 
     Delta_a_P(t) = a_{N_P(t)}(x_truth(t)) - a_{N_truth}(x_truth(t)),
 
@@ -240,7 +240,7 @@ def build_table(payload: dict) -> str:
   \\centering\\small
   \\setlength{{\\tabcolsep}}{{4pt}}
   \\caption{{Integration-noise-free comparison at matched work. Along each
-  orbit's archived truth trajectory, the truncation acceleration defect
+  orbit's archived reference trajectory, the truncation acceleration defect
   $\\Delta a = a_{{N_P}}-a_{{N_{{\\mathrm{{truth}}}}}}$ is evaluated for the Atallah
   degree history and for its work-matched fixed degree at the same 5041 epochs.
   $w$ is the ratio of the sampled $\\langle N^2\\rangle$ of the two histories (a

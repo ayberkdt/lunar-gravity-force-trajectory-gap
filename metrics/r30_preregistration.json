@@ -1,0 +1,68 @@
+{
+  "schema": "r30_preregistration_v1",
+  "created_utc": "2026-08-01T03:13:09.220492Z",
+  "campaign": "R30: four geometry strata of the frozen factor box, run to locate the allocation result rather than to restate it",
+  "question": "designs A, B and C measure the allocation result averaged over the whole factor box. These four strata ask where in the box it holds.",
+  "not_blind": "the coverage-design results are known. The protections are the arithmetic seed rule, the single-draw commitment, and outcomes fixed before any stratum propagates.",
+  "single_draw_commitment": "one draw per stratum. A stratum whose numbers disagree with the coverage designs is reported as it came out; no stratum is re-seeded, redefined, or dropped after its numbers are known, and no orbit is removed from a stratum after propagation.",
+  "protocol": "identical to designs A, B and C in every respect except which part of the unit cube is sampled: the same orbit map, truth-degree rule, tolerance levels, seven-day arc, output grid, resolution rule, calibration and ladder",
+  "base_scope": "one deliberate reduction, declared before any stratum propagates. The coverage designs carry six policies at two tolerance levels, because they also answer the degree-schedule questions of the convergence study. A stratum's base carries the two the budget ladder actually reads -- the truth and the critical-degree comparator -- and not the four schedule policies (schedule_empirical, schedule_up, schedule_down, fixed_work). This is a third of the propagation cost, which is what buys the fourth stratum. No stratum result is quoted from a schedule policy, and the empirical prepass is unchanged, so every quantity the ladder and the resolution rule use is present at full protocol fidelity.",
+  "scope": "strata locate the existing claim inside the box that was already sampled. They do not extend it to a new body, arc length, force model, or factor range, and a stratum is not a replication of a coverage design: it is a sub-population and is reported as one.",
+  "budget": "the declared budget beta = 1 is propagated on every stratum first, because that is the budget the headline claim is made at. Further budgets are propagated only if every stratum already has beta = 1.",
+  "order_and_conditionality": "the strata run cheapest first, and low_perilune runs last because every one of its orbits carries the highest adopted truth degree and it is the most expensive population in the campaign. It is declared here, before any stratum has propagated a single orbit, precisely so that running it is a question of the clock and not a decision taken after the other four are known. If the clock does not reach it, it is reported as declared and not run; it is not quoted partially and its absence is not read as a null result.",
+  "pooling": "strata are never pooled with each other or with the coverage designs into a single tally. Their sub-boxes overlap the coverage box and each other, so a pooled count would double-count the geometry it oversamples.",
+  "strata": {
+    "polar": {
+      "file": "r30_polar_design_frozen.json",
+      "design_sha256": "cf99d0a7441051c1a6f95cdfc12838e490a9515422ec6ea80191c464e72ea8b2",
+      "seed": 20260726,
+      "design_key": "SP"
+    },
+    "equatorial": {
+      "file": "r30_equatorial_design_frozen.json",
+      "design_sha256": "275a33107fe93c1d8f6fd8662594ea7ed9757243af5c601ca47d125ca21b2d45",
+      "seed": 20260727,
+      "design_key": "SE"
+    },
+    "high_apolune": {
+      "file": "r30_high_apolune_design_frozen.json",
+      "design_sha256": "5773d4777a33c602f4e9780c48d9ea70e546a3859d0c826594a4b4fc1d543d11",
+      "seed": 20260728,
+      "design_key": "SH"
+    },
+    "frozen_like": {
+      "file": "r30_frozen_like_design_frozen.json",
+      "design_sha256": "3dab684889c0f466152d81fcaaf43308adfb09bc9110da25b10b2384b127ba5c",
+      "seed": 20260729,
+      "design_key": "SF"
+    },
+    "low_perilune": {
+      "file": "r30_low_perilune_design_frozen.json",
+      "design_sha256": "3200744437e73ffdec7ee7be59307a84970a74d801d8c98ad10bdfe71ae5a8bc",
+      "seed": 20260730,
+      "design_key": "SL"
+    }
+  },
+  "sub_boxes": {
+    "polar": "inclination 80-100 deg, everything else the full box",
+    "equatorial": "inclination 0-20 deg, everything else the full box",
+    "high_apolune": "perilune 80-150 km with apolune 520-600 km: the widest arcs the box supports, deliberately not low-perilune",
+    "frozen_like": "near-polar with the argument of perilune near 90 deg; a geometry, not a solved frozen condition",
+    "low_perilune": "perilune 30-50 km, everything else the full box: the regime the paper attributes the effect to"
+  },
+  "outcomes": {
+    "K_holds_in_every_stratum": "The interior member carries the realized-work tally at the declared budget in all four strata. The allocation result is then reported as holding across the geometries sampled, not only on average over the coverage box.",
+    "L_geometry_dependent": "The tally favours the interior member in some strata and the constant degree in others. The strata are then named individually, the population-level statement is qualified to the coverage design it was measured on, and no stratum is dropped or averaged into the others.",
+    "M_stratum_undecided": "A stratum resolves too few comparisons to produce a tally. It is reported as undecided with its resolved and unresolved counts, and it is not read as agreement with the others."
+  },
+  "verdict_rule": "per stratum, the R19 realized-work tally: interior if resolved_interior_wins > resolved_fixed_wins, constant if the reverse, split if equal, undecided if nothing resolves. The panel verdict is K only if every propagated stratum returns interior.",
+  "completion_reporting": "every stratum number carries its orbit count and its completion state; a stratum whose base or ladder is partial is reported as partial and is not read as agreement",
+  "prohibited": [
+    "re-seeding a stratum",
+    "redefining a sub-box after seeing its numbers",
+    "dropping an orbit or a stratum after propagation",
+    "pooling strata into one tally",
+    "quoting a stratum whose base is incomplete"
+  ],
+  "preregistration_sha256": "0bb69e0340f91c9dc4e2e141d66fcab28aa86e8c6aad4f9b860e22c2988055f8"
+}

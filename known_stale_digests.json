@@ -1,9 +1,13 @@
 {
-  "schema": "known_stale_digests_v2",
+  "schema": "known_stale_digests_v3",
   "recorded_utc": "2026-07-29T12:45:17Z",
+  "resolved_utc": "2026-08-06T12:28:22.696985Z",
+  "status": "resolved",
   "what_this_is": "Files whose current bytes differ from the digest their campaign manifest recorded, meaning they changed after that manifest was frozen. The digests are NOT refreshed: re-hashing would assert that the current file is the one the manifest describes, which is a separate claim from whether it still yields the same numbers. Where re-running the driver has been shown to regenerate the archived output byte-for-byte, that evidence is recorded in the entry's 'reproduction' field and in docs/DIGEST_STATUS.md.",
   "effect_on_ci": "audit_manifest_digests.py fails on any mismatch that is NOT listed here, so new drift breaks the build. Listed entries are reported as known and do not fail. Run with --strict to fail on these as well.",
-  "entries": [
+  "resolution": "The repository lagged the working tree by the campaigns R24 to R39. Each entry below was a file whose bytes had moved on while the manifest naming it had not been re-synced. The R24-R39 sync copied the drivers, the records and the campaign manifests together, so the digest a manifest records and the file it names are once again the same object. audit_manifest_digests.py now reports zero differences, and so does --strict. The digests were not re-hashed to make this true; the manifests that carry them were brought over with their files.",
+  "entries_now_matching": 31,
+  "resolved_entries": [
     {
       "manifest": "r11_final_experiment_manifest.json",
       "category": "scripts",

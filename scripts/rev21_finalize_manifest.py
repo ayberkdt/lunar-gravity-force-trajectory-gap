@@ -32,10 +32,23 @@ def sha256(path: Path) -> str:
     return h.hexdigest()
 
 
+def index(names, base: Path) -> dict:
+    """Record every expected file, present or not. An earlier version dropped
+    absent names from the dict, so a file that was never produced left no trace
+    at all rather than a record the integrity check could fail on."""
+    out = {}
+    for n in names:
+        p = base / n
+        out[n] = ({"sha256": sha256(p), "bytes": p.stat().st_size}
+                  if p.exists() else {"missing": True})
+    return out
+
+
 def main() -> int:
     payload = {
         "schema": "r21_final_experiment_manifest_v1",
-        "created_utc": datetime.now(timezone.utc).isoformat(),
+        "created_utc": datetime.now(timezone.utc).isoformat().replace(
+            "+00:00", "Z"),
         "scope": "R21: relative truncation of the reference gravity gradient at "
                  "the variational solve's degree-120 evaluation, and the forcing "
                  "it misrepresents, on the eight-orbit panel of the fixed-budget "
@@ -51,20 +64,29 @@ def main() -> int:
         "numerical_kernel": {
             "lunaris_release_tag": "paper-truncation-v1.0",
             "lunaris_commit": "27e9ab86ed61d623f78c453ea2054348f1044c23"},
-        "reused_inputs": {n: sha256(METRICS / n) for n in REUSED
-                          if (METRICS / n).exists()},
-        "scripts": {n: sha256(CODE / n) for n in SCRIPTS if (CODE / n).exists()},
-        "result_json": {n: sha256(METRICS / n) for n in RESULTS
-                        if (METRICS / n).exists()},
+        "reused_inputs": index(REUSED, METRICS),
+        "scripts": index(SCRIPTS, CODE),
+        "result_json": index(RESULTS, METRICS),
         "trajectory_tree": {"n_sidecars": 0, "n_raw_arrays": 0,
                             "note": "field-level check; propagates nothing"},
     }
-    body = json.dumps(payload, indent=1, sort_keys=True)
-    payload["manifest_sha256"] = hashlib.sha256(body.encode("utf-8")).hexdigest()
-    OUT.write_text(json.dumps(payload, indent=1), encoding="utf-8")
-    print(f"[r21-manifest] wrote {OUT.name}")
+    # Same canonical form as the other twelve sealed manifests. This one used
+    # indent=1 with sort_keys, so its digest could not be reproduced by the
+    # package's own convention and read as a broken seal.
+    body = {k: v for k, v in payload.items() if k != "manifest_sha256"}
+    payload["manifest_sha256"] = hashlib.sha256(
+        json.dumps(body, sort_keys=True, separators=(",", ":")).encode()
+    ).hexdigest()
+    OUT.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    print(f"[r21-manifest] wrote {OUT.name}  manifest_sha256="
+          f"{payload['manifest_sha256'][:16]}")
     print(f"  scripts {len(payload['scripts'])}, results {len(payload['result_json'])}, "
           f"reused {len(payload['reused_inputs'])}")
+    missing = [k for sec in ("scripts", "result_json", "reused_inputs")
+               for k, v in payload[sec].items() if v.get("missing")]
+    if missing:
+        print("[error] recorded as missing: " + ", ".join(missing))
+        return 1
     return 0
 
 

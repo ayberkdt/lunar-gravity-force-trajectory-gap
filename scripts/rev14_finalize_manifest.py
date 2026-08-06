@@ -24,6 +24,8 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
+import campaign_ownership as own
+
 ROOT = Path(__file__).resolve().parents[1]
 METRICS = ROOT / "metrics"
 CODE = ROOT / "python_codes"
@@ -52,12 +54,19 @@ RESULT_JSON = [
     "r14_descriptives.json",
 ]
 
+# The timing table and the force Pareto table are each emitted twice, as the
+# main-text extract and the full supplementary listing; an earlier version of
+# this list named a single "r14_timing_budget_table.tex" that rev14_tables.py
+# has never written, and recorded it as missing instead of failing.
 TABLES = [
     "r14_force_pareto_table.tex",
+    "r14_force_pareto_table_full.tex",
     "r14_trajectory_pareto_table.tex",
     "r14_cost_bookkeeping_table.tex",
+    "r14_cap_audit_table.tex",
     "r14_oracle_table.tex",
-    "r14_timing_budget_table.tex",
+    "r14_timing_budget_table_compact.tex",
+    "r14_timing_budget_table_full.tex",
     "r14_variational_budget_table.tex",
     "r14_beta1_per_orbit_A.tex",
     "r14_beta1_per_orbit_B.tex",
@@ -84,12 +93,23 @@ def index_files(names, base: Path) -> dict:
 
 
 def index_tree(case_dir: Path, raw_dir: Path) -> dict:
+    """Index only the budgets this campaign propagated.
+
+    Later campaigns reuse this driver with a budget argument, so their
+    trajectories land under the same prefix; indexing them here would put the
+    same records under two manifests. Ownership is declared in
+    ``campaign_ownership``.
+    """
     sidecars = {}
     for p in sorted(case_dir.rglob("*.json")):
+        if not own.owned_by_r14(p):
+            continue
         sidecars[str(p.relative_to(METRICS)).replace("\\", "/")] = sha(p)
     roll = hashlib.sha256()
     n_raw = 0
     for p in sorted(raw_dir.rglob("*.npz")):
+        if not own.owned_by_r14(p):
+            continue
         roll.update(sha(p).encode())
         n_raw += 1
     return {"n_sidecars": len(sidecars), "n_raw_arrays": n_raw,
@@ -156,7 +176,8 @@ def main() -> int:
                              "generated_figures")
                for k, v in payload[sec].items() if v.get("missing")]
     if missing:
-        print("[note] not yet produced: " + ", ".join(missing))
+        print("[error] recorded as missing: " + ", ".join(missing))
+        return 1
     return 0
 
 

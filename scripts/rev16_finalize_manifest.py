@@ -50,15 +50,30 @@ def index_files(names, base: Path) -> dict:
 
 
 def index_inputs() -> dict:
-    """Input coefficient products, hashed from the record the driver wrote."""
+    """Input coefficient products, hashed from the record the driver wrote.
+
+    These eight files are distributed by their archives and are not shipped in
+    the package, so the digest is the whole of the provenance. The driver
+    records the absolute path it read on the machine that ran the campaign;
+    writing that path into the manifest as the identity of the product made the
+    manifest machine-bound, and the integrity check could only pass on this one
+    machine. The distributed file name is the portable identity, the digest is
+    the anchor, and the capture path is kept as a note about where it was read
+    rather than as something a reader is expected to resolve.
+    """
     src = METRICS / "r16_multibody_calibration.json"
     if not src.exists():
         return {}
     d = json.loads(src.read_text(encoding="utf-8"))
     return {f["key"]: {"body": f["body"], "center": f["center"],
-                       "role": f["role"], "file": f["file"],
+                       "role": f["role"],
+                       "distributed_file_name": Path(f["file"]).name,
                        "sha256": f["file_sha256"],
-                       "max_degree_in_file": f["max_degree_in_file"]}
+                       "max_degree_in_file": f["max_degree_in_file"],
+                       "shipped_in_package": False,
+                       "obtain_from": ("the distributing archive; verify the "
+                                       "digest above after download"),
+                       "capture_path_note": f["file"]}
             for f in d["fields"]}
 
 
@@ -95,7 +110,8 @@ def main() -> int:
     missing = [k for sec in ("scripts", "result_json", "generated_tables")
                for k, v in payload[sec].items() if v.get("missing")]
     if missing:
-        print("[note] not produced: " + ", ".join(missing))
+        print("[error] recorded as missing: " + ", ".join(missing))
+        return 1
     return 0
 
 

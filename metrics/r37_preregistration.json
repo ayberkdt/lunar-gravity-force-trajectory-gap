@@ -1,0 +1,57 @@
+{
+  "schema": "r37_preregistration_v1",
+  "campaign": "R37 -- extension of the forced-variational panel toward both full designs",
+  "question": "Section 7.2 states an asymmetry it does not repair: the force-trajectory reversal is a 128-orbit result, but the only instrument carrying the gravity-gradient coupling is an eight-orbit panel. Does the mechanism rung hold when the panel is enlarged?",
+  "written_before": "any orbit outside the archived eight was solved. No result of this extension had been seen when this file was written.",
+  "not_blind": "the archived eight-orbit panel is already reported, and its outcome (sign agreement 8/8, one orbit favouring radial) is known. What is not known is the outcome on any of the 120 orbits this extension can reach.",
+  "selection_rule": {
+    "statement": "The panel is enlarged along the same deterministic, perilune-stratified rule the archived panel was drawn with, refined in nested levels. For each design the uncensored beta = 1 rows are sorted by perilune and n_per points are taken at np.linspace(0, len-1, n_per).round(). No orbit is chosen, excluded or reordered on any outcome.",
+    "levels_per_design": [
+      4,
+      7,
+      13,
+      25,
+      40,
+      56,
+      64
+    ],
+    "levels_total_orbits": [
+      8,
+      14,
+      26,
+      50,
+      80,
+      112,
+      128
+    ],
+    "nesting_verified": "each level is a strict superset of the previous one on both designs, checked programmatically before this file was written; level 1 is exactly the archived eight-orbit panel.",
+    "why_nested": "every level spans the designs' perilune range, so a run stopped part-way still leaves a spanning panel rather than a geometry-biased prefix."
+  },
+  "stopping_rule": {
+    "statement": "The run is bounded by a wall clock fixed in advance, not by a result. Levels are attempted in order; within a level, orbits are submitted in a fixed order. Whatever the clock leaves incomplete is reported as incomplete.",
+    "deadline_local": "2026-08-04T08:45",
+    "reporting": "the highest fully completed level is reported as the panel, and any orbits completed beyond it are reported separately with the completion fraction of that level. A truncated level is never reported as though it were the panel."
+  },
+  "outcomes": {
+    "E1": "if the enlarged panel keeps sign agreement with the propagated arcs on every orbit it reaches, the mechanistic statement is reported at the enlarged panel size and the asymmetry paragraph of Section 7.2 is narrowed accordingly.",
+    "E2": "if sign agreement fails on some orbits, the failures are reported with their perilune and their measured and predicted ratios, and the mechanistic claim is qualified to the regime where it holds. This outcome is reportable and is not a reason to enlarge the panel further in search of a better one.",
+    "E3": "if the calibration channel (predicted over measured error of the constant comparator) leaves the 0.94-1.04 band reported for the archived panel on some orbits, those orbits are reported as ones where the linear response is not calibrated, and their ratios are read as signs only."
+  },
+  "admissibility_self_check": {
+    "statement": "the extension imports the archived worker verbatim rather than reimplementing it, and before any new orbit is accepted it recomputes one archived orbit and compares the predicted ratio with the archived value.",
+    "recomputed_orbit": "B005",
+    "abort_threshold_rel": 0.001,
+    "note": "a disagreement above the threshold means the archived record and the current source no longer describe the same computation, and the extension is not written."
+  },
+  "prohibited": [
+    "dropping an orbit because it is slow, or because its result is inconvenient",
+    "excluding low-perilune orbits, which is the regime where the linearization is weakest and therefore the regime the extension most needs to sample",
+    "reporting a partially completed level as a completed panel",
+    "overwriting metrics/r14_variational_budget.json, which is sealed under the R14 manifest; this campaign writes its own record",
+    "re-running with a different level chain after seeing a level's outcome"
+  ],
+  "writes": [
+    "metrics/r37_variational_extension.json"
+  ],
+  "preregistration_sha256": "f9b6352022b7cb45656499dd6ab49ef8a219f76a3c69815f38683ff6ec13444a"
+}

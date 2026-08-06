@@ -6,7 +6,7 @@ passage -- which dominates the defect RMS -- lasts only minutes, so 120 s may or
 may not resolve it. This tests both directions:
 
   * coarser, by decimating the archived grid (240 s, 480 s), which is free;
-  * finer, by re-propagating the truth with 30-s and 10-s output grids. The
+  * finer, by re-propagating the reference with 30-s and 10-s output grids. The
     solver takes the same steps either way; only the number of dense-output
     evaluations changes, so the extra cost is small compared with the
     integration itself.
@@ -201,7 +201,7 @@ def build_table(payload) -> str:
   \\centering\\small
   \\setlength{{\\tabcolsep}}{{4pt}}
   \\caption{{Output-cadence convergence of the force-defect measurement. Every
-  force-level statistic in this paper is taken on the archived 120-s truth grid;
+  force-level statistic in this paper is taken on the archived 120-s reference grid;
   on an eccentric arc the perilune passage that dominates the defect lasts only
   minutes, so the grid is tested in both directions---decimated to 240 and 480~s,
   and re-propagated at 30 and 10~s. The last two columns give the median and

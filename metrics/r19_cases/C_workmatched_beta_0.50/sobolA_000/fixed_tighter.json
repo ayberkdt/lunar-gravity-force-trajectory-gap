@@ -1,0 +1,62 @@
+{
+  "schema": "r19_equal_total_work_v1",
+  "created_utc": "2026-08-01T07:54:07.183499Z",
+  "config": {
+    "sobol_index": 0,
+    "design": "C",
+    "beta": 0.5,
+    "policy": "constant degree matched on realized total quadratic work",
+    "matched_to": "span-sweep member k=0.50",
+    "degree": 158,
+    "target_total_quadratic_work": 5038170443.0,
+    "constant_endpoint_degree": 124,
+    "constant_endpoint_total_work": 3092267360.0,
+    "first_estimate_rule": "N* = round(N_0 * sqrt(W_k / W_0)); the achieved ratio is measured, not assumed",
+    "adopted_truth_degree": 300,
+    "initial_state_si": [
+      -938268.3001557661,
+      104701.88688546345,
+      1526155.0614292342,
+      -1449.7952499050134,
+      -89.32380020909319,
+      -885.1948195954991
+    ],
+    "duration_s": 604800.0,
+    "output_step_s": 120.0,
+    "integrator": "InstrumentedDOP853",
+    "max_step_s": 60.0,
+    "atol_kind": "vector",
+    "timing_comparable": false,
+    "source": {
+      "driver": "rev19_equal_total_work.py",
+      "reuses": "r18_span_sweep_C_beta_0.50.json (realized work), r14_trajectory_C_beta_0.50.json, r11 truths",
+      "lunaris_commit": "27e9ab86ed61d623f78c453ea2054348f1044c23"
+    }
+  },
+  "config_sha256": "53f81b09b6c6c7ace6987c40672d538413792e9bc8b90bbf01e3ed4c24f434c3",
+  "status": "ok",
+  "event": null,
+  "telemetry": {
+    "n_rhs": 247823,
+    "n_accepted_steps": 15343,
+    "n_attempted_steps": 16816,
+    "n_rejected_trials": 1473,
+    "switch_count_at_rhs_samples": 0,
+    "degree_counts": {
+      "158": 247823
+    },
+    "degree_range": [
+      158,
+      158
+    ],
+    "mean_degree": 158.0,
+    "mean_degree_sq": 24964.0,
+    "gravity_kernel_ns": 81724784400,
+    "process_cpu_ns": 85593750000,
+    "total_wall_ns": 100266852100
+  },
+  "raw_path": "metrics\\r19_raw\\C_workmatched_beta_0.50\\sobolA_000\\fixed_tighter.npz",
+  "raw_sha256": "9183394c85a97ca3cc6615f551262e21aef3bc18b282717eb04235a9b1fcc178",
+  "n_output_epochs": 5041,
+  "last_output_epoch_s": 604800.0
+}

@@ -21,6 +21,8 @@ from pathlib import Path
 
 import numpy as np
 
+import table_design_block as tdb
+
 ROOT = Path(__file__).resolve().parents[1]
 METRICS = ROOT / "metrics"
 PARETO = METRICS / "r14_budget_pareto.json"
@@ -59,7 +61,7 @@ def stat(vals):
 
 def cap_audit(pareto: dict, des: str, key: str) -> dict:
     """The radial rule's advantage is flattered wherever the calibrated degree
-    reaches the adopted truth degree, since its force model is then the truth.
+    reaches the adopted reference degree, since its force model is then the reference.
     This repeats each budget on the orbits that never touch the cap."""
     rows = [r for r in pareto["designs"][des]["rows"]
             if not r["budgets"][key]["censored"]]
@@ -109,8 +111,8 @@ def cap_table(pareto: dict) -> str:
   \\centering\\small
   \\setlength{{\\tabcolsep}}{{4pt}}
   \\caption{{Degree-cap audit of the fixed-budget sweep. Wherever the calibrated
-  radial degree reaches the orbit's adopted truth degree its force model
-  \\emph{{is}} the truth model and its defect vanishes by construction, which
+  radial degree reaches the orbit's adopted reference degree its force model
+  \\emph{{is}} the reference model and its defect vanishes by construction, which
   flatters the ratio. The table counts how many orbits touch the cap at all, how
   many are capped enough for the defect to vanish outright (those have no defined
   ratio and are excluded from medians), the largest arc fraction spent at the
@@ -206,10 +208,23 @@ def mechanism(pareto: dict, traj: dict, des: str, beta: float) -> dict:
     return out
 
 
-def load_trajectories() -> dict:
+def load_trajectories(pareto: dict) -> dict:
+    """Only the budgets this campaign's frozen calibration carries.
+
+    The records are named by driver rather than by campaign, so the glob also
+    catches budgets propagated by later campaigns against their own calibration
+    (R28's post-hoc midpoint is one). Those belong to the campaign that ran them
+    and are reported there; pairing one with this pareto record would raise a
+    KeyError at best and index it as pre-registered at worst. Membership is
+    tested against the record rather than against a list of today's budgets, so
+    a budget added later is skipped without editing this.
+    """
+    grid = set(pareto["designs"]["A"]["summary"])
     out = {}
     for p in sorted(METRICS.glob("r14_trajectory_*.json")):
         d = json.loads(p.read_text(encoding="utf-8"))
+        if key_of(float(d["beta"])) not in grid:
+            continue
         out.setdefault(d["design"], {})[float(d["beta"])] = d
     return out
 
@@ -258,7 +273,7 @@ def force_table_compact(pareto: dict) -> str:
   design~B so the replication reads across. At each normalized per-call budget
   $\beta$ the radial rule is recalibrated to spend that budget and compared
   with the constant degree $N_F(\beta)$ spending the same, both measured as the
-  truncation acceleration defect against the adopted truth along the archived
+  truncation acceleration defect against the adopted reference along the archived
   reference trajectory, so no integration noise enters. $R_a$ is the
   fixed-over-radial defect ratio, so values above unity favor radial allocation.
   Censored budget points are excluded from their row. The last row is the
@@ -326,7 +341,7 @@ def force_table(pareto: dict) -> str:
   block is each orbit's archived accuracy-target operating point at its own
   measured budget, a design median of a widely varying quantity rather than a
   fixed cost of radial adaptation. Budget points whose comparator would exceed
-  the adopted truth degree are censored and excluded from that row's
+  the adopted reference degree are censored and excluded from that row's
   statistics.}}
   \\label{{tab:budget-force-pareto-full}}
   \\begin{{tabular}}{{l r r r r r r c c}}
@@ -344,46 +359,45 @@ def force_table(pareto: dict) -> str:
 
 # ---------------------------------------------------------------- trajectory
 def trajectory_table(traj: dict) -> str:
-    lines = []
+    groups = []
     for des in ("A", "B"):
         if des not in traj:
             continue
-        lines.append(f"    \\multicolumn{{9}}{{@{{}}l}}{{\\emph{{Design {des}}}}}\\\\")
+        block = []
         for b in sorted(traj[des]):
             d = traj[des][b]
             s = d["summary"]
             if not s["orbits"]:
                 continue
             r = s["rho_budget"]
-            lines.append(
-                f"    {b:.2f} & {s['orbits']} & {len(d['censored'])} & "
+            block.append(
+                f"{b:.2f} & {s['orbits']} & {len(d['censored'])} & "
                 f"{sci(s['atallah_error_m']['median'])} & "
                 f"{sci(s['fixed_error_m']['median'])} & "
                 f"{num(r['median'])}\\;[{num(r['p10'])}, {num(r['p90'])}] & "
                 f"{s['raw_atallah_wins']}/{s['orbits']} & "
                 f"{s['resolved_atallah_wins']}/{s['resolved_fixed_wins']} & "
                 f"{s['unresolved']}\\\\")
-        if des == "A" and "B" in traj:
-            lines.append("    \\midrule")
-    body = "\n".join(lines)
+        groups.append((f"Design {des}", block))
+    body = "\n".join("    " + ln for ln in tdb.blocks(groups))
     return f"""% auto-generated by rev14_tables.py -- do not edit by hand
 \\begin{{table}}[!htbp]
   \\centering\\small
   \\setlength{{\\tabcolsep}}{{4pt}}
   \\caption{{Propagated fixed-budget comparison. Seven-day Cartesian position RMS
-  against the common adopted truth at the tight vector tolerance, for the
+  against the common adopted reference at the tight vector tolerance, for the
   budget-calibrated radial rule and the constant degree spending the same
   per-call quadratic gravity work. $\\rho_{{\\mathrm{{budget}}}} = E_F/E_A$, so
   values above unity favor radial allocation. Resolved counts apply the
-  truth-inclusive pairwise criterion of the rest of the paper; comparisons that
+  reference-inclusive pairwise criterion of the rest of the paper; comparisons that
   do not clear it are reported as unresolved and are never counted as ties. At
   $\\beta = 1$ the comparator degree coincides with the critical-altitude fixed
   degree on every orbit of both designs, so that row reuses the archived
   critical-degree trajectories unchanged.}}
   \\label{{tab:budget-trajectory-pareto}}
-  \\begin{{tabular}}{{l r r r r r c c r}}
+  \\begin{{tabular}}{{c l r r r r r c c r}}
     \\toprule
-    $\\beta$ & orbits & cens. & $E_{{\\mathrm{{At}}}}$ [m] & $E_{{\\mathrm{{fix}}}}$ [m] &
+    & $\\beta$ & orbits & cens. & $E_{{\\mathrm{{At}}}}$ [m] & $E_{{\\mathrm{{fix}}}}$ [m] &
       $\\rho_{{\\mathrm{{budget}}}}$ median\\;[p10, p90] & raw At. &
       res.\\ At./fix & unres.\\\\
     \\midrule
@@ -467,7 +481,7 @@ def oracle_table(orc: dict) -> str:
   multiple-choice allocation problem, so it returns an attainable allocation
   rather than the constrained minimum, and the penalties---each policy's defect
   divided by the benchmark's---are conservative. The benchmark reads the
-  reference trajectory and the local truth field at every epoch, so it is a
+  reference trajectory and the local reference field at every epoch, so it is a
   diagnostic rather than a controller, and it speaks only about the instantaneous
   force defect. Its degree grid is coarse above degree 100 while every policy
   degree is inserted exactly, which pushes the ratios the same way.}}
@@ -529,7 +543,7 @@ def per_orbit_table(d: dict, des: str) -> str:
 
 def main() -> int:
     pareto = json.loads(PARETO.read_text(encoding="utf-8"))
-    traj = load_trajectories()
+    traj = load_trajectories(pareto)
     desc = {"schema": "r14_descriptives_v1", "force": {}, "trajectory": {},
             "cost": {}, "oracle": {}}
 

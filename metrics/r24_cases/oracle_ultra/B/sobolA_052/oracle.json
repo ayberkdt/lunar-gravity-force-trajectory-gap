@@ -1,0 +1,66 @@
+{
+  "schema": "r24_oracle_ultra_v1",
+  "created_utc": "2026-07-30T13:54:10.285814Z",
+  "config": {
+    "design": "B",
+    "sobol_index": 52,
+    "beta": 1.0,
+    "policy": "oracle",
+    "level": "ultra",
+    "adopted_truth_degree": 900,
+    "interior_k": 0.5,
+    "policy_spec": {
+      "kind": "fixed_ladder_oracle",
+      "degree": 203
+    },
+    "initial_state_si": [
+      -1018794.6304426364,
+      -1444220.866573261,
+      252790.0376088404,
+      -1426.8471878175353,
+      977.2240679191827,
+      -167.4783690237926
+    ],
+    "duration_s": 604800.0,
+    "output_step_s": 120.0,
+    "integrator": "InstrumentedDOP853",
+    "max_step_s": 60.0,
+    "atol_kind": "vector",
+    "rtol": 3e-14,
+    "atol_position_m": 1e-07,
+    "atol_velocity_m_s": 1e-10,
+    "timing_comparable": false,
+    "purpose": "third tolerance level for the oracle control on the interior member at beta = 1",
+    "source": {
+      "driver": "rev24_oracle_ultra.py",
+      "reuses": "r23_oracle_vs_interior.json panel and degrees, r23_cases/ultra_span ultra truths and interior members, r18 span sidecars for states and tables",
+      "preregistration": "r24_preregistration.json"
+    }
+  },
+  "config_sha256": "45b7a9611ed1c4998ee3ae007e51973b247ca29794662edac0d1ce5fde1b37a1",
+  "status": "ok",
+  "event": null,
+  "telemetry": {
+    "n_rhs": 271652,
+    "n_accepted_steps": 16706,
+    "n_attempted_steps": 18461,
+    "n_rejected_trials": 1755,
+    "switch_count_at_rhs_samples": 0,
+    "degree_counts": {
+      "203": 271652
+    },
+    "degree_range": [
+      203,
+      203
+    ],
+    "mean_degree": 203.0,
+    "mean_degree_sq": 41209.0,
+    "gravity_kernel_ns": 55583909400,
+    "process_cpu_ns": 62218750000,
+    "total_wall_ns": 63134923200
+  },
+  "raw_path": "metrics\\r24_raw\\oracle_ultra\\B\\sobolA_052\\oracle.npz",
+  "raw_sha256": "61ff08ff07367425c31c89073ef142e1c476783ee330aa5ce321832502706273",
+  "n_output_epochs": 5041,
+  "last_output_epoch_s": 604800.0
+}

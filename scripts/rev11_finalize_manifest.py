@@ -150,6 +150,13 @@ def main() -> int:
     ).hexdigest()
     OUT.write_text(json.dumps(payload, indent=2), encoding="utf-8")
     print(f"[written] {OUT.name}  manifest_sha256={payload['manifest_sha256'][:16]}")
+    missing = [k for sec in ("scripts", "result_json", "generated_tables")
+               for k, v in payload[sec].items() if v.get("missing")]
+    missing += [f"tree:{k}" for k, v in payload["trajectory_trees"].items()
+                if v.get("missing")]
+    if missing:
+        print("[error] recorded as missing: " + ", ".join(missing))
+        return 1
     return 0
 
 

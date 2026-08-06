@@ -1,0 +1,30 @@
+{
+  "schema": "r37_scoring_amendment_v1",
+  "campaign": "R37 -- scoring correction for the enlarged forced-variational panel",
+  "parent_registration": "r37_preregistration.json",
+  "parent_sha256": "f9b6352022b7cb45656499dd6ab49ef8a219f76a3c69815f38683ff6ec13444a",
+
+  "written_after_seeing": "the first extension orbit whose propagated comparison is unresolved, A011 at 39.5 km perilune: predicted ratio 1.286, measured ratio 0.699, measured resolved = false (radial error 0.664 m against its own numerical envelope 0.967 m), calibration channel 0.738. This amendment is post hoc and is not presented as blind.",
+
+  "defect_in_the_parent": "the parent registration's outcomes E1 and E2 speak of sign agreement with the propagated arcs without saying which propagated comparisons are eligible to be agreed with. The driver as written scores sign agreement against every measured ratio, including ratios the resolution rule leaves undecided. An orbit whose measured comparison is undecided cannot confirm or contradict a prediction, so scoring it either way is wrong in both directions.",
+
+  "correction": "sign agreement is scored only on orbits whose propagated comparison is resolved, which is the convention every other population-level verdict in the manuscript already uses: Table 6 reports 45-6 of 51 resolved, not of 64. Orbits with an unresolved measurement are counted and reported separately as carrying no verdict, never as agreements and never as disagreements.",
+
+  "why_this_is_not_a_free_parameter": "the resolution rule is fixed, pre-existing, and external to this campaign: it is the reference-inclusive numerical envelope each orbit's own R14 record already carries, computed before this extension existed. This amendment selects no threshold and tunes nothing; it applies the manuscript's existing rule to a rung that was being scored inconsistently with it.",
+
+  "reporting_commitment": [
+    "both tallies are reported: sign agreement among resolved comparisons, and the number of orbits excluded as unresolved.",
+    "the archived eight-orbit panel is reported unchanged. All eight are resolved and all eight are calibrated within 0.98-1.04, so the manuscript's 8/8 statement is unaffected by this amendment and is not being rescued by it.",
+    "orbits whose calibration channel leaves the 0.94-1.04 band are reported under the parent's outcome E3 whether or not their measurement resolves.",
+    "if a genuine sign disagreement appears -- prediction against a resolved measurement -- it is reported under outcome E2 with its perilune, both ratios and its calibration ratio, and is not grounds for enlarging or trimming the panel."
+  ],
+
+  "not_changed": [
+    "the per-orbit computation, which is imported verbatim from rev14_variational_budget and is unaffected",
+    "the level chain, the selection rule and the wall clock of the parent registration",
+    "the archived record metrics/r14_variational_budget.json, which stays sealed under the R14 manifest",
+    "the rows already written, which carry measured.resolved and are rescored rather than recomputed"
+  ],
+
+  "implementation": "python_codes/rev37_score.py re-derives the summary from the stored rows of r37_variational_extension.json. The run itself is not restarted."
+}

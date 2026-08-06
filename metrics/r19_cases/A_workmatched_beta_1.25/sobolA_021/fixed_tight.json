@@ -1,0 +1,62 @@
+{
+  "schema": "r19_equal_total_work_v1",
+  "created_utc": "2026-07-31T05:44:42.555161Z",
+  "config": {
+    "sobol_index": 21,
+    "design": "A",
+    "beta": 1.25,
+    "policy": "constant degree matched on realized total quadratic work",
+    "matched_to": "span-sweep member k=0.50",
+    "degree": 97,
+    "target_total_quadratic_work": 1435986652.0,
+    "constant_endpoint_degree": 96,
+    "constant_endpoint_total_work": 1409015808.0,
+    "first_estimate_rule": "N* = round(N_0 * sqrt(W_k / W_0)); the achieved ratio is measured, not assumed",
+    "adopted_truth_degree": 300,
+    "initial_state_si": [
+      -185693.02541899701,
+      -575239.0835721281,
+      1764299.4781816895,
+      -1653.9269234916678,
+      197.04565950670323,
+      -109.83074701598089
+    ],
+    "duration_s": 604800.0,
+    "output_step_s": 120.0,
+    "integrator": "InstrumentedDOP853",
+    "max_step_s": 60.0,
+    "atol_kind": "vector",
+    "timing_comparable": false,
+    "source": {
+      "driver": "rev19_equal_total_work.py",
+      "reuses": "r18_span_sweep_A_beta_1.25.json (realized work), r14_trajectory_A_beta_1.25.json, r11 truths",
+      "lunaris_commit": "27e9ab86ed61d623f78c453ea2054348f1044c23"
+    }
+  },
+  "config_sha256": "eecfa6969b1c0d01bec4550b03af4ceea16e6dfff9964995612b658c021e4d70",
+  "status": "ok",
+  "event": null,
+  "telemetry": {
+    "n_rhs": 152951,
+    "n_accepted_steps": 10143,
+    "n_attempted_steps": 10210,
+    "n_rejected_trials": 67,
+    "switch_count_at_rhs_samples": 0,
+    "degree_counts": {
+      "97": 152951
+    },
+    "degree_range": [
+      97,
+      97
+    ],
+    "mean_degree": 97.0,
+    "mean_degree_sq": 9409.0,
+    "gravity_kernel_ns": 20145197100,
+    "process_cpu_ns": 24875000000,
+    "total_wall_ns": 30245666500
+  },
+  "raw_path": "metrics\\r19_raw\\A_workmatched_beta_1.25\\sobolA_021\\fixed_tight.npz",
+  "raw_sha256": "a39319797c00717365839d83d3f7263b900ad09897c907f933e90a67cc00b5ae",
+  "n_output_epochs": 5041,
+  "last_output_epoch_s": 604800.0
+}

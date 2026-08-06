@@ -1,0 +1,50 @@
+{
+  "schema": "r24_oracle_ultra_v1",
+  "created_utc": "2026-07-30T13:21:34.030369Z",
+  "config": {
+    "design": "A",
+    "sobol_index": 22,
+    "beta": 1.0,
+    "policy": "truth",
+    "level": "ultra",
+    "adopted_truth_degree": 300,
+    "interior_k": 0.5,
+    "policy_spec": {
+      "kind": "fixed_truth",
+      "degree": 300
+    },
+    "initial_state_si": [
+      932135.5432558996,
+      -530118.8256650704,
+      -1490197.4374844483,
+      403.1934288141112,
+      1619.5244638204638,
+      -323.92317215788
+    ],
+    "duration_s": 604800.0,
+    "output_step_s": 120.0,
+    "integrator": "InstrumentedDOP853",
+    "max_step_s": 60.0,
+    "atol_kind": "vector",
+    "rtol": 3e-14,
+    "atol_position_m": 1e-07,
+    "atol_velocity_m_s": 1e-10,
+    "timing_comparable": false,
+    "purpose": "third tolerance level for the oracle control on the interior member at beta = 1",
+    "source": {
+      "driver": "rev24_oracle_ultra.py",
+      "reuses": "r23_oracle_vs_interior.json panel and degrees, r23_cases/ultra_span ultra truths and interior members, r18 span sidecars for states and tables",
+      "preregistration": "r24_preregistration.json"
+    }
+  },
+  "config_sha256": "03ea65d0f2c90143eebc85ecb91ae4c569a65bec675ecb332b26fb2ff4b6fd61",
+  "status": "ok",
+  "event": null,
+  "telemetry": null,
+  "reused_from": "metrics\\r23_raw\\ultra_span\\A\\sobolA_022\\truth_ultra.npz",
+  "reuse_basis": "identical policy, degrees, tolerances, max step, duration and output grid; the integrator is deterministic",
+  "raw_path": "metrics\\r24_raw\\oracle_ultra\\A\\sobolA_022\\truth.npz",
+  "raw_sha256": "ed6da98bbee57c2f39f0ebd56540cd2b9bfba0d848a4e272bb37bb9fb6a96245",
+  "n_output_epochs": 5041,
+  "last_output_epoch_s": 604800.0
+}

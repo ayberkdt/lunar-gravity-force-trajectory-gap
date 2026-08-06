@@ -1,0 +1,130 @@
+{
+  "schema": "r24_preregistration_v1",
+  "created_utc": "2026-07-30T13:21:11.289777Z",
+  "campaign": "R24-A: oracle control at the ultra tolerance level",
+  "why": "The R23-B oracle tally is five to three with eight of sixteen undecided, and in six of the eight undecided cases the interior member holds the smaller raw error while its own tight-to-tighter envelope blocks the verdict. R23-C showed the same refinement resolves such cases without flipping any.",
+  "frozen_panel": {
+    "rule": "all sixteen comparisons in r23_oracle_vs_interior.json, both comparators, no subsetting; ordered by design then Sobol index",
+    "n_comparisons": 16,
+    "previously_resolved_vs_oracle": 8,
+    "previously_undecided_vs_oracle": 8,
+    "orbits": [
+      {
+        "design": "A",
+        "index": 2,
+        "n_sat": 74,
+        "n_oracle": 72
+      },
+      {
+        "design": "A",
+        "index": 8,
+        "n_sat": 156,
+        "n_oracle": 144
+      },
+      {
+        "design": "A",
+        "index": 22,
+        "n_sat": 109,
+        "n_oracle": 107
+      },
+      {
+        "design": "A",
+        "index": 28,
+        "n_sat": 206,
+        "n_oracle": 198
+      },
+      {
+        "design": "A",
+        "index": 36,
+        "n_sat": 250,
+        "n_oracle": 226
+      },
+      {
+        "design": "A",
+        "index": 46,
+        "n_sat": 93,
+        "n_oracle": 77
+      },
+      {
+        "design": "A",
+        "index": 48,
+        "n_sat": 129,
+        "n_oracle": 121
+      },
+      {
+        "design": "A",
+        "index": 58,
+        "n_sat": 83,
+        "n_oracle": 83
+      },
+      {
+        "design": "B",
+        "index": 5,
+        "n_sat": 74,
+        "n_oracle": 58
+      },
+      {
+        "design": "B",
+        "index": 13,
+        "n_sat": 83,
+        "n_oracle": 82
+      },
+      {
+        "design": "B",
+        "index": 17,
+        "n_sat": 108,
+        "n_oracle": 92
+      },
+      {
+        "design": "B",
+        "index": 25,
+        "n_sat": 94,
+        "n_oracle": 82
+      },
+      {
+        "design": "B",
+        "index": 32,
+        "n_sat": 157,
+        "n_oracle": 151
+      },
+      {
+        "design": "B",
+        "index": 40,
+        "n_sat": 128,
+        "n_oracle": 126
+      },
+      {
+        "design": "B",
+        "index": 52,
+        "n_sat": 205,
+        "n_oracle": 203
+      },
+      {
+        "design": "B",
+        "index": 60,
+        "n_sat": 250,
+        "n_oracle": 249
+      }
+    ]
+  },
+  "measurement_convention": {
+    "errors": "unchanged: the tighter-level error against the tighter truth, as already recorded by R23-B, so no number the paper reports moves",
+    "envelopes": "rebuilt as the policy's tighter-to-ultra self-difference plus the truth's",
+    "level": {
+      "rtol": 3e-14,
+      "atol_position_m": 1e-07,
+      "atol_velocity_m_s": 1e-10,
+      "max_step_s": 60.0
+    },
+    "note": "the level is R13's frozen ultra setting, unchanged, and max step is held so the refinement isolates tolerance"
+  },
+  "stability_check": "verdict_flips counts only a resolved verdict reversing its winner. A comparison moving from undecided to resolved is not a flip; miscounting that was a reporting bug caught in R23-C and it is not repeated here.",
+  "outcomes": {
+    "A_refinement_resolves_and_sign_holds": "Envelopes shrink, previously undecided comparisons become resolved, and no previously resolved verdict flips. The oracle control is reported at its refined tally and the constructive claim keeps the oracle check with a firmer margin.",
+    "B_a_previously_resolved_verdict_flips": "Some comparison resolved at the tighter level reverses at the ultra level. The tight-to-tighter envelopes were then not conservative, the oracle comparison is reported as unstable under tolerance refinement, and the oracle check is withdrawn rather than restated at the new tally.",
+    "C_envelopes_do_not_shrink": "The tighter-to-ultra self-differences are comparable to the tight-to-tighter ones, so the interior member's error is not tolerance-limited and the undecided comparisons stay undecided. Reported as a limit of the measurement, not as evidence either way.",
+    "D_refinement_resolves_against_the_interior_member": "Comparisons resolve but the added verdicts favour the oracle. Reported as found; the oracle margin narrows or reverses and the constructive claim is narrowed accordingly."
+  },
+  "not_blind": "The direction is guessable from the R23-B record: the six undecided cases where the interior member leads on raw error will tend to resolve in its favour if the envelopes shrink. The value of this registration is that it fixes what will be written for every outcome, including the ones that weaken the claim, before any fresh number exists.",
+  "preregistration_sha256": "0cdf996683d11f6db8883efb4e296c565bda195ad35f38abdf093a2c2172b67d"
+}

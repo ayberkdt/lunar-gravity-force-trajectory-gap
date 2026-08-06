@@ -39,7 +39,7 @@ aggregate = load("r10_aggregate_summary.json")
 baseline = load("r10_sobolA_baseline.json")
 # Ten-orbit audited baseline: the frozen six-orbit primary corrected baseline
 # with the four extended sub-50 km audits folded in (all reported ratios then
-# use each orbit's adopted truth degree). The primary corrected baseline and
+# use each orbit's adopted reference degree). The primary corrected baseline and
 # r10_aggregate_summary.json remain as intermediate provenance artifacts.
 corrected = load("r10_sobolA_baseline_truth_corrected_extended.json")
 design_a = load("r10_sobolA_design.json")
@@ -107,7 +107,7 @@ blend_policies = blend_summary["policies"]
 comparison = blend_summary["comparison"]
 blend_table = rf"""\begin{{tabular}}{{@{{}}lrrrrr@{{}}}}
 \toprule
-Policy & Baseline & Tighter & Policy self & Truth self & Envelope \\
+Policy & Baseline & Tighter & Policy self & Reference self & Envelope \\
 \midrule
 Fixed $N=120$ &
 {blend_policies["fixed_N120"]["error_against_same_tolerance_truth"]["baseline"]["pos_rms_m"]:.1f} &
@@ -196,7 +196,7 @@ def write_design_audit_tables(design: dict, prefix: str, design_name: str) -> No
     ]
     elements = [
         r"\begin{longtable}{rrrrrrrrr}",
-        rf"\caption{{Complete osculating elements and planned truth degree for design {design_name}.}}\label{{tab:sobol-{prefix}-elements}}\\",
+        rf"\caption{{Complete osculating elements and planned reference degree for design {design_name}.}}\label{{tab:sobol-{prefix}-elements}}\\",
         r"\toprule",
         r"Index & $a$ [km] & $e$ & $i$ & $\Omega$ & $\omega$ & $\nu_0$ & $\lambda_p$ & $N_T$ \\",
         r"\midrule",
@@ -268,7 +268,7 @@ def resolved_label(index: int, comparator: str) -> str:
 
 full_lines = [
     r"\begin{longtable}{rrrrrrrr}",
-    r"\caption{Truth-audited seven-day results for propagated Sobol design A. "
+    r"\caption{Reference-audited seven-day results for propagated Sobol design A. "
     r"$\rho>1$ favors the empirical schedule. Resolution labels are available "
     r"only for the pre-specified 17-orbit convergence subset.}"
     r"\label{tab:sobol-full-results}\\",
@@ -361,15 +361,15 @@ for table in (primary_lines, sensitivity_lines):
 
 convergence_self_lines = [
     r"\begin{longtable}{rrrrrrrr}",
-    r"\caption{Tight-to-tighter self-differences and truth-inclusive envelopes "
+    r"\caption{Tight-to-tighter self-differences and reference-inclusive envelopes "
     r"for the 17-orbit convergence subset, in meters.}\label{tab:sobol-convergence-self}\\",
     r"\toprule",
-    r"Index & Truth self & S self & S env. & $W$ self & $W$ env. & $C$ self & $C$ env. \\",
+    r"Index & Reference self & S self & S env. & $W$ self & $W$ env. & $C$ self & $C$ env. \\",
     r"\midrule",
     r"\endfirsthead",
     r"\multicolumn{8}{c}{\tablename\ \thetable\ continued}\\",
     r"\toprule",
-    r"Index & Truth self & S self & S env. & $W$ self & $W$ env. & $C$ self & $C$ env. \\",
+    r"Index & Reference self & S self & S env. & $W$ self & $W$ env. & $C$ self & $C$ env. \\",
     r"\midrule",
     r"\endhead",
 ]
@@ -377,7 +377,7 @@ convergence_decision_lines = [
     r"\begin{longtable}{rcrrrrrc}",
     r"\caption{Numerical-resolution audit for every selected orbit and comparator. "
     r"$E_S$ and $E_F$ are tight-level position RMS errors; a ranking is accepted "
-    r"only when the absolute gap exceeds the summed truth-inclusive envelopes.}"
+    r"only when the absolute gap exceeds the summed reference-inclusive envelopes.}"
     r"\label{tab:sobol-convergence-decisions}\\",
     r"\toprule",
     r"Index & Comparator & $E_S$ & $E_F$ & Gap & Threshold & $\rho$ & Outcome \\",
@@ -435,7 +435,7 @@ for table in (convergence_self_lines, convergence_decision_lines):
 
 blend_detail_lines = [
     r"\begin{longtable}{llrrrrrrrrr}",
-    r"\caption{Complete LRO-like same-tolerance truth-error audit. Position "
+    r"\caption{Complete LRO-like same-tolerance reference-error audit. Position "
     r"quantities and R/I/C components are in meters; velocity RMS is in m s$^{-1}$.}"
     r"\label{tab:blend-error-detail}\\",
     r"\toprule",
@@ -484,7 +484,7 @@ for record in blend["records"]:
     policy_label = {
         "fixed_N120": "fixed $N=120$",
         "corrected_blend": "blend",
-        "truth_N600": "truth $N=600$",
+        "truth_N600": "reference $N=600$",
     }[record["policy"]]
     blend_telemetry_lines.append(
         f'{policy_label} & {record["level"]} & {telemetry["n_rhs"]} & '

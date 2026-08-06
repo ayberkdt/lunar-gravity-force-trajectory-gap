@@ -1,0 +1,103 @@
+{
+  "schema": "r24_bin_control_preregistration_v1",
+  "created_utc": "2026-07-30T13:30:25.062815Z",
+  "campaign": "R24-B: bin-resolution control at the budget-calibrated point (council Finding 8)",
+  "why": "R12 ran this control at the accuracy-targeted point only. The paper's constructive claim lives at the budget-calibrated point, where the control was never run and the response narrowed the declared scope instead.",
+  "what_is_held": "k, the calibrated multiplicative scale, the constant-degree endpoint, the acceleration tolerance, the cap and the floor are all read from the archived R18 sidecar and held. The budget is not recalibrated, so the only difference is quantization.",
+  "frozen_panel": {
+    "rule": "the 10 *resolved* comparisons of the R19 beta = 1 panel with the widest archived interior degree span, ties by design then Sobol index",
+    "rationale": "quantization can only matter where the degree varies, so the widest spans are where an artifact would be largest and a null result is strongest; span is a property of the schedule, not of the comparison's outcome, so ordering by it is not selecting on the measured quantity",
+    "revision_note": "the first draft of this rule ranked the whole panel by span and was replaced before any propagation ran, because nine of the ten orbits it selected are undecided in the archive and an undecided comparison has no verdict for quantization to change. No fresh number existed when the rule was changed.",
+    "orbits": [
+      {
+        "design": "A",
+        "index": 0,
+        "degree_span": 3.0441176470588234,
+        "work_matched_degree": 136,
+        "archived_resolved": true,
+        "archived_winner": "interior"
+      },
+      {
+        "design": "A",
+        "index": 20,
+        "degree_span": 4.009090909090909,
+        "work_matched_degree": 275,
+        "archived_resolved": true,
+        "archived_winner": "interior"
+      },
+      {
+        "design": "A",
+        "index": 24,
+        "degree_span": 2.9746835443037973,
+        "work_matched_degree": 158,
+        "archived_resolved": true,
+        "archived_winner": "interior"
+      },
+      {
+        "design": "A",
+        "index": 48,
+        "degree_span": 3.0547945205479454,
+        "work_matched_degree": 137,
+        "archived_resolved": true,
+        "archived_winner": "interior"
+      },
+      {
+        "design": "B",
+        "index": 11,
+        "degree_span": 3.547008547008547,
+        "work_matched_degree": 243,
+        "archived_resolved": true,
+        "archived_winner": "interior"
+      },
+      {
+        "design": "B",
+        "index": 40,
+        "degree_span": 3.142857142857143,
+        "work_matched_degree": 137,
+        "archived_resolved": true,
+        "archived_winner": "interior"
+      },
+      {
+        "design": "B",
+        "index": 43,
+        "degree_span": 3.9770114942528734,
+        "work_matched_degree": 256,
+        "archived_resolved": true,
+        "archived_winner": "fixed"
+      },
+      {
+        "design": "B",
+        "index": 44,
+        "degree_span": 4.201754385964913,
+        "work_matched_degree": 272,
+        "archived_resolved": true,
+        "archived_winner": "interior"
+      },
+      {
+        "design": "B",
+        "index": 54,
+        "degree_span": 2.982142857142857,
+        "work_matched_degree": 103,
+        "archived_resolved": true,
+        "archived_winner": "interior"
+      },
+      {
+        "design": "B",
+        "index": 56,
+        "degree_span": 2.9014084507042255,
+        "work_matched_degree": 134,
+        "archived_resolved": true,
+        "archived_winner": "interior"
+      }
+    ]
+  },
+  "measurement_convention": "the exact-radius variant is propagated at both the tight and the tighter level; its error is the tighter-level error against the tighter truth and its envelope is its tight-to-tighter self-difference plus the truth's, which is the convention the R19 beta = 1 comparison already uses",
+  "outcomes": {
+    "A_binning_is_not_load_bearing": "Every verdict is unchanged and the exact-radius variant's realized quadratic work is within a few percent of the binned one. The control passes at the budget-calibrated point and the narrowed scope declared for the R12 control can be dropped.",
+    "B_verdicts_hold_but_the_work_moves": "Verdicts are unchanged while the exact-radius variant burns materially different work, meaning quantization was flattering or penalizing the schedule's budget. The work difference is reported and the comparison is restated on realized work.",
+    "C_a_verdict_changes": "At least one comparison changes its resolved winner. The binned comparison is then a quantization artifact at the budget-calibrated point; this is reported and the constructive claim is narrowed to the bin convention it was measured under.",
+    "D_unresolvable": "The exact-radius variant's envelope is large enough that the comparisons go undecided. Reported as a limit of the control, not as support either way."
+  },
+  "not_blind": "R12's control at the accuracy-targeted point found no verdict change, so outcome A is the expected one. The registration fixes what will be written if the budget-calibrated point behaves differently, which is the case that would matter.",
+  "preregistration_sha256": "ad953c63b60f74b876628270e5d2c27807754a09fe5423bf0077b7c42d0655ca"
+}

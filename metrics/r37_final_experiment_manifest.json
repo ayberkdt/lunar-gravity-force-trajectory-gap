@@ -1,0 +1,161 @@
+{
+  "schema": "r37_final_experiment_manifest_v1",
+  "created_utc": "2026-08-04T07:54:16.815558Z",
+  "scope": "R37: extension of the forced-variational panel of Section 7.2 from the archived eight orbits toward both full designs, along the same perilune-stratified rule refined into a nested level chain (8/14/26/50/80/112/128). Each orbit is one augmented integration of the forced system along that orbit's archived reference, at beta = 1. The run was bounded by a wall clock fixed in advance; the highest completed level is the panel and the orbits solved beyond it are reported separately.",
+  "registration_status": "pre-registered. The selection rule, the nested level chain, the wall clock and the rule that a truncated level is never reported as a panel were all fixed in r37_preregistration.json before any orbit outside the archived eight was solved. The scoring amendment is post hoc and says so.",
+  "partition_note": "this campaign claims no trajectory record. The augmented solve returns a prediction and spools nothing to a cases or raw tree, and the reference trajectories it integrates along stay indexed under R11 and R14. The trajectory partition is unchanged.",
+  "archived_panel_note": "the eight archived orbits are carried over from r14_variational_budget.json, which is sealed under the R14 manifest and is read, never written. Its digest as read is recorded under reused_inputs; a mismatch against the R14 manifest would mean it had been modified.",
+  "numerical_kernel": {
+    "lunaris_release_tag": "paper-truncation-v1.0",
+    "lunaris_commit": "27e9ab86ed61d623f78c453ea2054348f1044c23"
+  },
+  "registration": {
+    "r37_preregistration.json": {
+      "sha256": "1677733d393bad85accbcd5baca7539ca431467879e4a56698bf905aaad80523",
+      "bytes": 4397
+    },
+    "r37_scoring_amendment.json": {
+      "sha256": "c0dd7bedc0857b7a128d22b44da5a52d3f35710d643fbf0c43df4f42de171fa6",
+      "bytes": 3257
+    }
+  },
+  "scripts": {
+    "rev37_variational_extend.py": {
+      "sha256": "9d747e05d713b315447cddc47f389833f34e99d54378130335b358f03e1c1b30",
+      "bytes": 14005
+    },
+    "rev37_score.py": {
+      "sha256": "6105cb062d03b66133b128e464741706415258819e01c0c58d1606bae9956213",
+      "bytes": 11483
+    },
+    "rev37_table.py": {
+      "sha256": "6b9a6ec8a1623a20c2cc715c60077be88a80f041c176e71f1b7cb1df27b8040f",
+      "bytes": 2982
+    },
+    "rev37_finalize_manifest.py": {
+      "sha256": "3721b53ac659dfb12d8e72eae097f56411ca4d443d6b1577ac2062bd3e3e184b",
+      "bytes": 8664
+    },
+    "rev14_variational_budget.py": {
+      "sha256": "99b130cefae50cb2b1d4fe3c53608c8858e371022d9d59c5fbeae4f7e958656c",
+      "bytes": 13258
+    },
+    "rev13_variational_check.py": {
+      "sha256": "86339db79cbf1926cbe9e0d37faf5bac3d777f74d8d79e7f50ff393f45e308e1",
+      "bytes": 14045
+    },
+    "rev14_budget_pareto.py": {
+      "sha256": "99e636c4f410936095807539d119a620700ebef4506638c64def881b4dc02284",
+      "bytes": 22030
+    },
+    "rev10_sobol_confirmatory.py": {
+      "sha256": "e483912446449f0086be062844fe3e8070ed8868a4ecd9c15d17ccdf38fb6b25",
+      "bytes": 44268
+    },
+    "rev12_atallah.py": {
+      "sha256": "05ab2043dfd986e0eaa946fc84309a6a9996b68882f05c1332494fd916baa089",
+      "bytes": 8628
+    },
+    "rev34_instrument_ladder.py": {
+      "sha256": "d87c7898ac5c17da7e3a093401b6c6850520245232541485e1fe18a8560319e5",
+      "bytes": 7949
+    },
+    "make_figures_r19.py": {
+      "sha256": "384c4e949a5456a377de57e19aed6a8e9bb002cd0467e057d3c8bf6a8ed16b15",
+      "bytes": 5450
+    },
+    "paper_style.py": {
+      "sha256": "7c27b2c0276714a5a061f1cc4f2106d641df4feaa515cb981825052f5ecd441c",
+      "bytes": 1781
+    }
+  },
+  "reused_inputs": {
+    "r14_variational_budget.json": {
+      "sha256": "cadb93df119878e088fc322899efbedcd968338c528bfdb65af7d677cb3e6a8a",
+      "bytes": 14881
+    },
+    "r14_budget_pareto.json": {
+      "sha256": "bbce69671cea4ec0f230f3d58332f562baf2d50cc48e69eae08d832aa7ec53d9",
+      "bytes": 7478407
+    },
+    "r14_preregistration.json": {
+      "sha256": "02be4cf45489618ca2437b289a1765ef6695e6ec2b4a40fa3dab13e23dbc3bc9",
+      "bytes": 10003
+    },
+    "r10_sobolA_baseline_truth_corrected.json": {
+      "sha256": "7b529d3701dde15311e3fab9fed40082ccb5ba15df742cdbf1d71f2245f2fc83",
+      "bytes": 407180
+    },
+    "r11_designB_rows.json": {
+      "sha256": "8751a7df501e19cc9a982fd07955cc7154af1ba954866b6b58296e6101cdd2fa",
+      "bytes": 104145
+    },
+    "r14_trajectory_A_beta_1.00.json": {
+      "sha256": "a036cfa6ac4f20d9ac7fc8663b414106a11932d780837574ae49d62fead39e00",
+      "bytes": 412475
+    },
+    "r14_trajectory_B_beta_1.00.json": {
+      "sha256": "419d0c089da696507b73fd3c6346b9d077552349fbccb01657762b873a092227",
+      "bytes": 412487
+    }
+  },
+  "result_json": {
+    "r37_variational_extension.json": {
+      "sha256": "5b144cde90e4848d5edb2e5b7c49d96acc0b9568f04d4c992f16696b31989aea",
+      "bytes": 180839
+    },
+    "r37_panel_verdict.json": {
+      "sha256": "736bec8df182373df4537ca64366c315873c56e13c2504d76302ed592063f601",
+      "bytes": 13233
+    }
+  },
+  "generated_tables": {
+    "r37_panel_extension_table.tex": {
+      "sha256": "aabb43c0f94ce8c34323d6260693c0dd7f809007a1168dca6933216a631b13e7",
+      "bytes": 1220
+    },
+    "r34_instrument_ladder_table.tex": {
+      "sha256": "5f88fdd9f5337ea0bfc3df17178bb56b3b8efb4768d19f57c45426a40c2ff5ca",
+      "bytes": 570
+    }
+  },
+  "generated_figures": {
+    "fig_variational_parity.pdf": {
+      "sha256": "afb3a7f6111e6e93d99b13fbf093d65d33df6046be4b982c1240dacc96d9c4be",
+      "bytes": 515703
+    }
+  },
+  "completion": {
+    "levels_per_design": [
+      4,
+      7,
+      13,
+      25,
+      40,
+      56,
+      64
+    ],
+    "deadline_local": "2026-08-04T08:45",
+    "orbits_in_record": 102,
+    "orbits_solved_here": 94,
+    "orbits_reused_from_r14": 8,
+    "panel_orbits": 80,
+    "panel_level_per_design": 40,
+    "next_level_orbits": 112,
+    "next_level_present": 102,
+    "panel_resolved": 63,
+    "panel_sign_agreement": 63,
+    "panel_sign_disagreement": 0,
+    "record_resolved": 81,
+    "record_sign_agreement": 81,
+    "self_check": {
+      "orbit": "B005",
+      "archived": 2.3193085489592344,
+      "recomputed": 2.3193085489592344,
+      "rel": 0.0,
+      "threshold": 0.001,
+      "passed": true
+    }
+  },
+  "manifest_sha256": "bbb5894fcf32ea1a2529374c6b7978d446e7c84372d83df4a34955cf8119edf1"
+}

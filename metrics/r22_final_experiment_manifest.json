@@ -1,22 +1,69 @@
 {
- "schema": "r22_final_experiment_manifest_v1",
- "scope": "R22: two supplementary tables derived from archived R18 and R20 records. Propagates nothing; reads the frozen span-sweep summaries and the sixty-day sidecar telemetry and emits the by-k budget aggregate and the sixty-day per-orbit error/envelope/cost table.",
- "scripts": {
-  "rev22_supplement_tables.py": "5e1c8766ab14e82e0c110c77e7cedeb42ec9fe5f441cb677b931ffd751a37a1e"
- },
- "result_json": {
-  "r18_by_k_table.tex": "73990fa9f1700e1cac38516d4ff9b313b785d3b8291abf992f6682725187b6ea",
-  "r20_longarc_detail_table.tex": "a7a458895f6ce7a13144202c74ab557ee91c80c3625d87bfa8a022fcd4e76a3a",
-  "r22_longarc_cost_summary.json": "2d0a138adb7dfeb4255b5ec4629132e414e9ef45ba0205be5d1e030110d6d163"
- },
- "reused_inputs": {
-  "r20_span_longarc.json": "5f65842cf5d97fcbe5a1e88390cb56097c08786512cbbda23f841fdf9d92559d",
-  "r18_span_sweep_A_beta_1.00.json": "2660232bedd2480459f929795f95f4c49b2f68f4dbe1a59d8b581ab831dadafa"
- },
- "trajectory_tree": {
-  "n_sidecars": 0,
-  "n_raw_arrays": 0,
-  "note": "derived tables only; reads R20 sidecars in place"
- },
- "manifest_sha256": "9f4b9c38a2701103312bf386cfa04042d59fcab17fbf8348cc37444eb9102542"
+  "schema": "r22_final_experiment_manifest_v1",
+  "created_utc": "2026-07-30T07:39:03.270384Z",
+  "scope": "R22: two supplementary tables derived from archived R18 and R20 records. Propagates nothing; reads the frozen span-sweep summaries and the sixty-day sidecar telemetry and emits the by-k budget aggregate and the sixty-day per-orbit error/envelope/cost table.",
+  "relationship_to_r18_r20": "derived only. The by-k aggregate is read from the five R18 span-sweep summaries and the sixty-day table from the R20 record and its k_* sidecars, all in place. No trajectory is propagated or re-indexed here, so R18 and R20 remain the sole index of the arcs behind these tables.",
+  "numerical_kernel": {
+    "lunaris_release_tag": "paper-truncation-v1.0",
+    "lunaris_commit": "27e9ab86ed61d623f78c453ea2054348f1044c23",
+    "note": "no kernel call: derived tables only"
+  },
+  "reused_inputs": {
+    "r18_span_sweep_A_beta_0.50.json": {
+      "sha256": "dda830264ec28c48353023d00f65aabe14efc854f2db545e3dea702049787038",
+      "bytes": 214638
+    },
+    "r18_span_sweep_B_beta_0.50.json": {
+      "sha256": "845f1ed44eaa14bfcfb056c0dd59649687b2e7a90526c85de2e0d19663af57ed",
+      "bytes": 214707
+    },
+    "r18_span_sweep_A_beta_1.00.json": {
+      "sha256": "2660232bedd2480459f929795f95f4c49b2f68f4dbe1a59d8b581ab831dadafa",
+      "bytes": 215609
+    },
+    "r18_span_sweep_B_beta_1.00.json": {
+      "sha256": "f19863fad162aac4aef2b42bc9111e2cc4fbba15033558bfad86886515bcebd2",
+      "bytes": 215479
+    },
+    "r18_span_sweep_A_beta_1.50.json": {
+      "sha256": "49f0f635836eb34a41e41ad0707601f721c2b305662869f2e11ffe0b244b6a56",
+      "bytes": 216201
+    },
+    "r20_span_longarc.json": {
+      "sha256": "5f65842cf5d97fcbe5a1e88390cb56097c08786512cbbda23f841fdf9d92559d",
+      "bytes": 10225
+    }
+  },
+  "scripts": {
+    "rev22_supplement_tables.py": {
+      "sha256": "5e1c8766ab14e82e0c110c77e7cedeb42ec9fe5f441cb677b931ffd751a37a1e",
+      "bytes": 5605
+    },
+    "rev22_finalize_manifest.py": {
+      "sha256": "02b4b055e7f31355f265507674d1ec88dafc8e94af26a7369877d23c3aa19b24",
+      "bytes": 4426
+    }
+  },
+  "result_json": {
+    "r22_longarc_cost_summary.json": {
+      "sha256": "2d0a138adb7dfeb4255b5ec4629132e414e9ef45ba0205be5d1e030110d6d163",
+      "bytes": 541
+    }
+  },
+  "generated_tables": {
+    "r18_by_k_table.tex": {
+      "sha256": "73990fa9f1700e1cac38516d4ff9b313b785d3b8291abf992f6682725187b6ea",
+      "bytes": 2444
+    },
+    "r20_longarc_detail_table.tex": {
+      "sha256": "a7a458895f6ce7a13144202c74ab557ee91c80c3625d87bfa8a022fcd4e76a3a",
+      "bytes": 872
+    }
+  },
+  "trajectory_tree": {
+    "n_sidecars": 0,
+    "n_raw_arrays": 0,
+    "note": "derived tables only; reads the R20 sidecars in place"
+  },
+  "manifest_sha256": "266b006c2fe8e28230a6cd01d113c7e1ff68cbd01fa19c42629304fdd9e45adf"
 }

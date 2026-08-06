@@ -14,6 +14,8 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
+import campaign_ownership as own
+
 ROOT = Path(__file__).resolve().parents[1]
 METRICS = ROOT / "metrics"
 CODE = ROOT / "python_codes"
@@ -21,10 +23,18 @@ OUT = METRICS / "r18_final_experiment_manifest.json"
 
 SCRIPTS = ["rev18_span_sweep.py", "rev18_tables.py",
            "rev18_finalize_manifest.py"]
-RESULT_JSON = ["r18_span_sweep_A.json", "r18_span_sweep_B.json",
-               "r18_manuscript_descriptives.json"]
-TABLES = ["r18_span_table.tex", "r18_span_detail_table_A.tex",
-          "r18_span_detail_table_B.tex"]
+# One record per (design, budget) pair. The sweep has never written an
+# undecorated "r18_span_sweep_A.json"; that name was recorded as missing rather
+# than failing, which hid all five real records from the manifest.
+RESULT_JSON = ["r18_span_sweep_A_beta_0.50.json",
+               "r18_span_sweep_A_beta_1.00.json",
+               "r18_span_sweep_A_beta_1.50.json",
+               "r18_span_sweep_B_beta_0.50.json",
+               "r18_span_sweep_B_beta_1.00.json",
+               "r18_manuscript_descriptives.json",
+               "r18_budget_descriptives.json"]
+TABLES = ["r18_span_table.tex", "r18_budget_table.tex",
+          "r18_span_detail_table_A.tex", "r18_span_detail_table_B.tex"]
 REUSED = ["r14_trajectory_A_beta_1.00.json",
           "r14_trajectory_B_beta_1.00.json", "r14_budget_pareto.json",
           "r10_sobolA_baseline_truth_corrected.json",
@@ -49,12 +59,23 @@ def index_files(names, base: Path) -> dict:
 
 
 def index_tree() -> dict:
+    """Index only the budgets this campaign propagated.
+
+    Later campaigns reuse this driver with a budget argument, so their
+    trajectories land under the same prefix; indexing them here would put the
+    same records under two manifests. Ownership is declared in
+    ``campaign_ownership``.
+    """
     sidecars = {}
     for p in sorted((METRICS / "r18_cases").rglob("*.json")):
+        if not own.owned_by_r18(p):
+            continue
         sidecars[str(p.relative_to(METRICS)).replace("\\", "/")] = sha(p)
     roll = hashlib.sha256()
     n = 0
     for p in sorted((METRICS / "r18_raw").rglob("*.npz")):
+        if not own.owned_by_r18(p):
+            continue
         roll.update(sha(p).encode())
         n += 1
     return {"n_sidecars": len(sidecars), "n_raw_arrays": n,
@@ -99,7 +120,8 @@ def main() -> int:
                              "reused_inputs")
                for k, v in payload[sec].items() if v.get("missing")]
     if missing:
-        print("[note] not produced: " + ", ".join(missing))
+        print("[error] recorded as missing: " + ", ".join(missing))
+        return 1
     return 0
 
 

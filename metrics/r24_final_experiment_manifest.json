@@ -1,0 +1,206 @@
+{
+  "schema": "r24_final_experiment_manifest_v1",
+  "created_utc": "2026-07-30T18:43:57.063304Z",
+  "scope": "R24 (O32): two registered controls. O32a re-runs the O31b oracle panel at the third tolerance level, reusing the archived tighter-level errors and rebuilding only the envelopes. O32b applies the O23 bin-resolution control at the budget-calibrated point, holding every parameter of the interior member at its archived value so that only quantization differs.",
+  "why": "O31b left eight of sixteen comparisons undecided, and in six of those the interior member held the smaller raw error while its own envelope withheld the verdict; O23's bin control had been run only at the accuracy-targeted point, and the response to review narrowed its declared scope instead of running it where the constructive claim lives.",
+  "relationship_to_r23": "additive. No archived error is recomputed and no R23 record is superseded: O32a reuses the R23 tighter-level errors verbatim, so the median ratios R23 reports are unchanged by construction and only the resolution of each comparison can move.",
+  "numerical_kernel": {
+    "lunaris_release_tag": "paper-truncation-v1.0",
+    "lunaris_commit": "27e9ab86ed61d623f78c453ea2054348f1044c23"
+  },
+  "registration": {
+    "r24_preregistration.json": {
+      "sha256": "1f6fff263a030cc2e3ea041af0ea7b209f4fdd59ea64fe2e71cd4059454ccc37",
+      "bytes": 4953
+    },
+    "r24_bin_control_preregistration.json": {
+      "sha256": "45439791ffca7aa029584d7feef644344285b38f0ea38429511d337bae56f51f",
+      "bytes": 5424
+    }
+  },
+  "reused_inputs": {
+    "r23_oracle_vs_interior.json": {
+      "sha256": "5c3a87a4f31f7576d864dd9a4912eb117d283df2828b3dfec2cc831d750d7bdf",
+      "bytes": 14719
+    },
+    "r23_ultratight_span.json": {
+      "sha256": "16479b124b7ed6249a069a63ed69c020bb64db1f317ac48e6347b79a5411005f",
+      "bytes": 70607
+    },
+    "r19_equal_total_work_A.json": {
+      "sha256": "d377ffd8ce8da7bfdca78408c46867dd53b54b3d0ac0f5db0ad1cd803c47b307",
+      "bytes": 35796
+    },
+    "r19_equal_total_work_B.json": {
+      "sha256": "5d1c642885a752ba9a9e1081e9431b673f8d707e1236aac3a3671999bb9b004b",
+      "bytes": 35880
+    },
+    "r18_span_sweep_A_beta_1.00.json": {
+      "sha256": "2660232bedd2480459f929795f95f4c49b2f68f4dbe1a59d8b581ab831dadafa",
+      "bytes": 215609
+    },
+    "r18_span_sweep_B_beta_1.00.json": {
+      "sha256": "f19863fad162aac4aef2b42bc9111e2cc4fbba15033558bfad86886515bcebd2",
+      "bytes": 215479
+    },
+    "r15_fixed_oracle.json": {
+      "sha256": "0be36dfc38e0c7be63edd19fb51261946217c1debc754959830518fed6236a68",
+      "bytes": 60107
+    }
+  },
+  "scripts": {
+    "rev24_oracle_ultra.py": {
+      "sha256": "a0a3cbd9433f962ae4472f529c18721d3a22575ac836266715689b57a24dec6a",
+      "bytes": 29012
+    },
+    "rev24_bin_control.py": {
+      "sha256": "6b29a6dd384fc499b90c3aaae334bbd7dcdad3dc220a6f5fa81c8eb104cc202c",
+      "bytes": 25906
+    },
+    "rev24_tables.py": {
+      "sha256": "30f4354b9aaa1e93184dbeb0332c03ac89cf8b0fd801516711323b44304d4096",
+      "bytes": 7291
+    },
+    "rev24_finalize_manifest.py": {
+      "sha256": "0e2e1af660d2d8c64d950a91c55dd2146b5fc0ac9bafae686dd290b92312ca77",
+      "bytes": 7204
+    }
+  },
+  "result_json": {
+    "r24_oracle_ultra.json": {
+      "sha256": "5de61ef774a1431282eaa818fda90cdc6de8b979f35f851f934d18805ba7747d",
+      "bytes": 18649
+    },
+    "r24_bin_control.json": {
+      "sha256": "09d8ed2ce1bb2b33752c0286c21c4c4885666d860878046e155c291a2ece368c",
+      "bytes": 12471
+    },
+    "r24_manuscript_descriptives.json": {
+      "sha256": "292622b0a4138c80e04ef8ba6328e41a245ab4619c6e9f204e5c6f6a6458583f",
+      "bytes": 4708
+    }
+  },
+  "generated_tables": {
+    "r24_oracle_ultra_table.tex": {
+      "sha256": "975cb5a241e062659312e8dbe1fd722848eb68ef3bc777b2d00270c017a38518",
+      "bytes": 579
+    },
+    "r24_bin_control_table.tex": {
+      "sha256": "86b74c91165773793fb477feef17d4c34b1122723a56fe818b6c5fc722131a20",
+      "bytes": 791
+    }
+  },
+  "panel_completeness": {
+    "O32a": {
+      "aggregated": 16,
+      "missing": 0,
+      "missing_detail": [],
+      "note": "the aggregate covers the completed comparisons only and the incomplete ones are named; it is never computed over a silently truncated panel"
+    },
+    "O32b": {
+      "aggregated": 10,
+      "missing": 0,
+      "missing_detail": []
+    }
+  },
+  "trajectory_tree": {
+    "O32a_oracle_panel_ultra": {
+      "n_sidecars": 63,
+      "n_raw_arrays": 63,
+      "sidecar_sha256": {
+        "r24_cases/oracle_ultra/A/sobolA_002/interior.json": "abb8c31b6c228e87e0c26a52b63a8614b4ceace04e11ead4c10778b37fa02364",
+        "r24_cases/oracle_ultra/A/sobolA_002/oracle.json": "276db70d59b6f27a326be1d4f769e90c2dd3007782dcea01252bdb2d5b5379ec",
+        "r24_cases/oracle_ultra/A/sobolA_002/sat.json": "75f2be59e14b9ba4d9c62d2c62643e2f534f33195f7ff70fe7a5eb3d7338c56c",
+        "r24_cases/oracle_ultra/A/sobolA_002/truth.json": "40f5813b2f741b20db10cfd51b99710ee475b093c492728de74e6a0362022d32",
+        "r24_cases/oracle_ultra/A/sobolA_008/interior.json": "243d8a0e1ec0cc2fc2518fdbf99f86cb3644ab8dada45bd16bddabc0542e0725",
+        "r24_cases/oracle_ultra/A/sobolA_008/oracle.json": "021e7f93b02746c04a100e51c0295f4bdab6193c87fbc894ae3f5ff79ed46067",
+        "r24_cases/oracle_ultra/A/sobolA_008/sat.json": "bc1e7c5a887ff1b8857fabf8de0bb08a3c7c36963d3902b5acbaace4403946b3",
+        "r24_cases/oracle_ultra/A/sobolA_008/truth.json": "118f1b4898a2b8fa42c7e2867e9d32e1b90f318f6f38871580eace3ef6c04422",
+        "r24_cases/oracle_ultra/A/sobolA_022/interior.json": "e2c999bcb24297a7da6da97c31f8264759901da6c623233c56a4110dbedc40ef",
+        "r24_cases/oracle_ultra/A/sobolA_022/oracle.json": "332884fc1fabb9b2b785d1390ceda9de2b7565adddd63f0eb1b620407be8b8c2",
+        "r24_cases/oracle_ultra/A/sobolA_022/sat.json": "f10021612b50b4d489dd4e1a2ccf057efc8580be2e98e34730d667c92a8549e5",
+        "r24_cases/oracle_ultra/A/sobolA_022/truth.json": "53b3ef5602a991e090c4261bcfe9112478dc80d85772ddd9a6b2359e8e398458",
+        "r24_cases/oracle_ultra/A/sobolA_028/interior.json": "b2c69cfdb7437ff6a254fdcc5cf0c780b3af40693c98d78471e1a2829e8d89c5",
+        "r24_cases/oracle_ultra/A/sobolA_028/oracle.json": "48f976ff9c9b1148b79390d0819b1c9fe66e339ddbf91132a3938733346989ca",
+        "r24_cases/oracle_ultra/A/sobolA_028/sat.json": "feb5ff224a0efd8a7a60825530252bba0131825630d77425da7280c75ee61ca4",
+        "r24_cases/oracle_ultra/A/sobolA_028/truth.json": "dbb0a21c41b4e98aec832e770730e1377655321145cc115a0bafeadec79a076b",
+        "r24_cases/oracle_ultra/A/sobolA_036/interior.json": "61d392709ea63bd69d55fe69975be32a88ef3969a091de856757f5343de4019c",
+        "r24_cases/oracle_ultra/A/sobolA_036/oracle.json": "e1bdca813c7220fc56dd3e382c0edc61260285d392d407cd61a81c496905026a",
+        "r24_cases/oracle_ultra/A/sobolA_036/sat.json": "b12fc28e023a98a49f8ff7aba9b33fe78eb07eacc032b509313b2c1c939da4df",
+        "r24_cases/oracle_ultra/A/sobolA_036/truth.json": "43699aee9c491fbcd1364956665d024fb872c0896bf037635baf197df1187d18",
+        "r24_cases/oracle_ultra/A/sobolA_046/interior.json": "201294a3c2be39a6da9276dfecaf0471e7582608452765c8d2650fddced658f0",
+        "r24_cases/oracle_ultra/A/sobolA_046/oracle.json": "769017ef2d79b01b2f70b074f98671342feb278893b36287a54869ef8ab20d5c",
+        "r24_cases/oracle_ultra/A/sobolA_046/sat.json": "ab87e4d3b1b4cf37b1d24ffc88089d8f6203d89ff65e05b1f5da0e1814d9b174",
+        "r24_cases/oracle_ultra/A/sobolA_046/truth.json": "a564423764a8ae632ee6bb37ddb92c67ebfb5f9180027c8531f0445d7ed0bb4c",
+        "r24_cases/oracle_ultra/A/sobolA_048/interior.json": "94b1fd186104a974772f26f070756dba61c9e696e7c07bd1365eb1daba8a9188",
+        "r24_cases/oracle_ultra/A/sobolA_048/oracle.json": "cc81a94e394b7da7f8b0add88105c22400cb3e0b60b467ac0297fdd69a6fb64f",
+        "r24_cases/oracle_ultra/A/sobolA_048/sat.json": "51db0cca56174be3168f168c707a138b3909e3ac3472d5396ff8f1d3a8997112",
+        "r24_cases/oracle_ultra/A/sobolA_048/truth.json": "7f3f18fb0290cedbd611ebb9f19d17a924a9076ec024f6f1916518a9ae4ab330",
+        "r24_cases/oracle_ultra/A/sobolA_058/interior.json": "35d09191b2b598986215769691445e9f142bd96a59f2c564f87c603adec66d8a",
+        "r24_cases/oracle_ultra/A/sobolA_058/sat.json": "b237629e357325e1a9ee3961c3c9efda0dbc7e845010091f270d3914d31ff15e",
+        "r24_cases/oracle_ultra/A/sobolA_058/truth.json": "620f9dc437d89c1583255ccfe8bccd97929570a4ead4a17f2005d63d5613b520",
+        "r24_cases/oracle_ultra/B/sobolA_005/interior.json": "1234a42d16b04d6913ba1b22afd6285a40dab94c15de808f9ee1443e6969faf1",
+        "r24_cases/oracle_ultra/B/sobolA_005/oracle.json": "51b0954853eab2d7ccc6dc6057cfe6d82c32cf9f6fc318b839db9d6893c2f64d",
+        "r24_cases/oracle_ultra/B/sobolA_005/sat.json": "a68053aa3f8e8333ac5ed6cb88575ac7d026f3e55f447fd298540a04d171a65e",
+        "r24_cases/oracle_ultra/B/sobolA_005/truth.json": "fa46dabd2f6fd18f455942154d5a65f623bf1144d89e6bf0dc81944525aebfb9",
+        "r24_cases/oracle_ultra/B/sobolA_013/interior.json": "7c6ed01f59bc0a2203f7230fa90a7923b4e6c008f4b53a2b8a58e0fd077a6225",
+        "r24_cases/oracle_ultra/B/sobolA_013/oracle.json": "05261d150582f86cbdb6eb176da6e9bcb6613cac75b014342eef07b86fffc9eb",
+        "r24_cases/oracle_ultra/B/sobolA_013/sat.json": "f297c0a9db0b3234d3525b8e6de981367f2eaea7582cedcd178602118f157ed3",
+        "r24_cases/oracle_ultra/B/sobolA_013/truth.json": "b94774befa6e5974623f8bcae8250eb2a065c9ec83f551f5f2e72043dd48eb69",
+        "r24_cases/oracle_ultra/B/sobolA_017/interior.json": "19efa07278ed330cea242e848e76a851cbaf86475cbc91f5878497695624e28f",
+        "r24_cases/oracle_ultra/B/sobolA_017/oracle.json": "bcb5b809d2052dc67d5da496f2ddbf62f3a6b703d47df7d28d7e18e5731c9b3e",
+        "r24_cases/oracle_ultra/B/sobolA_017/sat.json": "209358083f621a7e0fa25636e355cc7d5576900e2efd28e289e963ac01761751",
+        "r24_cases/oracle_ultra/B/sobolA_017/truth.json": "e29288e64f1ef03cb52595c37d4efb3e7d2c68e09eb24d3edccffe303ecd31e1",
+        "r24_cases/oracle_ultra/B/sobolA_025/interior.json": "efef8af654fffc85b92ee698562ee560a77472bab89c02b43d740c88e4f9cd8c",
+        "r24_cases/oracle_ultra/B/sobolA_025/oracle.json": "96fef90f2dc12bfe97acdd921cba94db23f0e060d2267968b70a5c8ea4717b58",
+        "r24_cases/oracle_ultra/B/sobolA_025/sat.json": "9180cdebb0eb6549b6c8db57b7c4118f79e934287834abee93fc4c3f515af40e",
+        "r24_cases/oracle_ultra/B/sobolA_025/truth.json": "bd5c7ee583155ead0b74e62d6dc419d4a93a1cdd3ee7743a26f71ee19d858ad6",
+        "r24_cases/oracle_ultra/B/sobolA_032/interior.json": "786ef01d74bba865131b85589db4d062ff4dc7698ba0c46a0ea655d6f4f99e16",
+        "r24_cases/oracle_ultra/B/sobolA_032/oracle.json": "da6c9e54f39d95b0d7067cf8bf42c71521326ea3dc5499c5f42a38679d0e4996",
+        "r24_cases/oracle_ultra/B/sobolA_032/sat.json": "924bd09e4add98b375c78db46d773d614cf299f028fa4671d713505a37379f38",
+        "r24_cases/oracle_ultra/B/sobolA_032/truth.json": "fddea0094515914b921180cb6ee94fff1d3c4978a56202ea1c37a1281a41af5c",
+        "r24_cases/oracle_ultra/B/sobolA_040/interior.json": "8e543178a57d5fb07b288ac651c0abdf539d5f1220378607b2e801daf92a09ed",
+        "r24_cases/oracle_ultra/B/sobolA_040/oracle.json": "dee008348d66ee202b098688659b07dfff2726c9992c85f6cff6723daca58127",
+        "r24_cases/oracle_ultra/B/sobolA_040/sat.json": "6ead75b95afa60d58bd209fceb60cf6c6046d6b592d5b158068d83677ce287bf",
+        "r24_cases/oracle_ultra/B/sobolA_040/truth.json": "85f1a94edd16adf123f29b5cc7ee2d7da6b264b961094e79f3d4eff48d41dc7d",
+        "r24_cases/oracle_ultra/B/sobolA_052/interior.json": "ce18abd88dd35280de01baeb7f2608b73d85243cd3e37adc335fa54fa7f5c730",
+        "r24_cases/oracle_ultra/B/sobolA_052/oracle.json": "fc6fa7a31e83800a080cb6604fce80810095bc30995fb12146847113a5ae48a1",
+        "r24_cases/oracle_ultra/B/sobolA_052/sat.json": "4c0b979886229088e96fc88b9e54ab1a8d408d1cb9a031b226738d4c0721a8f5",
+        "r24_cases/oracle_ultra/B/sobolA_052/truth.json": "e343e3a82cd5371116078ab6d096bc01d0a219a559eefcbcaf97bc9924e79f62",
+        "r24_cases/oracle_ultra/B/sobolA_060/interior.json": "db9de1bada8e77c064309d921191fe4b1c34d1feb8bf85a170ea7ce870b65f70",
+        "r24_cases/oracle_ultra/B/sobolA_060/oracle.json": "1729ecb23955503a45fb59cb439708c880a889d106166c356f6490e70c2f5b9a",
+        "r24_cases/oracle_ultra/B/sobolA_060/sat.json": "98dc6c046bd5f2b9aa1d29baa20a99b19ef38c887ab284eddfc515fa48e728fc",
+        "r24_cases/oracle_ultra/B/sobolA_060/truth.json": "79ba940344106653daa6e8f13aa4fc716b8413b452eb8cc344c8ac7454268a7f"
+      },
+      "raw_rollup_sha256": "bfe3f4f3ce75889146af9d04c58a93815b336ec7225c2b302b608cfa3db20f51"
+    },
+    "O32b_bin_control_budget_calibrated": {
+      "n_sidecars": 20,
+      "n_raw_arrays": 20,
+      "sidecar_sha256": {
+        "r24_cases/bin_control/A/sobolA_000/exact_tight.json": "9e2be95361a0ff65c6e343640954141fc11c00f9a0f5c6823239841f45371ba1",
+        "r24_cases/bin_control/A/sobolA_000/exact_tighter.json": "b9003b643ad3efc3d2719adce3de41160bbcc5ec661d50f139c2344a3ddbdf80",
+        "r24_cases/bin_control/A/sobolA_020/exact_tight.json": "b6f0bd453c3b97368bc4c1cdb15566ac8889e83f3ff19083b06441ed52e77ddd",
+        "r24_cases/bin_control/A/sobolA_020/exact_tighter.json": "8e467495001e3a6eb41c9b45f197ea3ea5a1b6cb9762a62c304b19dbf7d0008c",
+        "r24_cases/bin_control/A/sobolA_024/exact_tight.json": "ccb2bf6cc0479a006dd14cf0e2a14e55015de9d6ac33de296d257fb51dbca09b",
+        "r24_cases/bin_control/A/sobolA_024/exact_tighter.json": "b41fab374e480ee01d4ef703872e65f9bb172f0e8b8c0c5a94c7e31576eb2fe7",
+        "r24_cases/bin_control/A/sobolA_048/exact_tight.json": "e0ca4b96430f2e6abbb30dfcdc59ff7c2c1034f3147bcb2b2a3f62a4ec30b584",
+        "r24_cases/bin_control/A/sobolA_048/exact_tighter.json": "208bfb99d6109237d203fd362b7aa41f846efa7a8f75d74db6878cd02edcb5b5",
+        "r24_cases/bin_control/B/sobolA_011/exact_tight.json": "cdf14624165b9a4865c3571506c2ae43792af27855d66a7b039d135ec0392679",
+        "r24_cases/bin_control/B/sobolA_011/exact_tighter.json": "ced3ede61f1e20ad7f839abb07938271b2ad9327a8ed00941bdcfc9a4c3bd7eb",
+        "r24_cases/bin_control/B/sobolA_040/exact_tight.json": "d8375cb46980e54bc00c119f3a926cfa1bb1029d07f907d82c19f5e999ea6bd8",
+        "r24_cases/bin_control/B/sobolA_040/exact_tighter.json": "360bbf5d0ff87a2ed9aeb840967fa8752f9fabd6c15c218ee5c2e896291b623f",
+        "r24_cases/bin_control/B/sobolA_043/exact_tight.json": "526d8d5b4adf65de1b3840c4583dc7c34e4406af93d5b0bfca4dea47d7ca1609",
+        "r24_cases/bin_control/B/sobolA_043/exact_tighter.json": "0fe0a8d354fcde08ae585e05ab96181ab54d2e48f9869b1d75c8c73bef0564f2",
+        "r24_cases/bin_control/B/sobolA_044/exact_tight.json": "c308c074ea8a901a136817a13db67ef8ac1e3a639d6b75ef1ab944baabc4fa65",
+        "r24_cases/bin_control/B/sobolA_044/exact_tighter.json": "692569bf26e0ae12fdcecaf0fe054261ba4e2a02d249012e1d628f0f068c6d21",
+        "r24_cases/bin_control/B/sobolA_054/exact_tight.json": "46706ad00e740d0f22706464e0382fefaf87e1f9d60ba0050d113772d7d72f4b",
+        "r24_cases/bin_control/B/sobolA_054/exact_tighter.json": "34b96d6d9ca8d3d66e8913e7b4c92bf5ed5cf08b969b45b6254fbed8f1faf045",
+        "r24_cases/bin_control/B/sobolA_056/exact_tight.json": "37957c4a0d095faa8e8561a6583e10c93cdb5c169ffe4ecf95243bde5d36d266",
+        "r24_cases/bin_control/B/sobolA_056/exact_tighter.json": "7131c6330554dc881a2955e318e06d2fe6c95a567c9f2133469dac46c0bababf"
+      },
+      "raw_rollup_sha256": "d97e855594be51f60c9e28bf9b097c6b5c4dc44e88f09019e8c7f5a62e8c5913"
+    }
+  },
+  "manifest_sha256": "121c1099169ef90056a239ee71c188cc0a46c2200041bf91967d5ded16740cab"
+}

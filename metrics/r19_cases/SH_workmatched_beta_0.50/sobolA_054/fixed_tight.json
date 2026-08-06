@@ -1,0 +1,62 @@
+{
+  "schema": "r19_equal_total_work_v1",
+  "created_utc": "2026-08-03T04:17:52.466418Z",
+  "config": {
+    "sobol_index": 54,
+    "design": "SH",
+    "beta": 0.5,
+    "policy": "constant degree matched on realized total quadratic work",
+    "matched_to": "span-sweep member k=0.50",
+    "degree": 58,
+    "target_total_quadratic_work": 516662126.0,
+    "constant_endpoint_degree": 54,
+    "constant_endpoint_total_work": 441079992.0,
+    "first_estimate_rule": "N* = round(N_0 * sqrt(W_k / W_0)); the achieved ratio is measured, not assumed",
+    "adopted_truth_degree": 300,
+    "initial_state_si": [
+      1046026.0940582097,
+      1288249.850182156,
+      -888798.533159353,
+      -663.0905799897162,
+      1214.0862746317036,
+      979.3405136651002
+    ],
+    "duration_s": 604800.0,
+    "output_step_s": 120.0,
+    "integrator": "InstrumentedDOP853",
+    "max_step_s": 60.0,
+    "atol_kind": "vector",
+    "timing_comparable": false,
+    "source": {
+      "driver": "rev19_equal_total_work.py",
+      "reuses": "r18_span_sweep_SH_beta_0.50.json (realized work), r14_trajectory_SH_beta_0.50.json, r11 truths",
+      "lunaris_commit": "27e9ab86ed61d623f78c453ea2054348f1044c23"
+    }
+  },
+  "config_sha256": "0132b8681a1d71420751eb0b549f75146026943a2144a3a681c81511400d8bd6",
+  "status": "ok",
+  "event": null,
+  "telemetry": {
+    "n_rhs": 151301,
+    "n_accepted_steps": 10085,
+    "n_attempted_steps": 10087,
+    "n_rejected_trials": 2,
+    "switch_count_at_rhs_samples": 0,
+    "degree_counts": {
+      "58": 151301
+    },
+    "degree_range": [
+      58,
+      58
+    ],
+    "mean_degree": 58.0,
+    "mean_degree_sq": 3364.0,
+    "gravity_kernel_ns": 8552436100,
+    "process_cpu_ns": 14546875000,
+    "total_wall_ns": 17360417000
+  },
+  "raw_path": "metrics\\r19_raw\\SH_workmatched_beta_0.50\\sobolA_054\\fixed_tight.npz",
+  "raw_sha256": "8ea81839831fd41356d170bde7362d43fb1f60f439f414989e630899fcdf27d9",
+  "n_output_epochs": 5041,
+  "last_output_epoch_s": 604800.0
+}

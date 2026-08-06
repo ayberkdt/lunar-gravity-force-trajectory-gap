@@ -61,3 +61,8 @@ OUT.write_text(json.dumps(payload, indent=2), encoding="utf-8")
 t = payload["trajectory_tree"]
 print(f"[written] {OUT.name}  {t['n_sidecars']} sidecars, "
       f"{t['n_raw_arrays']} raw arrays")
+missing = [k for sec in ("scripts", "result_json", "reused_inputs")
+           for k, v in payload[sec].items() if v.get("missing")]
+if missing:
+    print("[error] recorded as missing: " + ", ".join(missing))
+    raise SystemExit(1)

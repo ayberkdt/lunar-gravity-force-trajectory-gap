@@ -1,0 +1,316 @@
+{
+  "schema": "r29_verdict_v1",
+  "preregistration_sha256": "1c4306c65c4ac06b262c1ad0401a0bf61e5926451cf570a27b5fc70262e353bf",
+  "parent_preregistration_sha256": "c2fcfaeb95a1be49c9f2ac149c4bacea1868c5658b667158e63e31bb7669b260",
+  "rule": {
+    "per_budget": "from r19_equal_total_work_C_beta_*.json: interior if resolved_interior_wins > resolved_fixed_wins, constant if resolved_fixed_wins > resolved_interior_wins, split if equal",
+    "bracket": "the crossing bracket of a design is (largest grid budget with a constant verdict, smallest grid budget with an interior verdict], over the grid budgets that design has propagated",
+    "reference_bracket": {
+      "A": [
+        0.5,
+        0.75
+      ],
+      "B": [
+        0.5,
+        0.75
+      ],
+      "source": "r19_equal_total_work_{A,B}_beta_{0.50,0.75}.json: A 18-32 then 27-15, B 20-35 then 27-19"
+    },
+    "H_requires": "design C returns a constant verdict at beta = 0.50 and an interior verdict at beta = 0.75",
+    "I_requires": "any other resolved pair of verdicts at those budgets",
+    "J_requires": "either budget resolves too few comparisons to produce a verdict, or the base is incomplete",
+    "not_deciding": "the median error ratio and its distance from unity are recorded as a secondary signature and do not enter the verdict, which is the tally rule the campaign has used since R19",
+    "no_averaging": "if design C disagrees, the three designs are reported side by side; no pooled or averaged bracket is quoted"
+  },
+  "designs": {
+    "A": {
+      "entries": [
+        {
+          "beta": 0.5,
+          "verdict": "constant",
+          "record": "r19_equal_total_work_A_beta_0.50.json",
+          "orbits": 64,
+          "resolved": 50,
+          "interior_wins": 18,
+          "fixed_wins": 32,
+          "unresolved": 14,
+          "median_rho": 0.6747057314281678,
+          "achieved_work_ratio_median": 0.9831642521304218,
+          "post_hoc": false
+        },
+        {
+          "beta": 0.62,
+          "verdict": "interior",
+          "record": "r19_equal_total_work_A_beta_0.62.json",
+          "orbits": 64,
+          "resolved": 39,
+          "interior_wins": 20,
+          "fixed_wins": 19,
+          "unresolved": 25,
+          "median_rho": 1.1324086741241612,
+          "achieved_work_ratio_median": 0.9893709645375037,
+          "post_hoc": true
+        },
+        {
+          "beta": 0.75,
+          "verdict": "interior",
+          "record": "r19_equal_total_work_A_beta_0.75.json",
+          "orbits": 64,
+          "resolved": 42,
+          "interior_wins": 27,
+          "fixed_wins": 15,
+          "unresolved": 22,
+          "median_rho": 1.6167977106225764,
+          "achieved_work_ratio_median": 0.9932687669683502,
+          "post_hoc": false
+        },
+        {
+          "beta": 1.0,
+          "verdict": "interior",
+          "record": "r19_equal_total_work_A.json",
+          "orbits": 64,
+          "resolved": 27,
+          "interior_wins": 19,
+          "fixed_wins": 8,
+          "unresolved": 37,
+          "median_rho": 2.5626098895969136,
+          "achieved_work_ratio_median": 0.9953186301239817,
+          "post_hoc": false
+        },
+        {
+          "beta": 1.25,
+          "verdict": "interior",
+          "record": "r19_equal_total_work_A_beta_1.25.json",
+          "orbits": 58,
+          "resolved": 16,
+          "interior_wins": 11,
+          "fixed_wins": 5,
+          "unresolved": 42,
+          "median_rho": 1.9496541712468125,
+          "achieved_work_ratio_median": 0.9978539575196013,
+          "post_hoc": false
+        },
+        {
+          "beta": 1.5,
+          "verdict": "not propagated",
+          "record": null,
+          "post_hoc": false
+        },
+        {
+          "beta": 2.0,
+          "verdict": "not propagated",
+          "record": null,
+          "post_hoc": false
+        },
+        {
+          "beta": 3.0,
+          "verdict": "not propagated",
+          "record": null,
+          "post_hoc": false
+        }
+      ],
+      "bracket": {
+        "placed": true,
+        "lower": 0.5,
+        "upper": 0.75,
+        "text": "(0.50, 0.75]"
+      }
+    },
+    "B": {
+      "entries": [
+        {
+          "beta": 0.5,
+          "verdict": "constant",
+          "record": "r19_equal_total_work_B_beta_0.50.json",
+          "orbits": 64,
+          "resolved": 55,
+          "interior_wins": 20,
+          "fixed_wins": 35,
+          "unresolved": 9,
+          "median_rho": 0.4340162447550776,
+          "achieved_work_ratio_median": 0.9852268249442204,
+          "post_hoc": false
+        },
+        {
+          "beta": 0.62,
+          "verdict": "constant",
+          "record": "r19_equal_total_work_B_beta_0.62.json",
+          "orbits": 64,
+          "resolved": 45,
+          "interior_wins": 21,
+          "fixed_wins": 24,
+          "unresolved": 19,
+          "median_rho": 0.8097580929113894,
+          "achieved_work_ratio_median": 0.9891063561973965,
+          "post_hoc": true
+        },
+        {
+          "beta": 0.75,
+          "verdict": "interior",
+          "record": "r19_equal_total_work_B_beta_0.75.json",
+          "orbits": 64,
+          "resolved": 46,
+          "interior_wins": 27,
+          "fixed_wins": 19,
+          "unresolved": 18,
+          "median_rho": 1.5702955242329688,
+          "achieved_work_ratio_median": 0.99475111981431,
+          "post_hoc": false
+        },
+        {
+          "beta": 1.0,
+          "verdict": "interior",
+          "record": "r19_equal_total_work_B.json",
+          "orbits": 64,
+          "resolved": 33,
+          "interior_wins": 28,
+          "fixed_wins": 5,
+          "unresolved": 31,
+          "median_rho": 2.5839708206033043,
+          "achieved_work_ratio_median": 0.9964105348133439,
+          "post_hoc": false
+        },
+        {
+          "beta": 1.25,
+          "verdict": "not propagated",
+          "record": null,
+          "post_hoc": false
+        },
+        {
+          "beta": 1.5,
+          "verdict": "interior",
+          "record": "r19_equal_total_work_B_beta_1.50.json",
+          "orbits": 64,
+          "resolved": 19,
+          "interior_wins": 14,
+          "fixed_wins": 5,
+          "unresolved": 45,
+          "median_rho": 2.75921979574633,
+          "achieved_work_ratio_median": 0.997825000096981,
+          "post_hoc": false
+        },
+        {
+          "beta": 2.0,
+          "verdict": "not propagated",
+          "record": null,
+          "post_hoc": false
+        },
+        {
+          "beta": 3.0,
+          "verdict": "not propagated",
+          "record": null,
+          "post_hoc": false
+        }
+      ],
+      "bracket": {
+        "placed": true,
+        "lower": 0.5,
+        "upper": 0.75,
+        "text": "(0.50, 0.75]"
+      }
+    },
+    "C": {
+      "entries": [
+        {
+          "beta": 0.5,
+          "verdict": "constant",
+          "record": "r19_equal_total_work_C_beta_0.50.json",
+          "orbits": 64,
+          "resolved": 50,
+          "interior_wins": 16,
+          "fixed_wins": 34,
+          "unresolved": 14,
+          "median_rho": 0.562579897893821,
+          "achieved_work_ratio_median": 0.9821390869233197,
+          "post_hoc": false
+        },
+        {
+          "beta": 0.62,
+          "verdict": "not propagated",
+          "record": null,
+          "post_hoc": true
+        },
+        {
+          "beta": 0.75,
+          "verdict": "interior",
+          "record": "r19_equal_total_work_C_beta_0.75.json",
+          "orbits": 64,
+          "resolved": 39,
+          "interior_wins": 23,
+          "fixed_wins": 16,
+          "unresolved": 25,
+          "median_rho": 2.0284113721650012,
+          "achieved_work_ratio_median": 0.991857446483564,
+          "post_hoc": false
+        },
+        {
+          "beta": 1.0,
+          "verdict": "interior",
+          "record": "r19_equal_total_work_C_beta_1.00.json",
+          "orbits": 64,
+          "resolved": 28,
+          "interior_wins": 18,
+          "fixed_wins": 10,
+          "unresolved": 36,
+          "median_rho": 2.207523454973159,
+          "achieved_work_ratio_median": 0.9951575593748015,
+          "post_hoc": false
+        },
+        {
+          "beta": 1.25,
+          "verdict": "not propagated",
+          "record": null,
+          "post_hoc": false
+        },
+        {
+          "beta": 1.5,
+          "verdict": "not propagated",
+          "record": null,
+          "post_hoc": false
+        },
+        {
+          "beta": 2.0,
+          "verdict": "not propagated",
+          "record": null,
+          "post_hoc": false
+        },
+        {
+          "beta": 3.0,
+          "verdict": "not propagated",
+          "record": null,
+          "post_hoc": false
+        }
+      ],
+      "bracket": {
+        "placed": true,
+        "lower": 0.5,
+        "upper": 0.75,
+        "text": "(0.50, 0.75]"
+      }
+    }
+  },
+  "reference_bracket": "(0.50, 0.75]",
+  "designC_bracket": "(0.50, 0.75]",
+  "outcome": "H_designC_agrees",
+  "outcome_text": "Design C places the sign change in the same bracket as designs A and B. The crossing is then reported as replicated on three independent scrambled draws, and the manuscript says three rather than two.",
+  "grid_budgets_with_a_verdict": [
+    0.5,
+    0.75,
+    1.0
+  ],
+  "designC_budgets_propagated": [
+    0.5,
+    0.75,
+    1.0
+  ],
+  "completion": {
+    "0.5": "64 orbits",
+    "0.62": "none",
+    "0.75": "64 orbits",
+    "1.0": "64 orbits",
+    "1.25": "none",
+    "1.5": "none",
+    "2.0": "none",
+    "3.0": "none"
+  }
+}

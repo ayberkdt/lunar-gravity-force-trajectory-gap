@@ -1,0 +1,184 @@
+"""SHA-256 integrity manifest for R34-R36: the derived products.
+
+R34, R35 and R36 are the products in this package that propagate nothing. All
+three re-read frozen records --- the R14 budget Pareto sweep and its trajectory
+summaries, the forced-variational panel, and the R19 realized-work ladders of
+every propagated population --- and re-express them as the instrument ladder of
+the main text (R34), the form control on the ladder's second rung (R35), and
+the budget-geometry regime map (R36). They therefore own no trajectory tree,
+and the partition claim the supplement makes over the propagating campaigns is
+untouched by them: every record they read is indexed under the manifest of the
+campaign that wrote it, and is listed here as a reused input rather than
+claimed.
+
+What they do own is six generated objects the manuscript pulls in directly ---
+two tables and three figures, plus the record behind the map --- which is why
+this manifest exists at all. Before it, those carried no provenance.
+
+R36 in particular reads across populations that must not be pooled. It draws
+them as separate rows and computes no marginal; the prohibition is R30's and is
+quoted in that registration.
+
+R35 additionally recomputes the terminal in-track displacement proxy that R14
+archived, and its own record carries the comparison. That check is indexed here
+as a result rather than described, so a later edit to the calibration or to the
+reference trajectories would surface as a disagreement inside a hashed file.
+
+Usage:  python rev35_finalize_manifest.py
+"""
+
+from __future__ import annotations
+
+import hashlib
+import json
+from datetime import datetime, timezone
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+METRICS = ROOT / "metrics"
+CODE = ROOT / "python_codes"
+FIGURES = ROOT / "figures"
+
+OUT = METRICS / "r35_final_experiment_manifest.json"
+
+SCOPE = (
+    "R34-R36: derived products over frozen records. R34 assembles the "
+    "four-rung instrument ladder at beta = 1 -- defect RMS, the signed "
+    "remaining-horizon displacement proxy, the forced-variational panel and "
+    "the propagated arcs -- from the archived R14 campaign. R35 rescores the "
+    "ladder's second rung in the trajectory metric's own arc-RMS form, "
+    "in-track and as the inertial three-vector, to separate what that rung "
+    "omits from the shape in which it is read. R36 assembles the "
+    "budget-geometry regime map: for every propagated population and budget, "
+    "the population-median error ratio and the resolved win-loss count of the "
+    "radial endpoint against its equal-budget constant degree, and of the "
+    "interior member against a work-matched constant degree. None of the "
+    "three runs a propagation."
+)
+
+SCRIPTS = ["rev34_instrument_ladder.py", "rev35_proxy_rms.py",
+           "rev35_finalize_manifest.py", "make_figures_r34.py",
+           "make_figures_r36_regime.py", "population_registry.py",
+           "rev14_budget_pareto.py", "rev10_sobol_confirmatory.py",
+           "rev12_atallah.py", "paper_style.py"]
+
+# Read, never written. Each is claimed by the manifest of the campaign that
+# produced it; listing them here records what these products were derived from,
+# not a second claim on them. The per-population trajectory and realized-work
+# summaries the regime map reads are globbed rather than listed, so a
+# population or budget that reaches the archive later cannot be silently left
+# out of the provenance of a map that draws it.
+def reused_names() -> list[str]:
+    fixed = ["r14_budget_pareto.json", "r14_variational_budget.json",
+             "r14_preregistration.json", "r28_calibration_amendment.json",
+             "r30_preregistration.json", "r31_preregistration.json",
+             "r29_manuscript_descriptives.json"]
+    swept = sorted(p.name for p in METRICS.glob("r14_trajectory_*.json"))
+    swept += sorted(p.name for p in METRICS.glob("r19_equal_total_work_*.json"))
+    return fixed + swept
+
+RESULTS = ["r34_instrument_ladder.json", "r35_proxy_rms.json",
+           "r36_regime_map.json"]
+TABLES = ["r34_instrument_ladder_table.tex", "r35_proxy_rms_table.tex"]
+FIGS = ["fig_instrument_ladder.pdf", "fig_beta1_per_orbit.pdf",
+        "fig_regime_map.pdf"]
+
+
+def sha(path: Path) -> str:
+    d = hashlib.sha256()
+    with path.open("rb") as fh:
+        for blk in iter(lambda: fh.read(1 << 20), b""):
+            d.update(blk)
+    return d.hexdigest()
+
+
+def index_files(names, base: Path):
+    out, absent = {}, []
+    for n in names:
+        p = base / n
+        if p.exists():
+            out[n] = {"sha256": sha(p), "bytes": p.stat().st_size}
+        else:
+            out[n] = {"absent": True}
+            absent.append(n)
+    return out, absent
+
+
+def proxy_check() -> dict:
+    """Lift R35's archived-value check into the manifest, per design."""
+    p = METRICS / "r35_proxy_rms.json"
+    if not p.exists():
+        return {"absent": True}
+    rec = json.loads(p.read_text(encoding="utf-8"))
+    return {d: rec["designs"][d]["archive_check"]
+            for d in sorted(rec.get("designs", {}))}
+
+
+def main() -> int:
+    scripts, a1 = index_files(SCRIPTS, CODE)
+    reused, a2 = index_files(reused_names(), METRICS)
+    results, a3 = index_files(RESULTS, METRICS)
+    tables, a4 = index_files(TABLES, METRICS)
+    figures, a5 = index_files(FIGS, FIGURES)
+    absent = a1 + a2 + a3 + a4 + a5
+
+    payload = {
+        "schema": "r35_final_experiment_manifest_v1",
+        "created_utc": datetime.now(timezone.utc).isoformat().replace(
+            "+00:00", "Z"),
+        "scope": SCOPE,
+        "propagation": (
+            "none. Every number is a deterministic re-derivation from the "
+            "frozen records listed under reused_inputs, and reruns "
+            "bit-identically."),
+        "partition_note": (
+            "this manifest claims no trajectory record. The r14_cases and "
+            "r14_raw trees it reads are owned by the R14 manifest and are not "
+            "indexed here, so the trajectory records still form a partition "
+            "over the propagating campaigns."),
+        "registration_status": (
+            "not pre-registered. All three are post-hoc re-expressions of "
+            "already-frozen comparisons, adding no new propagated evidence and "
+            "no new degree of freedom over any outcome: the ladder reorders "
+            "existing statistics, the R35 form control is a fixed rescoring of "
+            "the R14 proxy whose terminal form it reproduces exactly, and the "
+            "R36 map plots verdicts each population's own campaign already "
+            "wrote. beta = 0.62 remains the one budget that is itself post "
+            "hoc, under the R28 amendment, and the map marks it."),
+        "pooling_note": (
+            "R30's registration forbids pooling the strata with each other or "
+            "with the coverage designs, because the sub-boxes overlap. The "
+            "regime map therefore draws one row per population, computes no "
+            "row or column marginal, and says so in its caption."),
+        "numerical_kernel": {
+            "lunaris_release_tag": "paper-truncation-v1.0",
+            "lunaris_commit": "27e9ab86ed61d623f78c453ea2054348f1044c23",
+        },
+        "scripts": scripts,
+        "reused_inputs": reused,
+        "result_json": results,
+        "generated_tables": tables,
+        "generated_figures": figures,
+        "archived_proxy_reproduction": proxy_check(),
+    }
+    payload["manifest_sha256"] = hashlib.sha256(
+        json.dumps(payload, sort_keys=True, separators=(",", ":")).encode()
+    ).hexdigest()
+    OUT.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+
+    print(f"[written] {OUT.name}  manifest_sha256="
+          f"{payload['manifest_sha256'][:16]}")
+    chk = payload["archived_proxy_reproduction"]
+    for d, v in sorted(chk.items()):
+        if isinstance(v, dict) and "passed" in v:
+            print(f"  design {d}: proxy reproduction "
+                  f"{'PASS' if v['passed'] else 'FAIL'} "
+                  f"({v['checked']} values, worst rel {v['worst_rel']:.1e})")
+    if absent:
+        print("[error] required files not on disk: " + ", ".join(absent))
+        return 1
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

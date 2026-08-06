@@ -194,7 +194,8 @@ def main() -> int:
                              "reused_inputs", "registration")
                for k, v in payload[sec].items() if v.get("missing")]
     if missing:
-        print("[note] not produced: " + ", ".join(missing))
+        print("[error] recorded as missing: " + ", ".join(missing))
+        return 1
     return 0
 
 

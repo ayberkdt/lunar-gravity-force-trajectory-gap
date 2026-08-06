@@ -15,10 +15,23 @@ from pathlib import Path
 
 import numpy as np
 
+import table_design_block as tdb
+
 ROOT = Path(__file__).resolve().parents[1]
 METRICS = ROOT / "metrics"
+ANCHOR_BETA = 1.00
+
+
 def src_of(design: str):
-    return METRICS / f"r18_span_sweep_{design}.json"
+    """The anchor-budget record this table reports.
+
+    The span sweep gained a budget argument after this generator was written,
+    and its records were renamed with a beta suffix at that point. The
+    unsuffixed name this function used to return has not existed since, so the
+    generator could no longer reproduce its own table; the file on disk was the
+    one written before the rename. The budget is named explicitly here.
+    """
+    return METRICS / f"r18_span_sweep_{design}_beta_{ANCHOR_BETA:.2f}.json"
 K_ALL = ("0.00", "0.25", "0.50", "0.75", "1.00")
 ENDPOINT_LABEL = {"0.00": "constant", "1.00": "radial rule"}
 
@@ -49,18 +62,16 @@ def _resolved_vs_constant(row, k):
 def summary_table(designs: dict) -> str:
     """One block per design, so the replication is visible in the table
     rather than asserted in the caption."""
-    lines = ["\\begin{tabular}{@{}l r r r r r r@{}}", "\\toprule",
-             "$k$ & span & error [m] & work & best on & beats const. & "
+    lines = ["\\begin{tabular}{@{}c l r r r r r r@{}}", "\\toprule",
+             "& $k$ & span & error [m] & work & best on & beats const. & "
              "loses to const. \\\\",
-             " & median & median & median & orbits & resolved & resolved "
+             " & & median & median & median & orbits & resolved & resolved "
              "\\\\",
              "\\midrule"]
-    for di, (design, d) in enumerate(sorted(designs.items())):
+    groups = []
+    for design, d in sorted(designs.items()):
         rows = d["rows"]
-        if di:
-            lines.append("\\addlinespace[3pt]")
-        lines.append(f"\\multicolumn{{7}}{{@{{}}l}}{{\\emph{{Design "
-                     f"{design}, {len(rows)} orbits}}}}\\\\")
+        block: list[str] = []
         for k in K_ALL:
             errs = _stat([r["entries"].get(k, {}).get("error_m") for r in rows])
             spans = _stat([r["entries"].get(k, {}).get("span") for r in rows])
@@ -77,8 +88,13 @@ def summary_table(designs: dict) -> str:
             work_s = (f"$\\times{works['median']:.3f}$" if works else "---")
             w = "---" if k == "0.00" else str(wins)
             l = "---" if k == "0.00" else str(losses)
-            lines.append(f"{label} & {span_s} & {err_s} & {work_s} & {best} & "
+            block.append(f"{label} & {span_s} & {err_s} & {work_s} & {best} & "
                          f"{w} & {l} \\\\")
+        # the label is rotated into a five-row block, so it has to be short:
+        # "Design A, 64 orbits" overfills the box. The orbit count is in the
+        # caption instead.
+        groups.append((f"Design {design}", block))
+    lines += tdb.blocks(groups)
     lines += ["\\bottomrule", "\\end{tabular}"]
     return "\n".join(lines) + "\n"
 

@@ -94,7 +94,7 @@ def convergence_table(data, population: str, label: str, caption: str) -> str:
     \\bottomrule
   \\end{{tabular}}
 \\end{{table}}
-% {population}: {n} orbits; truth self-difference median {tsd['median']:.3f} m,
+% {population}: {n} orbits; reference self-difference median {tsd['median']:.3f} m,
 % p90 {tsd['p90']:.3f} m, max {tsd['max']:.3f} m.
 """
 
@@ -171,7 +171,7 @@ def phase_table(data) -> str:
   {len(data['rows'])} initial true anomalies.  Errors are position RMS against
   each phase's own $N=300$ reference; the penalty is relative to fixed
   $N=138$ (median error {e138['median']:.2f}~m).  A comparison is resolved when
-  the error gap exceeds the summed truth-inclusive envelopes.}}
+  the error gap exceeds the summed reference-inclusive envelopes.}}
   \\label{{tab:phase-sweep-vector}}
   \\begin{{tabular}}{{l r r r r r r}}
     \\toprule
@@ -184,7 +184,7 @@ def phase_table(data) -> str:
     \\bottomrule
   \\end{{tabular}}
 \\end{{table}}
-% phase truth self-difference median {tsd['median']:.3f} m, max {tsd['max']:.3f} m.
+% phase reference self-difference median {tsd['median']:.3f} m, max {tsd['max']:.3f} m.
 """
 
 
@@ -204,12 +204,12 @@ def blend_table(data) -> str:
   \\centering\\small
   \\caption{{28-day LRO-like ($30\\times216$~km polar) fixed-degree versus
   corrected-blend comparison at position/velocity-split vector tolerance.  The
-  truth self-difference falls to {s['truth_self_difference_rms_m']:.2f}~m, so
+  reference self-difference falls to {s['truth_self_difference_rms_m']:.2f}~m, so
   the previously ambiguous ordering resolves.}}
   \\label{{tab:blend-vector}}
   \\begin{{tabular}}{{l r r r}}
     \\toprule
-    & error (m) & self-diff (m) & truth-incl.\\ env.\\ (m)\\\\
+    & error (m) & self-diff (m) & reference-incl.\\ env.\\ (m)\\\\
     \\midrule
     fixed $N=120$ & {fx:.1f} & {pol['fixed_N120']['self_difference_rms_m']:.2f}
       & {pol['fixed_N120']['truth_inclusive_envelope_m']:.2f}\\\\
@@ -249,10 +249,10 @@ def main() -> int:
             per_orbit_table(
                 full, "full64-per-orbit",
                 "Per-orbit design-A vector-tolerance results. $N_t$ is the "
-                "adopted truth degree, $h_p$ the perilune altitude (km), "
+                "adopted reference degree, $h_p$ the perilune altitude (km), "
                 "$N_w$ and $N_c$ the work-matched and critical-altitude "
                 "degrees, and $E$ the seven-day position RMS (m) against the "
-                "same-tolerance truth. `env.' is the truth-inclusive numerical "
+                "same-tolerance reference. `env.' is the reference-inclusive numerical "
                 "envelope (m) of the empirical schedule. Columns w and c give "
                 "the work-matched and critical-altitude decisions: S schedule, "
                 "F fixed degree, U unresolved."),
