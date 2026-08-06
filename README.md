@@ -1,6 +1,5 @@
 # lunar-gravity-force-trajectory-gap
 
-[![CI](https://github.com/ayberkdt/lunar-gravity-force-trajectory-gap/actions/workflows/ci.yml/badge.svg)](https://github.com/ayberkdt/lunar-gravity-force-trajectory-gap/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.21824029-blue.svg)](https://doi.org/10.5281/zenodo.21824029)
 
@@ -152,7 +151,11 @@ and observed values, in
 gathered while they were open is in
 [`docs/DIGEST_STATUS.md`](docs/DIGEST_STATUS.md).
 
-The audit fails on any mismatch that is not recorded, so new drift breaks CI.
+The audit fails on any mismatch that is not recorded, so new drift is
+caught rather than absorbed. `.github/workflows/ci.yml` runs it, the numerical
+smoke test, the source-manifest check and a parse of every JSON record; run
+those four locally if you want the same assurance without waiting on a hosted
+runner.
 
 Because the archive is digest-verified throughout, `.gitattributes` disables
 line-ending normalization. Without it every recorded digest would break on
