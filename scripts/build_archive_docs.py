@@ -61,11 +61,16 @@ CLAIMS = [
      "uncapped|operational_elliptical", "S18"),
 ]
 
-README = """# Reproducing the results
+DOI = "10.5281/zenodo.21824029"
+
+README = f"""# Reproducing the results
 
 This archive is the complete machine-readable record behind the manuscript.
 The Supplementary Information carries the definitions, the contracts and the
 aggregate results; everything per-orbit, per-case and per-file is here.
+
+Cite it as <https://doi.org/{DOI}>. Paths quoted in the manuscript and the
+supplement are relative to the root of this deposit.
 
 ## What to read first
 
@@ -144,8 +149,11 @@ def manifest_records(d: dict) -> list[str]:
 
 def read_manifests() -> dict:
     out = {}
-    for p in sorted(list(METRICS.glob("r*_final_experiment_manifest.json"))
-                    + [METRICS / "r3_experiment_manifest.json"]):
+    # the twenty-four final campaign manifests the manuscript counts. The
+    # legacy r3_experiment_manifest.json belongs to the older evidence package
+    # and is described separately in S19; counting it here would put this index
+    # at odds with the manuscript.
+    for p in sorted(METRICS.glob("r*_final_experiment_manifest.json")):
         if not p.exists():
             continue
         name = p.name.split("_")[0].upper()

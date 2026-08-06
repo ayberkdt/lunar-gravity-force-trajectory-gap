@@ -4,6 +4,9 @@ This archive is the complete machine-readable record behind the manuscript.
 The Supplementary Information carries the definitions, the contracts and the
 aggregate results; everything per-orbit, per-case and per-file is here.
 
+Cite it as <https://doi.org/10.5281/zenodo.21824029>. Paths quoted in the manuscript and the
+supplement are relative to the root of this deposit.
+
 ## What to read first
 
 | you want to | read |

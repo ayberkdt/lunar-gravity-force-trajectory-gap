@@ -59,7 +59,6 @@ What is in this archive, directory by directory. Generated from the tree itself 
 | R37 | pre-registered | R37: extension of the forced-variational panel of Section 7.2 from the archived eight orbits toward both full  |
 | R38 | pre-registered | R38: the R31 operational elliptical population re-propagated with its adopted reference degree raised from 300 |
 | R39 | pre-registered | R39: the gradient-degree audit of the enlarged forced-variational panel (O40). The forced solve of (O25) and ( |
-| R3 | not recorded | Metrics, scripts, figures, and manuscript sources present in this package. |
 
 ## Tables moved out of the supplement PDF
 
