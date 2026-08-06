@@ -1,6 +1,6 @@
 {
   "schema": "r41_final_experiment_manifest_v1",
-  "created_utc": "2026-08-06T16:21:25.737423Z",
+  "created_utc": "2026-08-06T16:41:01.877828Z",
   "scope": "R41: the reference-degree control (O41). Every truncation error in the paper is measured against an adopted reference degree, 300 on most coverage-design orbits. This repeats the equal-budget comparison of (O25) on a perilune-stratified subset of sixteen orbits with the reference raised to 600. The cap audit licenses reusing both policy trajectories unchanged, so only the reference is re-propagated, at both tolerance levels, and the truth-inclusive resolution rule is re-applied.",
   "registration_status": "pre-registered. The four bands, the per-band selection rule, the submission order, the admissibility self-check and four outcomes were fixed in r41_preregistration.json before any orbit was solved with the raised gradient. One band is declared outcome-dependent in the registration itself: it ranks on the archived prediction, and is adversarial by construction.",
   "partition_note": "this campaign claims no trajectory record. The augmented solve returns a prediction and spools nothing to a cases or raw tree, and the reference trajectories it integrates along stay indexed under R11 and R14. The trajectory partition is unchanged.",
@@ -19,12 +19,16 @@
   },
   "scripts": {
     "rev41_reference_degree_control.py": {
-      "sha256": "210348ebdc7c5e7bc21656ef39c598889d39a3c1fb9d4481724d648f784ce5ec",
-      "bytes": 19723
+      "sha256": "199cd471306a75364c31238a93373249864ee275ca2d77ea86b306f7507cf774",
+      "bytes": 22132
+    },
+    "rev41_sidecars.py": {
+      "sha256": "30d976eb5f50905ed9ae091ac1ddd7b6221b8e2a5e1810ed76f6ad71f43584e3",
+      "bytes": 6883
     },
     "rev41_finalize_manifest.py": {
-      "sha256": "d77d3da7aeaaf8a0cad6533ccfacf326cfe1b4acc968a714a0e16af41989a486",
-      "bytes": 8333
+      "sha256": "ca9b76a87e1b7d29c7ca23415490f6d22194f141677f34e552282d44f3573a9b",
+      "bytes": 9060
     },
     "rev14_budget_trajectory.py": {
       "sha256": "d344072bc53b321cb6b979653caabacc2a046ac6224b42bcd43dc1b5628d1ad0",
@@ -65,6 +69,10 @@
     "r41_reference_degree_control.json": {
       "sha256": "0504451af11037802ee0662521d689c3e4f6ec17e5982a646cd8e60853356d37",
       "bytes": 22053
+    },
+    "r41_trajectory_index.json": {
+      "sha256": "ccfb8527df4cf4cb58ddf48986f9b3d8bebedcaacef5b9cbc17441074c2c0d1c",
+      "bytes": 2479
     }
   },
   "generated_tables": {},
@@ -84,7 +92,14 @@
       }
     ],
     "reuse_note": "policy trajectories reused unchanged; only the reference was re-propagated, at both tolerance levels, and the truth-inclusive resolution rule re-applied",
-    "registration_sha256": "6cb2e52293f58ff5c51bc6a8af07b52a46d95dac3f2bb59c9c8e3c9221fafbd1"
+    "registration_sha256": "6cb2e52293f58ff5c51bc6a8af07b52a46d95dac3f2bb59c9c8e3c9221fafbd1",
+    "trajectory_sidecars": {
+      "trajectories": 32,
+      "rolled_up_raw_digest": "c5678ceb4e4d6c8e65a7df8a1d4cd78fe1f0df2a6593a78616c3caa1da925c2c",
+      "index": "r41_trajectory_index.json",
+      "arrays_shipped": false,
+      "note": "one sidecar per raw state array, each carrying the config that determines the trajectory and the digest of the array. The arrays themselves are excluded from the public repository as regenerable, which is the policy applied to every campaign; the digests travel with the manifest."
+    }
   },
-  "manifest_sha256": "66ec9697d8a646c309c9448f69e0cce67ad7ce59d7e6e55ca5318826088d60a5"
+  "manifest_sha256": "c21c5e6c972d276a3d7dd6b2c2797a2e510db1cb504418eb733b7c494695c42d"
 }

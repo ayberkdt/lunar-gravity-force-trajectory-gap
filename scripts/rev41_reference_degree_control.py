@@ -42,6 +42,7 @@ ROOT = Path(__file__).resolve().parents[1]
 METRICS = ROOT / "metrics"
 PREREG = METRICS / "r41_preregistration.json"
 OUTROOT = METRICS / "r41_raw"
+CASEROOT = METRICS / "r41_cases"
 
 NEW_REFERENCE = 600
 BASE_REFERENCE = 300
@@ -255,7 +256,42 @@ def worker(task: dict) -> dict:
             new_ref[lv] = (t, y)
             out = OUTROOT / f"{design}_ref{NEW_REFERENCE}" / f"sobolA_{index:03d}"
             out.mkdir(parents=True, exist_ok=True)
-            base.atomic_npz(out / f"reference_{lv}.npz", t_s=t, state_si=y)
+            npz = out / f"reference_{lv}.npz"
+            base.atomic_npz(npz, t_s=t, state_si=y)
+            # a raw array without a sidecar is not auditable; every other
+            # campaign writes one and so does this
+            cfg = {
+                "campaign": "R41",
+                "purpose": ("reference trajectory at the raised degree, for "
+                            "the reference-degree control (O41)"),
+                "design": design, "sobol_index": index,
+                "reference_degree": NEW_REFERENCE,
+                "base_reference_degree": BASE_REFERENCE,
+                "tolerance_level": lv,
+                "rtol": bt.LEVELS[lv]["rtol"],
+                "atol_position_m": bt.LEVELS[lv]["atol_position_m"],
+                "atol_velocity_m_s": bt.LEVELS[lv]["atol_velocity_m_s"],
+                "max_step_s": bt.MAX_STEP, "duration_s": bt.DURATION,
+                "output_step_s": bt.OUTPUT_STEP,
+                "initial_state_si": list(map(float, y0)),
+                "frame": ("inertial, Moon rotating uniformly at its sidereal "
+                          "rate about the polar axis, gravity only"),
+                "integrator": "DOP853",
+                "propagator_source": ("rev14_budget_trajectory._propagate, "
+                                      "called through this module"),
+            }
+            side = CASEROOT / npz.relative_to(OUTROOT).with_suffix(".json")
+            side.parent.mkdir(parents=True, exist_ok=True)
+            base.atomic_json(side, {
+                "schema": "r41_reference_trajectory_v1",
+                "created_utc": base.utc_now(),
+                "config": cfg, "config_sha256": base.object_hash(cfg),
+                "status": st, "event": ev, "telemetry": tel,
+                "raw_path": str(npz.relative_to(ROOT)).replace("\\", "/"),
+                "raw_sha256": base.file_hash(npz),
+                "n_output_epochs": int(len(t)),
+                "last_output_epoch_s": float(t[-1]),
+            })
 
         # the archived policies, byte for byte
         spec_reuse = bool(task["reuse_fixed_critical"])

@@ -57,6 +57,7 @@ SCOPE = (
 REGISTRATION = ["r41_preregistration.json"]
 
 SCRIPTS = ["rev41_reference_degree_control.py",
+           "rev41_sidecars.py",
            "rev41_finalize_manifest.py",
            "rev14_budget_trajectory.py", "rev12_atallah.py",
            "rev10_sobol_confirmatory.py"]
@@ -67,7 +68,7 @@ REUSED = [PANEL, "r14_trajectory_B_beta_1.00.json",
           "r10_sobolA_baseline_truth_corrected.json",
           "r11_designB_rows.json"]
 
-RESULTS = [RECORD]
+RESULTS = [RECORD, "r41_trajectory_index.json"]
 TABLES = []
 
 
@@ -89,6 +90,21 @@ def index_files(names, base: Path):
             out[n] = {"absent": True}
             absent.append(n)
     return out, absent
+
+
+def _sidecars() -> dict:
+    """The reference trajectories this campaign owns, by rolled-up digest.
+    The arrays are excluded from the repository as regenerable; the sidecars
+    that carry their digests are not."""
+    idx = METRICS / "r41_trajectory_index.json"
+    if not idx.exists():
+        return {"absent": True}
+    d = json.loads(idx.read_text(encoding="utf-8"))
+    return {"trajectories": d["trajectories"],
+            "rolled_up_raw_digest": d["rolled_up_raw_digest"],
+            "index": "r41_trajectory_index.json",
+            "arrays_shipped": False,
+            "note": d["note"]}
 
 
 def completion() -> dict:
@@ -116,6 +132,7 @@ def completion() -> dict:
         "ratios_moving_more_than_2_percent": moved,
         "reuse_note": r["protocol_note"],
         "registration_sha256": r["registration_sha256"],
+        "trajectory_sidecars": _sidecars(),
     }
 
 
