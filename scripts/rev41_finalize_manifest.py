@@ -1,30 +1,27 @@
-"""SHA-256 integrity manifest for R41: the gradient-degree audit (O40).
+"""SHA-256 integrity manifest for R41: the reference-degree control (O41).
 
-R41 re-solves a registered stratified subset of the R37 panel with the
-reference gravity gradient evaluated at each orbit's own adopted reference
-degree instead of at 120, so the approximation the mechanism rung rests on is
-removed rather than bounded. Like R37 it writes no trajectory record: the
-augmented solve returns a prediction and spools nothing to a cases or raw tree,
-so the trajectory partition the supplement states is unchanged by it.
+Every truncation error in the paper is measured against an adopted reference
+degree, 300 on most coverage-design orbits. R41 repeats the equal-budget
+comparison of (O25) on a perilune-stratified subset of sixteen of them with the
+reference raised to 600, and asks whether any verdict moves.
 
-Four things are indexed here that a reader would otherwise take on trust:
+What the cap audit licenses is what makes the control cheap: at beta = 1 the
+calibrated radial schedule reaches the reference on 9 of 64 orbits in design A
+and 6 of 64 in design B, so on the rest raising the reference changes neither
+policy. Only the reference is re-propagated. Both archived policy trajectories
+are reused byte for byte.
 
-  * the registration, hashed. The four bands, the per-band selection rule, the
-    admissibility conditions and the four outcomes were fixed before any orbit
-    was solved with the raised gradient. The registration also declares which
-    band is outcome-dependent, and why that band is adversarial rather than
-    flattering.
-  * the self-check. Before any reference-degree orbit was accepted the run
-    reproduced an archived degree-120 prediction through the same code path.
-    The result is lifted out of the record into the manifest so that a later
-    edit to the calibration or the reference trajectories surfaces here.
-  * the completion state, band by band. The run returned 13 of 16 orbits and
-    band L is one of four; the registration forbids reporting a partial band as
-    the band, so the manifest records the per-band solved/declared counts rather
-    than a single orbit total that would hide it.
-  * the R37 panel record, which R41 reads to draw its subset and must never
-    overwrite. It stays indexed under R37; the digest it was read at is
-    recorded here so the two can be compared without opening that manifest.
+Three things are indexed here that a reader would otherwise take on trust:
+
+  * the registration, hashed. The eligibility test, the perilune-stratified
+    selection, the reuse protocol and the outcomes were fixed before any
+    reference was propagated at the raised degree.
+  * the trajectories this campaign owns. Unlike R37 and R39, which return
+    predictions and spool nothing, R41 propagates: thirty-two reference arrays,
+    sixteen orbits at two tolerance levels, each with a sidecar carrying the
+    configuration that determines it and the digest of the array.
+  * the archived records it reads and must never overwrite, listed as reused
+    inputs with the digests they were read at.
 
 Usage:  python rev41_finalize_manifest.py
 """
@@ -150,35 +147,33 @@ def main() -> int:
             "+00:00", "Z"),
         "scope": SCOPE,
         "registration_status": (
-            "pre-registered. The four bands, the per-band selection rule, the "
-            "submission order, the admissibility self-check and four outcomes "
-            "were fixed in r41_preregistration.json before any orbit was solved "
-            "with the raised gradient. One band is declared outcome-dependent "
-            "in the registration itself: it ranks on the archived prediction, "
-            "and is adversarial by construction."),
+            "pre-registered. The eligibility test, the perilune-stratified "
+            "selection of eight orbits per design, the reuse protocol and three "
+            "outcomes were fixed in r41_preregistration.json before any "
+            "reference was propagated at the raised degree. Eligibility is read "
+            "from the archived record rather than chosen: an orbit qualifies if "
+            "its adopted reference is 300 and its archived per-call mean "
+            "squared degree is below 300^2, which is the cap test. "),
         "partition_note": (
-            "this campaign claims no trajectory record. The augmented solve "
-            "returns a prediction and spools nothing to a cases or raw tree, "
-            "and the reference trajectories it integrates along stay indexed "
-            "under R11 and R14. The trajectory partition is unchanged."),
+            "R41 owns the thirty-two raised-reference trajectory arrays and "
+            "their sidecars: sixteen orbits at two tolerance levels. It owns no "
+            "policy trajectory, because both archived policy trajectories are "
+            "reused unchanged. The raw arrays are not redistributed; their "
+            "rolled-up digest and per-trajectory sidecars are indexed by this "
+            "manifest. "),
         "panel_note": (
-            "the subset is drawn from " + PANEL + ", which is sealed under the "
-            "R37 manifest and is read, never written. Its digest as read is "
-            "recorded under reused_inputs; a mismatch against the R37 manifest "
-            "would mean it had been modified."),
-        "partial_band_note": (
-            "band L returned one of its four declared orbits. The registration "
-            "forbids reporting a partial band as the band, so band_status "
-            "carries solved and declared counts per band and the supplement "
-            "reports L as partial. The three that did not return are named "
-            "under completion.orbits_unfinished and are a compute bound, not a "
-            "result."),
+            "the subset is drawn from the archived beta = 1 records, "
+            "r14_trajectory_A_beta_1.00.json and its design-B counterpart, "
+            "which are sealed under the R14 manifest and are read, never "
+            "written. Their digests as read are recorded under reused_inputs; a "
+            "mismatch against the R14 manifest would mean they had been "
+            "modified. "),
         "reporting_limit": (
-            "the panel's reported predictions remain the degree-120 ones. This "
-            "campaign reports only whether they would change side, which the "
-            "registration fixes and this manifest repeats so that a later "
-            "reader cannot mistake a reference-degree ratio for a panel "
-            "number."),
+            "the campaign's reported errors remain those measured against the "
+            "adopted reference of 300. This control reports only whether "
+            "raising the reference to 600 would move a verdict, and the "
+            "registration forbids quoting a reference-600 error as a campaign "
+            "number. "),
         "numerical_kernel": {
             "lunaris_release_tag": "paper-truncation-v1.0",
             "lunaris_commit": "27e9ab86ed61d623f78c453ea2054348f1044c23",

@@ -9,7 +9,7 @@ What is in this archive, directory by directory. Generated from the tree itself 
 | `environment/` | 5 | interpreter specifications and dependency locks |
 | `source/release_snapshot/` | 1 | pinned source snapshot of the kernel |
 | `gravity_models/` | 1 | coefficient-product digests; the products themselves are not redistributed |
-| `registrations/original/` | 21 | pre-registrations, one per campaign |
+| `registrations/original/` | 22 | pre-registrations, one per campaign |
 | `registrations/amendments/` | 5 | amendments, each naming its parent |
 | `designs/` | 14 | frozen design coordinates and initial states |
 | `designs/geometry_strata/` | 5 | frozen sub-box designs, including the four that did not reach a ladder |
@@ -20,14 +20,14 @@ What is in this archive, directory by directory. Generated from the tree itself 
 | `raw/fixed_budget/` | 47 | fixed-budget allocation campaign |
 | `raw/interpolation/` | 60 | interpolation-family campaign |
 | `raw/operational_elliptical/` | 22 | operational elliptical population |
-| `processed/aggregate_tables/` | 89 | aggregate tables as they appear in the PDF |
+| `processed/aggregate_tables/` | 90 | aggregate tables as they appear in the PDF |
 | `processed/per_orbit_tables/` | 19 | CSV renderings of the per-orbit tables that left the supplement |
 | `processed/resolution_envelopes/` | 21 | numerical-resolution envelopes |
-| `processed/work_and_timing/` | 37 | realized work and measured kernel time |
-| `scripts/reproduce_tables/` | 21 | table generators |
+| `processed/work_and_timing/` | 38 | realized work and measured kernel time |
+| `scripts/reproduce_tables/` | 22 | table generators |
 | `scripts/reproduce_figures/` | 13 | figure generators |
 | `scripts/validation/` | 11 | integrity and consistency checks |
-| `manifests/` | 31 | campaign manifests, campaign map, checksums |
+| `manifests/` | 32 | campaign manifests, campaign map, checksums |
 | `supplement_archive/` | 2 | what left the supplement PDF, and why |
 | `supplement_archive/full_legacy_tables/` | 19 | the moved tables as rendered LaTeX, byte-identical to what the supplement compiled |
 
@@ -89,5 +89,5 @@ What is in this archive, directory by directory. Generated from the tree itself 
 
 ## Not in this archive
 
-Raw trajectory arrays (about 2.1 GB), regenerable from the drivers and hashed in the campaign manifests. Gravity-model coefficient files and SPICE kernels, which are distributed by their own archives and are recorded here by digest only.
+Raw trajectory arrays (about 5.5 GB), regenerable from the drivers and hashed in the campaign manifests. Gravity-model coefficient files and SPICE kernels, which are distributed by their own archives and are recorded here by digest only.
 

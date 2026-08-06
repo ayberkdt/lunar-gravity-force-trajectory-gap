@@ -1,12 +1,11 @@
 {
   "schema": "r41_final_experiment_manifest_v1",
-  "created_utc": "2026-08-06T16:41:01.877828Z",
+  "created_utc": "2026-08-06T17:38:34.858780Z",
   "scope": "R41: the reference-degree control (O41). Every truncation error in the paper is measured against an adopted reference degree, 300 on most coverage-design orbits. This repeats the equal-budget comparison of (O25) on a perilune-stratified subset of sixteen orbits with the reference raised to 600. The cap audit licenses reusing both policy trajectories unchanged, so only the reference is re-propagated, at both tolerance levels, and the truth-inclusive resolution rule is re-applied.",
-  "registration_status": "pre-registered. The four bands, the per-band selection rule, the submission order, the admissibility self-check and four outcomes were fixed in r41_preregistration.json before any orbit was solved with the raised gradient. One band is declared outcome-dependent in the registration itself: it ranks on the archived prediction, and is adversarial by construction.",
-  "partition_note": "this campaign claims no trajectory record. The augmented solve returns a prediction and spools nothing to a cases or raw tree, and the reference trajectories it integrates along stay indexed under R11 and R14. The trajectory partition is unchanged.",
-  "panel_note": "the subset is drawn from r14_trajectory_A_beta_1.00.json, which is sealed under the R37 manifest and is read, never written. Its digest as read is recorded under reused_inputs; a mismatch against the R37 manifest would mean it had been modified.",
-  "partial_band_note": "band L returned one of its four declared orbits. The registration forbids reporting a partial band as the band, so band_status carries solved and declared counts per band and the supplement reports L as partial. The three that did not return are named under completion.orbits_unfinished and are a compute bound, not a result.",
-  "reporting_limit": "the panel's reported predictions remain the degree-120 ones. This campaign reports only whether they would change side, which the registration fixes and this manifest repeats so that a later reader cannot mistake a reference-degree ratio for a panel number.",
+  "registration_status": "pre-registered. The eligibility test, the perilune-stratified selection of eight orbits per design, the reuse protocol and three outcomes were fixed in r41_preregistration.json before any reference was propagated at the raised degree. Eligibility is read from the archived record rather than chosen: an orbit qualifies if its adopted reference is 300 and its archived per-call mean squared degree is below 300^2, which is the cap test. ",
+  "partition_note": "R41 owns the thirty-two raised-reference trajectory arrays and their sidecars: sixteen orbits at two tolerance levels. It owns no policy trajectory, because both archived policy trajectories are reused unchanged. The raw arrays are not redistributed; their rolled-up digest and per-trajectory sidecars are indexed by this manifest. ",
+  "panel_note": "the subset is drawn from the archived beta = 1 records, r14_trajectory_A_beta_1.00.json and its design-B counterpart, which are sealed under the R14 manifest and are read, never written. Their digests as read are recorded under reused_inputs; a mismatch against the R14 manifest would mean they had been modified. ",
+  "reporting_limit": "the campaign's reported errors remain those measured against the adopted reference of 300. This control reports only whether raising the reference to 600 would move a verdict, and the registration forbids quoting a reference-600 error as a campaign number. ",
   "numerical_kernel": {
     "lunaris_release_tag": "paper-truncation-v1.0",
     "lunaris_commit": "27e9ab86ed61d623f78c453ea2054348f1044c23"
@@ -27,8 +26,8 @@
       "bytes": 6883
     },
     "rev41_finalize_manifest.py": {
-      "sha256": "ca9b76a87e1b7d29c7ca23415490f6d22194f141677f34e552282d44f3573a9b",
-      "bytes": 9060
+      "sha256": "2e4990fd1ad087078f1b033ed6fbaa765ec37183a788bcf4c647612b83afbad1",
+      "bytes": 8593
     },
     "rev14_budget_trajectory.py": {
       "sha256": "d344072bc53b321cb6b979653caabacc2a046ac6224b42bcd43dc1b5628d1ad0",
@@ -101,5 +100,5 @@
       "note": "one sidecar per raw state array, each carrying the config that determines the trajectory and the digest of the array. The arrays themselves are excluded from the public repository as regenerable, which is the policy applied to every campaign; the digests travel with the manifest."
     }
   },
-  "manifest_sha256": "c21c5e6c972d276a3d7dd6b2c2797a2e510db1cb504418eb733b7c494695c42d"
+  "manifest_sha256": "5aaec6f654617dffc5de052d68213a866810f52aff3c6caa3f4bb91999d7537e"
 }

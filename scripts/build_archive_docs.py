@@ -126,7 +126,7 @@ in the R16 manifest and in Supplementary Section S19 before use.
 
 ## What is deliberately not here
 
-Raw trajectory arrays (about 2.1 GB) are regenerable from the drivers and are
+Raw trajectory arrays (about 5.5 GB) are regenerable from the drivers and are
 excluded; their per-file digests are recorded in the campaign manifests. Large
 external coefficient products and SPICE kernels are not redistributed.
 """
@@ -274,7 +274,7 @@ def write_index(man: dict) -> Path:
                          f"`{r['archive_path_tex']}` | `{r['archive_path_csv']}` |")
 
     lines += ["", "## Not in this archive", "",
-              "Raw trajectory arrays (about 2.1 GB), regenerable from the "
+              "Raw trajectory arrays (about 5.5 GB), regenerable from the "
               "drivers and hashed in the campaign manifests. Gravity-model "
               "coefficient files and SPICE kernels, which are distributed by "
               "their own archives and are recorded here by digest only.", ""]

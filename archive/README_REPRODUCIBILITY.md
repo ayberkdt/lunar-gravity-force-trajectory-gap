@@ -61,6 +61,6 @@ in the R16 manifest and in Supplementary Section S19 before use.
 
 ## What is deliberately not here
 
-Raw trajectory arrays (about 2.1 GB) are regenerable from the drivers and are
+Raw trajectory arrays (about 5.5 GB) are regenerable from the drivers and are
 excluded; their per-file digests are recorded in the campaign manifests. Large
 external coefficient products and SPICE kernels are not redistributed.
