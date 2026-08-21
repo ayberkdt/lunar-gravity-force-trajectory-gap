@@ -65,6 +65,7 @@ for fixed in (
     "main.tex",
     "supplement.tex",
     "preamble.tex",
+    "macros_shared.tex",
     "references.bib",
     "main.pdf",
     "supplement.pdf",
@@ -72,6 +73,41 @@ for fixed in (
     "revision/CHANGE_LIST.md",
     "revision/CODE_CORRECTNESS_AUDIT_R10.md",
     "revision/FINAL_SUBMISSION_REPORT_R10.md",
+    # legacy-package evidence records the r3 manifest predates or omits and
+    # no campaign manifest owns; they feed supplement sections (potential
+    # blend, DOE screening, alpha margin, 24-h/orientation/phase controls)
+    # and are indexed here because this manifest indexes the manuscript
+    # state that quotes them
+    "metrics/r5_potential_xval.json",
+    "metrics/r6_24h_tight.json",
+    "metrics/r6_moonpa_telemetry.json",
+    "metrics/r6_phase_mc.json",
+    "metrics/r7_doe_matrix_stage2.json",
+    "metrics/r7_doe_screening_stage1.json",
+    "metrics/r7_doe_stage3_longarc.json",
+    "metrics/r8_alpha_margin_resolution_conservative.json",
+    "metrics/r9_potential_blend_longarc.json",
+    # the qualification (robustness) records and the e-series band/criteria
+    # records: same class, caught by inverting the ownership scan from a
+    # prefix allowlist to exclusion-defined scope. robustness_test4 is the
+    # sole source of the polar/LRO mechanism paragraph and (O17) names it;
+    # the e-series records carry the band-share and criteria numbers of
+    # Sections 6.1-6.2 and supersede same-content r1/e legacy copies
+    "metrics/robustness_numerical_floor_check.json",
+    "metrics/robustness_test1_tudat_dynamic.json",
+    "metrics/robustness_test1b_lro_convergence.json",
+    "metrics/robustness_test2_event_switching.json",
+    "metrics/robustness_test3_truth_convergence.json",
+    "metrics/robustness_test4_variational_mechanism.json",
+    "metrics/robustness_test7_synthetic_spectrum.json",
+    "metrics/e1_band_shares_100_300_nmax600.json",
+    "metrics/e1_band_shares_60_100_nmax300.json",
+    "metrics/e2_truncation_criteria.json",
+    "metrics/e3_kernel_timing.json",
+    "metrics/e4_blend_analysis.json",
+    "metrics/e5_switch_jump.json",
+    "metrics/e6_orbit_mapping.json",
+    "metrics/e7_adaptive_orbit.json",
 ):
     path = ROOT / fixed
     if path.exists():
@@ -183,6 +219,13 @@ payload = {
     "total_bytes": sum(entry["bytes"] for entry in entries),
     "entries": entries,
 }
+
+# self-seal, in the convention the other manifests use and the integrity gate
+# recomputes; R10 was the one manifest without it, and the supplement's claim
+# that the gate recomputes every manifest's own seal was false by that one
+payload["manifest_sha256"] = hashlib.sha256(
+    json.dumps(payload, sort_keys=True, separators=(",", ":")).encode()
+).hexdigest()
 
 OUTPUT.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
 print(

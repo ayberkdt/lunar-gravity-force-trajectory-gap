@@ -1,0 +1,73 @@
+{
+  "schema": "r42_preregistration_v1",
+  "campaign": "R42 -- completion of the R37 forced-variational level chain to levels 56 and 64 per design (112 and 128 orbits)",
+  "question": "R37's wall clock stopped inside level 56. Does the mechanism rung hold on the 26 orbits the clock never reached, and does the panel therefore reach both full designs?",
+  "written_before": "any of the 26 unsolved orbits was submitted. The 26 are exactly the orbits of levels 56 and 64 that carry no row in the sealed R37 record.",
+  "not_blind": "levels 4 through 40 per design are already reported: sign agreement 63/63 on the 80-orbit panel and 96/102 over the whole 102-orbit record, with six disagreements all on design A. The outcome on the 26 orbits reachable here is unknown, and the rule that selects them was fixed in R37 before any orbit outside the archived eight existed.",
+  "inherited_from_r37": {
+    "note": "the selection rule, the nested level chain, the stopping rule and the three outcomes are R37's, not restated here in weakened form. They are pinned by digest and read at run time.",
+    "r37_preregistration.json": {
+      "sha256": "f9b6352022b7cb45656499dd6ab49ef8a219f76a3c69815f38683ff6ec13444a"
+    },
+    "selection_rule": {
+      "statement": "The panel is enlarged along the same deterministic, perilune-stratified rule the archived panel was drawn with, refined in nested levels. For each design the uncensored beta = 1 rows are sorted by perilune and n_per points are taken at np.linspace(0, len-1, n_per).round(). No orbit is chosen, excluded or reordered on any outcome.",
+      "levels_per_design": [
+        4,
+        7,
+        13,
+        25,
+        40,
+        56,
+        64
+      ],
+      "levels_total_orbits": [
+        8,
+        14,
+        26,
+        50,
+        80,
+        112,
+        128
+      ],
+      "nesting_verified": "each level is a strict superset of the previous one on both designs, checked programmatically before this file was written; level 1 is exactly the archived eight-orbit panel.",
+      "why_nested": "every level spans the designs' perilune range, so a run stopped part-way still leaves a spanning panel rather than a geometry-biased prefix."
+    },
+    "outcomes": {
+      "E1": "if the enlarged panel keeps sign agreement with the propagated arcs on every orbit it reaches, the mechanistic statement is reported at the enlarged panel size and the asymmetry paragraph of Section 7.2 is narrowed accordingly.",
+      "E2": "if sign agreement fails on some orbits, the failures are reported with their perilune and their measured and predicted ratios, and the mechanistic claim is qualified to the regime where it holds. This outcome is reportable and is not a reason to enlarge the panel further in search of a better one.",
+      "E3": "if the calibration channel (predicted over measured error of the constant comparator) leaves the 0.94-1.04 band reported for the archived panel on some orbits, those orbits are reported as ones where the linear response is not calibrated, and their ratios are read as signs only."
+    }
+  },
+  "carried_rows": {
+    "statement": "the 102 rows of the sealed R37 record are carried forward unchanged rather than recomputed, and each carries the provenance flag it arrived with. No carried row is re-scored, re-selected or dropped.",
+    "r37_variational_extension.json": {
+      "sha256": "5b144cde90e4848d5edb2e5b7c49d96acc0b9568f04d4c992f16696b31989aea",
+      "rows": 102
+    },
+    "why_not_recomputed": "recomputing 94 solved orbits costs about a hundred core-hours and can only reproduce them. What that cost would buy is bought instead by the two admissibility checks below."
+  },
+  "admissibility_self_check": {
+    "digest": "the carried record must match the digest sealed in r37_final_experiment_manifest.json byte for byte, checked before the first orbit is submitted and again at the end. A mismatch aborts without writing.",
+    "recomputed_orbit": "B005",
+    "archived_predicted_ratio": 2.3193085489592344,
+    "abort_threshold_rel": 0.001,
+    "statement": "R37's own admissibility orbit is recomputed under the same threshold before any new orbit is accepted. Together the two checks say that the carried file is the sealed one and that the current source still computes what produced it."
+  },
+  "stopping_rule": {
+    "statement": "a wall clock is fixed before the run. Orbits are submitted in level order, so level 56 is completed before level 64 is begun. Whatever the clock leaves incomplete is reported as incomplete.",
+    "reporting": "the highest fully completed level is the panel. If the clock truncates level 64 as it truncated level 56, the panel is 112 orbits and the orbits beyond it are reported separately with the completion fraction of the truncated level. A truncated level is never reported as though it were the panel.",
+    "concurrency_note": "this run shares its machine with the R30 stratum ladders, so its worker count is smaller than the 8 R37 used and its wall clock buys fewer orbits per hour. That is a scheduling fact and not a change to the protocol: which orbits are attempted, and in what order, does not depend on it."
+  },
+  "writes": [
+    "metrics/r42_variational_completion.json"
+  ],
+  "prohibited": [
+    "writing metrics/r37_variational_extension.json, which is sealed under the R37 manifest and is read, never touched",
+    "changing the level chain, the selection rule or the scoring after seeing a level's outcome",
+    "dropping an orbit because it is slow, or because its result is inconvenient",
+    "reporting a partially completed level as a completed panel",
+    "quoting the carried rows as though this run had recomputed them"
+  ],
+  "reporting_commitment": "the completed panel size is reported whichever way the sign agreement comes out, and the Section 7.2 asymmetry paragraph is rewritten to the panel this run actually completes -- not to the one it was aiming at.",
+  "preregistration_sha256": "18e313c841280cca2fe6049eaf9bba47cedce90e15999cd1583258ebbd0d781a"
+}

@@ -1,0 +1,64 @@
+{
+  "schema": "r44_equal_work_tighter_v1",
+  "created_utc": "2026-08-19T02:11:51.332421Z",
+  "config": {
+    "sobol_index": 40,
+    "design": "SL",
+    "beta": 0.75,
+    "policy": "constant degree matched on realized total quadratic work at the tighter level",
+    "matched_to": "span-sweep member k=0.50",
+    "match_level": "tighter",
+    "degree": 304,
+    "target_total_quadratic_work_tighter": 23786897005.0,
+    "constant_endpoint_degree": 217,
+    "constant_endpoint_total_work_tighter": 12110349020.0,
+    "fixed_work_source_policy": "fixed_critical",
+    "first_estimate_rule": "N* = round(N_0 * sqrt(W_k/W_0)) with both works at the tighter level; the achieved ratio is measured, not assumed",
+    "adopted_truth_degree": 900,
+    "initial_state_si": [
+      -219326.77259944857,
+      1753440.9464416308,
+      119282.49282264317,
+      1034.0156393010147,
+      34.31053724851338,
+      1396.9008203663457
+    ],
+    "duration_s": 604800.0,
+    "output_step_s": 120.0,
+    "integrator": "InstrumentedDOP853",
+    "max_step_s": 60.0,
+    "atol_kind": "vector",
+    "timing_comparable": false,
+    "source": {
+      "driver": "rev44_equal_work_tighter.py",
+      "reuses": "r18_span_sweep_SL_beta_0.75.json + r18 tighter telemetry (member work), archived comparator telemetry (fixed work), r11 truths",
+      "lunaris_commit": "27e9ab86ed61d623f78c453ea2054348f1044c23"
+    }
+  },
+  "config_sha256": "32c77d81081cd953470a097e8ec7356ed249b3ef41e7f877e43f806a01346242",
+  "status": "ok",
+  "event": null,
+  "telemetry": {
+    "n_rhs": 259364,
+    "n_accepted_steps": 15754,
+    "n_attempted_steps": 17675,
+    "n_rejected_trials": 1921,
+    "switch_count_at_rhs_samples": 0,
+    "degree_counts": {
+      "304": 259364
+    },
+    "degree_range": [
+      304,
+      304
+    ],
+    "mean_degree": 304.0,
+    "mean_degree_sq": 92416.0,
+    "gravity_kernel_ns": 279801540300,
+    "process_cpu_ns": 297500000000,
+    "total_wall_ns": 305259342400
+  },
+  "raw_path": "metrics\\r61_raw\\SL_workmatched_tighter_beta_0.75\\sobolSL_040\\fixed_tighter.npz",
+  "raw_sha256": "e0f151f140dea5731321bb54dd3e4b42df33d060dbff1d83139b36a06b2425a9",
+  "n_output_epochs": 5041,
+  "last_output_epoch_s": 604800.0
+}

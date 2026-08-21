@@ -126,9 +126,13 @@ in the R16 manifest and in Supplementary Section S19 before use.
 
 ## What is deliberately not here
 
-Raw trajectory arrays (about 5.5 GB) are regenerable from the drivers and are
-excluded; their per-file digests are recorded in the campaign manifests. Large
-external coefficient products and SPICE kernels are not redistributed.
+Raw trajectory arrays under `metrics/*_raw/` (about 14 GB) are regenerable from
+the drivers and are excluded; their per-file digests are recorded in the
+campaign manifests. The J1-J3 arrays (about 0.7 GB) are held outside `metrics/`
+at the location recorded in `rJ_final_experiment_manifest.json` and are excluded
+on the same terms, which together are the about 15 GB the manuscript reports as
+not redistributed. Large external coefficient products and SPICE kernels are not
+redistributed.
 """
 
 
@@ -274,8 +278,11 @@ def write_index(man: dict) -> Path:
                          f"`{r['archive_path_tex']}` | `{r['archive_path_csv']}` |")
 
     lines += ["", "## Not in this archive", "",
-              "Raw trajectory arrays (about 5.5 GB), regenerable from the "
-              "drivers and hashed in the campaign manifests. Gravity-model "
+              "Raw trajectory arrays under `metrics/*_raw/` (about 14 GB), "
+              "regenerable from the drivers and hashed in the campaign "
+              "manifests, and the J1-J3 arrays (about 0.7 GB) held outside "
+              "`metrics/` and hashed in `rJ_final_experiment_manifest.json`; "
+              "about 15 GB together. Gravity-model "
               "coefficient files and SPICE kernels, which are distributed by "
               "their own archives and are recorded here by digest only.", ""]
     out = ARCHIVE / "supplement_archive" / "archive_index.md"

@@ -22,7 +22,7 @@ and reports it in the metric's own form:
   * D_I_rms   = sqrt( (1/T) int_0^T d_I(t)^2 dt ), the in-track component
                 projected exactly as the terminal proxy projects it;
   * D_3d_rms  = sqrt( (1/T) int_0^T |d(t)|^2 dt ), the inertial three-vector,
-                which is the free-propagation analogue of the propagated
+                which is the free-propagation analog of the propagated
                 metric itself.
 
 Both are still free-propagation statistics: they carry the sign and the
@@ -244,7 +244,7 @@ def build_table(payload: dict) -> str:
          "proxy_3d_rms"),
     ]
     lines = [r"\begin{tabular}{@{}l l cc cc@{}}", r"\toprule",
-             r" & & \multicolumn{2}{c}{Orbits favouring radial}"
+             r" & & \multicolumn{2}{c}{Orbits favoring radial}"
              r" & \multicolumn{2}{c}{Median ratio} \\",
              r"\cmidrule(lr){3-4}\cmidrule(l){5-6}",
              r"Form & Statistic & A & B & A & B \\", r"\midrule"]
@@ -315,7 +315,7 @@ def main() -> int:
         s = payload["designs"][d]["summary"]
         chk = payload["designs"][d]["archive_check"]
         print(f"[design {d}] over {s['orbits']} uncensored orbits, radial "
-              f"favoured by: terminal proxy "
+              f"favored by: terminal proxy "
               f"{s['proxy_terminal']['radial_smaller']}, in-track RMS "
               f"{s['proxy_in_track_rms']['radial_smaller']}, 3-D RMS "
               f"{s['proxy_3d_rms']['radial_smaller']}", flush=True)

@@ -1,0 +1,59 @@
+{
+  "schema": "r50_budget_extension_amendment_v1",
+  "created_utc": "2026-08-11T23:02:18.967422Z",
+  "amends": "r50_preregistration.json",
+  "amends_sha256": "72e5bcaecb2d4b3bbd08c9663aa418623a07b6591909512b2b30bb7f09315888",
+  "amends_file_sha256": "71735c969b5b6ae4a7609316c1a7ce655d62f517823ec9d6fab037481931bfb3",
+  "added_budgets": [
+    1.25,
+    1.5
+  ],
+  "registered_budgets": [
+    1.0,
+    0.75,
+    0.62,
+    0.5
+  ],
+  "reason": "the registered grid is one-sided for this population. The widest level is expected to carry its crossing below 0.50, as the SH sub-box already does, and the narrowest may not cross inside the grid at all; with a grid stopping at 1.00 the narrow end could only be reported as not crossing by the declared budget, which is a statement about the grid rather than about the radial span. 1.25 and 1.50 make the crossing locatable from both ends on measured cells.",
+  "why_this_is_not_post_hoc": "no ladder record, no trajectory record and no calibration exists for either block at the moment this file is written; the state below is read from disk. The extension cannot have been chosen to suit a result because no result of this population exists.",
+  "protocol_unchanged": "1.25 and 1.50 are members of the frozen budget grid in r14_budget_pareto.json, which the whole paper uses, and the standard calibration computes them for every population. Nothing about the ladder, the resolution rule or the work match changes.",
+  "conditionality": "run after the four registered budgets on both blocks, in the order 1.25 then 1.50, and only if the clock allows. A budget the clock does not reach is reported as declared and not run.",
+  "reporting": "these two budgets are marked as an amendment wherever they are quoted, in the same way the post-hoc 0.62 budget is marked elsewhere in the paper, and the distinction between the four registered budgets and these two is kept in the table rather than flattened into one grid.",
+  "campaign_state_at_amendment": {
+    "span_ladder_a": {
+      "prepass_rows": true,
+      "operating_point": true,
+      "base_indexed_complete": false,
+      "calibration": false,
+      "ladder_records": [],
+      "trajectory_records": []
+    },
+    "span_ladder_b": {
+      "prepass_rows": false,
+      "operating_point": false,
+      "base_indexed_complete": false,
+      "calibration": false,
+      "ladder_records": [],
+      "trajectory_records": []
+    }
+  },
+  "source": {
+    "lunaris_repo": "D:\\Masaustu\\LUNAR_SIMULATION",
+    "lunaris_commit": "27e9ab86ed61d623f78c453ea2054348f1044c23",
+    "lunaris_working_tree_clean": false,
+    "release_tag": "paper-truncation-v1.0",
+    "kernel_path": "D:\\Masaustu\\LUNAR_SIMULATION\\src\\lunaris\\physics\\spherical_harmonics.py",
+    "kernel_sha256": "6e2a0a85e18c9b400c003e6c2ad1e163c524c27f54bc0d404e0172709d16d740",
+    "gravity_path": "D:\\Masaustu\\LUNAR_SIMULATION\\data\\gravity_models\\jggrx_1800f_sha.tab.txt",
+    "gravity_sha256": "d2a552067a78bf1d2755807ae14ee1d6843a8f6a4228e01ce59a665516738fec",
+    "experiment_script": "C:\\Users\\ayber\\Desktop\\Makale\\codebase\\python_codes\\rev10_sobol_confirmatory.py",
+    "experiment_script_sha256": "e483912446449f0086be062844fe3e8070ed8868a4ecd9c15d17ccdf38fb6b25",
+    "python": "3.12.1 (tags/v3.12.1:2305ca5, Dec  7 2023, 22:03:25) [MSC v.1937 64 bit (AMD64)]",
+    "numpy": "2.2.6",
+    "scipy": "1.14.1",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "processor": "Intel64 Family 6 Model 158 Stepping 10, GenuineIntel",
+    "logical_cpu_count": 12
+  },
+  "amendment_sha256": "a0d299590e23e2beaee6da9ef67f95f0970898233f584b36e91c82e4b4c9fca8"
+}

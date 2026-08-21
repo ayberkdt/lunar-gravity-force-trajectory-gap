@@ -198,12 +198,12 @@ def write_design_audit_tables(design: dict, prefix: str, design_name: str) -> No
         r"\begin{longtable}{rrrrrrrrr}",
         rf"\caption{{Complete osculating elements and planned reference degree for design {design_name}.}}\label{{tab:sobol-{prefix}-elements}}\\",
         r"\toprule",
-        r"Index & $a$ [km] & $e$ & $i$ & $\Omega$ & $\omega$ & $\nu_0$ & $\lambda_p$ & $N_T$ \\",
+        r"Index & $a$ [km] & $e$ & $i$ & $\Omega$ & $\omega$ & $\nu_0$ & $\lambda_p$ & $N_{\mathrm{ref}}$ \\",
         r"\midrule",
         r"\endfirsthead",
         r"\multicolumn{9}{c}{\tablename\ \thetable\ continued}\\",
         r"\toprule",
-        r"Index & $a$ [km] & $e$ & $i$ & $\Omega$ & $\omega$ & $\nu_0$ & $\lambda_p$ & $N_T$ \\",
+        r"Index & $a$ [km] & $e$ & $i$ & $\Omega$ & $\omega$ & $\nu_0$ & $\lambda_p$ & $N_{\mathrm{ref}}$ \\",
         r"\midrule",
         r"\endhead",
     ]
@@ -273,13 +273,13 @@ full_lines = [
     r"only for the pre-specified 17-orbit convergence subset.}"
     r"\label{tab:sobol-full-results}\\",
     r"\toprule",
-    r"Index & $N_T$ & $N_W$ & $N_C$ & $\rho_W$ & $\rho_C$ & "
+    r"Index & $N_{\mathrm{ref}}$ & $N_W$ & $N_C$ & $\rho_W$ & $\rho_C$ & "
     r"Resolved vs.\ $W$ & Resolved vs.\ $C$ \\",
     r"\midrule",
     r"\endfirsthead",
     r"\multicolumn{8}{c}{\tablename\ \thetable\ continued}\\",
     r"\toprule",
-    r"Index & $N_T$ & $N_W$ & $N_C$ & $\rho_W$ & $\rho_C$ & "
+    r"Index & $N_{\mathrm{ref}}$ & $N_W$ & $N_C$ & $\rho_W$ & $\rho_C$ & "
     r"Resolved vs.\ $W$ & Resolved vs.\ $C$ \\",
     r"\midrule",
     r"\endhead",
@@ -304,12 +304,12 @@ primary_lines = [
     r"All errors are full-common-grid seven-day Cartesian position RMS in meters; "
     r"$\rho>1$ favors the empirical schedule.}\label{tab:sobol-primary-audit}\\",
     r"\toprule",
-    r"Index & Status & $N_T$ & $N_W$ & $N_C$ & $E_{\rm emp}$ & $E_W$ & $E_C$ & $\rho_W$ & $\rho_C$ \\",
+    r"Index & Status & $N_{\mathrm{ref}}$ & $N_W$ & $N_C$ & $E_{\rm emp}$ & $E_W$ & $E_C$ & $\rho_W$ & $\rho_C$ \\",
     r"\midrule",
     r"\endfirsthead",
     r"\multicolumn{10}{c}{\tablename\ \thetable\ continued}\\",
     r"\toprule",
-    r"Index & Status & $N_T$ & $N_W$ & $N_C$ & $E_{\rm emp}$ & $E_W$ & $E_C$ & $\rho_W$ & $\rho_C$ \\",
+    r"Index & Status & $N_{\mathrm{ref}}$ & $N_W$ & $N_C$ & $E_{\rm emp}$ & $E_W$ & $E_C$ & $\rho_W$ & $\rho_C$ \\",
     r"\midrule",
     r"\endhead",
 ]
@@ -503,7 +503,7 @@ blend_telemetry_lines.extend([r"\bottomrule", r"\end{longtable}", ""])
 audit_lines = [
     r"\begin{tabular}{rrrrrr}",
     r"\toprule",
-    r"Index & $h_p$ [km] & $N=600$--900 RMS [m] & Threshold [m] & Pass & Adopted $N_T$ \\",
+    r"Index & $h_p$ [km] & $N=600$--900 RMS [m] & Threshold [m] & Pass & Adopted $N_{\mathrm{ref}}$ \\",
     r"\midrule",
 ]
 for row in sorted(truth_audit["rows"], key=lambda item: item["sobol_index"]):
@@ -521,7 +521,6 @@ audit_lines.extend([r"\bottomrule", r"\end{tabular}", ""])
 
 
 ps.apply()
-plt.rcParams["text.usetex"] = False
 rho_work = np.asarray([row["rho_work"] for row in rows])
 rho_crit = np.asarray([row["rho_crit"] for row in rows])
 hp = np.asarray([row["design_point"]["hp_km"] for row in rows])
@@ -530,9 +529,15 @@ inc = np.asarray([row["design_point"]["incl_deg"] for row in rows])
 
 fig, axes = plt.subplots(1, 3, figsize=(7.2, 2.45), constrained_layout=True)
 
+# The two ordered curves share a y-axis. Drawn on independent scales they are
+# the same shape twice and invite the reader to compare positions that are not
+# comparable; on one scale the thing worth seeing is visible, which is that the
+# two ratios straddle unity in different proportions.
+lo = min(float(rho_work.min()), float(rho_crit.min()))
+hi = max(float(rho_work.max()), float(rho_crit.max()))
 for ax, values, title in (
-    (axes[0], rho_work, r"$\rho_{\rm work}$"),
-    (axes[1], rho_crit, r"$\rho_{\rm crit}$"),
+    (axes[0], rho_work, r"$\rho_{\mathrm{work}}$"),
+    (axes[1], rho_crit, r"$\rho_{\mathrm{crit}}$"),
 ):
     ordered = np.sort(values)
     x = np.arange(1, len(ordered) + 1)
@@ -541,6 +546,7 @@ for ax, values, title in (
     ax.set_xlabel("Ordered orbit")
     ax.set_ylabel(title)
     ax.set_xlim(1, 64)
+    ax.set_ylim(lo / 1.6, hi * 1.6)
     ax.grid(True, which="both", alpha=0.22, lw=0.4)
 
 log_rho = np.log10(rho_work)
@@ -557,13 +563,19 @@ for mask, marker, label in markers:
         norm=norm,
         marker=marker,
         s=25,
-        edgecolors="0.25",
-        linewidths=0.35,
+        # a diverging ramp is white at its centre, so an orbit whose ratio sits
+        # at unity was drawn as a white marker on white paper and read as
+        # missing. The darker, thicker edge keeps it on the page.
+        edgecolors="0.15",
+        linewidths=0.6,
         label=label,
     )
 axes[2].set_xlabel(r"$h_p$ [km]")
 axes[2].set_ylabel(r"$h_a$ [km]")
-axes[2].legend(fontsize=6.2, loc="best", frameon=True)
+# the legend sat over the data at loc="best"; below the panel it competes with
+# nothing, and the panel is wide enough to carry three entries in one row
+axes[2].legend(fontsize=6.2, loc="upper center", bbox_to_anchor=(0.5, -0.30),
+               ncol=3, frameon=False, handletextpad=0.4, columnspacing=1.0)
 colorbar = fig.colorbar(scatter, ax=axes[2], fraction=0.05, pad=0.02)
 colorbar.set_label(r"$\log_{10}\rho_{\rm work}$")
 

@@ -1,0 +1,74 @@
+{
+  "schema": "rJ2_case_v1",
+  "created_utc": "2026-08-09T02:45:29.390727Z",
+  "config": {
+    "sobol_index": 5,
+    "policy": "radial",
+    "policy_spec": {
+      "kind": "budget_calibrated_radial",
+      "beta": 1.0,
+      "accuracy_parameter_m_s2": 0.015714083716097456,
+      "bin_km": 10.0,
+      "floor": 2,
+      "cap": 300,
+      "n_critical": 82,
+      "source": "recalibrated on the full-dynamics reference",
+      "table": {
+        "130.0": 102,
+        "140.0": 92,
+        "150.0": 84,
+        "160.0": 77,
+        "170.0": 71,
+        "180.0": 66,
+        "190.0": 61,
+        "200.0": 57
+      }
+    },
+    "level": "tighter",
+    "adopted_truth_degree": 300,
+    "dynamics": "moon_sh + earth + sun + srp_eclipse",
+    "orientation": "DE440/MOON_PA",
+    "duration_s": 604800.0,
+    "output_step_s": 120.0,
+    "max_step_s": 60.0,
+    "rtol": 1e-13,
+    "atol_kind": "vector",
+    "atol_position_m": 1e-06,
+    "atol_velocity_m_s": 1e-09,
+    "integrator": "InstrumentedDOP853",
+    "field": "JGGRX_1800F",
+    "timing_comparable": false,
+    "execution": "parallel_process_pool"
+  },
+  "telemetry": {
+    "n_rhs": 342062,
+    "wall_s": 101.23003239999525,
+    "gravity_wall_s": 37.8178086,
+    "mean_active_degree": 79.38553829422736,
+    "mean_degree_squared": 6549.156743514333,
+    "rms_active_degree": 80.92686045754112,
+    "min_active_degree": 57,
+    "max_active_degree": 102,
+    "degree_counts": {
+      "57": 27046,
+      "61": 42045,
+      "66": 44266,
+      "71": 38382,
+      "77": 38145,
+      "84": 37085,
+      "92": 39006,
+      "102": 76087
+    },
+    "component_rms_acceleration_m_s2": {
+      "earth_3b": 2.3143822414871083e-05,
+      "sun_3b": 1.155746771229231e-07,
+      "srp": 4.961668332035235e-08
+    },
+    "n_accepted_steps": 16965,
+    "n_attempted_steps": 27245,
+    "n_rejected_trials": 10280,
+    "total_wall_s": 101.23003239999525
+  },
+  "raw_path": "D:\\makale_raw_offload\\jgcd\\J2\\J2_005\\radial_recal_tighter.npz",
+  "raw_sha256": "b8f9e78d988925ef9751a7007fcf18db410cf699a11f59de8d88f81edf90ddc7"
+}

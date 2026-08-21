@@ -27,7 +27,10 @@ SCRIPTS = [
     "rev16_finalize_manifest.py",
 ]
 
-RESULT_JSON = ["r16_multibody_calibration.json"]
+# r6_lp150q_transfer predates the campaign-manifest system, feeds the LP150Q
+# regularization discussion, and belonged to no manifest until the reverse
+# ownership scan asked; the transfer campaign is its natural home
+RESULT_JSON = ["r16_multibody_calibration.json", "r6_lp150q_transfer.json"]
 
 TABLES = ["r16_transfer_table.tex", "r16_transfer_detail_table.tex"]
 

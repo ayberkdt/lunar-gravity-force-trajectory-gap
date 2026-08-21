@@ -15,7 +15,7 @@ What goes in, and what deliberately does not:
               deposit time. Duplicating them in the working tree would create a
               second copy that drifts the moment a campaign re-runs.
 
-  excluded    raw trajectory arrays under metrics/*_raw/, 5.7 GB. Regenerable
+  excluded    raw trajectory arrays under metrics/*_raw/, about 14 GB. Regenerable
               from the drivers; per-file digests stay in the campaign
               manifests. This is the policy the public repository already
               applies.
@@ -119,10 +119,12 @@ def populate() -> dict:
     (ARCHIVE / "source" / "release_snapshot" / "README.txt").write_text(
         "The spherical-harmonic kernel used as the measurement instrument is\n"
         "maintained in the open-source Lunaris repository and is identified\n"
-        "here by release tag and commit, in ../commit.txt, rather than\n"
-        "vendored. A snapshot placed in this directory must match that commit;\n"
-        "verify it before use, because every number in the manuscript is\n"
-        "model-relative to the kernel that produced it.\n",
+        "here by release tag and commit, in ../commit.txt. The release package\n"
+        "carries the commit-pinned snapshot itself under src/lunaris/; this\n"
+        "mirror carries the identification only. Any snapshot placed in this\n"
+        "directory must match that commit; verify it before use, because every\n"
+        "number in the manuscript is model-relative to the kernel that\n"
+        "produced it.\n",
         encoding="utf-8")
     bump("source")
     (ARCHIVE / "source" / "commit.txt").write_text(
@@ -236,12 +238,18 @@ def write_checksums() -> tuple[int, float]:
             "+00:00", "Z"),
         "files": len(lines), "bytes": total,
         "excluded": {
-            "metrics/*_raw/": "raw trajectory arrays, about 5.7 GB, "
+            "metrics/*_raw/": "raw trajectory arrays, about 14 GB, "
                               "regenerable from the drivers and hashed in the "
                               "campaign manifests",
             "metrics/*_cases/": "per-case records, indexed in "
                                 "raw/case_tree_index.json and copied at "
                                 "deposit time",
+            "rJ raw state arrays": "the J1-J3 arrays, about 0.7 GB, held "
+                                   "outside metrics/ at the location recorded "
+                                   "in rJ_final_experiment_manifest.json and "
+                                   "hashed there per file; with metrics/*_raw/ "
+                                   "this is the about 15 GB the manuscript "
+                                   "reports as not redistributed",
         },
         "checksums": "manifests/CHECKSUMS.sha256",
     }, indent=2), encoding="utf-8")

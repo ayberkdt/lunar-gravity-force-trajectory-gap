@@ -61,6 +61,10 @@ in the R16 manifest and in Supplementary Section S19 before use.
 
 ## What is deliberately not here
 
-Raw trajectory arrays (about 5.5 GB) are regenerable from the drivers and are
-excluded; their per-file digests are recorded in the campaign manifests. Large
-external coefficient products and SPICE kernels are not redistributed.
+Raw trajectory arrays under `metrics/*_raw/` (about 14 GB) are regenerable from
+the drivers and are excluded; their per-file digests are recorded in the
+campaign manifests. The J1-J3 arrays (about 0.7 GB) are held outside `metrics/`
+at the location recorded in `rJ_final_experiment_manifest.json` and are excluded
+on the same terms, which together are the about 15 GB the manuscript reports as
+not redistributed. Large external coefficient products and SPICE kernels are not
+redistributed.

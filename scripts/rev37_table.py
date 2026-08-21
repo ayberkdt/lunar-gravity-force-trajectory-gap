@@ -43,7 +43,7 @@ def main() -> int:
     if uncal:
         lines.append(r"\multicolumn{5}{@{}p{\linewidth}@{}}{" + ", ".join(
             rf"{c['design']}{c['sobol_index']:03d} "
-            rf"($h_p={c['hp_km']:.0f}$~km, {c['calibration_ratio_fixed']:.2f})"
+            rf"($h_p={c['hp_km']:.0f}$~km, {c['calibration_ratio_fixed']:.3f})"
             for c in uncal) + r"} \\")
     else:
         lines.append(r"\multicolumn{5}{@{}p{\linewidth}@{}}{none} \\")

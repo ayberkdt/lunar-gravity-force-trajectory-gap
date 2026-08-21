@@ -1,0 +1,63 @@
+{
+  "schema": "r56_preregistration_v1",
+  "campaign": "R56 (O56): the interior member at sixty days, recalibrated on the sixty-day arc and matched at the scoring tolerance",
+  "registered_utc": "2026-08-19T13:49:52Z",
+  "registered_before_any_propagation": true,
+  "motivation": "(O30) reused the frozen seven-day degree table over a sixty-day arc, where the member spends a median 1.22 times the constant endpoint's per-call budget, and compared the two on the nominal per-call accounting. Its negative result therefore cannot distinguish 'the interior advantage does not survive the horizon' from 'a seven-day allocation is the wrong allocation for a sixty-day problem'. This campaign removes both confounds at once: the member is recalibrated on the sixty-day reference epochs, and the comparator is matched on realized total quadratic work read at the tolerance the errors are scored at, the convention (O42), (O53), (O54) and (O55) established.",
+  "locked_choices": {
+    "panel": "the eight Design-A orbits carrying a sixty-day reference, sobol indices [0, 1, 2, 3, 5, 6, 7, 8]; no population is selected in this campaign",
+    "budget": "beta = 1 only",
+    "policies": "k = 0 (constant comparator) and k = 0.5 (the interior member the manuscript already carries)",
+    "not_revisited": "if the result suggests another k or another budget would have done better, that is a separate campaign and not an amendment here"
+  },
+  "construction": {
+    "recalibration": "the k = 0.5 table is rebuilt with its scale bisected so that <N_k^2> equals beta * N_crit^2 over the sixty-day reference epochs, tight level, the same convention (O25) applies on seven-day epochs; only the arc changes",
+    "comparator": "N* = round(N_0 sqrt(W_k/W_0)) with both works at the tighter level, W_k from the recalibrated member's own telemetry and W_0 from the archived (O30) constant endpoint; the achieved ratio is measured from the propagated runs, not assumed",
+    "propagation": "both policies at both tolerance levels over 60 days against the archived (O27) references, the R17 contract unchanged",
+    "censoring": "a comparator at or above the adopted reference degree is censored and reported, never clamped",
+    "scoring": "the reference-inclusive envelope rule used everywhere else, errors read at the tighter level"
+  },
+  "declared_outcomes": {
+    "A_interior_holds": "a resolved majority for k = 0.5 with median E_fix/E_0.5 > 1. Reading: the (O30) result was substantially an artifact of seven-day calibration, and the manuscript's horizon caveat becomes a statement that allocation requires horizon-consistent calibration.",
+    "B_constant_wins": "a resolved majority for the constant degree with median ratio < 1. Reading: the interior optimum itself moves with the horizon, which the state-transition account of Section VII predicts, and the constructive interior claim is narrowed to the seven-day horizon deliberately rather than by default.",
+    "C_mixed": "the resolved subset is directionless. Reading: no horizon statement is supported either way and the manuscript says so.",
+    "D_unresolved_dominated": "more than four of the eight orbits undecided. Reading: the sixty-day numerical envelope cannot resolve this comparison, which is itself a useful stopping result: further sixty-day populations would not decide it either.",
+    "note": "all four are publishable and all four change the same places: the sixty-day paragraph of Section VIII, the horizon bound in the limitations, and (O30)'s entry in the experiment contract."
+  },
+  "plan_validation": "the plan subcommand was run on all eight orbits before this registration was written: 8 eligible, 0 missing a sixty-day reference, and the recalibrated tables meet the budget on the sixty-day epochs to within 0.07 percent.",
+  "driver": "python_codes/rev56_longarc_interior.py",
+  "inputs_as_read": {
+    "python_codes/rev56_longarc_interior.py": {
+      "sha256": "6631b5adc69f337a923e0a9dacc31d66703d12b56851434f2821f4eff9620d77",
+      "bytes": 18531
+    },
+    "python_codes/rev56_preregister.py": {
+      "sha256": "cc0b74a4defcf634513512c4ce4c9b6377e9ab49fe3f75212b335835df2a0375",
+      "bytes": 7292
+    },
+    "python_codes/rev20_span_longarc.py": {
+      "sha256": "08af66b3e847236a2efaaf6344620752a2f7f6dbd083545f3f45b96ef31204bd",
+      "bytes": 14395
+    },
+    "python_codes/rev18_span_sweep.py": {
+      "sha256": "415b049b56e2f05a8444f57f0a6457a8a7db119147a2ade3215f5a8e0259935b",
+      "bytes": 24838
+    },
+    "python_codes/rev17_longarc60.py": {
+      "sha256": "b60f3063adbfb3671c2ad04f9bb28b6f427c086d74100f92a6ffabc938293207",
+      "bytes": 27874
+    },
+    "metrics/r17_longarc60.json": {
+      "sha256": "d0f6015533b8e66e58244872527887f353087a407774f743ff74a61953ab9fb5",
+      "bytes": 207258
+    },
+    "metrics/r20_span_longarc.json": {
+      "sha256": "5f65842cf5d97fcbe5a1e88390cb56097c08786512cbbda23f841fdf9d92559d",
+      "bytes": 10225
+    },
+    "metrics/r18_span_sweep_A_beta_1.00.json": {
+      "sha256": "fc50df65de340d5e60de0d200ce8a03dc816af697cbd7f8cef30ae60c7bd2ce7",
+      "bytes": 215865
+    }
+  }
+}

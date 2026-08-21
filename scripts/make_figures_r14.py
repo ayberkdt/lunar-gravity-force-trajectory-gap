@@ -43,7 +43,9 @@ def key_of(b):
     return f"beta_{b:.2f}"
 
 
-def band(ax, x, med, lo, hi, color, label, censored):
+def band(ax, x, med, lo, hi, color, label, censored, marker="o"):
+    """Marker shape distinguishes the two series so the figure survives
+    grayscale; line style keeps encoding censoring, as before."""
     x = np.asarray(x, float)
     med = np.asarray(med, float)
     ax.fill_between(x, lo, hi, color=color, alpha=0.13, lw=0)
@@ -52,10 +54,11 @@ def band(ax, x, med, lo, hi, color, label, censored):
     for i in range(len(x) - 1):
         style = "--" if (cen[i] or cen[i + 1]) else "-"
         ax.plot(x[i:i + 2], med[i:i + 2], style, color=color, lw=1.3, zorder=3)
-    ax.plot(x[~cen], med[~cen], "o", color=color, ms=4.0, zorder=4, label=label)
+    ax.plot(x[~cen], med[~cen], marker, color=color, ms=4.2, zorder=4,
+            label=label)
     if cen.any():
-        ax.plot(x[cen], med[cen], "o", mfc="white", mec=color, mew=1.1,
-                ms=4.0, zorder=4)
+        ax.plot(x[cen], med[cen], marker, mfc="white", mec=color, mew=1.1,
+                ms=4.2, zorder=4)
 
 
 def crossing_interval(betas, ratios):
@@ -74,7 +77,18 @@ def main() -> int:
     traj = {}
     for p in sorted(METRICS.glob("r14_trajectory_*.json")):
         d = json.loads(p.read_text(encoding="utf-8"))
+        if d["design"] not in pareto["designs"]:
+            # later campaigns reuse this record naming for other designs
+            continue
         traj.setdefault(d["design"], {})[float(d["beta"])] = d
+
+    # one y-range for both lower panels, so the columns can be compared by
+    # eye; computed over both designs before either panel is drawn
+    vis_all = [traj[des][b]["summary"][w]["median"]
+               for des in traj for b in traj[des] if b >= 0.7
+               for w in ("atallah_error_m", "fixed_error_m")]
+    traj_ylim = ((min(vis_all) / 25.0, max(vis_all) * 25.0)
+                 if vis_all else None)
 
     fig, axes = plt.subplots(2, 2, figsize=(7.1, 5.4), sharex=True)
     for col, des in enumerate(("A", "B")):
@@ -86,11 +100,12 @@ def main() -> int:
 
         # ---------------------------------------------------------- force panel
         ax = axes[0, col]
-        for who, color, lab in (("atallah", AT_C, "budget-calibrated radial"),
-                                ("fixed", FX_C, "constant degree")):
+        for who, color, lab, mk in (
+                ("atallah", AT_C, "budget-calibrated radial", "^"),
+                ("fixed", FX_C, "constant degree", "o")):
             st = [s[k][f"{who}_defect_rms_m_s2"] for k in live]
             band(ax, bs, [q["median"] for q in st], [q["p10"] for q in st],
-                 [q["p90"] for q in st], color, lab, cen)
+                 [q["p90"] for q in st], color, lab, cen, marker=mk)
         if oracle and des in oracle["designs"]:
             os_ = oracle["designs"][des]["summary"]
             ok = [k for k in keys if os_.get(k, {}).get("orbits")]
@@ -126,19 +141,18 @@ def main() -> int:
         ax = axes[1, col]
         if des in traj and traj[des]:
             tb = sorted(traj[des])
-            for who, color, lab in (("atallah_error_m", AT_C, "budget-calibrated radial"),
-                                    ("fixed_error_m", FX_C, "constant degree")):
+            for who, color, lab, mk in (
+                    ("atallah_error_m", AT_C, "budget-calibrated radial", "^"),
+                    ("fixed_error_m", FX_C, "constant degree", "o")):
                 st = [traj[des][b]["summary"][who] for b in tb]
                 tc = [len(traj[des][b]["censored"]) > 0 for b in tb]
                 band(ax, tb, [q["median"] for q in st], [q["p10"] for q in st],
-                     [q["p90"] for q in st], color, lab, tc)
-            # keep the axis on the range where both policies are visible, and
-            # annotate rather than silently clip whatever falls outside it
-            vis = [traj[des][b]["summary"][w]["median"]
-                   for b in tb if b >= 0.7
-                   for w in ("atallah_error_m", "fixed_error_m")]
-            if vis:
-                lo, hi = min(vis) / 25.0, max(vis) * 25.0
+                     [q["p90"] for q in st], color, lab, tc, marker=mk)
+            # keep the axis on the shared range where both policies are
+            # visible in both designs, and annotate rather than silently clip
+            # whatever falls outside it
+            if traj_ylim:
+                lo, hi = traj_ylim
                 ax.set_ylim(lo, hi)
                 for b in tb:
                     for w, cc in (("atallah_error_m", AT_C),
@@ -159,8 +173,8 @@ def main() -> int:
                             xy=(b, sm["fixed_error_m"]["median"]),
                             xytext=(0, -10), textcoords="offset points",
                             ha="center", fontsize=6.2, color="0.35")
-            if cx:
-                ax.axvspan(cx[0], cx[1], color=ps.GRAY, alpha=0.16, lw=0, zorder=0)
+            # the crossing strip is a force-metric object and stays in the
+            # upper panels; drawn down here it marked nothing this panel shows
         ax.axvline(1.0, color="0.35", lw=0.7, ls=(0, (4, 3)), zorder=1)
         ax.set_yscale("log")
         ax.set_xscale("log")
@@ -176,7 +190,7 @@ def main() -> int:
         if col == 0:
             ax.set_ylabel(r"seven-day position RMS [m]")
 
-    handles = [Line2D([], [], color=AT_C, marker="o", ms=4, lw=1.3,
+    handles = [Line2D([], [], color=AT_C, marker="^", ms=4.2, lw=1.3,
                       label="budget-calibrated radial rule"),
                Line2D([], [], color=FX_C, marker="o", ms=4, lw=1.3,
                       label="constant degree, same nominal per-call budget"),

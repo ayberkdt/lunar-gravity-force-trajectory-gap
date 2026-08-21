@@ -1,7 +1,7 @@
 {
   "schema": "r34_instrument_ladder_v1",
   "beta": 1.0,
-  "note": "Derived from frozen R14 records; no propagation performed. Rungs 1, 2 and 4 are over all 64 orbits of each design; rung 3 is the forced-variational panel, whose size is read from r37_panel_verdict.json when the extension record exists.",
+  "note": "Derived from frozen R14 records; no propagation performed. Rungs 1, 2 and 4 are over all 64 orbits of each design; rung 3 is the forced-variational panel, read from r42_panel_verdict.json, which completed the R37 level chain at 64 orbits per design.",
   "designs": {
     "A": {
       "n_orbits": 64,
@@ -35,17 +35,29 @@
     }
   },
   "variational_panel": {
-    "source": "r37_panel_verdict.json",
-    "n_orbits": 80,
-    "level_per_design": 40,
-    "orbits_in_record": 102,
+    "source": "r42_panel_verdict.json",
+    "n_orbits": 128,
+    "level_per_design": 64,
+    "orbits_in_record": 128,
     "gradient_degree": 120,
-    "resolved": 63,
-    "unresolved": 17,
-    "sign_agreement": 63,
+    "resolved": 100,
+    "unresolved": 28,
+    "sign_agreement": 100,
     "sign_disagreement": 0,
-    "radial_better_predicted": 19,
-    "record_resolved": 81,
-    "record_sign_agreement": 81
+    "radial_better_predicted": 25,
+    "record_resolved": 100,
+    "record_sign_agreement": 100,
+    "by_design": {
+      "A": {
+        "n_orbits": 64,
+        "radial_better_predicted": 11,
+        "median_predicted_ratio": 0.23715921711855747
+      },
+      "B": {
+        "n_orbits": 64,
+        "radial_better_predicted": 14,
+        "median_predicted_ratio": 0.2002632259462579
+      }
+    }
   }
 }

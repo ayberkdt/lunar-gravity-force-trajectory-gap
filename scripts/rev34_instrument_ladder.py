@@ -102,7 +102,7 @@ def variational_rung():
     The panel is the highest completed level of the R37 extension when that
     record exists, and the archived eight-orbit panel otherwise. Sign agreement
     is scored on resolved comparisons only, per r37_scoring_amendment.json; the
-    count of orbits the instrument itself favours is over every panel orbit, so
+    count of orbits the instrument itself favors is over every panel orbit, so
     that this column means the same thing as the other rungs' columns.
     """
     verdict = METRICS / "r37_panel_verdict.json"
@@ -177,7 +177,7 @@ def main():
     lines = [
         r"\begin{tabular}{@{}l l cc cc@{}}",
         r"\toprule",
-        r" & & \multicolumn{2}{c}{Orbits favouring radial}"
+        r" & & \multicolumn{2}{c}{Orbits with lower metric under radial}"
         r" & \multicolumn{2}{c}{Median ratio} \\",
         r"\cmidrule(lr){3-4}\cmidrule(l){5-6}",
         r"Instrument & Carries & A & B & A & B \\",

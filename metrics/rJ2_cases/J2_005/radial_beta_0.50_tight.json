@@ -1,0 +1,74 @@
+{
+  "schema": "rJ2_case_v1",
+  "created_utc": "2026-08-08T13:05:25.744089Z",
+  "config": {
+    "sobol_index": 5,
+    "policy": "radial",
+    "policy_spec": {
+      "kind": "budget_calibrated_radial",
+      "beta": 0.5,
+      "accuracy_parameter_m_s2": 0.0693138963374275,
+      "bin_km": 10.0,
+      "floor": 2,
+      "cap": 300,
+      "n_critical": 82,
+      "source": "frozen budget record, not recalibrated",
+      "table": {
+        "130.0": 78,
+        "140.0": 69,
+        "150.0": 62,
+        "160.0": 56,
+        "170.0": 51,
+        "180.0": 46,
+        "190.0": 42,
+        "200.0": 38
+      }
+    },
+    "level": "tight",
+    "adopted_truth_degree": 300,
+    "dynamics": "moon_sh + earth + sun + srp_eclipse",
+    "orientation": "DE440/MOON_PA",
+    "duration_s": 604800.0,
+    "output_step_s": 120.0,
+    "max_step_s": 60.0,
+    "rtol": 1e-12,
+    "atol_kind": "vector",
+    "atol_position_m": 1e-05,
+    "atol_velocity_m_s": 1e-08,
+    "integrator": "InstrumentedDOP853",
+    "field": "JGGRX_1800F",
+    "timing_comparable": false,
+    "execution": "parallel_process_pool"
+  },
+  "telemetry": {
+    "n_rhs": 310514,
+    "wall_s": 61.62809369999741,
+    "gravity_wall_s": 16.1542681,
+    "mean_active_degree": 56.959860102926115,
+    "mean_degree_squared": 3425.5588475881923,
+    "rms_active_degree": 58.52827391601594,
+    "min_active_degree": 38,
+    "max_active_degree": 78,
+    "degree_counts": {
+      "38": 26948,
+      "42": 40140,
+      "46": 40716,
+      "51": 37184,
+      "56": 36455,
+      "62": 35800,
+      "69": 36512,
+      "78": 56759
+    },
+    "component_rms_acceleration_m_s2": {
+      "earth_3b": 2.3187534632095112e-05,
+      "sun_3b": 1.146672831784482e-07,
+      "srp": 4.900209334466014e-08
+    },
+    "n_accepted_steps": 15537,
+    "n_attempted_steps": 24616,
+    "n_rejected_trials": 9079,
+    "total_wall_s": 61.62809369999741
+  },
+  "raw_path": "D:\\makale_raw_offload\\jgcd\\J2\\J2_005\\radial_beta_0.50_tight.npz",
+  "raw_sha256": "86903e19ddb4d867690fe916170665ffdbf4bbfc0e3b35a4a96e99cfb597aa30"
+}

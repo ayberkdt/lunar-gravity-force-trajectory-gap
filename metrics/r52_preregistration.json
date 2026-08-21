@@ -1,0 +1,134 @@
+{
+  "schema": "r52_preregistration_v1",
+  "created_utc": "2026-08-13T12:59:45.540127Z",
+  "campaign": "R52: block B of the paired radial-span ladder re-run with its reference degree raised from 300 to 600, the replication partner of R51",
+  "question": "R51 removed the reference-degree ceiling on block A and found the level ordering standing while the wide-level magnitudes fell. The pooled ladder that the primary tables and the regime map draw covers both blocks, so that control audits half of what is printed. Does block B, an independent draw of identities at the same four levels, return the same ceiling-free result?",
+  "why_this_completes_r51": "R51's own registration deferred block B on the grounds that auditing it would double the cost to sharpen a count rather than to test the claim. That was true of the claim R51 tested. It is not true of the pooled numbers the manuscript prints, which is why this campaign is run and why its scope is the pooled ladder rather than the ordering alone.",
+  "why_a_paired_control": "same orbits, same identities, same apolune levels, same initial states, same comparator degrees, same tolerances, same arc. One number differs from the capped parent. The indirect effect recorded for block A also applies here: raising the reference moves the calibration bisection's search, so a ceiling-free level can still move by tens of per cent, and that is reported as the resolution of the comparison rather than as a ceiling effect.",
+  "not_blind": "block A's ceiling-free result is known and is pinned by digest in the design record. The protections are that no orbit is drawn, no parameter is chosen, the reference degree was fixed by a demand probe run on block B rather than inherited from block A, and the outcomes below are written before the first trajectory of this control.",
+  "ceiling_probe": {
+    "schema": "r51_ceiling_probe_v1",
+    "created_utc": "2026-08-13T12:59:32.939350Z",
+    "population": "span_ladder_b",
+    "design_key": "RS2",
+    "method": "the calibration bisection of rev14_budget_pareto re-run at cap 600 on the archived R50 altitude histories; no propagation, no new trajectory, and nothing in metrics/r50_* modified",
+    "budgets_probed": [
+      1.0,
+      0.75,
+      0.62,
+      0.5
+    ],
+    "parent_reference_degree": 300,
+    "raised_reference_degree": 600,
+    "by_level_at_parent_cap": {
+      "300": {
+        "orbits": 16,
+        "max_degree": 243,
+        "median_fraction_at_cap": 0.0,
+        "orbits_touching_cap": 0
+      },
+      "600": {
+        "orbits": 16,
+        "max_degree": 293,
+        "median_fraction_at_cap": 0.0,
+        "orbits_touching_cap": 0
+      },
+      "1200": {
+        "orbits": 16,
+        "max_degree": 300,
+        "median_fraction_at_cap": 0.0,
+        "orbits_touching_cap": 5
+      },
+      "2400": {
+        "orbits": 16,
+        "max_degree": 300,
+        "median_fraction_at_cap": 0.06139654830390796,
+        "orbits_touching_cap": 16
+      }
+    },
+    "by_level_at_raised_cap": {
+      "300": {
+        "orbits": 16,
+        "max_degree": 245,
+        "median_fraction_at_cap": 0.0,
+        "orbits_touching_cap": 0
+      },
+      "600": {
+        "orbits": 16,
+        "max_degree": 317,
+        "median_fraction_at_cap": 0.0,
+        "orbits_touching_cap": 0
+      },
+      "1200": {
+        "orbits": 16,
+        "max_degree": 403,
+        "median_fraction_at_cap": 0.0,
+        "orbits_touching_cap": 0
+      },
+      "2400": {
+        "orbits": 16,
+        "max_degree": 528,
+        "median_fraction_at_cap": 0.0,
+        "orbits_touching_cap": 0
+      }
+    },
+    "max_requested_degree_at_raised_cap": 528,
+    "orbits_clamped_at_parent_cap_by_level": {
+      "300": 0,
+      "600": 0,
+      "1200": 5,
+      "2400": 16
+    },
+    "parent_inputs_watched": [
+      "r50_span_ladder_b_design_frozen.json",
+      "r50_span_ladder_b_rows.json"
+    ],
+    "parent_inputs_sha256": {
+      "r50_span_ladder_b_design_frozen.json": "ba130f94721a3e1a06ab682c8f68b747dd7f113e8e0d2c470dd6306b723498e5",
+      "r50_span_ladder_b_rows.json": "62df9a4a0b3e8f70f6157b96f76f9fa964581669f4a68dd424c4a208d63c0445"
+    },
+    "parent_inputs_unchanged": true,
+    "conclusion": "600 clears the demand and the cap does bind today: the control is both meaningful and correctly referenced"
+  },
+  "protocol": "identical to R50 and R51 in every respect except the adopted reference degree: the same seven-day arc, tolerance levels, output grid, resolution rule, two-policy base scope inherited from r30_preregistration.json, R12-rule operating point regeneration, calibration and ladder",
+  "budgets": [
+    1.0,
+    0.75,
+    0.62,
+    0.5
+  ],
+  "budget_order": "1.00 first, because it is the budget the geometry sentence is written at, then 0.75, 0.62, 0.50. The amendment budgets of R50 are not run here: the six-budget probe puts the largest request at 599 against a ceiling of 600, so a ceiling-free control at those budgets would need a higher reference than this one and is a separate campaign. A budget the clock does not reach is reported as declared and not run.",
+  "population": "span_ladder_b_uncapped",
+  "design": {
+    "design_key": "RS2U",
+    "design_sha256": "2e32b6a4777d8000777fdd39c5b4f10eb2173ec4070fa6f31a5c4b983ccc13d8",
+    "file": "r52_span_ladder_b_uncapped_design_frozen.json"
+  },
+  "strata": {
+    "span_ladder_b_uncapped": {
+      "file": "r52_span_ladder_b_uncapped_design_frozen.json",
+      "design_sha256": "2e32b6a4777d8000777fdd39c5b4f10eb2173ec4070fa6f31a5c4b983ccc13d8",
+      "seed": 20260733,
+      "design_key": "RS2U"
+    }
+  },
+  "sub_boxes": {
+    "span_ladder_b_uncapped": "the R50 block B identities at the same four apolune levels, referenced at degree 600"
+  },
+  "outcomes": {
+    "P_replicates": "Block B returns the same per-level verdicts under the raised reference as block A did, and its score orders in radial span at every budget that decides. The ceiling-free ladder is then reported pooled over both blocks, the c marks come off the regime map, and the manuscript stops scoping the control to one block.",
+    "Q_replicates_ordering_only": "The per-level verdicts agree with block A but the magnitudes do not: the wide-level median ratios move by a factor the two blocks do not share. The ordering is then pooled and the magnitudes are reported per block, with the disagreement named rather than averaged away.",
+    "R_blocks_disagree": "A level changes hands in block B where it did not in block A, or the two blocks put the turnover between different level pairs at the same budget. The ceiling-free ladder is then reported unpooled, both blocks are printed, and the span dependence is quoted as replicated in direction but not in the cell that differs. It is not resolved by running a third block.",
+    "S_undecided": "Too few comparisons resolve per level under the raised reference to order block B's levels. Reported with its resolved and unresolved counts, and read as leaving block B unaudited rather than as agreeing with block A."
+  },
+  "verdict_rule": "per level, the R19 realized-work tally and the R14 endpoint tally, read exactly as rev50_verdict.py reads them, compared level by level against the capped block-B parent and then against block A's ceiling-free cells",
+  "reporting_commitment": "the per-block ceiling-free verdicts are recorded before any pooled ceiling-free number is quoted. If the blocks disagree at a level, the ceiling-free ladder is reported unpooled and the disagreeing cell is named wherever that level is discussed.",
+  "prohibited": [
+    "pooling block B's ceiling-free cells with block A's before the per-block verdicts are read and recorded",
+    "quoting a pooled ceiling-free ratio if the blocks return outcome R",
+    "dropping an orbit, changing a level, or re-deriving n_critical or n_work after propagation starts",
+    "reporting a budget the clock does not reach as anything other than declared and not run",
+    "revising R51's block-A numbers in the light of block B"
+  ],
+  "preregistration_sha256": "2d03ea110e25959ebc734914da7a0292b1bc5acaeb473bc2dc8063ea48e0e6d7"
+}

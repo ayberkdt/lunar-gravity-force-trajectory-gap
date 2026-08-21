@@ -1,5 +1,12 @@
 """Mechanical audit of the Tur-5 review's arithmetic claims against the archive.
 
+HISTORICAL. This script checks sentences the manuscript carried at the time of
+the fifth review round. Most of them have since been rewritten or removed, so
+its "contradicts the manuscript as written" lines now report on text that no
+longer exists and must not be read as live findings: the current instruments
+are claims_ledger.py and submission_gate.py. It is kept because the round it
+audits is part of the record, not because its verdicts still hold.
+
 The review verified four of its own findings independently and left the rest
 resting on member reports. Before any of those are edited into the manuscript
 they are checked here against the records, because a member report is exactly

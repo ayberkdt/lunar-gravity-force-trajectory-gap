@@ -1,10 +1,11 @@
-"""Bring the public repository up to date with the working tree, R24 to R39.
+"""Bring the public repository up to date with this working tree.
 
-The repository stops at R23. Its copies of the shared drivers are not a fork:
-they are older versions of the same files, so the sync overwrites them rather
-than merging. What makes that safe is that the campaign manifests travel with
-them, so the digests the manifests record and the files they name move in one
-step and the chain closes again on the other side.
+The repository's copies of the shared drivers are not a fork: they are older
+versions of the same files, so the sync overwrites them rather than merging.
+What makes that safe is that the campaign manifests travel with them, so the
+digests the manifests record and the files they name move in one step and the
+chain closes again on the other side. After an apply, run the repository's
+``audit_manifest_digests.py --strict`` to confirm the chain did close.
 
   copied      every driver and every metrics record the working tree has and
               the repository does not, plus every shared file whose contents
@@ -32,6 +33,7 @@ from __future__ import annotations
 
 import argparse
 import filecmp
+import re
 import shutil
 from pathlib import Path
 
@@ -53,10 +55,18 @@ ARCHIVE_ONLY = [
 ]
 
 
+# Quarantined partial records: a supervisor renames a half-written JSON to
+# NAME.invalid.<UTC timestamp> instead of deleting it. Operational debris, not
+# manifest-sealed evidence, so it stays out of the public archive.
+QUARANTINED = re.compile(r"\.invalid\.\d{8}T\d{6}Z$")
+
+
 def excluded(rel: str) -> bool:
     return ("_raw/" in rel or rel.endswith((".log", ".err", ".out"))
             or "__pycache__" in rel
-            or rel.endswith(".pyc") or "/.lock" in rel)
+            or rel.endswith(".pyc") or "/.lock" in rel
+            or QUARANTINED.search(rel) is not None
+            or Path(rel).name.startswith("morning_"))
 
 
 def plan(src: Path, dst: Path):

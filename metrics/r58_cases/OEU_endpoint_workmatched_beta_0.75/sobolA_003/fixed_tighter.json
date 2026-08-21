@@ -1,0 +1,63 @@
+{
+  "schema": "r58_endpoint_equal_work_v1",
+  "created_utc": "2026-08-15T17:46:55.398886Z",
+  "config": {
+    "sobol_index": 3,
+    "design": "OEU",
+    "beta": 0.75,
+    "policy": "constant degree matched on realized total quadratic work",
+    "matched_to": "span-sweep member k=1.00 (budget-calibrated radial endpoint)",
+    "degree": 119,
+    "target_total_quadratic_work": 2237194935.0,
+    "constant_endpoint_degree": 100,
+    "constant_endpoint_total_work": 1588910000.0,
+    "first_estimate_rule": "N* = round(N_0 * sqrt(W_k / W_0)); the achieved ratio is measured, not assumed",
+    "adopted_truth_degree": 600,
+    "initial_state_si": [
+      226989.91392557079,
+      -1009173.1592772253,
+      1509671.2195204434,
+      1822.6283890419804,
+      129.3020653520141,
+      -187.61044371273658
+    ],
+    "duration_s": 604800.0,
+    "output_step_s": 120.0,
+    "integrator": "InstrumentedDOP853",
+    "max_step_s": 60.0,
+    "atol_kind": "vector",
+    "timing_comparable": false,
+    "source": {
+      "driver": "rev58_endpoint_equal_work.py",
+      "reuses": "r18_span_sweep_OEU_beta_0.75.json (realized work), r14_trajectory_OEU_beta_0.75.json, r11 truths",
+      "matched_member": "1.00"
+    }
+  },
+  "config_sha256": "8345e7314ebf4c584d38dd313c899efaade28da0811016c84b337e0a6982f620",
+  "status": "ok",
+  "level": "tighter",
+  "event": null,
+  "telemetry": {
+    "n_rhs": 168809,
+    "n_accepted_steps": 10893,
+    "n_attempted_steps": 11344,
+    "n_rejected_trials": 451,
+    "switch_count_at_rhs_samples": 0,
+    "degree_counts": {
+      "119": 168809
+    },
+    "degree_range": [
+      119,
+      119
+    ],
+    "mean_degree": 119.0,
+    "mean_degree_sq": 14161.0,
+    "gravity_kernel_ns": 32540319900,
+    "process_cpu_ns": 37250000000,
+    "total_wall_ns": 44466877200
+  },
+  "raw_path": "metrics\\r58_raw\\OEU_endpoint_workmatched_beta_0.75\\sobolA_003\\fixed_tighter.npz",
+  "raw_sha256": "e374235531f80b9f6a1f4190322cbc1e1929554c1190eaf15d6d3399fdabe33d",
+  "n_output_epochs": 5041,
+  "last_output_epoch_s": 604800.0
+}

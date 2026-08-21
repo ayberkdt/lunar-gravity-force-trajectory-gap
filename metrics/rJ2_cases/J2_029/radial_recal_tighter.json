@@ -1,0 +1,83 @@
+{
+  "schema": "rJ2_case_v1",
+  "created_utc": "2026-08-09T02:57:43.756010Z",
+  "config": {
+    "sobol_index": 29,
+    "policy": "radial",
+    "policy_spec": {
+      "kind": "budget_calibrated_radial",
+      "beta": 1.0,
+      "accuracy_parameter_m_s2": 0.006250265092974553,
+      "bin_km": 10.0,
+      "floor": 2,
+      "cap": 300,
+      "n_critical": 77,
+      "source": "recalibrated on the full-dynamics reference",
+      "table": {
+        "140.0": 106,
+        "150.0": 97,
+        "160.0": 90,
+        "170.0": 83,
+        "180.0": 77,
+        "190.0": 72,
+        "200.0": 67,
+        "210.0": 63,
+        "220.0": 59,
+        "230.0": 55,
+        "240.0": 52,
+        "250.0": 49,
+        "260.0": 46
+      }
+    },
+    "level": "tighter",
+    "adopted_truth_degree": 300,
+    "dynamics": "moon_sh + earth + sun + srp_eclipse",
+    "orientation": "DE440/MOON_PA",
+    "duration_s": 604800.0,
+    "output_step_s": 120.0,
+    "max_step_s": 60.0,
+    "rtol": 1e-13,
+    "atol_kind": "vector",
+    "atol_position_m": 1e-06,
+    "atol_velocity_m_s": 1e-09,
+    "integrator": "InstrumentedDOP853",
+    "field": "JGGRX_1800F",
+    "timing_comparable": false,
+    "execution": "parallel_process_pool"
+  },
+  "telemetry": {
+    "n_rhs": 307598,
+    "wall_s": 70.35216270000092,
+    "gravity_wall_s": 23.6860615,
+    "mean_active_degree": 70.43418682826287,
+    "mean_degree_squared": 5228.673642221341,
+    "rms_active_degree": 72.30956812359855,
+    "min_active_degree": 49,
+    "max_active_degree": 106,
+    "degree_counts": {
+      "49": 1574,
+      "52": 39945,
+      "55": 37815,
+      "59": 35708,
+      "63": 30204,
+      "67": 30073,
+      "72": 28736,
+      "77": 24871,
+      "83": 21082,
+      "90": 16456,
+      "97": 18700,
+      "106": 22434
+    },
+    "component_rms_acceleration_m_s2": {
+      "earth_3b": 2.0325882506594643e-05,
+      "sun_3b": 1.1554919701049744e-07,
+      "srp": 5.305417574991279e-08
+    },
+    "n_accepted_steps": 15161,
+    "n_attempted_steps": 24373,
+    "n_rejected_trials": 9212,
+    "total_wall_s": 70.35216270000092
+  },
+  "raw_path": "D:\\makale_raw_offload\\jgcd\\J2\\J2_029\\radial_recal_tighter.npz",
+  "raw_sha256": "f993c985722d5cc1c712d880706cfb79d2ba83320792c9d29687eff1a0485fcf"
+}

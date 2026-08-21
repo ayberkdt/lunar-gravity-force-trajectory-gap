@@ -16,8 +16,8 @@ from collections import defaultdict
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-MAIN = ["01_introduction", "02_related", "03_kernel", "04_truncation",
-        "05_setup", "06_qualification_main", "07_results", "08_discussion",
+MAIN = ["01_introduction", "02_related", "04_truncation",
+        "05_setup", "07_results", "08_budget", "08_discussion",
         "09_conclusion"]
 
 

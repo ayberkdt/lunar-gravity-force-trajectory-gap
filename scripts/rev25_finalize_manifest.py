@@ -48,13 +48,22 @@ REGISTRATION = ["r25_preregistration.json",
                 "r25_preregistration_amendment.json"]
 
 # Records this campaign produces. Design B's three only exist if the second
-# queue got its window.
+# queue got its window. The last four are the (O33) grid-extension stages at
+# the budgets beyond 0.75 --- design A at 1.25 and design B at 1.50 --- whose
+# ownership the supplement's R25 entry states but which this list omitted:
+# two of them (the span records) were indexed by no manifest at all until
+# they were caught feeding two printed rows of the main text's equal-work
+# table.
 RESULT_JSON = [
     f"r18_span_sweep_A_{BETA_TAG}.json",
     f"r19_equal_total_work_A_{BETA_TAG}.json",
     f"r14_trajectory_B_{BETA_TAG}.json",
     f"r18_span_sweep_B_{BETA_TAG}.json",
     f"r19_equal_total_work_B_{BETA_TAG}.json",
+    "r18_span_sweep_A_beta_1.25.json",
+    "r19_equal_total_work_A_beta_1.25.json",
+    "r18_span_sweep_B_beta_1.50.json",
+    "r19_equal_total_work_B_beta_1.50.json",
 ]
 
 TABLES = ["r19_equal_work_table.tex", "r19_manuscript_descriptives.json",

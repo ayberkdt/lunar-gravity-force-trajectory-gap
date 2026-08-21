@@ -1,0 +1,76 @@
+{
+  "schema": "r44_equal_work_tighter_v1",
+  "created_utc": "2026-08-19T05:40:23.532896Z",
+  "config": {
+    "sobol_index": 24,
+    "design": "SE",
+    "beta": 1.0,
+    "policy": "constant degree matched on realized total quadratic work at the tighter level",
+    "matched_to": "span-sweep member k=0.50",
+    "match_level": "tighter",
+    "degree": 423,
+    "target_total_quadratic_work_tighter": 45045012208.0,
+    "constant_endpoint_degree": 250,
+    "constant_endpoint_total_work_tighter": 15702312500.0,
+    "fixed_work_source_policy": "fixed_critical",
+    "first_estimate_rule": "N* = round(N_0 * sqrt(W_k/W_0)) with both works at the tighter level; the achieved ratio is measured, not assumed",
+    "adopted_truth_degree": 900,
+    "initial_state_si": [
+      1737715.0701856331,
+      -331835.30955682305,
+      -75904.36511198967,
+      327.6866079635696,
+      1730.908508618148,
+      -65.22159573078156
+    ],
+    "duration_s": 604800.0,
+    "output_step_s": 120.0,
+    "integrator": "InstrumentedDOP853",
+    "max_step_s": 60.0,
+    "atol_kind": "vector",
+    "timing_comparable": false,
+    "source": {
+      "driver": "rev44_equal_work_tighter.py",
+      "reuses": "r18_span_sweep_SE_beta_1.00.json + r18 tighter telemetry (member work), archived comparator telemetry (fixed work), r11 truths",
+      "lunaris_commit": "27e9ab86ed61d623f78c453ea2054348f1044c23"
+    }
+  },
+  "config_sha256": "4a283342413369e47d742a7ccd6e82ce55980ecafd0a4d0b013d3a7d7340cda4",
+  "status": "ok",
+  "event": {
+    "type": "reference_surface_downward_crossing",
+    "epoch_s": 569007.4147694977,
+    "state_si": [
+      1717518.7345232656,
+      -251000.3194789143,
+      -88160.28688180384,
+      250.162465936658,
+      1774.1294978063193,
+      -39.358860419389345
+    ],
+    "root_residual_m": -2.3283064365386963e-10
+  },
+  "telemetry": {
+    "n_rhs": 228500,
+    "n_accepted_steps": 14134,
+    "n_attempted_steps": 15508,
+    "n_rejected_trials": 1374,
+    "switch_count_at_rhs_samples": 0,
+    "degree_counts": {
+      "423": 228500
+    },
+    "degree_range": [
+      423,
+      423
+    ],
+    "mean_degree": 423.0,
+    "mean_degree_sq": 178929.0,
+    "gravity_kernel_ns": 581465260900,
+    "process_cpu_ns": 590296875000,
+    "total_wall_ns": 603748147100
+  },
+  "raw_path": "metrics\\r61_raw\\SE_workmatched_tighter_beta_1.00\\sobolSE_024\\fixed_tight.npz",
+  "raw_sha256": "53a45ccdde20234c6e84acc69a2643d58c82267118eea602b66acfa3d762b817",
+  "n_output_epochs": 4742,
+  "last_output_epoch_s": 568920.0
+}

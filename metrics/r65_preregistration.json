@@ -1,0 +1,76 @@
+{
+  "schema": "r65_preregistration_v1",
+  "campaign": "R65 (O58): the sampled interior family under level-consistent measured time",
+  "registered_utc": "2026-08-19T17:29:57Z",
+  "registered_before_any_propagation": true,
+  "motivation": "(O48) and (O57) compare one member, k = 0.5, chosen because it was the most frequent sampled minimum of the seven-day nominal sweep rather than because the family has an optimum there. (O57)'s negative result is therefore a statement about k = 0.5 and not about interior allocation: it does not rule out a different concentration holding a measured-time advantage. This campaign asks the family-level question.",
+  "locked_choices": {
+    "k_values": [
+      "0.25",
+      "0.50",
+      "0.75"
+    ],
+    "panel": "(O57)'s fourteen orbits, themselves (O48)'s, read from r48_interior_timing_selection.json; no orbit is selected here",
+    "budget": "beta = 1, the nominal family construction unchanged",
+    "scoring_rule": "the reference-inclusive envelope rule used everywhere else, errors at the tighter level, resolved iff M_res > 1",
+    "timing_band": "0.90 <= T_fix/T_k <= 1.10",
+    "reporting": "all three members are reported. No per-orbit argmin over k is taken and no single deployable k is claimed from this campaign; selecting the favourable member after the fact would make this an oracle rather than a family sweep."
+  },
+  "construction": {
+    "members": "k = 0.25 and k = 0.75 are propagated here; the k = 0.50 column is reused from (O57) unchanged and marked as reused in the record",
+    "comparator": "each member has its own constant degree matched on measured kernel time at the tighter tolerance, refined over integer degrees until the band is met or the integer step cannot improve it",
+    "timing_match_miss": "a cell that still misses the band after refinement keeps its nearest integer match and is flagged; (O57) had two such cells from a single-pass refinement and this campaign reports them rather than absorbing them",
+    "idle_machine": "every timed stage refuses to start while other python processes are alive"
+  },
+  "declared_outcomes": {
+    "_order": "evaluated in the order listed; the first that holds is the one reported",
+    "A_other_member_wins": "k = 0.25 or k = 0.75 takes a resolved majority against its own time-matched comparator. Reading: (O57)'s negative result is specific to k = 0.5 and the measured-time optimum sits elsewhere in the family.",
+    "B_family_shows_no_advantage": "no member takes a resolved majority, the resolved cells favouring the constant degree or splitting. Reading: the sampled interior family shows no measured-time advantage on this panel, which is a stronger statement than (O57)'s and is the one the manuscript then makes.",
+    "C_scattered_optimum": "different orbits favour different members with no member ahead overall. Reading: a single global radius-only concentration parameter is not sufficient and the optimum is geometry dependent; this is reported as an observation about the family, not as a deployable rule.",
+    "D_unresolved_dominated": "more than half of every member's cells undecided. Reading: measured time does not discriminate the family on fourteen orbits and enlarging the timing panel is not worth its cost."
+  },
+  "driver": "python_codes/rev65_timing_family.py",
+  "numbering_note": "records carry the prefix r65 because r58 is held by the equal-work endpoint control; the observation label is (O58).",
+  "inputs_as_read": {
+    "python_codes/rev65_timing_family.py": {
+      "sha256": "3d1068b5040230e14b859191002de6e55ca7f82c28efdd45cd8b58fc61f98925",
+      "bytes": 17086
+    },
+    "python_codes/rev65_preregister.py": {
+      "sha256": "c01ecc35568201bba4d5dbf85a44147b11c3bdb1df21a432c097f66c9491e08c",
+      "bytes": 7090
+    },
+    "python_codes/rev64_interior_timing_tighter.py": {
+      "sha256": "deb2557e124d74368ed172850ccbb41cd8618b1c8e30baf9ffe1f25be2f44e9f",
+      "bytes": 13500
+    },
+    "python_codes/rev48_interior_timing.py": {
+      "sha256": "10a5dda12c99811b59f6c8f06bfc2377ed5763b6554172fab38784a3ab2ae91e",
+      "bytes": 15102
+    },
+    "python_codes/rev13_timing_match.py": {
+      "sha256": "f577595dbb03f5a2c6bb8930dc9f35eb390e23abc574cc6401e4c12a61e702df",
+      "bytes": 25046
+    },
+    "metrics/r48_interior_timing_selection.json": {
+      "sha256": "e55a699e96c02091d7fb238f3f422c7e384585e653a20466157cf6c00f2a368a",
+      "bytes": 6350
+    },
+    "metrics/r64_interior_timing_tighter.json": {
+      "sha256": "9c1cece00303856c8c14c71f4bbae9e56fd28b24bc398f48172896de00dba22e",
+      "bytes": 7249
+    },
+    "metrics/r12_kernel_cost_curve.json": {
+      "sha256": "e08ad2e516f4ffa54b60ec846f60bd00272e7de43c526b7fec5bf01298692165",
+      "bytes": 5784
+    },
+    "metrics/r18_span_sweep_A_beta_1.00.json": {
+      "sha256": "fc50df65de340d5e60de0d200ce8a03dc816af697cbd7f8cef30ae60c7bd2ce7",
+      "bytes": 215865
+    },
+    "metrics/r18_span_sweep_B_beta_1.00.json": {
+      "sha256": "c19805762ba49edfac3cf281b298631a29cdb3fcb3f92653bfde9100059392f6",
+      "bytes": 215735
+    }
+  }
+}

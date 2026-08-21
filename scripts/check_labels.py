@@ -51,6 +51,13 @@ def collect(files):
             labels[m] += 1
             where.setdefault(m, []).append(f.name)
         for m in RE_REF.findall(s):
+            # A target containing # is a macro parameter, not a label: the
+            # cross-document helpers are defined as \ref*{supp-#1} and
+            # \ref*{main-#1} in macros_shared.tex, and counting those bodies
+            # as references made every run report four dangling targets that
+            # no edit could ever fix.
+            if "#" in m:
+                continue
             refs[m] += 1
     return labels, refs, where
 
@@ -86,7 +93,16 @@ def main() -> int:
         dangling_main.append(r)
     report("references in main resolving nowhere", sorted(dangling_main))
 
-    dangling_supp = [r for r in sr if r not in sl]
+    # symmetric to the main-side check: the supplement points at main's
+    # labels through xr with a main- prefix, and ignoring that flagged twenty
+    # valid cross-document references as dangling for a full round
+    dangling_supp = []
+    for r in sr:
+        if r in sl:
+            continue
+        if r.startswith("main-") and r[len("main-"):] in ml:
+            continue
+        dangling_supp.append(r)
     report("references in supplement resolving nowhere", sorted(dangling_supp))
 
     # a supplement label that main points at with the wrong prefix

@@ -1,0 +1,233 @@
+{
+  "schema": "r62_preregistration_v1",
+  "campaign": "R62 (O54): the controlled apolune ladder's interior panel, re-matched at the scoring tolerance",
+  "registered_utc": "2026-08-19T09:15:58Z",
+  "registered_before_any_propagation": true,
+  "motivation": "(O53) showed that the tolerance the realized-work match is made at changes which populations share the crossing bracket, and that two of those changes survive every resolution cut. The geometry strata therefore now carry the level-consistent match while the controlled test of the radial-span direction, the paired apolune ladder of (O49), still carries the older tight-level convention on its interior panel. The uncontrolled evidence is held to a stricter accounting than the controlled evidence. This campaign removes that asymmetry.",
+  "question": "Does a controlled apolune change, perilune and angular geometry held fixed, still move the interior crossing once the comparator is matched at the tolerance the errors are scored at?",
+  "cells": [
+    {
+      "population": "span_ladder_a",
+      "design_key": "RS1",
+      "beta": 0.5,
+      "apolune_km": [
+        300.0,
+        600.0
+      ],
+      "identities": 32
+    },
+    {
+      "population": "span_ladder_b",
+      "design_key": "RS2",
+      "beta": 0.5,
+      "apolune_km": [
+        300.0,
+        600.0
+      ],
+      "identities": 32
+    },
+    {
+      "population": "span_ladder_a",
+      "design_key": "RS1",
+      "beta": 0.75,
+      "apolune_km": [
+        300.0,
+        600.0
+      ],
+      "identities": 32
+    },
+    {
+      "population": "span_ladder_b",
+      "design_key": "RS2",
+      "beta": 0.75,
+      "apolune_km": [
+        300.0,
+        600.0
+      ],
+      "identities": 32
+    },
+    {
+      "population": "span_ladder_a",
+      "design_key": "RS1",
+      "beta": 1.0,
+      "apolune_km": [
+        300.0,
+        600.0
+      ],
+      "identities": 32
+    },
+    {
+      "population": "span_ladder_b",
+      "design_key": "RS2",
+      "beta": 1.0,
+      "apolune_km": [
+        300.0,
+        600.0
+      ],
+      "identities": 32
+    }
+  ],
+  "scope_and_why_it_stops_here": "Only the 300 and 600 km levels are run. (O49) reports the reference-degree ceiling beginning to bind at 1200 km and binding on every orbit at 2400 km, so a rematch there would confound the accounting change with the ceiling. The 300 to 600 step alone answers the question, and the plan subcommand confirmed 0 censored comparators at both levels in all six cells, which is the same statement measured rather than asserted.",
+  "tight_level_baseline_interior_minus_fixed": {
+    "RS1": {
+      "0.50": {
+        "300": [
+          2,
+          14
+        ],
+        "600": [
+          11,
+          1
+        ]
+      },
+      "0.75": {
+        "300": [
+          7,
+          4
+        ],
+        "600": [
+          11,
+          0
+        ]
+      },
+      "1.00": {
+        "300": [
+          3,
+          3
+        ],
+        "600": [
+          15,
+          0
+        ]
+      }
+    },
+    "RS2": {
+      "0.50": {
+        "300": [
+          1,
+          15
+        ],
+        "600": [
+          13,
+          1
+        ]
+      },
+      "0.75": {
+        "300": [
+          1,
+          5
+        ],
+        "600": [
+          12,
+          1
+        ]
+      },
+      "1.00": {
+        "300": [
+          3,
+          3
+        ],
+        "600": [
+          11,
+          0
+        ]
+      }
+    }
+  },
+  "frozen_rules": {
+    "construction": "(O42)/(O53) unchanged: the member is k = 0.50 of the archived R18 ladder sweep, reused, and only the matched constant-degree comparator is propagated, at both tolerance levels",
+    "match_target": "W_k^tighter from the archived tighter-level member telemetry; N* = round(N_0 sqrt(W_k/W_0)) with both works at that level",
+    "primary_statistic": "per block and budget, the resolved interior--fixed tally at 300 km and at 600 km separately, never pooled across levels, with the median error ratio at each level",
+    "robustness": "every cell re-tallied at resolution cuts 0.5, 1 and 2, nothing repropagated; a level whose leading side moves across the cuts is reported as cut-sensitive and never as a verdict",
+    "censoring": "a comparator at or above the adopted reference degree is censored and reported, never clamped",
+    "no_outcome_dependent_stopping": "all six cells run to completion or to the window deadline; the attempt order is fixed here and does not depend on any result this campaign produces"
+  },
+  "attempt_order": "beta 0.50 on both blocks first, then 0.75, then 1.00: the 0.50 row carries the outcome classes, so a window that ends early still decides the campaign.",
+  "declared_outcomes": {
+    "A_shift_preserved": "in both blocks at beta = 0.50 the 300 km subset leads the constant degree and the 600 km subset leads the interior member, and both leading sides hold at all three resolution cuts. Reading: the controlled leg of the radial-span interpretation survives the accounting change, and the geometry claim is stated without an accounting caveat on its controlled evidence.",
+    "B_shift_attenuated": "the 300 to 600 step still moves the tally toward the interior member in both blocks at beta = 0.50, but in at least one block the leading side no longer differs between the levels, or the difference is cut-sensitive. Reading: the radial-span interpretation is partly a property of the cost accounting, and the main text's geometry sentences are narrowed to say so.",
+    "C_shift_absent": "at beta = 0.50 the leading side is the same at both levels in both blocks. Reading: for the interior policy the radial-span causal reading does not survive level-consistent matching; the claim is withdrawn for the interior member and retained only for the endpoint ladder, which this campaign does not touch.",
+    "note": "all three are publishable and all three change the same places: the geometry paragraph of Section IX.B, the ladder discussion in the supplement, and (O49)'s entry in the experiment contract."
+  },
+  "plan_validation": "the plan subcommand was run on all six cells before this registration was written: 32 identities each, 0 missing telemetry, 0 censored, 0 degenerate; about 11 min per cell at 10 workers.",
+  "driver": "python_codes/rev62_ladder_interior_rematch.py",
+  "supervisor": "python_codes/rev62_campaign.py",
+  "inputs_as_read": {
+    "python_codes/rev62_ladder_interior_rematch.py": {
+      "sha256": "988a44bcfdf7fa576d6ff26fb6a5a953cd2af75f79a2137678ba72e145b54388",
+      "bytes": 6395
+    },
+    "python_codes/rev62_campaign.py": {
+      "sha256": "b9c7b9bfe68533ba17045092cda927f89e12d33bc3effdea223ea7875650fa2b",
+      "bytes": 5575
+    },
+    "python_codes/rev44_equal_work_tighter.py": {
+      "sha256": "81f36e62f09f11136dc3b2f933ab03518eea6caff764d2cec500c3c8f572eec8",
+      "bytes": 18005
+    },
+    "python_codes/rev18_span_sweep.py": {
+      "sha256": "415b049b56e2f05a8444f57f0a6457a8a7db119147a2ade3215f5a8e0259935b",
+      "bytes": 24838
+    },
+    "python_codes/population_registry.py": {
+      "sha256": "2b882636a6f13bbe46b45da2f078169592f6d52282d71afd462fff9b438b618c",
+      "bytes": 1932
+    },
+    "metrics/r18_span_sweep_RS1_beta_0.50.json": {
+      "sha256": "c66f7c26154383e994df2723ff84f2413f1873dd5b693a91bf21ed4b4a676313",
+      "bytes": 214801
+    },
+    "metrics/r19_equal_total_work_RS1_beta_0.50.json": {
+      "sha256": "812eaae59ce58f9908a3ce07dfe9eea81af7acf8b3a4b312668e9636ae3a1803",
+      "bytes": 36610
+    },
+    "metrics/r18_span_sweep_RS2_beta_0.50.json": {
+      "sha256": "37b8926c8e91583a8787cc17506d1636dc36e13215bc7ad8520960810ac1822a",
+      "bytes": 214879
+    },
+    "metrics/r19_equal_total_work_RS2_beta_0.50.json": {
+      "sha256": "6c1c569e04eb23aef5cbb513f2f5b882991e611c52a7e32489864b51865aef26",
+      "bytes": 36609
+    },
+    "metrics/r18_span_sweep_RS1_beta_0.75.json": {
+      "sha256": "2b4595146ba6d05d5d4361eefcfd8e4355ec0447b6f5280399d58feada823ecb",
+      "bytes": 215979
+    },
+    "metrics/r19_equal_total_work_RS1_beta_0.75.json": {
+      "sha256": "6352df6aea22809e8e2bd5a7967f5d3ab6c6cd96302bd6ec363a29823efe2c86",
+      "bytes": 36691
+    },
+    "metrics/r18_span_sweep_RS2_beta_0.75.json": {
+      "sha256": "76d29d900cdda2474eb0b447c8ea024d7c5edf8e22218e64a87431bbcca44207",
+      "bytes": 215806
+    },
+    "metrics/r19_equal_total_work_RS2_beta_0.75.json": {
+      "sha256": "f3efbd0743efbec6d8552d3d09ce01a752bcdbf02c8e31852c903c887776e4b0",
+      "bytes": 36651
+    },
+    "metrics/r18_span_sweep_RS1_beta_1.00.json": {
+      "sha256": "0fbbdc711fc970f30994aaad9166513d215ce9df9a91f7fd94ff1e5feb82ab64",
+      "bytes": 216404
+    },
+    "metrics/r19_equal_total_work_RS1_beta_1.00.json": {
+      "sha256": "622b50dfcd3e17e6c9dd3d31c259de726182cb6190ea59b2d56dfac8983947eb",
+      "bytes": 36781
+    },
+    "metrics/r18_span_sweep_RS2_beta_1.00.json": {
+      "sha256": "b38dcbcb7298e3028dee96bd7ab3bdc73debd5280954af2ae4a29e6d432e2230",
+      "bytes": 216548
+    },
+    "metrics/r19_equal_total_work_RS2_beta_1.00.json": {
+      "sha256": "7b8488e5832de6553da9ded52b8ce77354eb8860156c9054692227556f9d2672",
+      "bytes": 36716
+    },
+    "metrics/r50_span_ladder_a_rows.json": {
+      "sha256": "6f1dcc97ccd2138e770d87b05beceb3832757df61c1b91cb1fcd734efcd58c89",
+      "bytes": 112578
+    },
+    "metrics/r50_span_ladder_b_rows.json": {
+      "sha256": "62df9a4a0b3e8f70f6157b96f76f9fa964581669f4a68dd424c4a208d63c0445",
+      "bytes": 112691
+    }
+  }
+}

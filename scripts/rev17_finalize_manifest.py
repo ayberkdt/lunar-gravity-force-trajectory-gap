@@ -23,7 +23,7 @@ OUT = METRICS / "r17_final_experiment_manifest.json"
 
 SCRIPTS = ["rev17_longarc60.py", "rev17_tables.py",
            "rev17_finalize_manifest.py"]
-RESULT_JSON = ["r17_longarc60.json"]
+RESULT_JSON = ["r17_longarc60.json", "r17_manuscript_descriptives.json"]
 TABLES = ["r17_longarc60_table.tex", "r17_longarc60_growth_table.tex"]
 
 

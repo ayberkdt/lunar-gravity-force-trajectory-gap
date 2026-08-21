@@ -1,0 +1,74 @@
+{
+  "schema": "rJ2_case_v1",
+  "created_utc": "2026-08-08T13:05:55.891500Z",
+  "config": {
+    "sobol_index": 5,
+    "policy": "radial",
+    "policy_spec": {
+      "kind": "budget_calibrated_radial",
+      "beta": 0.5,
+      "accuracy_parameter_m_s2": 0.0693138963374275,
+      "bin_km": 10.0,
+      "floor": 2,
+      "cap": 300,
+      "n_critical": 82,
+      "source": "frozen budget record, not recalibrated",
+      "table": {
+        "130.0": 78,
+        "140.0": 69,
+        "150.0": 62,
+        "160.0": 56,
+        "170.0": 51,
+        "180.0": 46,
+        "190.0": 42,
+        "200.0": 38
+      }
+    },
+    "level": "tighter",
+    "adopted_truth_degree": 300,
+    "dynamics": "moon_sh + earth + sun + srp_eclipse",
+    "orientation": "DE440/MOON_PA",
+    "duration_s": 604800.0,
+    "output_step_s": 120.0,
+    "max_step_s": 60.0,
+    "rtol": 1e-13,
+    "atol_kind": "vector",
+    "atol_position_m": 1e-06,
+    "atol_velocity_m_s": 1e-09,
+    "integrator": "InstrumentedDOP853",
+    "field": "JGGRX_1800F",
+    "timing_comparable": false,
+    "execution": "parallel_process_pool"
+  },
+  "telemetry": {
+    "n_rhs": 410954,
+    "wall_s": 80.58986229999573,
+    "gravity_wall_s": 21.3430259,
+    "mean_active_degree": 57.50304413632669,
+    "mean_degree_squared": 3485.902680105316,
+    "rms_active_degree": 59.04153351756131,
+    "min_active_degree": 38,
+    "max_active_degree": 78,
+    "degree_counts": {
+      "38": 31213,
+      "42": 50351,
+      "46": 53733,
+      "51": 49543,
+      "56": 47943,
+      "62": 49510,
+      "69": 50903,
+      "78": 77758
+    },
+    "component_rms_acceleration_m_s2": {
+      "earth_3b": 2.3216055158908263e-05,
+      "sun_3b": 1.1361564837575006e-07,
+      "srp": 4.9660231367382846e-08
+    },
+    "n_accepted_steps": 19732,
+    "n_attempted_steps": 32986,
+    "n_rejected_trials": 13254,
+    "total_wall_s": 80.58986229999573
+  },
+  "raw_path": "D:\\makale_raw_offload\\jgcd\\J2\\J2_005\\radial_beta_0.50_tighter.npz",
+  "raw_sha256": "ccc90ff34e654d2291d356f8ffcb4b2d130b64f2d2de2b96bceead8702c73198"
+}

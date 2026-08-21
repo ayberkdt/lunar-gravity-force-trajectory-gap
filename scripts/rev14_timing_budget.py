@@ -375,17 +375,14 @@ def aggregate() -> int:
   \\centering\\small
   \\setlength{{\\tabcolsep}}{{5pt}}
   \\caption{{Equal-budget comparison with the budget defined as measured serial
-  gravity-kernel time rather than the quadratic proxy.
-  $N_{{\\mathrm{{time}}}}$ is the degree whose measured kernel time matches the
-  radial policy's within the timing repeatability of this machine; all 14 pairs
-  fall inside the declared $0.90$--$1.10$ band. The wall ratio is the
-  end-to-end propagation time of the radial policy over the comparator's, so a
-  value above unity means that matching the kernel time did not make the run as a
-  whole equally expensive. $\\rho = E_{{\\mathrm{{fix}}}}/E_{{\\mathrm{{At}}}}$ is a
-  raw error ratio: the reference-inclusive resolution rule used elsewhere in the
-  paper is not applied to this panel. Degrees, errors in meters and the proxy
-  comparator are in Supplementary
-  Table~\\ref*{{supp-tab:budget-timing-full}}.}}
+  gravity-kernel time rather than the quadratic proxy. $N_{{\\mathrm{{time}}}}$
+  matches the radial policy's measured kernel time, all 14 pairs falling
+  inside the declared $0.90$--$1.10$ band; the wall ratio is the end-to-end
+  propagation time over the comparator's.
+  $\\rho = E_{{\\mathrm{{fix}}}}/E_{{\\mathrm{{rad}}}}$ is a raw error ratio, the
+  resolution rule not being applied to this panel. Degrees, errors and the
+  proxy comparator are in Supplemental
+  Table~\\suppref{{tab:budget-timing-full}}.}}
   \\label{{tab:budget-timing}}
   \\begin{{tabular}}{{l c c c c c}}
     \\toprule
@@ -411,7 +408,7 @@ def aggregate() -> int:
   matches the radial policy's within the measured timing repeatability. All runs
   are serial on an idle machine and each configuration is repeated; medians are
   compared. A pair counts as matched only inside the declared
-  $0.90$--$1.10$ band. $\\rho = E_{{\\mathrm{{fix}}}}/E_{{\\mathrm{{At}}}}$ is a raw
+  $0.90$--$1.10$ band. $\\rho = E_{{\\mathrm{{fix}}}}/E_{{\\mathrm{{rad}}}}$ is a raw
   error ratio; the reference-inclusive resolution rule is not applied to this
   panel.}}
   \\label{{tab:budget-timing-full}}
@@ -419,7 +416,7 @@ def aggregate() -> int:
     \\toprule
     Des. & idx & $h_p$ [km] & $N_{{\\mathrm{{crit}}}}$ & $N_{{\\mathrm{{proxy}}}}$ &
       $N_{{\\mathrm{{time}}}}$ & kernel ratio & wall ratio &
-      $E_{{\\mathrm{{At}}}}$ [m] &
+      $E_{{\\mathrm{{rad}}}}$ [m] &
       $E_{{\\mathrm{{fix}}}}$ [m] & $\\rho$ & matched\\\\
     \\midrule
 {body}

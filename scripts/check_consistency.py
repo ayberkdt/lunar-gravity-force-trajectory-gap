@@ -84,8 +84,13 @@ def check_experiment_counts(texts, problems, notes):
 def check_manifest_counts(texts, problems, notes):
     # r?? rather than r1?: the campaign numbering passed 19 and the narrower
     # glob silently stopped counting, which is how a stale count survives.
-    paths = sorted(glob.glob(str(METRICS / "r[0-9]*_final_experiment_manifest.json")),
-                   key=lambda p: int(re.match(r'r(\d+)', Path(p).name).group(1)))
+    # The replication manifest is lettered (rJ), so the digit glob alone
+    # undercounts by one -- that miss flagged a correct "twenty-seven" as
+    # wrong for a full round.
+    paths = sorted(glob.glob(str(METRICS / "r[0-9]*_final_experiment_manifest.json"))
+                   + glob.glob(str(METRICS / "rJ_final_experiment_manifest.json")),
+                   key=lambda p: (0, int(m.group(1))) if
+                   (m := re.match(r'r(\d+)', Path(p).name)) else (1, 0))
     on_disk = [Path(p).name for p in paths]
     campaign = [x.split('_')[0] for x in on_disk]
     n = len(on_disk)

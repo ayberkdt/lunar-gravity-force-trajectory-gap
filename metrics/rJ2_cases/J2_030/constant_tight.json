@@ -1,0 +1,54 @@
+{
+  "schema": "rJ2_case_v1",
+  "created_utc": "2026-08-08T13:35:59.173511Z",
+  "config": {
+    "sobol_index": 30,
+    "policy": "constant",
+    "policy_spec": {
+      "kind": "constant_budget",
+      "degree": 96,
+      "beta": 1.0,
+      "n_critical": 96,
+      "source": "frozen budget record, not recalibrated"
+    },
+    "level": "tight",
+    "adopted_truth_degree": 300,
+    "dynamics": "moon_sh + earth + sun + srp_eclipse",
+    "orientation": "DE440/MOON_PA",
+    "duration_s": 604800.0,
+    "output_step_s": 120.0,
+    "max_step_s": 60.0,
+    "rtol": 1e-12,
+    "atol_kind": "vector",
+    "atol_position_m": 1e-05,
+    "atol_velocity_m_s": 1e-08,
+    "integrator": "InstrumentedDOP853",
+    "field": "JGGRX_1800F",
+    "timing_comparable": false,
+    "execution": "parallel_process_pool"
+  },
+  "telemetry": {
+    "n_rhs": 142790,
+    "wall_s": 36.06641940001282,
+    "gravity_wall_s": 15.984643,
+    "mean_active_degree": 96.0,
+    "mean_degree_squared": 9216.0,
+    "rms_active_degree": 96.0,
+    "min_active_degree": 96,
+    "max_active_degree": 96,
+    "degree_counts": {
+      "96": 142790
+    },
+    "component_rms_acceleration_m_s2": {
+      "earth_3b": 2.111980736452323e-05,
+      "sun_3b": 9.068782420137254e-08,
+      "srp": 6.11861466837258e-08
+    },
+    "n_accepted_steps": 10380,
+    "n_attempted_steps": 10639,
+    "n_rejected_trials": 259,
+    "total_wall_s": 36.06641940001282
+  },
+  "raw_path": "D:\\makale_raw_offload\\jgcd\\J2\\J2_030\\constant_tight.npz",
+  "raw_sha256": "e18564a8d357960a9fa099353de6b8b99a5963dab07923705dab5b020eb7e09a"
+}

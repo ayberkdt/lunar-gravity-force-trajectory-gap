@@ -1,0 +1,1329 @@
+{
+  "schema": "rJ2_score_v1",
+  "created_utc": "2026-08-09T04:32:19.542615Z",
+  "plan_sha256": "5bab1c9a28912d91ef2e8a0e7523f44832bff7b3b4b35bf6af14a221f6798728",
+  "beta": 1.0,
+  "counts": {
+    "orbits": 24,
+    "resolved_tighter": 15,
+    "paired_with_gravity_only": 15,
+    "sign_agrees": 14,
+    "resolved_in_both_dynamics": 13,
+    "sign_agrees_resolved_in_both": 13,
+    "reversal_orbits": 12,
+    "radial_wins_force": 13,
+    "radial_loses_trajectory": 14
+  },
+  "aggregates": {
+    "median_rho_traj": 6.084153931469521,
+    "median_rho_force": 0.3230918001503268,
+    "median_rho_traj_gravity_only": 2.7162983423815796,
+    "max_realized_beta_deviation_radial": 0.5856910612973616,
+    "median_realized_beta_radial": 1.0108377456520736,
+    "orbits_within_10pct_of_declared_budget": 16
+  },
+  "budget_caveat": "the policy is the archived one and is not recalibrated, so under the new dynamics it no longer spends exactly the declared budget: the altitude history it reads is not the gravity-only history it was calibrated on. The realized budget is reported per orbit rather than corrected, because recalibrating would change the policy and this campaign is a replication of a policy, not of a budget",
+  "verdict": "A_reversal_survives",
+  "budget_parity_subgroup": {
+    "status": "post_hoc; specified after the realized budgets were seen",
+    "rule": "|realized beta - 1.00| <= 10% of the declared budget, on the orbits resolved under both dynamics",
+    "orbits": 8,
+    "of": 13,
+    "sign_agrees": 8,
+    "reversal": 7,
+    "median_rho_traj": 8.01754051301485,
+    "median_rho_force": 0.37014922295843433
+  },
+  "rows": [
+    {
+      "sobol_index": 0,
+      "name": "sobolA_000",
+      "hp_km": 84.92316126823425,
+      "ha_km": 498.4902709722519,
+      "incl_deg": 155.4011721163988,
+      "n_critical": 123,
+      "adopted_truth_degree": 300,
+      "self_difference_reference_m": 3.049335756817174,
+      "realized_beta": {
+        "radial": 0.8144357126870653,
+        "constant": 1.0
+      },
+      "constant": {
+        "J_traj_rms_m": {
+          "tight": 2.548227468904661,
+          "tighter": 1.935009436650237
+        },
+        "self_difference_m": 2.4258362839524623,
+        "numerical_envelope_m": 5.475172040769636,
+        "J_force_mean_m_s2": 3.640826774212081e-08,
+        "J_force_rms_m_s2": 1.2830698351110424e-07,
+        "J_force_max_m_s2": 1.9199819663439486e-06,
+        "n_epochs": 5041
+      },
+      "radial": {
+        "J_traj_rms_m": {
+          "tight": 41.33107172934821,
+          "tighter": 39.87110796181082
+        },
+        "self_difference_m": 1.7030502059501662,
+        "numerical_envelope_m": 4.75238596276734,
+        "J_force_mean_m_s2": 3.3561359055561825e-08,
+        "J_force_rms_m_s2": 5.171737873838782e-08,
+        "J_force_max_m_s2": 1.9087889825056587e-07,
+        "n_epochs": 5041
+      },
+      "resolved": {
+        "tight": true,
+        "tighter": true
+      },
+      "rho_traj": 20.605123265358902,
+      "rho_force": 0.9218059835550652,
+      "reversal": true,
+      "gravity_only_archived": {
+        "J_traj_rms_m_radial": 22.599858887581817,
+        "J_traj_rms_m_constant": 14.156898214464563,
+        "rho_traj": 1.5963849245232833,
+        "case_dir": "C:\\Users\\ayber\\Desktop\\Makale\\codebase\\metrics\\r14_cases\\A_beta_1.00\\sobolA_000",
+        "resolved": true
+      },
+      "sign_agrees_with_gravity_only": true
+    },
+    {
+      "sobol_index": 1,
+      "name": "sobolA_001",
+      "hp_km": 105.46407949179411,
+      "ha_km": 350.0530759245157,
+      "incl_deg": 45.261392164975405,
+      "n_critical": 102,
+      "adopted_truth_degree": 300,
+      "self_difference_reference_m": 0.10297928585568071,
+      "realized_beta": {
+        "radial": 0.992130847694808,
+        "constant": 1.0
+      },
+      "constant": {
+        "J_traj_rms_m": {
+          "tight": 1.2801378528978022,
+          "tighter": 1.316604740197423
+        },
+        "self_difference_m": 0.0664018958421124,
+        "numerical_envelope_m": 0.1693811816977931,
+        "J_force_mean_m_s2": 6.912508493427136e-08,
+        "J_force_rms_m_s2": 1.6763925741390844e-07,
+        "J_force_max_m_s2": 1.4428454168361464e-06,
+        "n_epochs": 5041
+      },
+      "radial": {
+        "J_traj_rms_m": {
+          "tight": 57.34008337789102,
+          "tighter": 63.72841962748965
+        },
+        "self_difference_m": 6.3789307016275565,
+        "numerical_envelope_m": 6.481909987483237,
+        "J_force_mean_m_s2": 7.442269752343698e-08,
+        "J_force_rms_m_s2": 1.1546275253392924e-07,
+        "J_force_max_m_s2": 6.310408432694837e-07,
+        "n_epochs": 5041
+      },
+      "resolved": {
+        "tight": true,
+        "tighter": true
+      },
+      "rho_traj": 48.40360791799493,
+      "rho_force": 1.076638062639676,
+      "reversal": false,
+      "gravity_only_archived": {
+        "J_traj_rms_m_radial": 15.083370457836327,
+        "J_traj_rms_m_constant": 15.522935705274804,
+        "rho_traj": 0.9716828533091773,
+        "case_dir": "C:\\Users\\ayber\\Desktop\\Makale\\codebase\\metrics\\r14_cases\\A_beta_1.00\\sobolA_001",
+        "resolved": false
+      },
+      "sign_agrees_with_gravity_only": false
+    },
+    {
+      "sobol_index": 2,
+      "name": "sobolA_002",
+      "hp_km": 149.53026305884123,
+      "ha_km": 393.1426776945591,
+      "incl_deg": 97.27341458201408,
+      "n_critical": 74,
+      "adopted_truth_degree": 300,
+      "self_difference_reference_m": 1.6239647088684304,
+      "realized_beta": {
+        "radial": 0.941198280745078,
+        "constant": 1.0
+      },
+      "constant": {
+        "J_traj_rms_m": {
+          "tight": 3.7792440546225268,
+          "tighter": 7.890346190259967
+        },
+        "self_difference_m": 6.103429937297678,
+        "numerical_envelope_m": 7.7273946461661085,
+        "J_force_mean_m_s2": 1.0051912389044927e-07,
+        "J_force_rms_m_s2": 2.341007305600698e-07,
+        "J_force_max_m_s2": 1.6134484363627593e-06,
+        "n_epochs": 5041
+      },
+      "radial": {
+        "J_traj_rms_m": {
+          "tight": 77.25171278176101,
+          "tighter": 69.79698210569383
+        },
+        "self_difference_m": 5.8550519843857005,
+        "numerical_envelope_m": 7.479016693254131,
+        "J_force_mean_m_s2": 5.201296468879477e-08,
+        "J_force_rms_m_s2": 6.9247083321135e-08,
+        "J_force_max_m_s2": 3.126719106184109e-07,
+        "n_epochs": 5041
+      },
+      "resolved": {
+        "tight": true,
+        "tighter": true
+      },
+      "rho_traj": 8.845870690927718,
+      "rho_force": 0.5174434741938367,
+      "reversal": true,
+      "gravity_only_archived": {
+        "J_traj_rms_m_radial": 156.20293279904888,
+        "J_traj_rms_m_constant": 5.955663692415366,
+        "rho_traj": 26.22762816476287,
+        "case_dir": "C:\\Users\\ayber\\Desktop\\Makale\\codebase\\metrics\\r14_cases\\A_beta_1.00\\sobolA_002",
+        "resolved": true
+      },
+      "sign_agrees_with_gravity_only": true
+    },
+    {
+      "sobol_index": 3,
+      "name": "sobolA_003",
+      "hp_km": 50.231977701187134,
+      "ha_km": 239.75622050464153,
+      "incl_deg": 16.185178253799677,
+      "n_critical": 195,
+      "adopted_truth_degree": 300,
+      "self_difference_reference_m": 0.6019617762947231,
+      "realized_beta": {
+        "radial": 0.9621876836110886,
+        "constant": 1.0
+      },
+      "constant": {
+        "J_traj_rms_m": {
+          "tight": 1.9767514000398425,
+          "tighter": 0.6411632586935012
+        },
+        "self_difference_m": 1.9859278605711843,
+        "numerical_envelope_m": 2.5878896368659072,
+        "J_force_mean_m_s2": 7.914840730616487e-08,
+        "J_force_rms_m_s2": 2.1533025093245343e-07,
+        "J_force_max_m_s2": 1.8450063804144428e-06,
+        "n_epochs": 5041
+      },
+      "radial": {
+        "J_traj_rms_m": {
+          "tight": 2.4389293689502356,
+          "tighter": 2.5028872892235934
+        },
+        "self_difference_m": 0.6955334890817777,
+        "numerical_envelope_m": 1.2974952653765008,
+        "J_force_mean_m_s2": 2.249568613901887e-09,
+        "J_force_rms_m_s2": 3.2600518530545876e-09,
+        "J_force_max_m_s2": 1.66817122792319e-08,
+        "n_epochs": 5041
+      },
+      "resolved": {
+        "tight": false,
+        "tighter": false
+      },
+      "rho_traj": 3.9036661182422216,
+      "rho_force": 0.028422158960192595,
+      "reversal": true,
+      "gravity_only_archived": {
+        "J_traj_rms_m_radial": 1.9543932229292649,
+        "J_traj_rms_m_constant": 2.846265271297404,
+        "rho_traj": 0.6866518179587667,
+        "case_dir": "C:\\Users\\ayber\\Desktop\\Makale\\codebase\\metrics\\r14_cases\\A_beta_1.00\\sobolA_003",
+        "resolved": true
+      },
+      "sign_agrees_with_gravity_only": false
+    },
+    {
+      "sobol_index": 4,
+      "name": "sobolA_004",
+      "hp_km": 35.37570733577013,
+      "ha_km": 464.87853940576315,
+      "incl_deg": 76.44123477861285,
+      "n_critical": 250,
+      "adopted_truth_degree": 900,
+      "self_difference_reference_m": 3.353590769087536,
+      "realized_beta": {
+        "radial": 0.41430893870263835,
+        "constant": 1.0
+      },
+      "constant": {
+        "J_traj_rms_m": {
+          "tight": 0.514642383541878,
+          "tighter": 0.21513060713080695
+        },
+        "self_difference_m": 3.5896342971548334,
+        "numerical_envelope_m": 6.94322506624237,
+        "J_force_mean_m_s2": 1.2277518668327e-08,
+        "J_force_rms_m_s2": 4.971986831850282e-08,
+        "J_force_max_m_s2": 6.212964875180279e-07,
+        "n_epochs": 5041
+      },
+      "radial": {
+        "J_traj_rms_m": {
+          "tight": 2104.8262463018896,
+          "tighter": 2093.031529753442
+        },
+        "self_difference_m": 15.36582901990092,
+        "numerical_envelope_m": 18.719419788988457,
+        "J_force_mean_m_s2": 1.5316183157367488e-06,
+        "J_force_rms_m_s2": 2.608881285258812e-06,
+        "J_force_max_m_s2": 1.8919136748430382e-05,
+        "n_epochs": 5041
+      },
+      "resolved": {
+        "tight": true,
+        "tighter": true
+      },
+      "rho_traj": 9729.120173406129,
+      "rho_force": 124.74982584941613,
+      "reversal": false,
+      "gravity_only_archived": {
+        "J_traj_rms_m_radial": 7300.4757993246685,
+        "J_traj_rms_m_constant": 7.0164165732510915,
+        "rho_traj": 1040.4849431484022,
+        "case_dir": "C:\\Users\\ayber\\Desktop\\Makale\\codebase\\metrics\\r14_cases\\A_beta_1.00\\sobolA_004",
+        "resolved": true
+      },
+      "sign_agrees_with_gravity_only": true
+    },
+    {
+      "sobol_index": 5,
+      "name": "sobolA_005",
+      "hp_km": 134.35907252132893,
+      "ha_km": 193.36672861129045,
+      "incl_deg": 170.10024446994066,
+      "n_critical": 82,
+      "adopted_truth_degree": 300,
+      "self_difference_reference_m": 2.381585208024743,
+      "realized_beta": {
+        "radial": 1.064304794675334,
+        "constant": 1.0
+      },
+      "constant": {
+        "J_traj_rms_m": {
+          "tight": 5.330353081882081,
+          "tighter": 2.4869807227295926
+        },
+        "self_difference_m": 2.5860906047060004,
+        "numerical_envelope_m": 4.967675812730743,
+        "J_force_mean_m_s2": 3.308848473684157e-07,
+        "J_force_rms_m_s2": 5.930090471531971e-07,
+        "J_force_max_m_s2": 4.815374385163824e-06,
+        "n_epochs": 5041
+      },
+      "radial": {
+        "J_traj_rms_m": {
+          "tight": 7.257002728786653,
+          "tighter": 8.891347844473955
+        },
+        "self_difference_m": 2.2276817048847515,
+        "numerical_envelope_m": 4.6092669129094945,
+        "J_force_mean_m_s2": 1.5414370902914978e-07,
+        "J_force_rms_m_s2": 1.860644142149224e-07,
+        "J_force_max_m_s2": 8.359269053438002e-07,
+        "n_epochs": 5041
+      },
+      "resolved": {
+        "tight": false,
+        "tighter": false
+      },
+      "rho_traj": 3.5751575246289935,
+      "rho_force": 0.46585303091115016,
+      "reversal": true,
+      "gravity_only_archived": {
+        "J_traj_rms_m_radial": 32.21617130290751,
+        "J_traj_rms_m_constant": 1.4023378940752709,
+        "rho_traj": 22.9731874457771,
+        "case_dir": "C:\\Users\\ayber\\Desktop\\Makale\\codebase\\metrics\\r14_cases\\A_beta_1.00\\sobolA_005",
+        "resolved": true
+      },
+      "sign_agrees_with_gravity_only": true
+    },
+    {
+      "sobol_index": 6,
+      "name": "sobolA_006",
+      "hp_km": 90.30019886791706,
+      "ha_km": 571.1423314735293,
+      "incl_deg": 42.134231831878424,
+      "n_critical": 117,
+      "adopted_truth_degree": 300,
+      "self_difference_reference_m": 0.07355510768729068,
+      "realized_beta": {
+        "radial": 0.8637030828903626,
+        "constant": 1.0
+      },
+      "constant": {
+        "J_traj_rms_m": {
+          "tight": 1.8673122672771496,
+          "tighter": 1.7853297330245907
+        },
+        "self_difference_m": 0.021830709556920246,
+        "numerical_envelope_m": 0.09538581724421093,
+        "J_force_mean_m_s2": 3.4009191537498126e-08,
+        "J_force_rms_m_s2": 1.0809176620193298e-07,
+        "J_force_max_m_s2": 1.1580774559501072e-06,
+        "n_epochs": 5041
+      },
+      "radial": {
+        "J_traj_rms_m": {
+          "tight": 7.7946505353548385,
+          "tighter": 10.04231665292399
+        },
+        "self_difference_m": 2.552761846551916,
+        "numerical_envelope_m": 2.626316954239207,
+        "J_force_mean_m_s2": 2.4218172652806755e-08,
+        "J_force_rms_m_s2": 3.983680990787892e-08,
+        "J_force_max_m_s2": 2.0701201945171366e-07,
+        "n_epochs": 5041
+      },
+      "resolved": {
+        "tight": true,
+        "tighter": true
+      },
+      "rho_traj": 5.624908646937136,
+      "rho_force": 0.7121066852207907,
+      "reversal": true,
+      "gravity_only_archived": {
+        "J_traj_rms_m_radial": 25.413794733485492,
+        "J_traj_rms_m_constant": 1.8743367629469447,
+        "rho_traj": 13.558819970819117,
+        "case_dir": "C:\\Users\\ayber\\Desktop\\Makale\\codebase\\metrics\\r14_cases\\A_beta_1.00\\sobolA_006",
+        "resolved": true
+      },
+      "sign_agrees_with_gravity_only": true
+    },
+    {
+      "sobol_index": 7,
+      "name": "sobolA_007",
+      "hp_km": 70.059580989182,
+      "ha_km": 304.58028350025415,
+      "incl_deg": 117.20325987786055,
+      "n_critical": 146,
+      "adopted_truth_degree": 300,
+      "self_difference_reference_m": 0.1253919806863437,
+      "realized_beta": {
+        "radial": 1.0572483157344157,
+        "constant": 1.0
+      },
+      "constant": {
+        "J_traj_rms_m": {
+          "tight": 2.9319145185067286,
+          "tighter": 2.751240159955218
+        },
+        "self_difference_m": 0.31866941650969144,
+        "numerical_envelope_m": 0.4440613971960351,
+        "J_force_mean_m_s2": 6.318929191082328e-08,
+        "J_force_rms_m_s2": 1.9115121239615465e-07,
+        "J_force_max_m_s2": 2.016917930383006e-06,
+        "n_epochs": 5041
+      },
+      "radial": {
+        "J_traj_rms_m": {
+          "tight": 15.012389396892027,
+          "tighter": 19.779244192297686
+        },
+        "self_difference_m": 4.961596674399965,
+        "numerical_envelope_m": 5.086988655086309,
+        "J_force_mean_m_s2": 1.9635542973191524e-08,
+        "J_force_rms_m_s2": 3.133657903846716e-08,
+        "J_force_max_m_s2": 1.9257565927209954e-07,
+        "n_epochs": 5041
+      },
+      "resolved": {
+        "tight": true,
+        "tighter": true
+      },
+      "rho_traj": 7.189210335101983,
+      "rho_force": 0.3107416206040486,
+      "reversal": true,
+      "gravity_only_archived": {
+        "J_traj_rms_m_radial": 12.186110782527287,
+        "J_traj_rms_m_constant": 3.8930608683818897,
+        "rho_traj": 3.1302132677910883,
+        "case_dir": "C:\\Users\\ayber\\Desktop\\Makale\\codebase\\metrics\\r14_cases\\A_beta_1.00\\sobolA_007",
+        "resolved": true
+      },
+      "sign_agrees_with_gravity_only": true
+    },
+    {
+      "sobol_index": 8,
+      "name": "sobolA_008",
+      "hp_km": 64.77237246930599,
+      "ha_km": 431.42351059243083,
+      "incl_deg": 25.057819727808237,
+      "n_critical": 156,
+      "adopted_truth_degree": 300,
+      "self_difference_reference_m": 2.671786553221885,
+      "realized_beta": {
+        "radial": 1.0450032530749498,
+        "constant": 1.0
+      },
+      "constant": {
+        "J_traj_rms_m": {
+          "tight": 5.897947387268309,
+          "tighter": 2.8060497500027206
+        },
+        "self_difference_m": 0.6748877073161323,
+        "numerical_envelope_m": 3.3466742605380175,
+        "J_force_mean_m_s2": 3.794806522775163e-08,
+        "J_force_rms_m_s2": 1.2358839651358838e-07,
+        "J_force_max_m_s2": 1.2634727923368799e-06,
+        "n_epochs": 5041
+      },
+      "radial": {
+        "J_traj_rms_m": {
+          "tight": 1.1832016392289255,
+          "tighter": 2.7689102134476093
+        },
+        "self_difference_m": 4.266233589221847,
+        "numerical_envelope_m": 6.938020142443732,
+        "J_force_mean_m_s2": 1.5914208226190335e-09,
+        "J_force_rms_m_s2": 2.6526873408374236e-09,
+        "J_force_max_m_s2": 1.6398262530392834e-08,
+        "n_epochs": 5041
+      },
+      "resolved": {
+        "tight": false,
+        "tighter": false
+      },
+      "rho_traj": 0.9867644768040641,
+      "rho_force": 0.041936810561167125,
+      "reversal": false,
+      "gravity_only_archived": {
+        "J_traj_rms_m_radial": 0.47025294360106507,
+        "J_traj_rms_m_constant": 5.728955321987655,
+        "rho_traj": 0.08208354179273147,
+        "case_dir": "C:\\Users\\ayber\\Desktop\\Makale\\codebase\\metrics\\r14_cases\\A_beta_1.00\\sobolA_008",
+        "resolved": true
+      },
+      "sign_agrees_with_gravity_only": true
+    },
+    {
+      "sobol_index": 9,
+      "name": "sobolA_009",
+      "hp_km": 104.9862066283822,
+      "ha_km": 279.62938791140914,
+      "incl_deg": 134.29612934589386,
+      "n_critical": 102,
+      "adopted_truth_degree": 300,
+      "self_difference_reference_m": 3.383471564263849,
+      "realized_beta": {
+        "radial": 1.0421227594623739,
+        "constant": 1.0
+      },
+      "constant": {
+        "J_traj_rms_m": {
+          "tight": 1.004831156247104,
+          "tighter": 0.523490092502883
+        },
+        "self_difference_m": 1.9901597252991534,
+        "numerical_envelope_m": 5.3736312895630025,
+        "J_force_mean_m_s2": 1.4884823996529826e-07,
+        "J_force_rms_m_s2": 4.0815008529133963e-07,
+        "J_force_max_m_s2": 3.3308419625640146e-06,
+        "n_epochs": 5041
+      },
+      "radial": {
+        "J_traj_rms_m": {
+          "tight": 103.95540689237997,
+          "tighter": 105.25735328561849
+        },
+        "self_difference_m": 2.0557414364127427,
+        "numerical_envelope_m": 5.439213000676592,
+        "J_force_mean_m_s2": 8.36180770380779e-08,
+        "J_force_rms_m_s2": 1.2571216844557491e-07,
+        "J_force_max_m_s2": 5.887019149040055e-07,
+        "n_epochs": 5041
+      },
+      "resolved": {
+        "tight": true,
+        "tighter": true
+      },
+      "rho_traj": 201.0684725328184,
+      "rho_force": 0.5617673212499672,
+      "reversal": true,
+      "gravity_only_archived": {
+        "J_traj_rms_m_radial": 11.129883055503914,
+        "J_traj_rms_m_constant": 5.452637575640644,
+        "rho_traj": 2.0411925240045385,
+        "case_dir": "C:\\Users\\ayber\\Desktop\\Makale\\codebase\\metrics\\r14_cases\\A_beta_1.00\\sobolA_009",
+        "resolved": false
+      },
+      "sign_agrees_with_gravity_only": true
+    },
+    {
+      "sobol_index": 10,
+      "name": "sobolA_010",
+      "hp_km": 120.92733297497034,
+      "ha_km": 539.2285929434001,
+      "incl_deg": 82.24565209820867,
+      "n_critical": 90,
+      "adopted_truth_degree": 300,
+      "self_difference_reference_m": 0.5324041037453231,
+      "realized_beta": {
+        "radial": 0.9969971419544916,
+        "constant": 1.0
+      },
+      "constant": {
+        "J_traj_rms_m": {
+          "tight": 3.062305919700298,
+          "tighter": 2.0952720534690656
+        },
+        "self_difference_m": 1.508882685494652,
+        "numerical_envelope_m": 2.041286789239975,
+        "J_force_mean_m_s2": 1.0067378945041432e-07,
+        "J_force_rms_m_s2": 3.1107703574934966e-07,
+        "J_force_max_m_s2": 4.095823656682754e-06,
+        "n_epochs": 5041
+      },
+      "radial": {
+        "J_traj_rms_m": {
+          "tight": 24.606333857732007,
+          "tighter": 20.440647125019854
+        },
+        "self_difference_m": 5.031599324904953,
+        "numerical_envelope_m": 5.564003428650276,
+        "J_force_mean_m_s2": 2.156636494713495e-08,
+        "J_force_rms_m_s2": 3.2252273935311066e-08,
+        "J_force_max_m_s2": 1.513528118526662e-07,
+        "n_epochs": 5041
+      },
+      "resolved": {
+        "tight": true,
+        "tighter": true
+      },
+      "rho_traj": 9.755605288190152,
+      "rho_force": 0.2142202559858662,
+      "reversal": true,
+      "gravity_only_archived": {
+        "J_traj_rms_m_radial": 48.55441448056291,
+        "J_traj_rms_m_constant": 3.7841178178628025,
+        "rho_traj": 12.8311053771538,
+        "case_dir": "C:\\Users\\ayber\\Desktop\\Makale\\codebase\\metrics\\r14_cases\\A_beta_1.00\\sobolA_010",
+        "resolved": true
+      },
+      "sign_agrees_with_gravity_only": true
+    },
+    {
+      "sobol_index": 11,
+      "name": "sobolA_011",
+      "hp_km": 39.45624612271786,
+      "ha_km": 389.0965743921697,
+      "incl_deg": 164.27932552993298,
+      "n_critical": 241,
+      "adopted_truth_degree": 600,
+      "self_difference_reference_m": 2.4457581102452655,
+      "realized_beta": {
+        "radial": 1.3767515115571263,
+        "constant": 1.0
+      },
+      "constant": {
+        "J_traj_rms_m": {
+          "tight": 8.310133236022434,
+          "tighter": 7.697990040335415
+        },
+        "self_difference_m": 2.9275643058166136,
+        "numerical_envelope_m": 5.373322416061879,
+        "J_force_mean_m_s2": 2.1936997241160085e-07,
+        "J_force_rms_m_s2": 9.118621554155835e-07,
+        "J_force_max_m_s2": 1.636755723386464e-05,
+        "n_epochs": 5041
+      },
+      "radial": {
+        "J_traj_rms_m": {
+          "tight": 1.632953259800149,
+          "tighter": 1.1340433433521073
+        },
+        "self_difference_m": 5.180621764075809,
+        "numerical_envelope_m": 7.626379874321074,
+        "J_force_mean_m_s2": 6.356041056717882e-10,
+        "J_force_rms_m_s2": 1.0342763798008884e-09,
+        "J_force_max_m_s2": 8.11391225787672e-09,
+        "n_epochs": 5041
+      },
+      "resolved": {
+        "tight": false,
+        "tighter": false
+      },
+      "rho_traj": 0.1473168109350652,
+      "rho_force": 0.0028974070547778206,
+      "reversal": false,
+      "gravity_only_archived": {
+        "J_traj_rms_m_radial": 0.30593325452077386,
+        "J_traj_rms_m_constant": 0.3358381791320526,
+        "rho_traj": 0.910954362935847,
+        "case_dir": "C:\\Users\\ayber\\Desktop\\Makale\\codebase\\metrics\\r14_cases\\A_beta_1.00\\sobolA_011",
+        "resolved": false
+      },
+      "sign_agrees_with_gravity_only": true
+    },
+    {
+      "sobol_index": 12,
+      "name": "sobolA_012",
+      "hp_km": 54.58533402532339,
+      "ha_km": 584.8041747696698,
+      "incl_deg": 102.72206570953131,
+      "n_critical": 181,
+      "adopted_truth_degree": 300,
+      "self_difference_reference_m": 0.21989284334623757,
+      "realized_beta": {
+        "radial": 0.9867818844723595,
+        "constant": 1.0
+      },
+      "constant": {
+        "J_traj_rms_m": {
+          "tight": 3.7837375284085466,
+          "tighter": 4.066252465003534
+        },
+        "self_difference_m": 0.07027428186050569,
+        "numerical_envelope_m": 0.29016712520674326,
+        "J_force_mean_m_s2": 3.473721717638081e-08,
+        "J_force_rms_m_s2": 1.4005482128906866e-07,
+        "J_force_max_m_s2": 1.8369392106485512e-06,
+        "n_epochs": 5041
+      },
+      "radial": {
+        "J_traj_rms_m": {
+          "tight": 6.09701024771762e-05,
+          "tighter": 0.0005268742003571451
+        },
+        "self_difference_m": 0.21940546831886773,
+        "numerical_envelope_m": 0.4392983116651053,
+        "J_force_mean_m_s2": 2.5145883835924447e-13,
+        "J_force_rms_m_s2": 3.7740368509417416e-13,
+        "J_force_max_m_s2": 1.6261037881345078e-12,
+        "n_epochs": 5041
+      },
+      "resolved": {
+        "tight": true,
+        "tighter": true
+      },
+      "rho_traj": 0.00012957242691931262,
+      "rho_force": 7.23888839691572e-06,
+      "reversal": false,
+      "gravity_only_archived": {
+        "J_traj_rms_m_radial": 0.0005668319988132738,
+        "J_traj_rms_m_constant": 1.878946553729746,
+        "rho_traj": 0.00030167542428926524,
+        "case_dir": "C:\\Users\\ayber\\Desktop\\Makale\\codebase\\metrics\\r14_cases\\A_beta_1.00\\sobolA_012",
+        "resolved": true
+      },
+      "sign_agrees_with_gravity_only": true
+    },
+    {
+      "sobol_index": 13,
+      "name": "sobolA_013",
+      "hp_km": 135.77078327536583,
+      "ha_km": 316.5468026138842,
+      "incl_deg": 10.752985831350088,
+      "n_critical": 81,
+      "adopted_truth_degree": 300,
+      "self_difference_reference_m": 0.6358875532201606,
+      "realized_beta": {
+        "radial": 1.1880581971319406,
+        "constant": 1.0
+      },
+      "constant": {
+        "J_traj_rms_m": {
+          "tight": 3.4018198101941497,
+          "tighter": 2.7084328295232
+        },
+        "self_difference_m": 0.22982170125789803,
+        "numerical_envelope_m": 0.8657092544780586,
+        "J_force_mean_m_s2": 1.5307169061188042e-07,
+        "J_force_rms_m_s2": 3.6597528359444014e-07,
+        "J_force_max_m_s2": 3.1479245729100765e-06,
+        "n_epochs": 5041
+      },
+      "radial": {
+        "J_traj_rms_m": {
+          "tight": 16.76972099562676,
+          "tighter": 17.72235725329593
+        },
+        "self_difference_m": 1.4740152720294737,
+        "numerical_envelope_m": 2.1099028252496344,
+        "J_force_mean_m_s2": 3.4002952614840684e-08,
+        "J_force_rms_m_s2": 4.72404939050166e-08,
+        "J_force_max_m_s2": 2.1887611128565036e-07,
+        "n_epochs": 5041
+      },
+      "resolved": {
+        "tight": true,
+        "tighter": true
+      },
+      "rho_traj": 6.543399216001905,
+      "rho_force": 0.22213743428924798,
+      "reversal": true,
+      "gravity_only_archived": {
+        "J_traj_rms_m_radial": 14.905971357507447,
+        "J_traj_rms_m_constant": 6.860222809384646,
+        "rho_traj": 2.1728115502482486,
+        "case_dir": "C:\\Users\\ayber\\Desktop\\Makale\\codebase\\metrics\\r14_cases\\A_beta_1.00\\sobolA_013",
+        "resolved": true
+      },
+      "sign_agrees_with_gravity_only": true
+    },
+    {
+      "sobol_index": 14,
+      "name": "sobolA_014",
+      "hp_km": 119.83696684241295,
+      "ha_km": 477.71021308377385,
+      "incl_deg": 138.72447285801172,
+      "n_critical": 91,
+      "adopted_truth_degree": 300,
+      "self_difference_reference_m": 1.6225194599681356,
+      "realized_beta": {
+        "radial": 0.9849443235915918,
+        "constant": 1.0
+      },
+      "constant": {
+        "J_traj_rms_m": {
+          "tight": 2.1515022316659604,
+          "tighter": 1.985200647778949
+        },
+        "self_difference_m": 1.8973418146396592,
+        "numerical_envelope_m": 3.519861274607795,
+        "J_force_mean_m_s2": 4.3681421756428994e-08,
+        "J_force_rms_m_s2": 1.2589375001244233e-07,
+        "J_force_max_m_s2": 1.383217120041505e-06,
+        "n_epochs": 5041
+      },
+      "radial": {
+        "J_traj_rms_m": {
+          "tight": 25.00387155857386,
+          "tighter": 27.96879198976444
+        },
+        "self_difference_m": 2.8072094760741666,
+        "numerical_envelope_m": 4.429728936042302,
+        "J_force_mean_m_s2": 4.2737544174382566e-08,
+        "J_force_rms_m_s2": 6.531913673970819e-08,
+        "J_force_max_m_s2": 2.872837602006853e-07,
+        "n_epochs": 5041
+      },
+      "resolved": {
+        "tight": true,
+        "tighter": true
+      },
+      "rho_traj": 14.088647422645185,
+      "rho_force": 0.9783917843308865,
+      "reversal": true,
+      "gravity_only_archived": {
+        "J_traj_rms_m_radial": 28.104957424212543,
+        "J_traj_rms_m_constant": 3.233434424245266,
+        "rho_traj": 8.691983116612201,
+        "case_dir": "C:\\Users\\ayber\\Desktop\\Makale\\codebase\\metrics\\r14_cases\\A_beta_1.00\\sobolA_014",
+        "resolved": true
+      },
+      "sign_agrees_with_gravity_only": true
+    },
+    {
+      "sobol_index": 15,
+      "name": "sobolA_015",
+      "hp_km": 79.89415045827627,
+      "ha_km": 207.79123747721314,
+      "incl_deg": 61.92159114405513,
+      "n_critical": 130,
+      "adopted_truth_degree": 300,
+      "self_difference_reference_m": 2.3519820482575935,
+      "realized_beta": {
+        "radial": 1.206038613546434,
+        "constant": 1.0
+      },
+      "constant": {
+        "J_traj_rms_m": {
+          "tight": 7.291705038769745,
+          "tighter": 6.6109529738344746
+        },
+        "self_difference_m": 1.7403814479062198,
+        "numerical_envelope_m": 4.092363496163813,
+        "J_force_mean_m_s2": 2.6483428174420843e-07,
+        "J_force_rms_m_s2": 6.799955993768557e-07,
+        "J_force_max_m_s2": 8.720635321742102e-06,
+        "n_epochs": 5041
+      },
+      "radial": {
+        "J_traj_rms_m": {
+          "tight": 22.05902706869431,
+          "tighter": 18.200544504734868
+        },
+        "self_difference_m": 1.5468680835834827,
+        "numerical_envelope_m": 3.898850131841076,
+        "J_force_mean_m_s2": 8.883653575980573e-08,
+        "J_force_rms_m_s2": 1.3223693259008139e-07,
+        "J_force_max_m_s2": 7.589727937233527e-07,
+        "n_epochs": 5041
+      },
+      "resolved": {
+        "tight": true,
+        "tighter": true
+      },
+      "rho_traj": 2.7530893922208945,
+      "rho_force": 0.335441979696605,
+      "reversal": true,
+      "gravity_only_archived": {
+        "J_traj_rms_m_radial": 14.191702287319659,
+        "J_traj_rms_m_constant": 6.036423390601935,
+        "rho_traj": 2.3510117447054193,
+        "case_dir": "C:\\Users\\ayber\\Desktop\\Makale\\codebase\\metrics\\r14_cases\\A_beta_1.00\\sobolA_015",
+        "resolved": true
+      },
+      "sign_agrees_with_gravity_only": true
+    },
+    {
+      "sobol_index": 16,
+      "name": "sobolA_016",
+      "hp_km": 77.53985848277807,
+      "ha_km": 486.0306444391608,
+      "incl_deg": 128.47764300182462,
+      "n_critical": 134,
+      "adopted_truth_degree": 300,
+      "self_difference_reference_m": 1.142103616268413,
+      "realized_beta": {
+        "radial": 1.0304282230331465,
+        "constant": 1.0
+      },
+      "constant": {
+        "J_traj_rms_m": {
+          "tight": 2.8457705688416053,
+          "tighter": 2.3800019722500227
+        },
+        "self_difference_m": 4.001091833903719,
+        "numerical_envelope_m": 5.143195450172132,
+        "J_force_mean_m_s2": 9.550496529213547e-08,
+        "J_force_rms_m_s2": 3.1153976281612665e-07,
+        "J_force_max_m_s2": 3.170061412595721e-06,
+        "n_epochs": 5041
+      },
+      "radial": {
+        "J_traj_rms_m": {
+          "tight": 9.830017689999496,
+          "tighter": 16.206774430460577
+        },
+        "self_difference_m": 7.703028848808538,
+        "numerical_envelope_m": 8.84513246507695,
+        "J_force_mean_m_s2": 8.143712566800116e-09,
+        "J_force_rms_m_s2": 1.230741526218696e-08,
+        "J_force_max_m_s2": 6.995556058637035e-08,
+        "n_epochs": 5041
+      },
+      "resolved": {
+        "tight": false,
+        "tighter": false
+      },
+      "rho_traj": 6.809563445503747,
+      "rho_force": 0.08527004372903244,
+      "reversal": true,
+      "gravity_only_archived": {
+        "J_traj_rms_m_radial": 20.35474489416447,
+        "J_traj_rms_m_constant": 0.5444004206484669,
+        "rho_traj": 37.38928943133209,
+        "case_dir": "C:\\Users\\ayber\\Desktop\\Makale\\codebase\\metrics\\r14_cases\\A_beta_1.00\\sobolA_016",
+        "resolved": true
+      },
+      "sign_agrees_with_gravity_only": true
+    },
+    {
+      "sobol_index": 17,
+      "name": "sobolA_017",
+      "hp_km": 112.84644439816475,
+      "ha_km": 230.95029283314943,
+      "incl_deg": 30.86528219282627,
+      "n_critical": 95,
+      "adopted_truth_degree": 300,
+      "self_difference_reference_m": 0.7823988017237619,
+      "realized_beta": {
+        "radial": 1.0032362879237895,
+        "constant": 1.0
+      },
+      "constant": {
+        "J_traj_rms_m": {
+          "tight": 2.189052857186462,
+          "tighter": 4.779886819295006
+        },
+        "self_difference_m": 3.7842390067239426,
+        "numerical_envelope_m": 4.566637808447704,
+        "J_force_mean_m_s2": 2.5251050445075473e-07,
+        "J_force_rms_m_s2": 5.543070151209695e-07,
+        "J_force_max_m_s2": 3.772421974398994e-06,
+        "n_epochs": 5041
+      },
+      "radial": {
+        "J_traj_rms_m": {
+          "tight": 32.32717076512326,
+          "tighter": 22.83245331789839
+        },
+        "self_difference_m": 10.376048782084561,
+        "numerical_envelope_m": 11.158447583808323,
+        "J_force_mean_m_s2": 1.0846761065000492e-07,
+        "J_force_rms_m_s2": 1.4062992562948156e-07,
+        "J_force_max_m_s2": 7.248291687788306e-07,
+        "n_epochs": 5041
+      },
+      "resolved": {
+        "tight": true,
+        "tighter": true
+      },
+      "rho_traj": 4.7767769784277005,
+      "rho_force": 0.4295568253128201,
+      "reversal": true,
+      "gravity_only_archived": {
+        "J_traj_rms_m_radial": 94.36583181832782,
+        "J_traj_rms_m_constant": 4.547357280893108,
+        "rho_traj": 20.75179626083707,
+        "case_dir": "C:\\Users\\ayber\\Desktop\\Makale\\codebase\\metrics\\r14_cases\\A_beta_1.00\\sobolA_017",
+        "resolved": true
+      },
+      "sign_agrees_with_gravity_only": true
+    },
+    {
+      "sobol_index": 18,
+      "name": "sobolA_018",
+      "hp_km": 141.91258504986763,
+      "ha_km": 588.9421401545405,
+      "incl_deg": 158.82578590884805,
+      "n_critical": 78,
+      "adopted_truth_degree": 300,
+      "self_difference_reference_m": 4.453106914237187,
+      "realized_beta": {
+        "radial": 1.050320344900938,
+        "constant": 1.0
+      },
+      "constant": {
+        "J_traj_rms_m": {
+          "tight": 0.9081647669809444,
+          "tighter": 4.893623827820357
+        },
+        "self_difference_m": 0.6401323105784836,
+        "numerical_envelope_m": 5.093239224815671,
+        "J_force_mean_m_s2": 4.0371879723217136e-08,
+        "J_force_rms_m_s2": 1.1070814862151857e-07,
+        "J_force_max_m_s2": 7.864090434955629e-07,
+        "n_epochs": 5041
+      },
+      "radial": {
+        "J_traj_rms_m": {
+          "tight": 16.178744278200515,
+          "tighter": 19.792885117027648
+        },
+        "self_difference_m": 8.199462359465528,
+        "numerical_envelope_m": 12.652569273702715,
+        "J_force_mean_m_s2": 1.5321492283953327e-08,
+        "J_force_rms_m_s2": 2.2772846762181377e-08,
+        "J_force_max_m_s2": 9.08081857061193e-08,
+        "n_epochs": 5041
+      },
+      "resolved": {
+        "tight": false,
+        "tighter": false
+      },
+      "rho_traj": 4.044627419971406,
+      "rho_force": 0.3795090144178304,
+      "reversal": true,
+      "gravity_only_archived": {
+        "J_traj_rms_m_radial": 7.720804131795835,
+        "J_traj_rms_m_constant": 10.181277302754866,
+        "rho_traj": 0.7583335471774968,
+        "case_dir": "C:\\Users\\ayber\\Desktop\\Makale\\codebase\\metrics\\r14_cases\\A_beta_1.00\\sobolA_018",
+        "resolved": false
+      },
+      "sign_agrees_with_gravity_only": false
+    },
+    {
+      "sobol_index": 19,
+      "name": "sobolA_019",
+      "hp_km": 57.84871783107519,
+      "ha_km": 332.1988833323121,
+      "incl_deg": 87.71012976765633,
+      "n_critical": 172,
+      "adopted_truth_degree": 300,
+      "self_difference_reference_m": 1.9031776654218717,
+      "realized_beta": {
+        "radial": 0.9701453422658913,
+        "constant": 1.0
+      },
+      "constant": {
+        "J_traj_rms_m": {
+          "tight": 4.296522394065594,
+          "tighter": 5.36676214063539
+        },
+        "self_difference_m": 0.97879059164629,
+        "numerical_envelope_m": 2.881968257068162,
+        "J_force_mean_m_s2": 8.360664352930319e-08,
+        "J_force_rms_m_s2": 2.836913020638902e-07,
+        "J_force_max_m_s2": 4.064140291511851e-06,
+        "n_epochs": 5041
+      },
+      "radial": {
+        "J_traj_rms_m": {
+          "tight": 5.612686872961291,
+          "tighter": 3.0785962870889
+        },
+        "self_difference_m": 1.4064408795859962,
+        "numerical_envelope_m": 3.3096185450078677,
+        "J_force_mean_m_s2": 3.3391096776620574e-09,
+        "J_force_rms_m_s2": 5.269959910811181e-09,
+        "J_force_max_m_s2": 2.950603740577262e-08,
+        "n_epochs": 5041
+      },
+      "resolved": {
+        "tight": false,
+        "tighter": false
+      },
+      "rho_traj": 0.5736412768843924,
+      "rho_force": 0.039938329499996456,
+      "reversal": false,
+      "gravity_only_archived": {
+        "J_traj_rms_m_radial": 6.087081284785903,
+        "J_traj_rms_m_constant": 1.9753086165691893,
+        "rho_traj": 3.08158494005774,
+        "case_dir": "C:\\Users\\ayber\\Desktop\\Makale\\codebase\\metrics\\r14_cases\\A_beta_1.00\\sobolA_019",
+        "resolved": true
+      },
+      "sign_agrees_with_gravity_only": false
+    },
+    {
+      "sobol_index": 20,
+      "name": "sobolA_020",
+      "hp_km": 42.75808207690716,
+      "ha_km": 529.5238772034645,
+      "incl_deg": 4.960242994129658,
+      "n_critical": 224,
+      "adopted_truth_degree": 600,
+      "self_difference_reference_m": 0.9214936054229795,
+      "realized_beta": {
+        "radial": 1.2457897417515658,
+        "constant": 1.0
+      },
+      "constant": {
+        "J_traj_rms_m": {
+          "tight": 0.44569327588746616,
+          "tighter": 0.09610178487939833
+        },
+        "self_difference_m": 1.219963140162517,
+        "numerical_envelope_m": 2.1414567455854967,
+        "J_force_mean_m_s2": 5.044544894190184e-08,
+        "J_force_rms_m_s2": 2.2438200398836372e-07,
+        "J_force_max_m_s2": 6.752803046332607e-06,
+        "n_epochs": 5041
+      },
+      "radial": {
+        "J_traj_rms_m": {
+          "tight": 0.8920357161994561,
+          "tighter": 0.7318451036590538
+        },
+        "self_difference_m": 2.410882045669078,
+        "numerical_envelope_m": 3.3323756510920575,
+        "J_force_mean_m_s2": 1.6668892735726405e-09,
+        "J_force_rms_m_s2": 2.74614750628584e-09,
+        "J_force_max_m_s2": 1.4329637947461655e-08,
+        "n_epochs": 5041
+      },
+      "resolved": {
+        "tight": false,
+        "tighter": false
+      },
+      "rho_traj": 7.615312291831761,
+      "rho_force": 0.03304340249786262,
+      "reversal": true,
+      "gravity_only_archived": {
+        "J_traj_rms_m_radial": 0.31610635155264133,
+        "J_traj_rms_m_constant": 7.783729865652907,
+        "rho_traj": 0.04061116675535168,
+        "case_dir": "C:\\Users\\ayber\\Desktop\\Makale\\codebase\\metrics\\r14_cases\\A_beta_1.00\\sobolA_020",
+        "resolved": true
+      },
+      "sign_agrees_with_gravity_only": false
+    },
+    {
+      "sobol_index": 21,
+      "name": "sobolA_021",
+      "hp_km": 126.97575096040964,
+      "ha_km": 364.65577371418476,
+      "incl_deg": 108.50377393886447,
+      "n_critical": 86,
+      "adopted_truth_degree": 300,
+      "self_difference_reference_m": 0.04490804357637152,
+      "realized_beta": {
+        "radial": 0.982380713948757,
+        "constant": 1.0
+      },
+      "constant": {
+        "J_traj_rms_m": {
+          "tight": 4.618726533964878,
+          "tighter": 4.652102133816943
+        },
+        "self_difference_m": 0.007679310011438778,
+        "numerical_envelope_m": 0.0525873535878103,
+        "J_force_mean_m_s2": 5.7045530690148366e-08,
+        "J_force_rms_m_s2": 1.330315103391252e-07,
+        "J_force_max_m_s2": 9.651933708161876e-07,
+        "n_epochs": 5041
+      },
+      "radial": {
+        "J_traj_rms_m": {
+          "tight": 18.426190619783057,
+          "tighter": 15.650310181576822
+        },
+        "self_difference_m": 2.7732727191308326,
+        "numerical_envelope_m": 2.818180762707204,
+        "J_force_mean_m_s2": 3.838263060275968e-08,
+        "J_force_rms_m_s2": 5.5483292594717246e-08,
+        "J_force_max_m_s2": 2.1922828772356568e-07,
+        "n_epochs": 5041
+      },
+      "resolved": {
+        "tight": true,
+        "tighter": true
+      },
+      "rho_traj": 3.364137272011288,
+      "rho_force": 0.6728420287864597,
+      "reversal": true,
+      "gravity_only_archived": {
+        "J_traj_rms_m_radial": 61.397980100389084,
+        "J_traj_rms_m_constant": 6.8535874767464415,
+        "rho_traj": 8.958517026113183,
+        "case_dir": "C:\\Users\\ayber\\Desktop\\Makale\\codebase\\metrics\\r14_cases\\A_beta_1.00\\sobolA_021",
+        "resolved": true
+      },
+      "sign_agrees_with_gravity_only": true
+    },
+    {
+      "sobol_index": 22,
+      "name": "sobolA_022",
+      "hp_km": 97.9169488325715,
+      "ha_km": 427.3368202149868,
+      "incl_deg": 56.486252658069134,
+      "n_critical": 109,
+      "adopted_truth_degree": 300,
+      "self_difference_reference_m": 1.1421907412448267,
+      "realized_beta": {
+        "radial": 1.0184392033803578,
+        "constant": 1.0
+      },
+      "constant": {
+        "J_traj_rms_m": {
+          "tight": 0.7105111027745205,
+          "tighter": 2.9001500377963305
+        },
+        "self_difference_m": 2.2897803533528034,
+        "numerical_envelope_m": 3.43197109459763,
+        "J_force_mean_m_s2": 1.29547610385216e-07,
+        "J_force_rms_m_s2": 3.901172556922591e-07,
+        "J_force_max_m_s2": 3.8834982988052985e-06,
+        "n_epochs": 5041
+      },
+      "radial": {
+        "J_traj_rms_m": {
+          "tight": 16.17509806890628,
+          "tighter": 26.126704544132878
+        },
+        "self_difference_m": 8.911670324982996,
+        "numerical_envelope_m": 10.053861066227823,
+        "J_force_mean_m_s2": 2.725203918852412e-08,
+        "J_force_rms_m_s2": 3.8649136649338675e-08,
+        "J_force_max_m_s2": 1.4075004824468778e-07,
+        "n_epochs": 5041
+      },
+      "resolved": {
+        "tight": true,
+        "tighter": true
+      },
+      "rho_traj": 9.008742376647923,
+      "rho_force": 0.21036311752481485,
+      "reversal": true,
+      "gravity_only_archived": {
+        "J_traj_rms_m_radial": 38.098855315909084,
+        "J_traj_rms_m_constant": 1.4160525663683747,
+        "rho_traj": 26.90497247119707,
+        "case_dir": "C:\\Users\\ayber\\Desktop\\Makale\\codebase\\metrics\\r14_cases\\A_beta_1.00\\sobolA_022",
+        "resolved": true
+      },
+      "sign_agrees_with_gravity_only": true
+    },
+    {
+      "sobol_index": 23,
+      "name": "sobolA_023",
+      "hp_km": 62.44188420474529,
+      "ha_km": 264.131121262908,
+      "incl_deg": 144.1707601211965,
+      "n_critical": 161,
+      "adopted_truth_degree": 300,
+      "self_difference_reference_m": 2.2728034473624517,
+      "realized_beta": {
+        "radial": 1.1856096623558123,
+        "constant": 1.0
+      },
+      "constant": {
+        "J_traj_rms_m": {
+          "tight": 0.5850425264161977,
+          "tighter": 4.663962259626676
+        },
+        "self_difference_m": 7.244984922574163,
+        "numerical_envelope_m": 9.517788369936614,
+        "J_force_mean_m_s2": 1.1266670620668699e-07,
+        "J_force_rms_m_s2": 3.050202096901314e-07,
+        "J_force_max_m_s2": 2.642236449433146e-06,
+        "n_epochs": 5041
+      },
+      "radial": {
+        "J_traj_rms_m": {
+          "tight": 1.2633759094381458,
+          "tighter": 2.6715706257801832
+        },
+        "self_difference_m": 0.8443269571848492,
+        "numerical_envelope_m": 3.117130404547301,
+        "J_force_mean_m_s2": 5.235535952963827e-09,
+        "J_force_rms_m_s2": 7.635858620122367e-09,
+        "J_force_max_m_s2": 4.697493615294756e-08,
+        "n_epochs": 5041
+      },
+      "resolved": {
+        "tight": false,
+        "tighter": false
+      },
+      "rho_traj": 0.5728113730478658,
+      "rho_force": 0.04646923771215287,
+      "reversal": false,
+      "gravity_only_archived": {
+        "J_traj_rms_m_radial": 0.8666843339889038,
+        "J_traj_rms_m_constant": 0.5057976457959604,
+        "rho_traj": 1.7135001342780578,
+        "case_dir": "C:\\Users\\ayber\\Desktop\\Makale\\codebase\\metrics\\r14_cases\\A_beta_1.00\\sobolA_023",
+        "resolved": false
+      },
+      "sign_agrees_with_gravity_only": false
+    }
+  ],
+  "provenance": {
+    "lunaris_repo": "D:\\Masaustu\\LUNAR_SIMULATION",
+    "lunaris_commit": "27e9ab86ed61d623f78c453ea2054348f1044c23",
+    "lunaris_working_tree_clean": false,
+    "kernel_path": "D:\\Masaustu\\LUNAR_SIMULATION\\src\\lunaris\\physics\\spherical_harmonics.py",
+    "kernel_sha256": "6e2a0a85e18c9b400c003e6c2ad1e163c524c27f54bc0d404e0172709d16d740",
+    "gravity_key": "JGGRX_1800F",
+    "gravity_path": "D:\\Masaustu\\LUNAR_SIMULATION\\data\\gravity_models\\jggrx_1800f_sha.tab.txt",
+    "gravity_sha256": "d2a552067a78bf1d2755807ae14ee1d6843a8f6a4228e01ce59a665516738fec",
+    "harness": "C:\\Users\\ayber\\Desktop\\Makale\\codebase\\python_codes\\revJ_common.py",
+    "harness_sha256": "894b92fa2f3af5e50319280bb47454d46b34d06e7e1337452760cf93f752628f",
+    "python": "3.12.1 (tags/v3.12.1:2305ca5, Dec  7 2023, 22:03:25) [MSC v.1937 64 bit (AMD64)]",
+    "numpy": "2.2.6",
+    "scipy": "1.14.1",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "processor": "Intel64 Family 6 Model 158 Stepping 10, GenuineIntel",
+    "logical_cpu_count": 12
+  }
+}

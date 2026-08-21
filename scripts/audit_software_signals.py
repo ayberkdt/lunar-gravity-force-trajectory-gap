@@ -20,8 +20,8 @@ ROOT = Path(__file__).resolve().parents[1]
 TERMS = ["Lunaris", "stack", "framework", "repository", "commit", "package",
          "release", "manifest", "SHA-256", "SHA", "module", "production"]
 
-MAIN_CHAPTERS = ["01_introduction", "02_related", "03_kernel", "04_truncation",
-                 "05_setup", "06_qualification_main", "07_results",
+MAIN_CHAPTERS = ["01_introduction", "02_related", "04_truncation",
+                 "05_setup", "07_results", "08_budget",
                  "08_discussion", "09_conclusion"]
 
 

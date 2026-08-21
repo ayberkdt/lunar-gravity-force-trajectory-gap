@@ -1,6 +1,35 @@
 {
   "schema": "r36_regime_map_v1",
-  "note": "median rho is E_fixed/E_policy over the whole population; win-loss counts are resolved comparisons only. Rows are separate populations and are never pooled.",
+  "note": "median rho is E_fixed/E_policy over the whole population; win-loss counts are resolved comparisons only. Rows are separate populations and are never pooled, with one declared exception: the RS rows are apolune levels of the single paired ladder population, each pooling that population's two identity blocks, which its registration licenses because the blocks are the same design at the same levels. No level is ever pooled with another.",
+  "ladder_rows": {
+    "levels_km": [
+      300,
+      600,
+      1200,
+      2400
+    ],
+    "blocks_pooled": [
+      "RS1",
+      "RS2"
+    ],
+    "amended_budgets": [
+      "1.25",
+      "1.50"
+    ],
+    "amendment_note": "for the RS rows only, 1.25 and 1.50 are an amendment declared before any ladder of that population had run; for every other row they are part of the frozen grid",
+    "source": "per-orbit rows, aggregated by level; no summary block exists per level",
+    "ceiling_free_budgets": [
+      "0.50",
+      "0.62",
+      "0.75",
+      "1.00"
+    ],
+    "ceiling_free_sources": [
+      "RS1U",
+      "RS2U"
+    ],
+    "capped_cells_marked_c": "the amended budgets, which have no ceiling-free re-propagation on either block and are drawn from the capped parents"
+  },
   "plotted_budgets": [
     "0.50",
     "0.62",
@@ -10,7 +39,8 @@
     "1.50"
   ],
   "omitted_from_plot": {
-    "3.00": "one cell only (design A, panel a) and the resolution rule leaves it undecided; it is in the record and in r14_trajectory_A_beta_3.00.json"
+    "2.00": "design B only in panel (a), 5-10 of 15 resolved; design A was never propagated there, so no column is drawn; the row is in r14_trajectory_B_beta_2.00.json and the main text's trajectory table",
+    "3.00": "two cells in panel (a): design A resolves one comparison (0-1), design B two (1-1); records in r14_trajectory_A_beta_3.00.json and r14_trajectory_B_beta_3.00.json"
   },
   "min_resolved_for_colour": 6,
   "hatch_above_undecided_fraction": 0.5,
@@ -103,10 +133,31 @@
         "resolved": 31,
         "orbits": 64
       },
+      "B|2.00": {
+        "rho": 1.112428094728441,
+        "policy_wins": 5,
+        "fixed_wins": 10,
+        "resolved": 15,
+        "orbits": 63
+      },
+      "B|3.00": {
+        "rho": 27.571871273239406,
+        "policy_wins": 1,
+        "fixed_wins": 1,
+        "resolved": 2,
+        "orbits": 57
+      },
       "C|0.50": {
         "rho": 0.01648307300969823,
         "policy_wins": 0,
         "fixed_wins": 64,
+        "resolved": 64,
+        "orbits": 64
+      },
+      "C|0.62": {
+        "rho": 0.021872737672162752,
+        "policy_wins": 1,
+        "fixed_wins": 63,
         "resolved": 64,
         "orbits": 64
       },
@@ -124,11 +175,102 @@
         "resolved": 58,
         "orbits": 64
       },
+      "SP|0.50": {
+        "rho": 0.013112637898701537,
+        "policy_wins": 0,
+        "fixed_wins": 64,
+        "resolved": 64,
+        "orbits": 64
+      },
+      "SP|0.62": {
+        "rho": 0.02793053947965395,
+        "policy_wins": 0,
+        "fixed_wins": 63,
+        "resolved": 63,
+        "orbits": 64
+      },
+      "SP|0.75": {
+        "rho": 0.032785111133417894,
+        "policy_wins": 2,
+        "fixed_wins": 61,
+        "resolved": 63,
+        "orbits": 64
+      },
+      "SP|1.00": {
+        "rho": 0.11531899709404628,
+        "policy_wins": 7,
+        "fixed_wins": 47,
+        "resolved": 54,
+        "orbits": 64
+      },
+      "SE|0.50": {
+        "rho": 0.01788388216463217,
+        "policy_wins": 0,
+        "fixed_wins": 63,
+        "resolved": 63,
+        "orbits": 64
+      },
+      "SE|0.62": {
+        "rho": 0.035252885148536264,
+        "policy_wins": 2,
+        "fixed_wins": 62,
+        "resolved": 64,
+        "orbits": 64
+      },
+      "SE|0.75": {
+        "rho": 0.09405466300947724,
+        "policy_wins": 8,
+        "fixed_wins": 53,
+        "resolved": 61,
+        "orbits": 64
+      },
+      "SE|1.00": {
+        "rho": 0.15396819359779298,
+        "policy_wins": 9,
+        "fixed_wins": 47,
+        "resolved": 56,
+        "orbits": 64
+      },
+      "SF|0.50": {
+        "rho": 0.009788107927776507,
+        "policy_wins": 0,
+        "fixed_wins": 64,
+        "resolved": 64,
+        "orbits": 64
+      },
+      "SF|0.62": {
+        "rho": 0.02471764094606008,
+        "policy_wins": 0,
+        "fixed_wins": 64,
+        "resolved": 64,
+        "orbits": 64
+      },
+      "SF|0.75": {
+        "rho": 0.048739607953724284,
+        "policy_wins": 2,
+        "fixed_wins": 61,
+        "resolved": 63,
+        "orbits": 64
+      },
+      "SF|1.00": {
+        "rho": 0.10642884526149654,
+        "policy_wins": 5,
+        "fixed_wins": 56,
+        "resolved": 61,
+        "orbits": 64
+      },
       "SH|0.50": {
         "rho": 0.01736287781802434,
         "policy_wins": 0,
         "fixed_wins": 64,
         "resolved": 64,
+        "orbits": 64
+      },
+      "SH|0.62": {
+        "rho": 0.02834624177533444,
+        "policy_wins": 0,
+        "fixed_wins": 63,
+        "resolved": 63,
         "orbits": 64
       },
       "SH|0.75": {
@@ -145,11 +287,39 @@
         "resolved": 55,
         "orbits": 64
       },
+      "SL|0.50": {
+        "rho": 0.0005502825298155145,
+        "policy_wins": 0,
+        "fixed_wins": 64,
+        "resolved": 64,
+        "orbits": 64
+      },
+      "SL|0.75": {
+        "rho": 0.004704655747562719,
+        "policy_wins": 2,
+        "fixed_wins": 58,
+        "resolved": 60,
+        "orbits": 64
+      },
+      "SL|1.00": {
+        "rho": 0.01903069312123863,
+        "policy_wins": 3,
+        "fixed_wins": 55,
+        "resolved": 58,
+        "orbits": 64
+      },
       "OE|0.50": {
         "rho": 0.12448632021339764,
         "policy_wins": 8,
         "fixed_wins": 56,
         "resolved": 64,
+        "orbits": 64
+      },
+      "OE|0.62": {
+        "rho": 0.5707997378534369,
+        "policy_wins": 25,
+        "fixed_wins": 37,
+        "resolved": 62,
         "orbits": 64
       },
       "OE|0.75": {
@@ -173,6 +343,13 @@
         "resolved": 63,
         "orbits": 64
       },
+      "OEU|0.62": {
+        "rho": 0.28645424579691325,
+        "policy_wins": 13,
+        "fixed_wins": 47,
+        "resolved": 60,
+        "orbits": 64
+      },
       "OEU|0.75": {
         "rho": 1.10651722744467,
         "policy_wins": 31,
@@ -186,6 +363,174 @@
         "fixed_wins": 10,
         "resolved": 56,
         "orbits": 64
+      },
+      "RS300|0.50": {
+        "rho": 0.017279476003347834,
+        "policy_wins": 1,
+        "fixed_wins": 31,
+        "resolved": 32,
+        "orbits": 32
+      },
+      "RS600|0.50": {
+        "rho": 0.015088580100349466,
+        "policy_wins": 0,
+        "fixed_wins": 32,
+        "resolved": 32,
+        "orbits": 32
+      },
+      "RS1200|0.50": {
+        "rho": 0.03569756240779846,
+        "policy_wins": 0,
+        "fixed_wins": 32,
+        "resolved": 32,
+        "orbits": 32
+      },
+      "RS2400|0.50": {
+        "rho": 0.7064194357758503,
+        "policy_wins": 12,
+        "fixed_wins": 19,
+        "resolved": 31,
+        "orbits": 32
+      },
+      "RS300|0.62": {
+        "rho": 0.027222061712446823,
+        "policy_wins": 0,
+        "fixed_wins": 32,
+        "resolved": 32,
+        "orbits": 32
+      },
+      "RS600|0.62": {
+        "rho": 0.02514771485959321,
+        "policy_wins": 0,
+        "fixed_wins": 32,
+        "resolved": 32,
+        "orbits": 32
+      },
+      "RS1200|0.62": {
+        "rho": 0.1480275692241531,
+        "policy_wins": 2,
+        "fixed_wins": 30,
+        "resolved": 32,
+        "orbits": 32
+      },
+      "RS2400|0.62": {
+        "rho": 2.6702316562145887,
+        "policy_wins": 20,
+        "fixed_wins": 9,
+        "resolved": 29,
+        "orbits": 32
+      },
+      "RS300|0.75": {
+        "rho": 0.043238527035525096,
+        "policy_wins": 1,
+        "fixed_wins": 29,
+        "resolved": 30,
+        "orbits": 32
+      },
+      "RS600|0.75": {
+        "rho": 0.08406813410856018,
+        "policy_wins": 0,
+        "fixed_wins": 30,
+        "resolved": 30,
+        "orbits": 32
+      },
+      "RS1200|0.75": {
+        "rho": 0.3341541220161711,
+        "policy_wins": 4,
+        "fixed_wins": 23,
+        "resolved": 27,
+        "orbits": 32
+      },
+      "RS2400|0.75": {
+        "rho": 9.267306843234454,
+        "policy_wins": 29,
+        "fixed_wins": 3,
+        "resolved": 32,
+        "orbits": 32
+      },
+      "RS300|1.00": {
+        "rho": 0.13933486964135022,
+        "policy_wins": 1,
+        "fixed_wins": 26,
+        "resolved": 27,
+        "orbits": 32
+      },
+      "RS600|1.00": {
+        "rho": 0.20786510068362749,
+        "policy_wins": 3,
+        "fixed_wins": 21,
+        "resolved": 24,
+        "orbits": 32
+      },
+      "RS1200|1.00": {
+        "rho": 1.7587999805067875,
+        "policy_wins": 15,
+        "fixed_wins": 10,
+        "resolved": 25,
+        "orbits": 32
+      },
+      "RS2400|1.00": {
+        "rho": 94.62923864913395,
+        "policy_wins": 27,
+        "fixed_wins": 0,
+        "resolved": 27,
+        "orbits": 32
+      },
+      "RS300|1.25": {
+        "rho": 0.12515102017382768,
+        "policy_wins": 2,
+        "fixed_wins": 23,
+        "resolved": 25,
+        "orbits": 32
+      },
+      "RS600|1.25": {
+        "rho": 0.7551347398124267,
+        "policy_wins": 5,
+        "fixed_wins": 10,
+        "resolved": 15,
+        "orbits": 32
+      },
+      "RS1200|1.25": {
+        "rho": 25.594870949162022,
+        "policy_wins": 18,
+        "fixed_wins": 1,
+        "resolved": 19,
+        "orbits": 32
+      },
+      "RS2400|1.25": {
+        "rho": 111181.20100394665,
+        "policy_wins": 20,
+        "fixed_wins": 0,
+        "resolved": 20,
+        "orbits": 28
+      },
+      "RS300|1.50": {
+        "rho": 0.34263609118788757,
+        "policy_wins": 1,
+        "fixed_wins": 11,
+        "resolved": 12,
+        "orbits": 32
+      },
+      "RS600|1.50": {
+        "rho": 1.2850616775043258,
+        "policy_wins": 7,
+        "fixed_wins": 5,
+        "resolved": 12,
+        "orbits": 32
+      },
+      "RS1200|1.50": {
+        "rho": 567.5996362355613,
+        "policy_wins": 19,
+        "fixed_wins": 0,
+        "resolved": 19,
+        "orbits": 32
+      },
+      "RS2400|1.50": {
+        "rho": 96090.84440859206,
+        "policy_wins": 10,
+        "fixed_wins": 0,
+        "resolved": 10,
+        "orbits": 20
       }
     },
     "b_interior_vs_workmatched": {
@@ -220,9 +565,9 @@
       "A|1.25": {
         "rho": 1.9496541712468125,
         "policy_wins": 11,
-        "fixed_wins": 5,
-        "resolved": 16,
-        "orbits": 58
+        "fixed_wins": 6,
+        "resolved": 17,
+        "orbits": 64
       },
       "B|1.00": {
         "rho": 2.5839708206033043,
@@ -266,6 +611,13 @@
         "resolved": 50,
         "orbits": 64
       },
+      "C|0.62": {
+        "rho": 0.6642787150393632,
+        "policy_wins": 24,
+        "fixed_wins": 29,
+        "resolved": 53,
+        "orbits": 64
+      },
       "C|0.75": {
         "rho": 2.0284113721650012,
         "policy_wins": 23,
@@ -280,11 +632,102 @@
         "resolved": 28,
         "orbits": 64
       },
+      "SP|0.50": {
+        "rho": 0.3002016845147484,
+        "policy_wins": 15,
+        "fixed_wins": 40,
+        "resolved": 55,
+        "orbits": 64
+      },
+      "SP|0.62": {
+        "rho": 0.7892092269737616,
+        "policy_wins": 21,
+        "fixed_wins": 25,
+        "resolved": 46,
+        "orbits": 64
+      },
+      "SP|0.75": {
+        "rho": 1.302838070292872,
+        "policy_wins": 21,
+        "fixed_wins": 18,
+        "resolved": 39,
+        "orbits": 64
+      },
+      "SP|1.00": {
+        "rho": 2.6440582381924655,
+        "policy_wins": 23,
+        "fixed_wins": 9,
+        "resolved": 32,
+        "orbits": 64
+      },
+      "SE|0.50": {
+        "rho": 0.6704724200323025,
+        "policy_wins": 22,
+        "fixed_wins": 33,
+        "resolved": 55,
+        "orbits": 64
+      },
+      "SE|0.62": {
+        "rho": 1.9750321298724083,
+        "policy_wins": 32,
+        "fixed_wins": 21,
+        "resolved": 53,
+        "orbits": 64
+      },
+      "SE|0.75": {
+        "rho": 2.2873382631546972,
+        "policy_wins": 37,
+        "fixed_wins": 10,
+        "resolved": 47,
+        "orbits": 64
+      },
+      "SE|1.00": {
+        "rho": 3.2052015282803366,
+        "policy_wins": 34,
+        "fixed_wins": 8,
+        "resolved": 42,
+        "orbits": 64
+      },
+      "SF|0.50": {
+        "rho": 0.7780760215020491,
+        "policy_wins": 21,
+        "fixed_wins": 30,
+        "resolved": 51,
+        "orbits": 64
+      },
+      "SF|0.62": {
+        "rho": 0.9521136697465278,
+        "policy_wins": 24,
+        "fixed_wins": 22,
+        "resolved": 46,
+        "orbits": 64
+      },
+      "SF|0.75": {
+        "rho": 2.4928316253112293,
+        "policy_wins": 29,
+        "fixed_wins": 13,
+        "resolved": 42,
+        "orbits": 64
+      },
+      "SF|1.00": {
+        "rho": 2.6463166437136194,
+        "policy_wins": 23,
+        "fixed_wins": 6,
+        "resolved": 29,
+        "orbits": 64
+      },
       "SH|0.50": {
         "rho": 2.068080517554161,
         "policy_wins": 37,
         "fixed_wins": 18,
         "resolved": 55,
+        "orbits": 64
+      },
+      "SH|0.62": {
+        "rho": 2.7995484373814667,
+        "policy_wins": 43,
+        "fixed_wins": 4,
+        "resolved": 47,
         "orbits": 64
       },
       "SH|0.75": {
@@ -301,29 +744,64 @@
         "resolved": 37,
         "orbits": 64
       },
+      "SL|0.50": {
+        "rho": 0.4498346858933623,
+        "policy_wins": 24,
+        "fixed_wins": 32,
+        "resolved": 56,
+        "orbits": 64
+      },
+      "SL|0.75": {
+        "rho": 3.0669599366750653,
+        "policy_wins": 27,
+        "fixed_wins": 7,
+        "resolved": 34,
+        "orbits": 64
+      },
+      "SL|1.00": {
+        "rho": 4.368402584190912,
+        "policy_wins": 18,
+        "fixed_wins": 2,
+        "resolved": 20,
+        "orbits": 64
+      },
       "OE|0.50": {
-        "rho": 42.21182364418972,
+        "rho": 62.506872856260316,
         "policy_wins": 63,
         "fixed_wins": 0,
         "resolved": 63,
         "orbits": 64
       },
+      "OE|0.62": {
+        "rho": 74.27262984708167,
+        "policy_wins": 62,
+        "fixed_wins": 0,
+        "resolved": 62,
+        "orbits": 64
+      },
       "OE|0.75": {
-        "rho": 74.13217073478353,
+        "rho": 81.07685662915905,
         "policy_wins": 59,
         "fixed_wins": 0,
         "resolved": 59,
         "orbits": 64
       },
       "OE|1.00": {
-        "rho": 103.98115388727092,
-        "policy_wins": 52,
+        "rho": 146.500106397614,
+        "policy_wins": 55,
         "fixed_wins": 0,
-        "resolved": 52,
+        "resolved": 55,
         "orbits": 64
       },
       "OEU|0.50": {
         "rho": 42.21182364418972,
+        "policy_wins": 63,
+        "fixed_wins": 0,
+        "resolved": 63,
+        "orbits": 64
+      },
+      "OEU|0.62": {
+        "rho": 83.54694332707015,
         "policy_wins": 63,
         "fixed_wins": 0,
         "resolved": 63,
@@ -342,6 +820,174 @@
         "fixed_wins": 0,
         "resolved": 52,
         "orbits": 64
+      },
+      "RS300|0.50": {
+        "rho": 0.08319439886096644,
+        "policy_wins": 2,
+        "fixed_wins": 29,
+        "resolved": 31,
+        "orbits": 32
+      },
+      "RS600|0.50": {
+        "rho": 3.843163632050704,
+        "policy_wins": 24,
+        "fixed_wins": 2,
+        "resolved": 26,
+        "orbits": 32
+      },
+      "RS1200|0.50": {
+        "rho": 40.57403299338267,
+        "policy_wins": 31,
+        "fixed_wins": 0,
+        "resolved": 31,
+        "orbits": 32
+      },
+      "RS2400|0.50": {
+        "rho": 337.38251847937306,
+        "policy_wins": 32,
+        "fixed_wins": 0,
+        "resolved": 32,
+        "orbits": 32
+      },
+      "RS300|0.62": {
+        "rho": 0.2541837511192879,
+        "policy_wins": 4,
+        "fixed_wins": 21,
+        "resolved": 25,
+        "orbits": 32
+      },
+      "RS600|0.62": {
+        "rho": 4.309158311379704,
+        "policy_wins": 22,
+        "fixed_wins": 0,
+        "resolved": 22,
+        "orbits": 32
+      },
+      "RS1200|0.62": {
+        "rho": 37.191408794295526,
+        "policy_wins": 29,
+        "fixed_wins": 0,
+        "resolved": 29,
+        "orbits": 32
+      },
+      "RS2400|0.62": {
+        "rho": 352.16143821667185,
+        "policy_wins": 31,
+        "fixed_wins": 0,
+        "resolved": 31,
+        "orbits": 32
+      },
+      "RS300|0.75": {
+        "rho": 0.7209640631598278,
+        "policy_wins": 8,
+        "fixed_wins": 10,
+        "resolved": 18,
+        "orbits": 32
+      },
+      "RS600|0.75": {
+        "rho": 8.634939340185074,
+        "policy_wins": 22,
+        "fixed_wins": 1,
+        "resolved": 23,
+        "orbits": 32
+      },
+      "RS1200|0.75": {
+        "rho": 33.78122955503955,
+        "policy_wins": 28,
+        "fixed_wins": 0,
+        "resolved": 28,
+        "orbits": 32
+      },
+      "RS2400|0.75": {
+        "rho": 438.35337475292516,
+        "policy_wins": 31,
+        "fixed_wins": 0,
+        "resolved": 31,
+        "orbits": 32
+      },
+      "RS300|1.00": {
+        "rho": 1.4592176624890423,
+        "policy_wins": 5,
+        "fixed_wins": 6,
+        "resolved": 11,
+        "orbits": 32
+      },
+      "RS600|1.00": {
+        "rho": 5.6134195176392865,
+        "policy_wins": 24,
+        "fixed_wins": 0,
+        "resolved": 24,
+        "orbits": 32
+      },
+      "RS1200|1.00": {
+        "rho": 52.91758402901874,
+        "policy_wins": 26,
+        "fixed_wins": 0,
+        "resolved": 26,
+        "orbits": 32
+      },
+      "RS2400|1.00": {
+        "rho": 670.3241662263861,
+        "policy_wins": 28,
+        "fixed_wins": 0,
+        "resolved": 28,
+        "orbits": 32
+      },
+      "RS300|1.25": {
+        "rho": 1.2573839116985472,
+        "policy_wins": 4,
+        "fixed_wins": 1,
+        "resolved": 5,
+        "orbits": 32
+      },
+      "RS600|1.25": {
+        "rho": 4.7020274618098625,
+        "policy_wins": 19,
+        "fixed_wins": 0,
+        "resolved": 19,
+        "orbits": 32
+      },
+      "RS1200|1.25": {
+        "rho": 95.34273029549004,
+        "policy_wins": 19,
+        "fixed_wins": 0,
+        "resolved": 19,
+        "orbits": 32
+      },
+      "RS2400|1.25": {
+        "rho": 187.7000644598658,
+        "policy_wins": 20,
+        "fixed_wins": 0,
+        "resolved": 20,
+        "orbits": 28
+      },
+      "RS300|1.50": {
+        "rho": 1.130591457405607,
+        "policy_wins": 2,
+        "fixed_wins": 0,
+        "resolved": 2,
+        "orbits": 32
+      },
+      "RS600|1.50": {
+        "rho": 11.732616657641223,
+        "policy_wins": 12,
+        "fixed_wins": 0,
+        "resolved": 12,
+        "orbits": 32
+      },
+      "RS1200|1.50": {
+        "rho": 31.4343553110401,
+        "policy_wins": 11,
+        "fixed_wins": 0,
+        "resolved": 11,
+        "orbits": 32
+      },
+      "RS2400|1.50": {
+        "rho": 35.44900421822106,
+        "policy_wins": 6,
+        "fixed_wins": 0,
+        "resolved": 6,
+        "orbits": 20
       }
     }
   }

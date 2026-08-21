@@ -1,0 +1,43 @@
+{
+  "schema": "rJ1_case_v1",
+  "created_utc": "2026-08-08T08:32:49.946363Z",
+  "config": {
+    "sobol_index": 11,
+    "policy": "constant",
+    "policy_spec": {
+      "kind": "constant_budget",
+      "degree": 100,
+      "beta": 1.0,
+      "rule": "argmin_N |N^2 - beta N_crit^2|",
+      "n_critical": 100
+    },
+    "level": "tighter",
+    "adopted_truth_degree": 300,
+    "duration_s": 604800.0,
+    "output_step_s": 120.0,
+    "max_step_s": 60.0,
+    "rtol": 1e-13,
+    "atol_kind": "vector",
+    "atol_position_m": 1e-06,
+    "atol_velocity_m_s": 1e-09,
+    "integrator": "InstrumentedDOP853",
+    "field": "GRGM1200A",
+    "timing_comparable": false,
+    "execution": "parallel_process_pool"
+  },
+  "telemetry": {
+    "n_rhs": 152138,
+    "n_accepted_steps": 10879,
+    "n_attempted_steps": 11418,
+    "n_rejected_trials": 539,
+    "mean_degree_sq": 10000.0,
+    "degree_range": [
+      100,
+      100
+    ],
+    "gravity_wall_s": 16.7241333,
+    "total_wall_s": 23.832905699993717
+  },
+  "raw_path": "D:\\makale_raw_offload\\jgcd\\J1\\J1_011\\constant_tighter.npz",
+  "raw_sha256": "ce8f86e6c910294abf52d929fa8113d0675d91e549ac61095c773fcba1f2b151"
+}

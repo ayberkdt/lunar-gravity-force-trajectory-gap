@@ -1,0 +1,74 @@
+{
+  "schema": "rJ2_case_v1",
+  "created_utc": "2026-08-08T10:25:19.068519Z",
+  "config": {
+    "sobol_index": 5,
+    "policy": "radial",
+    "policy_spec": {
+      "kind": "budget_calibrated_radial",
+      "beta": 1.0,
+      "accuracy_parameter_m_s2": 0.01298019599018381,
+      "bin_km": 10.0,
+      "floor": 2,
+      "cap": 300,
+      "n_critical": 82,
+      "source": "frozen budget record, not recalibrated",
+      "table": {
+        "130.0": 105,
+        "140.0": 95,
+        "150.0": 87,
+        "160.0": 80,
+        "170.0": 74,
+        "180.0": 68,
+        "190.0": 63,
+        "200.0": 59
+      }
+    },
+    "level": "tight",
+    "adopted_truth_degree": 300,
+    "dynamics": "moon_sh + earth + sun + srp_eclipse",
+    "orientation": "DE440/MOON_PA",
+    "duration_s": 604800.0,
+    "output_step_s": 120.0,
+    "max_step_s": 60.0,
+    "rtol": 1e-12,
+    "atol_kind": "vector",
+    "atol_position_m": 1e-05,
+    "atol_velocity_m_s": 1e-08,
+    "integrator": "InstrumentedDOP853",
+    "field": "JGGRX_1800F",
+    "timing_comparable": false,
+    "execution": "parallel_process_pool"
+  },
+  "telemetry": {
+    "n_rhs": 186842,
+    "wall_s": 56.683960399997886,
+    "gravity_wall_s": 22.4837712,
+    "mean_active_degree": 81.95445884758244,
+    "mean_degree_squared": 7014.999630704017,
+    "rms_active_degree": 83.7555946233087,
+    "min_active_degree": 59,
+    "max_active_degree": 105,
+    "degree_counts": {
+      "59": 20662,
+      "63": 26281,
+      "68": 22539,
+      "74": 17620,
+      "80": 16042,
+      "87": 16651,
+      "95": 17069,
+      "105": 49978
+    },
+    "component_rms_acceleration_m_s2": {
+      "earth_3b": 2.2868918854316566e-05,
+      "sun_3b": 1.2096578194212632e-07,
+      "srp": 4.821105296122795e-08
+    },
+    "n_accepted_steps": 11498,
+    "n_attempted_steps": 14310,
+    "n_rejected_trials": 2812,
+    "total_wall_s": 56.683960399997886
+  },
+  "raw_path": "D:\\makale_raw_offload\\jgcd\\J2\\J2_005\\radial_tight.npz",
+  "raw_sha256": "07e59e1f7ce8c0edd437c7eaeb423dc09daa8b63b847462918d87aed19999d7f"
+}

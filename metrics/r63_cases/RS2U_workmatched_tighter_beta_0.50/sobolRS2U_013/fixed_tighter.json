@@ -1,0 +1,64 @@
+{
+  "schema": "r44_equal_work_tighter_v1",
+  "created_utc": "2026-08-19T10:56:27.621789Z",
+  "config": {
+    "sobol_index": 13,
+    "design": "RS2U",
+    "beta": 0.5,
+    "policy": "constant degree matched on realized total quadratic work at the tighter level",
+    "matched_to": "span-sweep member k=0.50",
+    "match_level": "tighter",
+    "degree": 97,
+    "target_total_quadratic_work_tighter": 1605609649.0,
+    "constant_endpoint_degree": 67,
+    "constant_endpoint_total_work_tighter": 766362080.0,
+    "fixed_work_source_policy": "fixed_critical",
+    "first_estimate_rule": "N* = round(N_0 * sqrt(W_k/W_0)) with both works at the tighter level; the achieved ratio is measured, not assumed",
+    "adopted_truth_degree": 600,
+    "initial_state_si": [
+      -152839.57395966456,
+      -1558307.4536217623,
+      -987898.3563004513,
+      1713.318457951637,
+      -112.78947697200617,
+      -87.15692253747795
+    ],
+    "duration_s": 604800.0,
+    "output_step_s": 120.0,
+    "integrator": "InstrumentedDOP853",
+    "max_step_s": 60.0,
+    "atol_kind": "vector",
+    "timing_comparable": false,
+    "source": {
+      "driver": "rev44_equal_work_tighter.py",
+      "reuses": "r18_span_sweep_RS2U_beta_0.50.json + r18 tighter telemetry (member work), archived comparator telemetry (fixed work), r11 truths",
+      "lunaris_commit": "27e9ab86ed61d623f78c453ea2054348f1044c23"
+    }
+  },
+  "config_sha256": "56cb1fd828079c2ca568f3c0f1ffce62d1bf09cad36e09794f6d8e1571755a38",
+  "status": "ok",
+  "event": null,
+  "telemetry": {
+    "n_rhs": 171035,
+    "n_accepted_steps": 10975,
+    "n_attempted_steps": 11509,
+    "n_rejected_trials": 534,
+    "switch_count_at_rhs_samples": 0,
+    "degree_counts": {
+      "97": 171035
+    },
+    "degree_range": [
+      97,
+      97
+    ],
+    "mean_degree": 97.0,
+    "mean_degree_sq": 9409.0,
+    "gravity_kernel_ns": 20450932800,
+    "process_cpu_ns": 28500000000,
+    "total_wall_ns": 30893126500
+  },
+  "raw_path": "metrics\\r63_raw\\RS2U_workmatched_tighter_beta_0.50\\sobolRS2U_013\\fixed_tighter.npz",
+  "raw_sha256": "1eafa5f487bc52e063cf1ac375943dc28887838890f43cd65ac4063717ff1b4d",
+  "n_output_epochs": 5041,
+  "last_output_epoch_s": 604800.0
+}

@@ -157,8 +157,10 @@ def figure_ladder():
             ha="center", va="bottom", fontsize=8, color=GRAY,
             annotation_clip=False,
         )
+        # one format for all four medians: unequal digit counts made the
+        # coincidence of the last two columns harder to see, not easier
         ax.annotate(
-            rf"${med:.3g}$",
+            rf"${med:.2f}$",
             xy=(i + 0.30, med), ha="left", va="center",
             fontsize=7.5, color="black",
         )
@@ -174,7 +176,7 @@ def figure_ladder():
             ha="right", va=va, style="italic",
         )
     ax.set_title(
-        r"orbits favouring radial, of those each instrument scores",
+        r"orbits favoring radial, of those each instrument scores",
         fontsize=8, color=GRAY, pad=13,
     )
     fig.savefig(FIGURES / "fig_instrument_ladder.pdf")
@@ -220,7 +222,7 @@ def figure_per_orbit():
             fontsize=8, color=GRAY,
         )
 
-    axes[0].set_ylabel(r"$\rho_{\mathrm{budget}}=E_{\mathrm{fixed}}/E_{\mathrm{radial}}$")
+    axes[0].set_ylabel(r"$\rho_{\mathrm{budget}}=E_{\mathrm{fix}}/E_{\mathrm{rad}}$")
     handles = [
         plt.Line2D([], [], color=C_FIXED, lw=2, label="resolved, constant better"),
         plt.Line2D([], [], color=C_RADIAL, lw=2, label="resolved, radial better"),

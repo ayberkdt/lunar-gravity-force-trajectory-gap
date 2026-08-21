@@ -1,0 +1,73 @@
+{
+  "schema": "r52_registration_departure_v1",
+  "created_utc": "2026-08-13T21:23:10.382539Z",
+  "departs_from": "r52_preregistration.json",
+  "departs_from_declared_sha256": "2d03ea110e25959ebc734914da7a0292b1bc5acaeb473bc2dc8063ea48e0e6d7",
+  "departs_from_file_sha256": "8b3e459d36eb81400c529807bac04bad0acde0afecc8ad2d7f997f826bf29551",
+  "scored_by": "r52_verdict.json",
+  "scored_by_sha256": "6d2fe15bd8e3482a8ccd58d9d06b8615b9454ef48658b30f440836f373dd391b",
+  "compared_against": "r51_verdict.json",
+  "compared_against_sha256": "04a2b454cbf47543a6a1ff97e4304db60d66e4baead1654ba07029a7fa576549",
+  "outcome_returned": "P_replicates",
+  "what_the_registration_says": "Block B returns the same per-level verdicts under the raised reference as block A did, and its score orders in radial span at every budget that decides. The ceiling-free ladder is then reported pooled over both blocks, the c marks come off the regime map, and the manuscript stops scoping the control to one block.",
+  "clause_that_holds": "the per-level verdicts match block A in 16 of 16 cells, the turnover falls between the same level pair at every budget, and no wide cell differs between the blocks by the registered factor of 10.0",
+  "clause_that_fails": "the span-ordering clause: Kendall tau of block B's ceiling-free level scores is 1.000, 0.667, 1.000, 0.200 at budgets 0.50, 0.62, 0.75, 1.00; it is not unity at beta 0.75, 0.50",
+  "why_no_class_fits": "Q is about magnitudes the blocks do not share and they share them; R is about a level changing hands or a turnover moving and neither happened; S is about too few comparisons resolving and enough resolve. The four classes therefore do not partition the outcome space, which is a defect of this registration.",
+  "mechanism": "the failure is saturation at the narrowest level, not a disagreement about span. Block A's three narrow levels sit at a score of exactly -1.000, and Kendall tau ignores ties, so it returns unity. In block B a single orbit at the narrowest level favours the radial policy, lifting that level above the two above it and making the pair discordant. The parent campaign's registration names this artefact: where the constant degree wins essentially everything the score saturates against its own floor and a single orbit changing hands inverts the pair.",
+  "narrowest_level_by_budget": {
+    "0.50": {
+      "level_km": 300.0,
+      "block_a_score": -1.0,
+      "block_a_tally": [
+        0,
+        16
+      ],
+      "block_b_score": -0.875,
+      "block_b_tally": [
+        1,
+        15
+      ]
+    },
+    "0.62": {
+      "level_km": 300.0,
+      "block_a_score": -1.0,
+      "block_a_tally": [
+        0,
+        16
+      ],
+      "block_b_score": -1.0,
+      "block_b_tally": [
+        0,
+        16
+      ]
+    },
+    "0.75": {
+      "level_km": 300.0,
+      "block_a_score": -1.0,
+      "block_a_tally": [
+        0,
+        15
+      ],
+      "block_b_score": -0.8666666666666667,
+      "block_b_tally": [
+        1,
+        14
+      ]
+    },
+    "1.00": {
+      "level_km": 300.0,
+      "block_a_score": -1.0,
+      "block_a_tally": [
+        0,
+        13
+      ],
+      "block_b_score": -0.8571428571428571,
+      "block_b_tally": [
+        1,
+        13
+      ]
+    }
+  },
+  "consequence_applied": "the result is reported as replicating on the verdicts, the turnover and the magnitudes, and as failing the ordering clause at two budgets with the reason given. No class is selected after the fact to make the registration appear to cover it, and the ordering statistic is not quoted as evidence of replication.",
+  "registered_classes_cover_result": false
+}

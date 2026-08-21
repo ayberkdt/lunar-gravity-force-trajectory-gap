@@ -1,0 +1,63 @@
+{
+  "schema": "r58_endpoint_equal_work_v1",
+  "created_utc": "2026-08-15T18:22:40.344927Z",
+  "config": {
+    "sobol_index": 0,
+    "design": "OEU",
+    "beta": 0.5,
+    "policy": "constant degree matched on realized total quadratic work",
+    "matched_to": "span-sweep member k=1.00 (budget-calibrated radial endpoint)",
+    "degree": 120,
+    "target_total_quadratic_work": 2298947701.0,
+    "constant_endpoint_degree": 91,
+    "constant_endpoint_total_work": 1315999958.0,
+    "first_estimate_rule": "N* = round(N_0 * sqrt(W_k / W_0)); the achieved ratio is measured, not assumed",
+    "adopted_truth_degree": 600,
+    "initial_state_si": [
+      -1766015.8449185528,
+      -424750.45335731516,
+      -106277.85815415204,
+      -463.431708325335,
+      1758.4409391830438,
+      673.039098288975
+    ],
+    "duration_s": 604800.0,
+    "output_step_s": 120.0,
+    "integrator": "InstrumentedDOP853",
+    "max_step_s": 60.0,
+    "atol_kind": "vector",
+    "timing_comparable": false,
+    "source": {
+      "driver": "rev58_endpoint_equal_work.py",
+      "reuses": "r18_span_sweep_OEU_beta_0.50.json (realized work), r14_trajectory_OEU_beta_0.50.json, r11 truths",
+      "matched_member": "1.00"
+    }
+  },
+  "config_sha256": "b190b23b657038b478113b71620bffa63642256df2c7bbe0ff38db1138361555",
+  "status": "ok",
+  "level": "tighter",
+  "event": null,
+  "telemetry": {
+    "n_rhs": 167222,
+    "n_accepted_steps": 10880,
+    "n_attempted_steps": 11215,
+    "n_rejected_trials": 335,
+    "switch_count_at_rhs_samples": 0,
+    "degree_counts": {
+      "120": 167222
+    },
+    "degree_range": [
+      120,
+      120
+    ],
+    "mean_degree": 120.0,
+    "mean_degree_sq": 14400.0,
+    "gravity_kernel_ns": 27918471700,
+    "process_cpu_ns": 33937500000,
+    "total_wall_ns": 37742731900
+  },
+  "raw_path": "metrics\\r58_raw\\OEU_endpoint_workmatched_beta_0.50\\sobolA_000\\fixed_tighter.npz",
+  "raw_sha256": "b5e84c86a77d0b82930c152ee8eb1277093d7522de0a5007c87868a5ade41804",
+  "n_output_epochs": 5041,
+  "last_output_epoch_s": 604800.0
+}

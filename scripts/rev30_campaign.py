@@ -23,6 +23,8 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
+import shutil
 import subprocess
 import sys
 import time
@@ -47,7 +49,13 @@ SECOND_PASS_BETAS = [0.75, 0.50]
 
 BASE_MIN_CHEAP = 75.0        # high_apolune: no 900-degree truths
 BASE_MIN_FULL = 200.0        # prepass ~100 min + two-policy convergence ~70 min
-BASE_MIN_DEEP = 300.0        # low_perilune: every truth at the highest degree
+# low_perilune: every truth at the highest degree. The archived attempt's own
+# session_wall_ns gives 6 orbits in 108.9 min at eleven workers, so the 58 that
+# remain are about 17.5 h there and 21-29 h at four. The old 300 min would wave
+# through a base that could not possibly finish; a base that stops short is not
+# wasted, because it resumes from its sidecars, but the stratum is then still
+# uncalibrated and nothing downstream may start.
+BASE_MIN_DEEP = 300.0
 OP_MIN = 60.0
 CAL_MIN = 40.0
 LADDER_MIN = 150.0
@@ -76,12 +84,46 @@ def record(name: str, rc: int, minutes: float) -> None:
     PROGRESS.write_text(json.dumps(p, indent=2), encoding="utf-8")
 
 
+# One BLAS thread per worker, and no console window. Both were learned on
+# 15 August: a pool whose workers each spin up a full BLAS thread pool dies
+# with BrokenProcessPool within a minute on this host, at one worker as
+# readily as at four, while the same trajectory runs clean in-process; and a
+# child started DETACHED has no console for its own workers to inherit, so
+# Windows draws a new console window for each of them.
+CREATE_NO_WINDOW = 0x08000000
+CREATE_NEW_PROCESS_GROUP = 0x00000200
+CHILD_ENV = {"PYTHONUNBUFFERED": "1", "OMP_NUM_THREADS": "1",
+             "MKL_NUM_THREADS": "1", "OPENBLAS_NUM_THREADS": "1",
+             "NUMEXPR_NUM_THREADS": "1"}
+
+
+# A stratum's op, calibration and three ladders write about half a gigabyte
+# between them. The floor is set well above that because the volume this runs
+# on has been filled twice mid-campaign, and a stage that dies on ENOSPC costs
+# its whole elapsed time: frozen_like's beta = 0.50 ladder wrote a zero-byte
+# summary on 8 August and the supervisor then skipped the retry.
+DISK_FLOOR_GB = 2.0
+
+
+def free_gb() -> float:
+    return shutil.disk_usage(str(ROOT)).free / 2**30
+
+
 def run_stage(name: str, cmd: list[str]) -> tuple[int, float]:
-    log(f"START {name}: {' '.join(cmd[1:])}")
+    free = free_gb()
+    if free < DISK_FLOOR_GB:
+        log(f"REFUSE {name}: {free:.1f} GB free, floor is {DISK_FLOOR_GB} GB")
+        record(name, -1, 0.0)
+        return -1, 0.0
+    log(f"START {name}: {' '.join(cmd[1:])} ({free:.1f} GB free)")
     t0 = time.time()
     with LOG.open("a", encoding="utf-8") as fh:
         rc = subprocess.call(cmd, cwd=str(HERE), stdout=fh,
-                             stderr=subprocess.STDOUT)
+                             stderr=subprocess.STDOUT,
+                             stdin=subprocess.DEVNULL,
+                             env=dict(os.environ, **CHILD_ENV),
+                             creationflags=CREATE_NO_WINDOW
+                             | CREATE_NEW_PROCESS_GROUP)
     dt = (time.time() - t0) / 60.0
     log(f"END   {name}: rc={rc} in {dt:.1f} min")
     record(name, rc, dt)
@@ -107,8 +149,23 @@ def cal_done(stratum: str) -> bool:
 
 
 def ladder_done(stratum: str, beta: float) -> bool:
-    return (METRICS / f"r19_equal_total_work_{key_of(stratum)}"
-            f"_beta_{beta:.2f}.json").exists()
+    """A ladder counts as done only if its record is readable and scored.
+
+    Existence is not enough. On 2026-08-08 the frozen_like beta = 0.50 stage
+    ran out of disk while writing, leaving a zero-byte file; an existence test
+    read that as success, so the supervisor skipped the retry and returned with
+    348 minutes of its window unused, and --status reported the ladder present.
+    Requiring the summary block to parse makes a truncated or empty write count
+    as what it is.
+    """
+    p = (METRICS / f"r19_equal_total_work_{key_of(stratum)}"
+         f"_beta_{beta:.2f}.json")
+    if not p.exists() or p.stat().st_size == 0:
+        return False
+    try:
+        return "summary" in json.loads(p.read_text(encoding="utf-8"))
+    except (ValueError, OSError):
+        return False
 
 
 def status() -> int:

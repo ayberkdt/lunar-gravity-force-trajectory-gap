@@ -1,0 +1,126 @@
+{
+  "schema": "r56_final_experiment_manifest_v1",
+  "created_utc": "2026-08-19T14:31:48.976339Z",
+  "scope": "R56 (O56): the k = 0.5 interior member against a constant degree over sixty days, on the eight Design-A orbits carrying a sixty-day reference, at beta = 1. The member's degree table is recalibrated so that its mean squared degree meets the budget over the sixty-day reference epochs, and the comparator is matched on realized total quadratic work read at the tighter tolerance.",
+  "why": "(O30) reused the frozen seven-day table over the sixty-day arc, where the member overspends the per-call budget by a median factor of 1.22, and scored the comparison on the nominal per-call accounting. Its negative result therefore confounds a horizon effect with a calibration mismatch and an accounting convention. This campaign removes both.",
+  "relationship_to_r17_r20": "additive and read-only. The sixty-day references come from (O27) unchanged at both tolerance levels; the archived (O30) constant endpoint supplies W_0 at the tighter level. Neither record is written.",
+  "locked_choices": "panel, budget and interior index were fixed in r56_preregistration.json before any propagation and are not revisited: eight orbits, beta = 1, k = 0.5.",
+  "declared_outcome_returned": {
+    "orbits": 8,
+    "resolved": 3,
+    "resolved_interior_wins": 1,
+    "resolved_fixed_wins": 2,
+    "unresolved": 5,
+    "median_rho": 1.2095806594233438,
+    "achieved_work_ratio_tighter": {
+      "median": 1.00940895988772,
+      "min": 0.996958733378827,
+      "max": 1.0662868516574993
+    }
+  },
+  "numerical_kernel": {
+    "lunaris_release_tag": "paper-truncation-v1.0",
+    "lunaris_commit": "27e9ab86ed61d623f78c453ea2054348f1044c23",
+    "note": "unchanged from R10-R63"
+  },
+  "registration": {
+    "r56_preregistration.json": {
+      "sha256": "27d75d7ae441fbb3728ebcf28186517db55ceb8ce948806d999f7208173ec007",
+      "bytes": 5177
+    }
+  },
+  "reused_inputs": {
+    "r17_longarc60.json": {
+      "sha256": "d0f6015533b8e66e58244872527887f353087a407774f743ff74a61953ab9fb5",
+      "bytes": 207258
+    },
+    "r20_span_longarc.json": {
+      "sha256": "5f65842cf5d97fcbe5a1e88390cb56097c08786512cbbda23f841fdf9d92559d",
+      "bytes": 10225
+    },
+    "r18_span_sweep_A_beta_1.00.json": {
+      "sha256": "fc50df65de340d5e60de0d200ce8a03dc816af697cbd7f8cef30ae60c7bd2ce7",
+      "bytes": 215865
+    }
+  },
+  "scripts": {
+    "rev56_longarc_interior.py": {
+      "sha256": "6631b5adc69f337a923e0a9dacc31d66703d12b56851434f2821f4eff9620d77",
+      "bytes": 18531
+    },
+    "rev56_preregister.py": {
+      "sha256": "cc0b74a4defcf634513512c4ce4c9b6377e9ab49fe3f75212b335835df2a0375",
+      "bytes": 7292
+    },
+    "rev56_campaign.py": {
+      "sha256": "35c86c828130d9cb8a11abc67ff605365e874ff5375e39ba9dc689e5a91d4934",
+      "bytes": 4558
+    },
+    "rev56_finalize_manifest.py": {
+      "sha256": "50eb06ff2a23038430ecc7f6d7ef6fd245369fc5c4092021224254fbe7fb324a",
+      "bytes": 5579
+    },
+    "rev20_span_longarc.py": {
+      "sha256": "08af66b3e847236a2efaaf6344620752a2f7f6dbd083545f3f45b96ef31204bd",
+      "bytes": 14395
+    },
+    "rev18_span_sweep.py": {
+      "sha256": "415b049b56e2f05a8444f57f0a6457a8a7db119147a2ade3215f5a8e0259935b",
+      "bytes": 24838
+    },
+    "rev17_longarc60.py": {
+      "sha256": "b60f3063adbfb3671c2ad04f9bb28b6f427c086d74100f92a6ffabc938293207",
+      "bytes": 27874
+    }
+  },
+  "result_json": {
+    "r56_longarc_interior.json": {
+      "sha256": "46461825f0c49a9da17968a3a47300dfbcb40e531461349562cad36173851c85",
+      "bytes": 6520
+    },
+    "r56_campaign_progress.json": {
+      "sha256": "bfbf7dd646a4e7e19b854e699ded89311be27983e92a9ca983ef66ba475e9905",
+      "bytes": 585
+    }
+  },
+  "trajectory_tree": {
+    "n_sidecars": 32,
+    "n_raw_arrays": 32,
+    "sidecar_sha256": {
+      "r56_cases/comparator/sobolA_000/arc_tight.json": "79d6241b7c83be4ca38f5821332b1626163c1f82343109342a3b7ce9a483667e",
+      "r56_cases/comparator/sobolA_000/arc_tighter.json": "7bda45559acf153966a898a8d40a98fb6101b3e2bedb403cac271748d0d3a367",
+      "r56_cases/comparator/sobolA_001/arc_tight.json": "c5ef10896b63616de15e7e5072ed6a292882e670725a769ebed354ce20604cce",
+      "r56_cases/comparator/sobolA_001/arc_tighter.json": "475f8795a141a8a45fecd25f79ef758dc2b391ab02d9d60a7bdd8766e0e831a7",
+      "r56_cases/comparator/sobolA_002/arc_tight.json": "f8b68068704a5fcd4559236357c620c4bac4b59ed81c2bc5fd42b7501de48d1e",
+      "r56_cases/comparator/sobolA_002/arc_tighter.json": "2f52a4d1afaf1eb930c2d1ae926082eecd53f08673241bb2c9b15cc70906fea2",
+      "r56_cases/comparator/sobolA_003/arc_tight.json": "18a54e758408185a88c36bb37b66db63700ae742f5037f56ea76a4aebc2ab773",
+      "r56_cases/comparator/sobolA_003/arc_tighter.json": "028984943df849ac5724b1670a42c48888a1634c3f907cd6750b40c844c23686",
+      "r56_cases/comparator/sobolA_005/arc_tight.json": "7368681362edaab634d558b6ca7b8bb124dc5ef0ef4ea2b21fef4f8f0a2e6d9d",
+      "r56_cases/comparator/sobolA_005/arc_tighter.json": "bef2c73ccaaa03cbc647dd1f0a7e819df4479f03e76fa96acdd4206d4080340b",
+      "r56_cases/comparator/sobolA_006/arc_tight.json": "36ab0f5557c2cdd6767359ffb782b156a4bfdbf607b2385147ade4bd4dbd97d8",
+      "r56_cases/comparator/sobolA_006/arc_tighter.json": "773131b8fba626fe669df540ffdeaccee124cc91a37d01307f4b2d9ad49b8cd5",
+      "r56_cases/comparator/sobolA_007/arc_tight.json": "5e456e1a72c85b06dbec9217958b52380351164c19eea4a2f456663604945509",
+      "r56_cases/comparator/sobolA_007/arc_tighter.json": "7e1257c78a48a6dbea761b8c67012c8491fed4ede80ec3e2d753d6329a4d8553",
+      "r56_cases/comparator/sobolA_008/arc_tight.json": "baf02d430fda4959a65d6c161a3441fb4ba076963f4e511a4bce4e60f8c9fc4d",
+      "r56_cases/comparator/sobolA_008/arc_tighter.json": "b5361bbf9390f9b2acc6fa3e2d3b0ad78db619260a77fcd8a35f017cadd7e4b3",
+      "r56_cases/member/sobolA_000/arc_tight.json": "81bd5ad46230a5cb05066a1032dae7014fb2bd75bf90dccfccb445942a73077c",
+      "r56_cases/member/sobolA_000/arc_tighter.json": "7c4e7de9195a32112a99f20bd16f7dc65700bcc943726337223687f832a2dbae",
+      "r56_cases/member/sobolA_001/arc_tight.json": "7aacdf0b4189037d790d5238dd3705611080f3fa686aceaf208eafa6dcb8e193",
+      "r56_cases/member/sobolA_001/arc_tighter.json": "fe1d984217922d4f60941bd5537825e412d25e1e93865076e797739a9bd9421f",
+      "r56_cases/member/sobolA_002/arc_tight.json": "4ff2e01a283451a5e4e668c0fd885ee0bb4e0cdcc34928d963e7fa2f2c8f8b3a",
+      "r56_cases/member/sobolA_002/arc_tighter.json": "92a3a25ec5219a1a0cce5f53a9d30f94b29c2522725dac584439c17a09c3c523",
+      "r56_cases/member/sobolA_003/arc_tight.json": "eae21b46db777a9caad6b10b958e9834bfee4af6e866d972c98d760ceadc835f",
+      "r56_cases/member/sobolA_003/arc_tighter.json": "d6fb1c60db83054c91c7ca2ff552240b0f77d082b9d696f222b3c51376986ddf",
+      "r56_cases/member/sobolA_005/arc_tight.json": "328ddc7787f422a5663bc06365adee68f75dc1159a6a06d7f132052a14696d6f",
+      "r56_cases/member/sobolA_005/arc_tighter.json": "27507335b41cd66abb2ba92de6ece5071b92b7b0d2923c0d7ef0028ff27aff8b",
+      "r56_cases/member/sobolA_006/arc_tight.json": "3bd5bbebe7a1b57b4e87d504c935e0d04259a31bcc7636bd091a581fdf5f3c1a",
+      "r56_cases/member/sobolA_006/arc_tighter.json": "f5e748bf2f8506241e01915d9119f8235bb551b785750fa22c91b4e0d2bcdc3c",
+      "r56_cases/member/sobolA_007/arc_tight.json": "2710742e948d77e253c9791cad04d04dbc21f0c9cbf507b7488f3fbfccc9c1d5",
+      "r56_cases/member/sobolA_007/arc_tighter.json": "ee2d16fe2e6bec142b4f540422cf200de8801377b8437ad3e9753523cb1e3939",
+      "r56_cases/member/sobolA_008/arc_tight.json": "67b05dafa835cfb49e80b1358ce9271bf82202a457e97a9ae6e6a33c9048e8ee",
+      "r56_cases/member/sobolA_008/arc_tighter.json": "363936b90773303fafa2c513954196c0c186c859f0a8da99f1f5807568d57519"
+    },
+    "raw_rollup_sha256": "799b102e82f25cecfb93f01c98067e8d46c33d93f9043ef4d042b4422118f00e"
+  },
+  "manifest_sha256": "e7096a5976f6d0abc386a6f46669f7a7d4e808275a028868bda270735d12bfcb"
+}

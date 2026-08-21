@@ -32,15 +32,28 @@ METRICS = ROOT / "metrics"
 CUTS = (0.5, 1.0, 2.0)
 
 
+# The two confirmatory designs were the whole of this table until the post-hoc
+# budget column was computed on the other populations. That column is now what
+# locates two crossing intervals, so the populations carrying it have to be
+# inside the sensitivity check rather than outside it: a convention audit that
+# covers only the cells no new claim rests on is not an audit of the claim.
+# Order is the order the populations appear in the regime map.
+KEYS = ("A", "B", "C", "SP", "SE", "SF", "SH", "OEU")
+
+LABEL = {"A": "Design A", "B": "Design B", "C": "Design C",
+         "SP": "Polar", "SE": "Equatorial", "SF": "Frozen-like",
+         "SH": "High apolune", "OEU": "Wide ell."}
+
+
 def records() -> list[tuple[str, float, Path]]:
     out = []
     for p in sorted(METRICS.glob("r19_equal_total_work_*.json")):
-        m = re.fullmatch(r"r19_equal_total_work_([AB])(?:_beta_(\d+\.\d+))?\.json",
-                         p.name)
+        m = re.fullmatch(r"r19_equal_total_work_(" + "|".join(KEYS) +
+                         r")(?:_beta_(\d+\.\d+))?\.json", p.name)
         if not m:
             continue
         out.append((m.group(1), float(m.group(2) or 1.00), p))
-    return sorted(out, key=lambda t: (t[0], -t[1]))
+    return sorted(out, key=lambda t: (KEYS.index(t[0]), -t[1]))
 
 
 def m_res_values(path: Path) -> list[float]:
@@ -83,9 +96,12 @@ def main() -> int:
         blocks.append((design, beta, row, cells))
         summary[f"{design}_beta_{beta:.2f}"] = row
 
-    # Design label as a rotated cell spanning its own rows, so the group
-    # boundary is visible rather than inferred from where the letter stops.
-    lines = ["\\begin{tabular}{@{}c r r r r r@{}}", "\\toprule",
+    # The population name sits upright on the first row of its block, with the
+    # rule below the block marking where the group ends. It used to be a
+    # rotated cell spanning the rows, which read well for "Polar" and collided
+    # with its neighbour for "High apolune" and "Wide elliptic": a rotated name
+    # is as tall as the name is long, and four rows are not that tall.
+    lines = ["\\begin{tabular}{@{}l r r r r r@{}}", "\\toprule",
              "& $\\beta$ & $M_{\\mathrm{res}}>0.5$ & "
              "$M_{\\mathrm{res}}>1$ & $M_{\\mathrm{res}}>2$ & "
              "median $M_{\\mathrm{res}}$ \\\\",
@@ -98,9 +114,7 @@ def main() -> int:
     for i, (design, rows) in enumerate(by_design.items()):
         if i:
             lines.append("\\midrule")
-        label = (f"\\multirow{{{len(rows)}}}{{*}}"
-                 f"{{\\rotatebox[origin=c]{{90}}{{\\emph{{Design {design}}}}}}}")
-        lines.append(f"{label} & {rows[0]}")
+        lines.append(f"\\emph{{{LABEL[design]}}} & {rows[0]}")
         lines += [f" & {r}" for r in rows[1:]]
     lines += ["\\bottomrule", "\\end{tabular}"]
     out = METRICS / "r27_threshold_sensitivity_table.tex"

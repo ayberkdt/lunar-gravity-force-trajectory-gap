@@ -1,0 +1,120 @@
+{
+  "schema": "r30_verdict_v1",
+  "registry": "r30",
+  "beta": 1.0,
+  "preregistration_sha256": "0bb69e0340f91c9dc4e2e141d66fcab28aa86e8c6aad4f9b860e22c2988055f8",
+  "rule": "per stratum, the R19 realized-work tally: interior if resolved_interior_wins > resolved_fixed_wins, constant if the reverse, split if equal, undecided if nothing resolves. The panel verdict is K only if every propagated stratum returns interior.",
+  "pooling": "strata are never pooled with each other or with the coverage designs into a single tally. Their sub-boxes overlap the coverage box and each other, so a pooled count would double-count the geometry it oversamples.",
+  "strata": {
+    "polar": {
+      "verdict": "interior",
+      "record": "r19_equal_total_work_SP_beta_1.00.json",
+      "orbits": 64,
+      "resolved": 32,
+      "interior_wins": 23,
+      "fixed_wins": 9,
+      "unresolved": 32,
+      "median_rho": 2.6440582381924655,
+      "achieved_work_ratio_median": 0.995198446759981,
+      "design_key": "SP",
+      "sub_box": "inclination 80-100 deg, everything else the full box"
+    },
+    "equatorial": {
+      "verdict": "interior",
+      "record": "r19_equal_total_work_SE_beta_1.00.json",
+      "orbits": 64,
+      "resolved": 42,
+      "interior_wins": 34,
+      "fixed_wins": 8,
+      "unresolved": 22,
+      "median_rho": 3.2052015282803366,
+      "achieved_work_ratio_median": 0.9944888801523288,
+      "design_key": "SE",
+      "sub_box": "inclination 0-20 deg, everything else the full box"
+    },
+    "high_apolune": {
+      "verdict": "interior",
+      "record": "r19_equal_total_work_SH_beta_1.00.json",
+      "orbits": 64,
+      "resolved": 37,
+      "interior_wins": 37,
+      "fixed_wins": 0,
+      "unresolved": 27,
+      "median_rho": 5.167829452696341,
+      "achieved_work_ratio_median": 1.0001948311781734,
+      "design_key": "SH",
+      "sub_box": "perilune 80-150 km with apolune 520-600 km: the widest arcs the box supports, deliberately not low-perilune"
+    },
+    "frozen_like": {
+      "verdict": "interior",
+      "record": "r19_equal_total_work_SF_beta_1.00.json",
+      "orbits": 64,
+      "resolved": 29,
+      "interior_wins": 23,
+      "fixed_wins": 6,
+      "unresolved": 35,
+      "median_rho": 2.6463166437136194,
+      "achieved_work_ratio_median": 0.9948647230491496,
+      "design_key": "SF",
+      "sub_box": "near-polar with the argument of perilune near 90 deg; a geometry, not a solved frozen condition"
+    },
+    "low_perilune": {
+      "verdict": "interior",
+      "record": "r19_equal_total_work_SL_beta_1.00.json",
+      "orbits": 64,
+      "resolved": 20,
+      "interior_wins": 18,
+      "fixed_wins": 2,
+      "unresolved": 44,
+      "median_rho": 4.368402584190912,
+      "achieved_work_ratio_median": 0.9913575814995774,
+      "design_key": "SL",
+      "sub_box": "perilune 30-50 km, everything else the full box: the regime the paper attributes the effect to"
+    }
+  },
+  "coverage_designs_for_reference": {
+    "A": {
+      "verdict": "interior",
+      "record": "r19_equal_total_work_A.json",
+      "orbits": 64,
+      "resolved": 27,
+      "interior_wins": 19,
+      "fixed_wins": 8,
+      "unresolved": 37,
+      "median_rho": 2.5626098895969136,
+      "achieved_work_ratio_median": 0.9953186301239817
+    },
+    "B": {
+      "verdict": "interior",
+      "record": "r19_equal_total_work_B.json",
+      "orbits": 64,
+      "resolved": 33,
+      "interior_wins": 28,
+      "fixed_wins": 5,
+      "unresolved": 31,
+      "median_rho": 2.5839708206033043,
+      "achieved_work_ratio_median": 0.9964105348133439
+    },
+    "C": {
+      "verdict": "interior",
+      "record": "r19_equal_total_work_C_beta_1.00.json",
+      "orbits": 64,
+      "resolved": 28,
+      "interior_wins": 18,
+      "fixed_wins": 10,
+      "unresolved": 36,
+      "median_rho": 2.207523454973159,
+      "achieved_work_ratio_median": 0.9951575593748015
+    }
+  },
+  "strata_propagated": [
+    "equatorial",
+    "frozen_like",
+    "high_apolune",
+    "low_perilune",
+    "polar"
+  ],
+  "outcome": "K_holds_in_every_stratum",
+  "outcome_text": "The interior member carries the realized-work tally at the declared budget in all four strata. The allocation result is then reported as holding across the geometries sampled, not only on average over the coverage box.",
+  "declared_but_not_propagated": []
+}

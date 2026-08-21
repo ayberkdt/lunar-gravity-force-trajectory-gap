@@ -62,7 +62,7 @@ def deployable() -> str:
   loose-tolerance pilot arc costing a median
   {100 * pa['median']:.0f}\\% of the real run's gravity work. Realized $\\beta$ and
   the calibration error are measured on the true arc.
-  $\\rho_{{\\mathrm{{budget}}}}=E_{{\\mathrm{{fix}}}}/E_{{\\mathrm{{At}}}}$, so values
+  $\\rho_{{\\mathrm{{budget}}}}=E_{{\\mathrm{{fix}}}}/E_{{\\mathrm{{rad}}}}$, so values
   below unity favor the constant degree. The verdict is unchanged under every
   calibration: what foreknowledge of the arc buys is budget adherence, not
   accuracy.}}
@@ -115,7 +115,7 @@ def fixed_oracle() -> str:
     \\toprule
     Des. & idx & $h_p$ & $N_{{\\mathrm{{crit}}}}$ & $N_{{\\mathrm{{sat}}}}$ &
       $N_{{\\mathrm{{oracle}}}}$ & $E_{{\\mathrm{{sat}}}}$ &
-      $E_{{\\mathrm{{oracle}}}}$ & gain & $E_{{\\mathrm{{At}}}}$ &
+      $E_{{\\mathrm{{oracle}}}}$ & gain & $E_{{\\mathrm{{rad}}}}$ &
       $\\rho_{{\\mathrm{{sat}}}}$ & $\\rho_{{\\mathrm{{oracle}}}}$\\\\
     \\midrule
 {body}

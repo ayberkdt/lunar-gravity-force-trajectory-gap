@@ -66,9 +66,16 @@ REUSED = [ARCHIVED, "r14_budget_pareto.json", "r14_preregistration.json",
           "r10_sobolA_baseline_truth_corrected.json", "r11_designB_rows.json",
           "r14_trajectory_A_beta_1.00.json", "r14_trajectory_B_beta_1.00.json"]
 
+# The ladder table and the parity figure were last written by R42, which
+# completed this campaign's level chain from 80 orbits to 128. A file is indexed
+# under the campaign that last wrote it, so both are held in the R42 manifest and
+# named there with the manifest they came from. R37's own record, verdict and
+# panel table stay here.
+HANDED_TO_R42 = ["r34_instrument_ladder_table.tex", "fig_variational_parity.pdf"]
+
 RESULTS = ["r37_variational_extension.json", "r37_panel_verdict.json"]
-TABLES = ["r37_panel_extension_table.tex", "r34_instrument_ladder_table.tex"]
-FIGS = ["fig_variational_parity.pdf"]
+TABLES = ["r37_panel_extension_table.tex"]
+FIGS = []
 
 
 def sha(path: Path) -> str:
@@ -160,6 +167,7 @@ def main() -> int:
         "result_json": results,
         "generated_tables": tables,
         "generated_figures": figures,
+        "handed_to_r42": HANDED_TO_R42,
         "completion": completion(),
     }
     payload["manifest_sha256"] = hashlib.sha256(

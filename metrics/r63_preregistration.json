@@ -1,0 +1,184 @@
+{
+  "schema": "r63_preregistration_v1",
+  "campaign": "R63 (O55): the ceiling-free apolune ladder, interior panel, re-matched at the scoring tolerance",
+  "registered_utc": "2026-08-19T10:08:18Z",
+  "registered_before_any_propagation": true,
+  "motivation": "(O54) carried the level-consistent match to the controlled apolune ladder but stopped at 300 and 600 km, because on the capped blocks the reference-degree ceiling binds above that and would confound the accounting change with the ceiling. The ceiling-free blocks of (O50) and (O51) remove that confound, so the two widest levels can be run on them.",
+  "two_questions": "at 300 and 600 km this replicates (O54) on independent ceiling-free identities; at 1200 and 2400 km it asks what (O54) could not, whether the interior member's advantage keeps widening with apolune once both the ceiling and the accounting objection are removed.",
+  "cells": [
+    {
+      "population": "span_ladder_a_uncapped",
+      "design_key": "RS1U",
+      "registry": "r51",
+      "beta": 1.0,
+      "apolune_km": [
+        300.0,
+        600.0,
+        1200.0,
+        2400.0
+      ],
+      "identities": 64
+    },
+    {
+      "population": "span_ladder_b_uncapped",
+      "design_key": "RS2U",
+      "registry": "r52",
+      "beta": 1.0,
+      "apolune_km": [
+        300.0,
+        600.0,
+        1200.0,
+        2400.0
+      ],
+      "identities": 64
+    },
+    {
+      "population": "span_ladder_a_uncapped",
+      "design_key": "RS1U",
+      "registry": "r51",
+      "beta": 0.75,
+      "apolune_km": [
+        300.0,
+        600.0,
+        1200.0,
+        2400.0
+      ],
+      "identities": 64
+    },
+    {
+      "population": "span_ladder_b_uncapped",
+      "design_key": "RS2U",
+      "registry": "r52",
+      "beta": 0.75,
+      "apolune_km": [
+        300.0,
+        600.0,
+        1200.0,
+        2400.0
+      ],
+      "identities": 64
+    },
+    {
+      "population": "span_ladder_a_uncapped",
+      "design_key": "RS1U",
+      "registry": "r51",
+      "beta": 0.5,
+      "apolune_km": [
+        300.0,
+        600.0,
+        1200.0,
+        2400.0
+      ],
+      "identities": 64
+    },
+    {
+      "population": "span_ladder_b_uncapped",
+      "design_key": "RS2U",
+      "registry": "r52",
+      "beta": 0.5,
+      "apolune_km": [
+        300.0,
+        600.0,
+        1200.0,
+        2400.0
+      ],
+      "identities": 64
+    }
+  ],
+  "attempt_order": "beta 1.00 on both blocks first, then 0.75, then 0.50: the declared budget carries the summary class and the widest levels are decidable there.",
+  "frozen_rules": {
+    "construction": "(O42)/(O53)/(O54) unchanged: the member is k = 0.50 of the archived ladder sweep, reused, and only the matched constant-degree comparator is propagated, at both tolerance levels",
+    "primary_statistic": "per block, budget and apolune level, the resolved interior--fixed tally and the median error ratio, never pooled across levels or across blocks",
+    "robustness": "every level re-tallied at resolution cuts 0.5, 1 and 2, nothing repropagated; a level whose leading side moves across the cuts is reported as cut-sensitive and never as a verdict",
+    "censoring": "a comparator at or above the adopted reference degree is censored and reported, never clamped. The plan subcommand measured 0 censored in all six cells, which is what ceiling-free means here.",
+    "no_outcome_dependent_stopping": "all six cells run to completion or to the window deadline; the attempt order is fixed here and does not depend on any result this campaign produces."
+  },
+  "class_is_a_summary_not_a_verdict": "the classes below summarise the beta = 1.00 row. They are declared to be read beside the full per-budget, per-level table and never instead of it. (O54) showed why: a class keyed to one budget can be correct under its own rule and still understate the campaign, because the accounting under test is itself what moves the crossing along the budget axis.",
+  "declared_outcomes": {
+    "A_widening": "at beta = 1.00, in both blocks, the resolved interior-minus-fixed margin is non-decreasing across 300, 600, 1200 and 2400 km and the interior member leads at 600 km and above. Reading: the radial-span dependence is monotone in apolune under level-consistent matching and free of the ceiling, which is the strongest form of the controlled claim.",
+    "B_saturating": "at beta = 1.00 the interior member leads at 600 km and above in both blocks, but the margin is non-monotone above 600 km in at least one block. Reading: the dependence is real but saturates, and the main text says the advantage widens up to a level rather than with span generally.",
+    "C_reversal": "at beta = 1.00 the leading side returns to the constant degree at 1200 or 2400 km in at least one block. Reading: the advantage is not monotone in apolune, the widest arcs are their own regime, and the geometry sentence is bounded to the levels where it holds.",
+    "note": "all three are publishable and all three change the ladder discussion and the geometry paragraph of Section IX.B."
+  },
+  "plan_validation": "the plan subcommand was run on all six cells before this registration was written: 64 identities each, 0 missing telemetry, 0 censored, 0 degenerate.",
+  "driver": "python_codes/rev63_ladder_uncapped_rematch.py",
+  "supervisor": "python_codes/rev63_campaign.py",
+  "inputs_as_read": {
+    "python_codes/rev63_ladder_uncapped_rematch.py": {
+      "sha256": "a84489a11ec9c03b46e6642fa800323035be18259c43c1264d7fad8c4efc96b0",
+      "bytes": 4803
+    },
+    "python_codes/rev63_campaign.py": {
+      "sha256": "c928a349abd42f14c911d7dfcaa8115b71c50616c434f5eb1f618e7edcf45ada",
+      "bytes": 5576
+    },
+    "python_codes/rev44_equal_work_tighter.py": {
+      "sha256": "81f36e62f09f11136dc3b2f933ab03518eea6caff764d2cec500c3c8f572eec8",
+      "bytes": 18005
+    },
+    "python_codes/rev18_span_sweep.py": {
+      "sha256": "415b049b56e2f05a8444f57f0a6457a8a7db119147a2ade3215f5a8e0259935b",
+      "bytes": 24838
+    },
+    "python_codes/population_registry.py": {
+      "sha256": "2b882636a6f13bbe46b45da2f078169592f6d52282d71afd462fff9b438b618c",
+      "bytes": 1932
+    },
+    "metrics/r18_span_sweep_RS1U_beta_1.00.json": {
+      "sha256": "6dd9d8c5c4673126ffd454fbb45d943e62fb057f93f2da4c4b3df37bf8543ff9",
+      "bytes": 215948
+    },
+    "metrics/r19_equal_total_work_RS1U_beta_1.00.json": {
+      "sha256": "b2cf8d57d7caed194a1011d660c9cdbb24c13d9cecbe80112e2cc30b58461970",
+      "bytes": 36749
+    },
+    "metrics/r18_span_sweep_RS2U_beta_1.00.json": {
+      "sha256": "85ab2ea5bfc79cf7920eb6e36b0ff5948b5c3277e237bdd6d32b9bbafb6a076d",
+      "bytes": 216234
+    },
+    "metrics/r19_equal_total_work_RS2U_beta_1.00.json": {
+      "sha256": "96469dd12e8d3ceb6afe6b4cf814f0b1c52098d82f78ed5d9235fdd18e147566",
+      "bytes": 36718
+    },
+    "metrics/r18_span_sweep_RS1U_beta_0.75.json": {
+      "sha256": "4a46436db6585990fc568de7d4ab31ddbad7997a6da32ef76e061a3fa116407e",
+      "bytes": 215756
+    },
+    "metrics/r19_equal_total_work_RS1U_beta_0.75.json": {
+      "sha256": "add9da35b922cc64b8654a43d0fbd824e2b253d05606f3312cad36a283c004bf",
+      "bytes": 36681
+    },
+    "metrics/r18_span_sweep_RS2U_beta_0.75.json": {
+      "sha256": "a0ae0cc9335914baa63c4071a091ee0d13dbc8530f6b76ad093f16e7a8d88e6c",
+      "bytes": 215773
+    },
+    "metrics/r19_equal_total_work_RS2U_beta_0.75.json": {
+      "sha256": "e8682f8026b595d4b162c2215ccb9c1141d4e628ecc39d68711c5bb854db209b",
+      "bytes": 36646
+    },
+    "metrics/r18_span_sweep_RS1U_beta_0.50.json": {
+      "sha256": "95ecfc96ce4f5e363634478950acfafa622908238ef05c4ce7d948ebcd82e16d",
+      "bytes": 214978
+    },
+    "metrics/r19_equal_total_work_RS1U_beta_0.50.json": {
+      "sha256": "4e70e323f87143af8c7f94451bcc05c39055e757c9573c35dddaa364c437f1f7",
+      "bytes": 36626
+    },
+    "metrics/r18_span_sweep_RS2U_beta_0.50.json": {
+      "sha256": "0d908d214dc050edad03589519827069de4086db2cd1a1744c7b52d9521fb129",
+      "bytes": 215124
+    },
+    "metrics/r19_equal_total_work_RS2U_beta_0.50.json": {
+      "sha256": "6afd46a9d34bb00256013967285436c75b240c4183f4e8658cdbbb547f4cdfe5",
+      "bytes": 36626
+    },
+    "metrics/r51_span_ladder_a_uncapped_rows.json": {
+      "sha256": "677ed56d5d028c62bd4ca56f28c2963fc255ccd037770763208c26485fdb70be",
+      "bytes": 115884
+    },
+    "metrics/r52_span_ladder_b_uncapped_rows.json": {
+      "sha256": "85774106f07839e0c6ae05e39d9dcfca0cf68bd32a7b2f389d0b9908d28c9942",
+      "bytes": 115997
+    }
+  }
+}

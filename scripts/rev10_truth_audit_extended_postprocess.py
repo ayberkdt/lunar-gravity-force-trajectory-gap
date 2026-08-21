@@ -141,7 +141,7 @@ def main() -> int:
         r"\begin{tabular}{rrrrrr}",
         r"\toprule",
         r"Index & $h_p$ [km] & $N=600$--900 RMS [m] & Threshold [m] & "
-        r"Pass & Adopted $N_T$ \\",
+        r"Pass & Adopted $N_{\mathrm{ref}}$ \\",
         r"\midrule",
     ]
     for row in sorted(extended["rows"], key=lambda item: item["sobol_index"]):

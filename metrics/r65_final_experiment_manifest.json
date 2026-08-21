@@ -1,0 +1,387 @@
+{
+  "schema": "r65_final_experiment_manifest_v1",
+  "created_utc": "2026-08-20T14:49:21.925456Z",
+  "scope": "R65 (O58): the sampled interior family, k = 0.25, 0.50 and 0.75, each against its own constant degree matched on measured kernel time at the tighter tolerance, on (O48)'s fourteen-orbit panel at beta = 1.",
+  "why": "(O48) and (O57) both time k = 0.5, which was adopted as the most frequent sampled minimum of the nominal sweep and not because the family has an optimum there. A negative measured-time result for that member is not one for interior allocation, and this campaign asks the family-level question.",
+  "numbering_note": "the records carry the prefix r65 because r58 is held by the equal-work endpoint control; the observation label is (O58).",
+  "relationship_to_r64": "same panel, same budget, same scoring rule, same timing band. k = 0.25 and k = 0.75 are propagated here; the k = 0.50 column is reused from r64 unchanged and is marked as reused in the result record, so its two out-of-band cells are r64's and are reported rather than re-run. R48's and R64's records are read, never written.",
+  "refinement_contract": "each comparator degree is refined over integers until the measured time ratio enters 0.90-1.10 or the integer step cannot improve it, where r64 took a single step. Any cell still outside the band is flagged in the record rather than absorbed.",
+  "no_oracle": "all three members are reported. No per-orbit minimum over k is taken and no deployable k is claimed from this campaign; the reporting rule was fixed in the registration before propagation.",
+  "discarded_attempt": {
+    "status": "ran to completion, discarded, superseded by the campaign indexed here; its outcome is reported, not withheld",
+    "outcome_it_returned": "4-5, 1-5 and 0-9, which is the same registered class B the accepted run returned",
+    "reason": "other work joined the machine mid-run, and the campaign matches its comparator on measured kernel time. Of the 28 freshly propagated cells the comparator degree differs from the accepted run's on 19, and four cells change verdict: the selected degrees are not the ones an idle machine selected, and that degree is the quantity the campaign is built on. Every cell still reported an in-band ratio, because the ratio divides the two measurements by each other and a load common to both cancels.",
+    "criterion_was_set_after_the_run": "the registration fixes a mechanism, an idle check at the start of the timed pipeline, not a continuing condition and not a numeric threshold; the thresholds were set after the attempt's data was on disk. The cell-level divergence above is what carries the discard and needs no threshold.",
+    "evidence_record": "metrics/r65_discarded_attempt1.json",
+    "archive_dir": "metrics/r65_discarded_attempt1",
+    "post_hoc_quiet_audit": "metrics/r65_quiet_audit.json applies the same diagnostic to the accepted run from telemetry the case records already carry. Degree-normalized, the accepted run has a median within-orbit throughput spread of 1.03 and no case above 1.25x its opening baseline, against 1.36 and thirteen for the discarded attempt; the degree model leaves 3.7 per cent residual on the accepted run and 32.5 per cent on the discarded one. The raw figures in the discard record are larger because the raw measure is not flat in the degree.",
+    "guard_added": "python_codes/probe_kernel_quiet.py, run before the campaign indexed here and reproducing the archived R12 idle-machine cost curve to within 1 per cent. That run left no artifact; the probe now appends to metrics/r65_quiet_probe_log.json, so the precondition is auditable from the next campaign onward and not for this one."
+  },
+  "declared_outcome_returned": {
+    "by_k": {
+      "0.25": {
+        "orbits": 14,
+        "resolved": 8,
+        "interior_wins": 3,
+        "fixed_wins": 5,
+        "unresolved": 6,
+        "median_rho": 0.643055415909936,
+        "timing_match_misses": 0
+      },
+      "0.50": {
+        "orbits": 14,
+        "resolved": 6,
+        "interior_wins": 1,
+        "fixed_wins": 5,
+        "unresolved": 8,
+        "median_rho": 0.7641515378786128,
+        "timing_match_misses": 2
+      },
+      "0.75": {
+        "orbits": 14,
+        "resolved": 8,
+        "interior_wins": 0,
+        "fixed_wins": 8,
+        "unresolved": 6,
+        "median_rho": 0.20283053522340913,
+        "timing_match_misses": 0
+      }
+    },
+    "protocol": "each sampled interior member against its own constant degree matched on measured kernel time at the tighter tolerance, the level the errors are scored at; all three members reported, no per-orbit argmin taken",
+    "timing_band": [
+      0.9,
+      1.1
+    ]
+  },
+  "numerical_kernel": {
+    "lunaris_release_tag": "paper-truncation-v1.0",
+    "lunaris_commit": "27e9ab86ed61d623f78c453ea2054348f1044c23",
+    "note": "unchanged from R10-R64"
+  },
+  "registration": {
+    "r65_preregistration.json": {
+      "sha256": "184e822237f338c8cff2ff86327925d9735daf0698a8152fed806d0d24831318",
+      "bytes": 5151
+    }
+  },
+  "reused_inputs": {
+    "r48_interior_timing_selection.json": {
+      "sha256": "e55a699e96c02091d7fb238f3f422c7e384585e653a20466157cf6c00f2a368a",
+      "bytes": 6350
+    },
+    "r64_interior_timing_tighter.json": {
+      "sha256": "9c1cece00303856c8c14c71f4bbae9e56fd28b24bc398f48172896de00dba22e",
+      "bytes": 7249
+    },
+    "r12_kernel_cost_curve.json": {
+      "sha256": "e08ad2e516f4ffa54b60ec846f60bd00272e7de43c526b7fec5bf01298692165",
+      "bytes": 5784
+    },
+    "r18_span_sweep_A_beta_1.00.json": {
+      "sha256": "fc50df65de340d5e60de0d200ce8a03dc816af697cbd7f8cef30ae60c7bd2ce7",
+      "bytes": 215865
+    },
+    "r18_span_sweep_B_beta_1.00.json": {
+      "sha256": "c19805762ba49edfac3cf281b298631a29cdb3fcb3f92653bfde9100059392f6",
+      "bytes": 215735
+    }
+  },
+  "scripts": {
+    "rev65_timing_family.py": {
+      "sha256": "5c9dc604bc2d2700d4c49b8dd472bd6ab8fe749c22a86f516a435e4e5e34ec1d",
+      "bytes": 17793
+    },
+    "rev65_preregister.py": {
+      "sha256": "c01ecc35568201bba4d5dbf85a44147b11c3bdb1df21a432c097f66c9491e08c",
+      "bytes": 7090
+    },
+    "rev65_record_discarded.py": {
+      "sha256": "a39bd1533a0a15fba6ed32bfd2c4d3751e827732bf3313cd71d17198b8ae0754",
+      "bytes": 9478
+    },
+    "rev65_quiet_audit.py": {
+      "sha256": "d56ab935e241b7dffff929e94814997e02bdf3dfed15ac387551b62eec82307a",
+      "bytes": 5434
+    },
+    "rev65_finalize_manifest.py": {
+      "sha256": "7136e4d0f1bf61d33bca27bbaa4f05025aef7ed2f11c8bd3d8e218a7d127677a",
+      "bytes": 10695
+    },
+    "make_accounting_ladder_table.py": {
+      "sha256": "8c95893b7283f3d9ce2600142d8159392ae63c8917a51e5c77039ac87fefe6d3",
+      "bytes": 5309
+    },
+    "probe_kernel_quiet.py": {
+      "sha256": "5e64ffd1c5fddc57f6fe53bde667ae4d9eef1da8e633bbc0e54a36e6c3601360",
+      "bytes": 3425
+    },
+    "rev64_interior_timing_tighter.py": {
+      "sha256": "a78ebc133fee68e7cec38eb06d77162b3d07d330ecc856bd291cd6393a1722df",
+      "bytes": 13339
+    },
+    "rev48_interior_timing.py": {
+      "sha256": "6a4680d25bf7720ff13d1240371cfb78fda71831bdb73dee5d9f435efc8a904e",
+      "bytes": 15281
+    },
+    "rev13_timing_match.py": {
+      "sha256": "f577595dbb03f5a2c6bb8930dc9f35eb390e23abc574cc6401e4c12a61e702df",
+      "bytes": 25046
+    }
+  },
+  "result_json": {
+    "r65_timing_family.json": {
+      "sha256": "942016a735c50f83e03e6fa5caab6be891abd9e2143c70354df87793dc91c908",
+      "bytes": 24681
+    },
+    "r65_timing_family_state.json": {
+      "sha256": "07f8173bcfa7ac26618a754a0a6a1de426a44cacb1c4c17f06e01b9f754f0670",
+      "bytes": 16570
+    },
+    "r65_discarded_attempt1.json": {
+      "sha256": "ae52978436a4166667c113ae8f4b5323f4776af14c3157bb895dd6b740052a87",
+      "bytes": 4314
+    },
+    "r65_quiet_audit.json": {
+      "sha256": "16ec6c047ad7db36907745804073719d862e001df3c30d4c5ac5d4a3f19ebcf0",
+      "bytes": 3511
+    },
+    "r65_quiet_probe_log.json": {
+      "sha256": "d816fecc1cf6b4f64d049750fe6ff4ca2579892dc68c0fa33be2bab2b1ec6091",
+      "bytes": 2702
+    }
+  },
+  "generated_tables": {
+    "r65_accounting_ladder_table.tex": {
+      "sha256": "0a3f16ca9cdc4c02537ce1b14e70eddba70aa416007f161c62f10e4fb5bc10b9",
+      "bytes": 579
+    }
+  },
+  "trajectory_tree": {
+    "n_sidecars": 103,
+    "n_raw_arrays": 103,
+    "sidecar_sha256": {
+      "r65_cases/timing_family/k_0.25/A/sobolA_002/fixed_77_tighter.json": "58325d4c4a0ca1914c6b9ef21ee3d00c71e0a0b95dd752f7a073fc1d991efcca",
+      "r65_cases/timing_family/k_0.25/A/sobolA_002/fixed_84_tight.json": "6a10cb8856177d9d5fedf2e00ec7dbad169c82830e2070febc691f27b4c611ee",
+      "r65_cases/timing_family/k_0.25/A/sobolA_002/fixed_84_tighter.json": "066d4e45ebff6f65e8fd7dfb6658bd9575bb3954b641fe631e154f73539c7fa7",
+      "r65_cases/timing_family/k_0.25/A/sobolA_002/member_tighter.json": "3dcd00e3db8fa368b692f676e85d7f0d125cc3b1266c38cafd03ad7c0011aaf4",
+      "r65_cases/timing_family/k_0.25/A/sobolA_003/fixed_209_tight.json": "7c2919263d6a0004970808e694fe0ff9e7cc41a05e7dd780208705f9b2bc5b2e",
+      "r65_cases/timing_family/k_0.25/A/sobolA_003/fixed_209_tighter.json": "8d28f35a5034953a13bdc34ff2f1e230be3b6cc800e54619f7b431b3b1f2ff64",
+      "r65_cases/timing_family/k_0.25/A/sobolA_003/member_tighter.json": "6889657c92202b61f353034dae5b5ee318460517166fe74acf1953b2736a1c43",
+      "r65_cases/timing_family/k_0.25/A/sobolA_006/fixed_132_tight.json": "07150d4e60fdc3cc5d08950f10404396af4e79eb4ac5d301b415d306725b76d9",
+      "r65_cases/timing_family/k_0.25/A/sobolA_006/fixed_132_tighter.json": "33061183c6c01032ac0ae572d4dcc238990b2a0c8ea19a5d2ed9320452a5604c",
+      "r65_cases/timing_family/k_0.25/A/sobolA_006/member_tighter.json": "fc1bfe94a4f81b18ea42f216477628e29efd5dd4f051e3a2da6d6eca5e833cf8",
+      "r65_cases/timing_family/k_0.25/A/sobolA_007/fixed_162_tight.json": "38e12546c356f46edce2e4cf1a95190b1511af6a13e192c87153c3743b5403c2",
+      "r65_cases/timing_family/k_0.25/A/sobolA_007/fixed_162_tighter.json": "6aa2c5313bf4fe9f5bd27717896be0c2e714cde4a1fc857bd28b804f5123cb2d",
+      "r65_cases/timing_family/k_0.25/A/sobolA_007/member_tighter.json": "68b9ad2e6fa1adb4caabf0e9334bef2c7c71eb3dea176887404d024a178a5611",
+      "r65_cases/timing_family/k_0.25/A/sobolA_026/fixed_87_tight.json": "6c82d5b4eeb60ca986c73c9cdaba5cd5460a2a23ee13d25edb8045828ecabcfa",
+      "r65_cases/timing_family/k_0.25/A/sobolA_026/fixed_87_tighter.json": "61b127cdb4a258a1482ecaca8b6b6a6837a243b1f9b25d78e604fb4f23b8e55a",
+      "r65_cases/timing_family/k_0.25/A/sobolA_026/member_tighter.json": "6ef9b090525baa4bfd56f56866c4cdeae34c07d01a212621a1585b7bd8bc3e99",
+      "r65_cases/timing_family/k_0.25/A/sobolA_033/fixed_101_tighter.json": "73398c7887d60c0e95f605f28245e38e0bc9278b7b69a020e329344e9b9e727c",
+      "r65_cases/timing_family/k_0.25/A/sobolA_033/fixed_113_tight.json": "b80b8f87cd9d39b14e0bd37320ab8c1a2311b3ec3449f947743f4029bb58a60e",
+      "r65_cases/timing_family/k_0.25/A/sobolA_033/fixed_113_tighter.json": "1acf8623de6f6a5aa9a0996647f58ef14dc1b4b8352c43412ea0c9710b9655b5",
+      "r65_cases/timing_family/k_0.25/A/sobolA_033/member_tighter.json": "704803c7af68041168783bbba92dbcb6887cbfe482014a92faab2f84b3e90bb3",
+      "r65_cases/timing_family/k_0.25/A/sobolA_036/fixed_253_tighter.json": "6c5738446bcb6fd39e68744e80ed39f277a5c80a0b15456cdd5259b81c0def93",
+      "r65_cases/timing_family/k_0.25/A/sobolA_036/fixed_323_tight.json": "1cdcdac8456e6b3714d72272cc6edcbcb794443b0e438ab1e6bcc7cfc112da1b",
+      "r65_cases/timing_family/k_0.25/A/sobolA_036/fixed_323_tighter.json": "a6a63775b1d83c43d903d00cc0d3aa7de1087ae1cb23507ae9ad3b4031947d40",
+      "r65_cases/timing_family/k_0.25/A/sobolA_036/member_tighter.json": "f8c6e9422e9665e88b5b8b7f668ebee548e206d1abec084fb5952a1f19b1248d",
+      "r65_cases/timing_family/k_0.25/B/sobolB_005/fixed_75_tighter.json": "2bab250476550531ec035320c53bc525e12c037eab5f36994488a05794dab712",
+      "r65_cases/timing_family/k_0.25/B/sobolB_005/fixed_93_tight.json": "329c1be0446cddcc1a60d838b0447b5eba19579266a589d21894cef14c45a4d4",
+      "r65_cases/timing_family/k_0.25/B/sobolB_005/fixed_93_tighter.json": "63dafef2a024ac802a8124acc402a67a375fa3927dd9d539af0915defd76cdbb",
+      "r65_cases/timing_family/k_0.25/B/sobolB_005/member_tighter.json": "76816b142e315a3fa70734a5ea0ab11055519ed7a20d493f3399ca5157ce6a93",
+      "r65_cases/timing_family/k_0.25/B/sobolB_015/fixed_163_tight.json": "d1569d768415f04d3aba00def85ca04e0b2bdf5d73b1153e11336624fde66484",
+      "r65_cases/timing_family/k_0.25/B/sobolB_015/fixed_163_tighter.json": "47052fcc37abd5c5131895ab4551573837679fd4dba004cffa2b85d85ec5c2a8",
+      "r65_cases/timing_family/k_0.25/B/sobolB_015/member_tighter.json": "9389cf9754a760610fe92c983b4488ecb6d6ce48a1ad95f71e6e02bee0e8675a",
+      "r65_cases/timing_family/k_0.25/B/sobolB_033/fixed_123_tight.json": "6c50d711491e992e4b5f4efeb98a4f426d244490a9f4be60819593035412341e",
+      "r65_cases/timing_family/k_0.25/B/sobolB_033/fixed_123_tighter.json": "79ee16478d8720b5a4fe5127e89d592d881cbef4950c98b055e7176a2c5c6f50",
+      "r65_cases/timing_family/k_0.25/B/sobolB_033/member_tighter.json": "b7d1ba140812f8d69464699c1038368f9b74f9198d9217d7d4dd510d61a1f1ef",
+      "r65_cases/timing_family/k_0.25/B/sobolB_043/fixed_221_tighter.json": "d8115dcce48f1601c32e080df0f962831b7b5de921a5d7ca91077ff9502b7449",
+      "r65_cases/timing_family/k_0.25/B/sobolB_043/fixed_236_tight.json": "49099f9d349e539bf401f28025e0029b253e1aeb7968f344213b9258c5470d4f",
+      "r65_cases/timing_family/k_0.25/B/sobolB_043/fixed_236_tighter.json": "320e8585fe9eaabfd07410507bcb4c978c42b37003eba7903796854047dcee84",
+      "r65_cases/timing_family/k_0.25/B/sobolB_043/member_tighter.json": "4ccd92b06f9effceeba47c58803e275a98ba591cec90d170e73055ade27d3d9b",
+      "r65_cases/timing_family/k_0.25/B/sobolB_045/fixed_85_tighter.json": "2b58b4ed6c8d2e28da7eec8cc5f6ae436dbbf3192db8d34aad3b4f664c58fd98",
+      "r65_cases/timing_family/k_0.25/B/sobolB_045/fixed_95_tight.json": "18dd4ef6a815c9baaaa1925d03063d92b21926e4a84dc22dab2b5b6551768b25",
+      "r65_cases/timing_family/k_0.25/B/sobolB_045/fixed_95_tighter.json": "341e91804904a62987a5fa714b810e29b0c1ee219645986419e8a89b150907eb",
+      "r65_cases/timing_family/k_0.25/B/sobolB_045/member_tighter.json": "ed5c68d6361498ddeffdc3ed74256de36a29bee5678c78a4fce0c655f78b2d2c",
+      "r65_cases/timing_family/k_0.25/B/sobolB_054/fixed_103_tight.json": "a8b639e4852cbd12e27ee2db4ab17cb0e5d4a32050fb34e9ab742a50d1258fa6",
+      "r65_cases/timing_family/k_0.25/B/sobolB_054/fixed_103_tighter.json": "745c117cec91fba636566ddc0da668d798ab75f2c75099659993bab6da06c039",
+      "r65_cases/timing_family/k_0.25/B/sobolB_054/member_tighter.json": "d41e9ad719dd5c1348887ce103ee9c1b582b069b80d7f82265c1c64df78fc274",
+      "r65_cases/timing_family/k_0.25/B/sobolB_060/fixed_253_tighter.json": "dd4b34393fb8e97b27bb73695a0e619576085c7a87f62fb0008f25480c40abd3",
+      "r65_cases/timing_family/k_0.25/B/sobolB_060/fixed_297_tight.json": "c8e842e3e829c30b6d78a16f0d0ca0ea272d6ae5f7a2cb4b8c35496a1d7c4a32",
+      "r65_cases/timing_family/k_0.25/B/sobolB_060/fixed_297_tighter.json": "0b9aac56bee74c73d616458271f680becfe712f102d722c5e221d9e3992c3568",
+      "r65_cases/timing_family/k_0.25/B/sobolB_060/member_tighter.json": "b3702e98fc06f59b9ac33b328ab461d4f1a3de71547c61b5e4084d167617bfec",
+      "r65_cases/timing_family/k_0.75/A/sobolA_002/fixed_76_tighter.json": "6f1b381356e3fc2145081383269cf5b33e0a179143fec3ac3a9d26178186f440",
+      "r65_cases/timing_family/k_0.75/A/sobolA_002/fixed_82_tight.json": "1d23c39a1056cf0b6a2ae23478fc4a857131847713698e381ed819f710c74ac7",
+      "r65_cases/timing_family/k_0.75/A/sobolA_002/fixed_82_tighter.json": "4f8d41ebd968a8b9fb7cd1c9e168468911aba1cbde560fc6b590cc605b127a49",
+      "r65_cases/timing_family/k_0.75/A/sobolA_002/member_tighter.json": "e295c2e4e08e61a2bd96908cff083d4c0a5057da5ea6477fe006bffe58f3a4de",
+      "r65_cases/timing_family/k_0.75/A/sobolA_003/fixed_219_tighter.json": "b03062da6c9938556c6557d2319c729111c885da1c98528f1c24725ae08879e7",
+      "r65_cases/timing_family/k_0.75/A/sobolA_003/fixed_232_tight.json": "8a3f2b3e3f521a19850a0c21511b1169d6f5bfab0383e699fb379e90fe7c330f",
+      "r65_cases/timing_family/k_0.75/A/sobolA_003/fixed_232_tighter.json": "336e2788052c3a9cbd607a9eff9761efa1e3a5078c7be0e55fd3d7bacce8092b",
+      "r65_cases/timing_family/k_0.75/A/sobolA_003/member_tighter.json": "f1f6b965c30f52c95b309f76c0f3df61d6260b79094bb6cbd77ee4b448056247",
+      "r65_cases/timing_family/k_0.75/A/sobolA_006/fixed_142_tight.json": "a3bb23764e6485f37b995820719e49fa544689173564ecc4df230c6fec849eaf",
+      "r65_cases/timing_family/k_0.75/A/sobolA_006/fixed_142_tighter.json": "d761256c9e17ec36db15b61ff62805a6c8937d449e929911fa06a283dce17137",
+      "r65_cases/timing_family/k_0.75/A/sobolA_006/fixed_150_tighter.json": "cacc0fbcf43d5677a1224409a93a918a967a2dfb6f03690d67b586ac816194e6",
+      "r65_cases/timing_family/k_0.75/A/sobolA_006/member_tighter.json": "2995a83f762a5d1ec6149b90f497ce2246cd4028993963826596121d245481d1",
+      "r65_cases/timing_family/k_0.75/A/sobolA_007/fixed_166_tight.json": "5df5175d5dae0491618ec367b7d1145330d4d86ffa07e9ca2f467c773e994c9f",
+      "r65_cases/timing_family/k_0.75/A/sobolA_007/fixed_166_tighter.json": "6aa4abdd03f89a6ba7a40c5db861c064f781ae6de4a3da6158acf1169d90b46e",
+      "r65_cases/timing_family/k_0.75/A/sobolA_007/member_tighter.json": "2421c376600217acf910b04904ea3037c6ac6e9f38fb4be3008f66bb5c66ec48",
+      "r65_cases/timing_family/k_0.75/A/sobolA_026/fixed_88_tight.json": "7dae0c68f4839684819510975102bcf06861ed268ff6ccc5c390557d4aaccc3f",
+      "r65_cases/timing_family/k_0.75/A/sobolA_026/fixed_88_tighter.json": "6bf600ed4d9b030e02306cb9d0278503efdaf0310651b41388e0484ac1cd34f2",
+      "r65_cases/timing_family/k_0.75/A/sobolA_026/member_tighter.json": "f91a06bbec452a58f24e5ad2567aea192fc29a1868f85fc58707c40ac3a0b1ad",
+      "r65_cases/timing_family/k_0.75/A/sobolA_033/fixed_104_tighter.json": "a05fe0199c541587e896e5e8f0111aade0324f2c79bd671c2b7606d1fc41c419",
+      "r65_cases/timing_family/k_0.75/A/sobolA_033/fixed_120_tight.json": "8e66f0466977d98101f99f88ae69691dc7e15d05ff931ae12448fcafc3b23aa9",
+      "r65_cases/timing_family/k_0.75/A/sobolA_033/fixed_120_tighter.json": "a6a8a0805f1c2d8ddf721a24510f725fbba4bc5207ba1b713f8f9691acf31904",
+      "r65_cases/timing_family/k_0.75/A/sobolA_033/member_tighter.json": "6dfc426159ec0e8eb0fdccfcb887076fd943aa2dcc1aabefb087b3931012199a",
+      "r65_cases/timing_family/k_0.75/A/sobolA_036/fixed_197_tighter.json": "e944f687aefe219985932383ca879dfc04eef9e08bdc3c93d360f05598221278",
+      "r65_cases/timing_family/k_0.75/A/sobolA_036/fixed_428_tight.json": "8d3a6738993c2af8a748a0b79890a81f6bdf3eeee2445ebbb06d025c21f246e8",
+      "r65_cases/timing_family/k_0.75/A/sobolA_036/fixed_428_tighter.json": "e279118f70d04cb06e3a8fb205de00682205f9a908a8423166304aef81cad421",
+      "r65_cases/timing_family/k_0.75/A/sobolA_036/member_tighter.json": "3a98d507011891a63bf504cf6c7ba448674a663d53495077942a7b7647d2a293",
+      "r65_cases/timing_family/k_0.75/B/sobolB_005/fixed_103_tighter.json": "ba0145b8e7b72e8f2852bce20e1543e5ea700ba026480f19ae3e247ee77321f2",
+      "r65_cases/timing_family/k_0.75/B/sobolB_005/fixed_109_tight.json": "52ef0907e9c3174bfbcadcce138621853c8be8820cf8136c3f76dda3712b5756",
+      "r65_cases/timing_family/k_0.75/B/sobolB_005/fixed_109_tighter.json": "ce9ca4e9e6614ca3944eb9ac4dd76d616d6e96d442fdabcb4e41efe3e81fb47c",
+      "r65_cases/timing_family/k_0.75/B/sobolB_005/fixed_74_tighter.json": "362b848a28dc87b51d7c224813f69e7a5a6ffdcbf9d4ae0179898a32530fc048",
+      "r65_cases/timing_family/k_0.75/B/sobolB_005/member_tighter.json": "b11a7dd003df469ab490f5fecbae186563fcb187cf632de1bbe642d6843c6f80",
+      "r65_cases/timing_family/k_0.75/B/sobolB_015/fixed_162_tighter.json": "6a84687c91d911d4e0a01de5a69fe99926a073ea459be60484a8ce96d75d9dcb",
+      "r65_cases/timing_family/k_0.75/B/sobolB_015/fixed_189_tight.json": "296c600e2d25ca641ba4110ec61c9aea494364b4e32b3c82b48d8c04f55a319b",
+      "r65_cases/timing_family/k_0.75/B/sobolB_015/fixed_189_tighter.json": "d986ff981b4458de610e0e2f9f109ec7ea1db131f115226461be8836f586430f",
+      "r65_cases/timing_family/k_0.75/B/sobolB_015/member_tighter.json": "5afc717935a97c5a7093e82464c35b574562f410a8436e9ca8f3e2cb336d2499",
+      "r65_cases/timing_family/k_0.75/B/sobolB_033/fixed_135_tight.json": "1507d439b032b875bc7163112de3747ac3e51b0a5863e458ea95f656aac650a9",
+      "r65_cases/timing_family/k_0.75/B/sobolB_033/fixed_135_tighter.json": "cfb0130b61350f972d66b957636bb64f951045847a477d983db2f5d0da8163c7",
+      "r65_cases/timing_family/k_0.75/B/sobolB_033/member_tighter.json": "7560b7d77f8151ea75f447876879fbde82dd0487322cfa626a92dcb14bcd39ad",
+      "r65_cases/timing_family/k_0.75/B/sobolB_043/fixed_180_tighter.json": "871a5a7e112e5436a5d1d6a96667250eb79ed2d60a516ab5255a7de40244afb0",
+      "r65_cases/timing_family/k_0.75/B/sobolB_043/fixed_296_tight.json": "f2aceece682e95cfe3928a39c191d6cafd473a5c98a6f941eb507f928d41ae39",
+      "r65_cases/timing_family/k_0.75/B/sobolB_043/fixed_296_tighter.json": "0e36016a0a5f0607478411a1b9e286711d3a4b9f6944b00b87ca5c6b1fa5b436",
+      "r65_cases/timing_family/k_0.75/B/sobolB_043/member_tighter.json": "0bfbbbf6b9cd65f11d01fdb83c0c114bff74796cea158b411e3d66ed5021bfd5",
+      "r65_cases/timing_family/k_0.75/B/sobolB_045/fixed_104_tight.json": "dd12c400fcb9412d6987067df19436921e1b9e155ac80ef574497e0ae560bd67",
+      "r65_cases/timing_family/k_0.75/B/sobolB_045/fixed_104_tighter.json": "a180a840c80c01caa44cf783cf8edf8cecc39999e485ecbd3979dafb6d3cae10",
+      "r65_cases/timing_family/k_0.75/B/sobolB_045/fixed_85_tighter.json": "cb83b9b4de97c18da0d8203de4a92ce34e3a7bae5dad1d0b7c3cd30126e13bc9",
+      "r65_cases/timing_family/k_0.75/B/sobolB_045/member_tighter.json": "303c4f5725a7bc0d68a5986c243166625a1ac1e493a28d0d26495d25613cf141",
+      "r65_cases/timing_family/k_0.75/B/sobolB_054/fixed_114_tight.json": "64a493842ca8ecf438548e7567fb0b91b8e10a0819f3f57a6fc57cee3b8a12aa",
+      "r65_cases/timing_family/k_0.75/B/sobolB_054/fixed_114_tighter.json": "d13dd510ebe3c649fa0df855c4da8d299e0a8d7d6708b2f36ffac6ea87de2b6c",
+      "r65_cases/timing_family/k_0.75/B/sobolB_054/fixed_125_tighter.json": "4e768b99e520d0c1377f0760a50ef79f97b04fdd2a97b21f8e38ac5ab47b5bb4",
+      "r65_cases/timing_family/k_0.75/B/sobolB_054/member_tighter.json": "2b566927c7d2f72595858952f8520b677577f08ad351a3519fec5817ad7c013d",
+      "r65_cases/timing_family/k_0.75/B/sobolB_060/fixed_194_tighter.json": "455e4d46a963de98bda039377100fea67e35e6770a0082c2d54e87d75bd6a23c",
+      "r65_cases/timing_family/k_0.75/B/sobolB_060/fixed_382_tight.json": "f8c252cba485ad4f89082c5c6f9a170d878b03beb879c10a343b6f987c325a45",
+      "r65_cases/timing_family/k_0.75/B/sobolB_060/fixed_382_tighter.json": "f419e6e4e27c8b0c5d394f5f586bad1d6d5b1e04b23f3bc0854d0cb54a195249",
+      "r65_cases/timing_family/k_0.75/B/sobolB_060/member_tighter.json": "1a4fceaa5a9be7bf1a2dad0243fbf308158506db88ad68ff33c8f81f38d3c7bb"
+    },
+    "raw_rollup_sha256": "158a33e9cf491934c81e458a6bc27402f07bea70336c3ced51712d9865033c7a"
+  },
+  "discarded_tree": {
+    "n_sidecars": 110,
+    "n_raw_arrays": 110,
+    "sidecar_sha256": {
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/A/sobolA_002/fixed_77_tighter.json": "59e73e2e814b08e9cf8ec1b7fb37003e9a900d933dafb2fef1bc6c54a8a08eaf",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/A/sobolA_002/fixed_83_tight.json": "9a274e3a4d3f3824c528440ffcecbcf741a48edd1a65032b4ea616808dbd5945",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/A/sobolA_002/fixed_83_tighter.json": "79de1e9babec3b92874e953aea03d9348a0b2ece0afee083b79b58bc461ec45c",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/A/sobolA_002/fixed_89_tighter.json": "0788b0b0cc99d70e6052102eff78eed30e9ce31cf2d4c64ecc3773e2131d5aff",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/A/sobolA_002/member_tighter.json": "7ba30b686569442a01c96a52bafe15e585c7eba6dc441f01f804e92f912e272a",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/A/sobolA_003/fixed_209_tight.json": "b313c7ba8df3c6845cd5cb9a8d0f71df067cadc7859e93d1b95aee33c3cc16aa",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/A/sobolA_003/fixed_209_tighter.json": "0a872b82d699fb7cdff1d827ac202d5ccd4d3a4f3c728591a6310113b5ad6213",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/A/sobolA_003/member_tighter.json": "dbeb726323cc5a0924319f48f9259fc0c11230282fbb140f24004fd3967d196e",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/A/sobolA_006/fixed_132_tight.json": "a8b9d0fd06784f61005449c5d26ead75e320de74b58ae8bb6cef12d035be0077",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/A/sobolA_006/fixed_132_tighter.json": "9e01107c8e3c78e2cf855339e1ccc5f99eb6e02a633d668414313ebdc0e0640f",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/A/sobolA_006/member_tighter.json": "cc260b7042aafcc9c12180441851cc38a13ab2264f5547f141dd844867e11143",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/A/sobolA_007/fixed_142_tighter.json": "562715997dc67f4fc41783f40e1133087c8c52972ba3a2463b225a94a29f99e5",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/A/sobolA_007/fixed_152_tighter.json": "d6d2f8ca3bd5aeb8d63c865b1059c072517764c7ef1a969e7d67d598da91d330",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/A/sobolA_007/fixed_162_tighter.json": "dd6600f3daf6f40bafcaf8c32e8a51499ed2e97f8c210259c3ad3703000e8f2b",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/A/sobolA_007/fixed_166_tight.json": "4aa1d7e49051323929d7b9e096c9321a4a5140af13ef5ca98c84bd462cf88229",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/A/sobolA_007/fixed_166_tighter.json": "6c73d0b734accaf1ab38ce6486f389d2927a4e7746a4ec2be59160713dc60dff",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/A/sobolA_007/member_tighter.json": "79383d5d0c3e7619b86bafd41ec880bc8c5bdc4f6f552815cd74de8f9d145788",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/A/sobolA_026/fixed_87_tight.json": "c323e0a3da77a100285b0dc4fd066464e53b20fee367ac47f1929825293aa4a5",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/A/sobolA_026/fixed_87_tighter.json": "f5556aed6c35a51587d5130325b5e33d6fd2be75d0d665f41239e887f7026c49",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/A/sobolA_026/member_tighter.json": "4ece58323ec8c872ba25d3da12316d3f1444b42b654809d0f4b9ed233431a026",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/A/sobolA_033/fixed_101_tighter.json": "052d8e1ed79c0724bf6b986533a988e6cbab8b4de2331b1cd22e8ade08e77319",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/A/sobolA_033/fixed_111_tight.json": "e7fe0fa873c6662863304965bb02e9d529be99ecaff4ef50f38fca95a65eb0a1",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/A/sobolA_033/fixed_111_tighter.json": "4c2f1948f044c7f9e8feec86969feed3b6dffb05da7adf55bf5d0284224378bf",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/A/sobolA_033/member_tighter.json": "781b23d2ef44c8a9c55f5c57b0b30b0dff6cc023dbf422a53f67d0295ee352e3",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/A/sobolA_036/fixed_253_tighter.json": "208d2a08e91fc7ea93bf4890ff49c5180068f4678bb54052ef36abe9de5db873",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/A/sobolA_036/fixed_346_tight.json": "ecee8b74521d9329806f2ec261be6dfa6a8f53dc90a624baf1a3682001f01e15",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/A/sobolA_036/fixed_346_tighter.json": "39a45687814bb168ad8f120a10988f8057f7108ee2ed12d6209e3531d65b7b7c",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/A/sobolA_036/member_tighter.json": "50d86a97cc3c6b1e7208244625f6e087f0f5cb58c5ac1ac5b8c2bd8e04f67093",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/B/sobolB_005/fixed_75_tighter.json": "280748d74579df8bb9044c7ceb48b95c026f425ac21f61bda3a7eb633b20fc73",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/B/sobolB_005/fixed_84_tight.json": "61ce82c96fef6db86282b3e28482bf4dae7161ac73dcef47f2c9b37f2c82fd2c",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/B/sobolB_005/fixed_84_tighter.json": "a13ca7fb9c81435d750333a3b6663dade4f5a0f9dc54cb1c064871b3b62ad280",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/B/sobolB_005/member_tighter.json": "6babdf139e4b46324fbc5fc6ec29bb64835cf2d53b720454e2291fb12f9b5bb2",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/B/sobolB_015/fixed_163_tight.json": "2766a065cfd799ef8006ffa4b62c11c73af2a033316d83a3625e6dbc9f34b9d2",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/B/sobolB_015/fixed_163_tighter.json": "a52b1b0b7a01fcf36e59133476aef13ce887d8c11909c984ce17204f6cedcd52",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/B/sobolB_015/member_tighter.json": "ef15ebee3b52017d54a7b9e9dd38e783ef0ab3ea004aad1a4e6df1721556846e",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/B/sobolB_033/fixed_123_tight.json": "da7c52043dee824f9730127a545503eb2ae152b5d58553fb349eee354708093c",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/B/sobolB_033/fixed_123_tighter.json": "c26da3c2e4bfaaabf85620acf8eead9f50060b74c94e497943bfe7bff4787cbd",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/B/sobolB_033/member_tighter.json": "a6b9207611d71241f0678bc62b1168e6d52080688b15430411afa2a30f79b96e",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/B/sobolB_043/fixed_221_tight.json": "80dfca3b8f9c106c57bf4e37cd3a922df8ab185eca1204f118210481402f958c",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/B/sobolB_043/fixed_221_tighter.json": "168be902d1b2de261f441d6ce73be9729909aa54cffb1c238df3c4054f355311",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/B/sobolB_043/member_tighter.json": "2026af867d8809900b164efed17960f5bf13e8ab300079ca10d5c807ea788b83",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/B/sobolB_045/fixed_104_tight.json": "27441a97a469a10dd49ec0d1327c155c6b8dc8449896a1ed28e50f176671a2b4",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/B/sobolB_045/fixed_104_tighter.json": "cf3bcf7ee11ce5ff4c6374da12bc31a765dbad4fc33714c8479ff51402ee3289",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/B/sobolB_045/fixed_85_tighter.json": "f20d67772dc75290c01b568fe78ff4ffb3328d8634ba6a53b14eac3dbdd9450c",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/B/sobolB_045/member_tighter.json": "ea6c229b8ebd977dc574ff5332e0a2d7003d21363ca43b14ea1ddc9db4f721a2",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/B/sobolB_054/fixed_103_tight.json": "6a89fefaf6850f4f9c8ecc3297838290e21fd89f184d7ff66292e266331fb1be",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/B/sobolB_054/fixed_103_tighter.json": "90a80b89b8307354c8f86b4cd0b28ba31d0d52db73608393118e6bb8fedd1218",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/B/sobolB_054/member_tighter.json": "64ec12fdb482580a14d281112b99d4a2be97405611b97abff1b5c117feb73bc4",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/B/sobolB_060/fixed_253_tighter.json": "1b276f4db13e98184cdfec7d6403c55df9922b991be1d70465b962e19f9d97da",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/B/sobolB_060/fixed_309_tight.json": "7befe86afaa3dfaf5c4c8de223ad1de5981263d28bc5417c3fbad1a137ab9e87",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/B/sobolB_060/fixed_309_tighter.json": "1493ad68a2b1f74f7d31acf26e426673081ebd0cc89e77b2a603a5a78fa8bafe",
+      "r65_discarded_attempt1/cases/timing_family/k_0.25/B/sobolB_060/member_tighter.json": "d1ede804c3c6ba5649c2a4b115740df9a8cc0681ad218d960f97bbd2018c2ee8",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/A/sobolA_002/fixed_76_tighter.json": "30a992554bb12e9ba30f50fe4d47eefeab40726fb48f0964168e32b05711abd1",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/A/sobolA_002/fixed_81_tight.json": "03a15dd2cf70eb5802947953b98ded7d25306fed221bf274d318c944b2ae0126",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/A/sobolA_002/fixed_81_tighter.json": "113f5255725873afe537fccacdfaf00d6be4ac39577ea25aa06f719c707d6f98",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/A/sobolA_002/member_tighter.json": "c9bfb92d939ab55281100c786dc0562951d362b5726741bed91c9364160f383d",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/A/sobolA_003/fixed_219_tighter.json": "0f9984283522f03903b332f97b63ebac5735211581cd5cb8fd21f1d0ef5dc399",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/A/sobolA_003/fixed_234_tight.json": "598a198fc7499704e63a87612480e11663bdb2e5cd2f7b4362f656ce6795cee3",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/A/sobolA_003/fixed_234_tighter.json": "d57dc290a4eb6409b73814bdd8b00ced62a231a21855badebc9279cdfe701d75",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/A/sobolA_003/member_tighter.json": "3da3c3c547d331128905fe14bf8a42b001f655356fa4e611881bbd59dbb7bea9",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/A/sobolA_006/fixed_131_tight.json": "a9c63607a7bf4042c5e5315c3880f762cb5a707dece5453330a06a8e1a611299",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/A/sobolA_006/fixed_131_tighter.json": "1e6742032afc37aa0d1d8ca2d263497a70cdc7e3ede2d4f3c3b2aff5123adf05",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/A/sobolA_006/fixed_150_tighter.json": "b0e5e91eeddf1613aaa201809b5a7369e90908d2d7be2695d3c84699e8b7a129",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/A/sobolA_006/member_tighter.json": "d001c103b4cfc6f4f6636a518da1fdccabf80f41df0a3ccf39401f561daa23ae",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/A/sobolA_007/fixed_166_tight.json": "8f8108be55797b917e79dcbbfd9aeb12fb84b8aa25923cb37705758005cf3207",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/A/sobolA_007/fixed_166_tighter.json": "26a250b7d4fb1a2f9ffd71a0487e37d44b6ffbf63f1fb5099433b985547ba5cb",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/A/sobolA_007/member_tighter.json": "40ac4d2419d96432bd7a53983d79617d06cbe6b3223c59087e79843f3e614057",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/A/sobolA_026/fixed_88_tighter.json": "b143d11d6b41173702a33edccc228ad4117d0d1a29743a8d073ca2c6b430d0c5",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/A/sobolA_026/fixed_96_tight.json": "ddf3add8dc8349f122fa200924437811a969ac1bbcfaf6a67c56856d65eb0448",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/A/sobolA_026/fixed_96_tighter.json": "f2b9fdbcc289f037c9937298f94ee1a94398ab0ffd3aaa05f3923c736618bad4",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/A/sobolA_026/member_tighter.json": "1a9d95e645a3e032e0d31810c823265ead51f35f9497f199ab5ae93ea130df64",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/A/sobolA_033/fixed_104_tighter.json": "4c5704d3af955e4ef8665777898f9981deb3e3f67c1db3bd65935c14b232afa6",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/A/sobolA_033/fixed_117_tight.json": "719f073e5f32eb53feb2172841ebe09a8a23fac4e9928624d79bd5b7ac803d72",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/A/sobolA_033/fixed_117_tighter.json": "c418ae4997616841f2135b694e84b247ab821d164c3e9eff2a8bc612a4e488b1",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/A/sobolA_033/fixed_128_tighter.json": "57fa3fb1bb3a9a81a7fe9d6dc1a22b90a62a72cf7e50cec5a45c569d1b28845a",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/A/sobolA_033/member_tighter.json": "2d08d749f982e7788fb8b4b22031fa78e50fe9a76d8e5b0cf1bfa206f60e4801",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/A/sobolA_036/fixed_197_tighter.json": "4f59f234b8bcd0006a997cc84e37cd902544c20f5f4c2ff2bd690b180b8049a7",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/A/sobolA_036/fixed_417_tight.json": "cbf5487657aea79ee53c19557a6aa7bd553872526be1620a883b29ee4c591fb7",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/A/sobolA_036/fixed_417_tighter.json": "15d2ad14225ef996907f18c2a18c64073c2b11434233a714a93e0fb7e9c4076d",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/A/sobolA_036/member_tighter.json": "6d38a4419800422aa2d5e5046d5259b33839ed24fabd1e6196ec1806da2b35aa",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/B/sobolB_005/fixed_102_tight.json": "394a9d5685ed955798a3d1a37feca7bd77c6c4cdba435e26041ca64c867b13e3",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/B/sobolB_005/fixed_102_tighter.json": "647a453aa568dcfbac862460d567198034eadd228d8a2440ea9252d8bd7b6923",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/B/sobolB_005/fixed_74_tighter.json": "cd48503b49965b67b565d85a8444a9160ec401b65103c55d09c5eaf18d7455a5",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/B/sobolB_005/member_tighter.json": "bc1c4bcd8077a7dbdb94ac894f9b5ec50ed63e2c636adf50bb7d62293bd7fd3d",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/B/sobolB_015/fixed_162_tighter.json": "7cb1fb33313370855e779b3b660ba2913d9bd4d54858c231b7ac3a8018466e49",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/B/sobolB_015/fixed_186_tight.json": "a61c68b8dd899bdae0fcb7046bc48bdc38aaa027e63f07a1a1d96c89eb60e490",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/B/sobolB_015/fixed_186_tighter.json": "bf5e8f58663f5721a0d5276f7c463e38d199d9a906e3c7c7f51a04b55df121a7",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/B/sobolB_015/member_tighter.json": "31ff60e3529be57a3d1b487dfc5131f3a6ea1b685874e2713f114af78087e4a2",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/B/sobolB_033/fixed_135_tight.json": "50b1eaeae10a393b982f329b1f8f135f564555036d0a395cc24836a90458e270",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/B/sobolB_033/fixed_135_tighter.json": "1e5aaca79cbbfcad69553453d872ffd00341f85a713e6c2d54ab6729b57a3195",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/B/sobolB_033/member_tighter.json": "04845f503b9549ae8035399c5c94cf82d8cdb5679f8a56a4c714228a1377f0bc",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/B/sobolB_043/fixed_180_tighter.json": "ec50bb1b650b2adc73376eb37679492062863baa4e4a23099fc6bee315e29375",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/B/sobolB_043/fixed_271_tighter.json": "3374f07527c3b746cfe2498e5fadb3a499e70364d62bd3acccbf4a4a1e3e6b75",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/B/sobolB_043/fixed_288_tight.json": "8821e8cd3266f152a1a00e844dff1f2ae0c216ca04cdce91c8ae5908ca9b4b84",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/B/sobolB_043/fixed_288_tighter.json": "f37542d51d14718e334bd81a8fc6b9c1ec015ee74fbe1b5750eabaaf3fe5cd83",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/B/sobolB_043/fixed_304_tighter.json": "3d3d55107a6b2d0c9aaf29a17ab00fb6abe66535fa6d2d118d9cf157521d7b3e",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/B/sobolB_043/member_tighter.json": "8ccd94bdfcf606c236118244dbe5d86c9fc81d7312ab1a7d9dbcfddc09c68b4a",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/B/sobolB_045/fixed_104_tight.json": "392fac04f1ac3a5fbd31803bc913785f092007b26fb052ec29c2d6e137255398",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/B/sobolB_045/fixed_104_tighter.json": "48716d926362997c8a07b059c68bc0e8f27a461f163c9ffdc02e0d2943bd1610",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/B/sobolB_045/fixed_85_tighter.json": "202878ac2cf8dfd693edf99e6066666976f2df1a60d1873eb7540c4e76665307",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/B/sobolB_045/member_tighter.json": "fa62c81624a20425c4b87b049280114b7eda99268699c947519d4d36434883bc",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/B/sobolB_054/fixed_110_tight.json": "cf1941c151de832b657ec438543ba93ec56e3270c3924de1880330ef1ba59d2b",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/B/sobolB_054/fixed_110_tighter.json": "8c79cb61a3163e56249a85433dde3935733a71d431868c5c04e7c9ad6f7575b3",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/B/sobolB_054/fixed_125_tighter.json": "0659345f19279da1095572a6641f0969097bdd40281dacf3d753d21187ac4d70",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/B/sobolB_054/member_tighter.json": "3b851a19f6e990a6e9ae1e8ef9d4f8ee970dcf1e1b39b946052ec35afd447687",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/B/sobolB_060/fixed_194_tighter.json": "aa5e778052e00ad162798a4ad65dddf4195e8e30c966c1196f7ec8f3ed787610",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/B/sobolB_060/fixed_396_tight.json": "edf839799b3f09c8c2dca749cfd67b92cde48f0245854e82a43ae8aeccfb6c14",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/B/sobolB_060/fixed_396_tighter.json": "139bd8cd1aca583bef95b74f4dc2698a65d1b6b337c0b2116e3e0420dd4ab783",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/B/sobolB_060/fixed_440_tighter.json": "f68fd1302daec31e2f7b443cc1ac52b208f8984477c1173fa43e38246f262533",
+      "r65_discarded_attempt1/cases/timing_family/k_0.75/B/sobolB_060/member_tighter.json": "347435cf129dca9c12a693137db6d031633a5df689b8ea1c815669a5170aefec"
+    },
+    "raw_rollup_sha256": "0432fd7d0463680cd031edf5eee8d5f3efaf3d8c4de0ce14de60607e05b53fa1"
+  },
+  "manifest_sha256": "3189894033a9d6c3c484da4e37c600cbb71dfd25352a1564a0d5b2d52801f5f6"
+}

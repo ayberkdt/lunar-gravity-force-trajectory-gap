@@ -65,7 +65,11 @@ def main() -> int:
     a = ap.parse_args()
 
     prereg = registry.registration(a.registry)
-    output = METRICS / f"{a.registry}_verdict.json"
+    # One file per budget. A single r30_verdict.json held whichever budget was
+    # run last, so the sealed record could carry a different outcome class from
+    # the one the manuscript quotes: the manifest had L_geometry_dependent
+    # (beta = 0.50) sealed while the headline result was K at beta = 1.
+    output = METRICS / f"{a.registry}_verdict_beta_{a.beta:.2f}.json"
     strata = {}
     for name, spec in registry.populations(a.registry).items():
         p = (METRICS / f"r19_equal_total_work_{spec['design_key']}"

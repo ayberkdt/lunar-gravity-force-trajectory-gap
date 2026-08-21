@@ -1,0 +1,105 @@
+{
+  "schema": "r68_preregistration_v1",
+  "campaign": "R68 (O59/O60): the full-design comparison at equal measured kernel time",
+  "registered_utc": "2026-08-21T00:40:38Z",
+  "registered_before_any_propagation": true,
+  "motivation": "The principal population comparison is matched on a per-call quadratic proxy calibrated on the reference arc. Measured machine time has been matched only on declared fourteen-orbit panels -- (O13) for the radial endpoint, (O48)/(O57)/(O58) for the interior member -- and those panels are stated not to be population tallies. The open objection is therefore that the paper is framed around compute allocation while its principal comparison is not matched on compute as the machine spends it. This campaign runs the measured-time construction on the whole of both coverage designs.",
+  "arms": {
+    "endpoint": {
+      "label": "(O59)",
+      "member": "the budget-calibrated radial endpoint, k = 1.00, as archived by R14 at beta = 1",
+      "question": "does the constant degree keep its advantage when the comparison is matched on measured kernel time rather than on nominal per-call work, on the full designs rather than on a panel?"
+    },
+    "interior": {
+      "label": "(O60)",
+      "member": "the sampled interior member, k = 0.50, as archived by R18 at beta = 1",
+      "question": "does the interior member's operation-count advantage survive a measured-time match at population scale, where (O48)/(O57) could only report a fourteen-orbit panel with no resolved majority?"
+    }
+  },
+  "locked_choices": {
+    "population": "every orbit of coverage designs A and B that carries a scored member at beta = 1, read from r18_span_sweep_{A,B}_beta_1.00.json: 64 + 64. No orbit is selected, and no orbit is dropped after its result is seen.",
+    "budget": "beta = 1; the member policies are the archived ones, unchanged and not recalibrated",
+    "scoring_rule": "the reference-inclusive envelope rule used everywhere else, errors read at the tighter level, resolved iff the absolute error difference exceeds the summed envelope",
+    "matching_level": "measured gravity-kernel time at the tighter level, the level the errors are read at; this is R44's level-consistency requirement applied to time instead of to work",
+    "timing_band": "0.95 <= T_constant/T_member <= 1.05, tighter than the 0.90-1.10 band of the panel campaigns because a population tally is more exposed to a systematic band edge than fourteen cells are",
+    "max_refine": 5,
+    "first_guess": "N_1 = c^{-1}(T_member_measured / n_RHS(constant, archived at the tighter level)). The quantity matched is total kernel time and a constant degree makes fewer calls than a switching member, so inverting the member's mean per-call cost -- the (O48)/(O58) rule -- starts systematically low. This changes how many propagations a cell costs, not what is being matched.",
+    "refinement_update": "the first pass steps on the quadratic assumption the panel campaigns used; from the second pass on, the step exponent is the slope measured between that cell's own last two passes, clamped to [1.2, 3.5]. Like the first-guess rule this changes how many propagations a cell costs, not what is matched: the accepted degree is still the one whose measured time lands nearest unity.",
+    "reporting": "both arms are reported whatever they return, and each design's tally is reported separately; pooling the two designs is not a licensed summary here.",
+    "timing_match_miss": "a cell that still misses the band after refinement keeps its nearest integer match and is flagged; misses are counted in the record and in the manuscript sentence, not absorbed",
+    "ceiling_censored": "a cell whose matched degree reaches the orbit's adopted reference degree cannot be scored against that reference; it is reported as ceiling-censored and excluded from the tallies rather than counted as a win for either policy",
+    "idle_machine": "the pipeline refuses to start while other python processes are alive. That check runs once, before the first cell of an invocation, and does not re-arm; rev68_quiet_audit.py is the after-the-fact test for a machine joined mid-run."
+  },
+  "declared_outcomes": {
+    "_order": "evaluated per arm, in the order listed; the first that holds is the one reported",
+    "A_constant_majority": "the constant degree takes a resolved majority on both designs. Reading for the endpoint arm: the ordering the manuscript reports at equal nominal per-call work holds at equal measured time on the full population, and the compute-allocation framing is matched on compute as the machine spends it. Reading for the interior arm: the interior advantage is an operation-count result that does not survive hardware time, which is the bound (O57)/(O58) could only place on a panel.",
+    "B_member_majority": "the member takes a resolved majority on both designs. Reading for the endpoint arm: the reversal reported at nominal per-call work does not survive a measured-time match, and the manuscript's principal claim must be restated as proxy-specific. Reading for the interior arm: the interior member is a deployable measured-time improvement and the operation-count caveat can be lifted.",
+    "C_split": "the two designs disagree, or the resolved cells split without a majority. Reading: the measured-time statement is population dependent and is reported per design, with no pooled claim.",
+    "D_unresolved_dominated": "more than half the scored cells are undecided on both designs. Reading: measured time does not discriminate the pair at this population and the existing panel-level statement remains the ceiling of what can be said."
+  },
+  "what_this_cannot_settle": [
+    "the comparison stays single-machine and single-implementation: a measured-time match is a statement about this kernel on this CPU, not a hardware-independent runtime claim",
+    "the member policies are the archived budget-calibrated ones, so the calibration still knows the radial dwell of the reference arc in advance; this campaign changes what is held equal, not how the schedule was calibrated",
+    "the horizon stays seven days and the geometry stays inside the sampled factor box"
+  ],
+  "driver": "python_codes/rev68_timing_full.py",
+  "records": [
+    "metrics/r68_timing_full_endpoint.json",
+    "metrics/r68_timing_full_interior.json"
+  ],
+  "numbering_note": "r66 is held by the allocation-anatomy figure and r67 by the review-measurement record, so this campaign takes r68; the observation labels are (O59) for the endpoint arm and (O60) for the interior arm.",
+  "inputs_as_read": {
+    "python_codes/rev68_timing_full.py": {
+      "sha256": "37635b8285801de6819053549ab796f7dda5699bcf28e7ba7d3d834894c0e0fd",
+      "bytes": 22322
+    },
+    "python_codes/rev68_preregister.py": {
+      "sha256": "793708d3a620d49ad572a049d1a24c0122089149a7fa15a7ac1055cc2b9a5e5f",
+      "bytes": 11950
+    },
+    "python_codes/rev65_timing_family.py": {
+      "sha256": "5c9dc604bc2d2700d4c49b8dd472bd6ab8fe749c22a86f516a435e4e5e34ec1d",
+      "bytes": 17793
+    },
+    "python_codes/rev48_interior_timing.py": {
+      "sha256": "6a4680d25bf7720ff13d1240371cfb78fda71831bdb73dee5d9f435efc8a904e",
+      "bytes": 15281
+    },
+    "python_codes/rev13_timing_match.py": {
+      "sha256": "f577595dbb03f5a2c6bb8930dc9f35eb390e23abc574cc6401e4c12a61e702df",
+      "bytes": 25046
+    },
+    "python_codes/rev14_budget_trajectory.py": {
+      "sha256": "d344072bc53b321cb6b979653caabacc2a046ac6224b42bcd43dc1b5628d1ad0",
+      "bytes": 22394
+    },
+    "metrics/r12_kernel_cost_curve.json": {
+      "sha256": "e08ad2e516f4ffa54b60ec846f60bd00272e7de43c526b7fec5bf01298692165",
+      "bytes": 5784
+    },
+    "metrics/r14_trajectory_A_beta_1.00.json": {
+      "sha256": "a036cfa6ac4f20d9ac7fc8663b414106a11932d780837574ae49d62fead39e00",
+      "bytes": 412475
+    },
+    "metrics/r14_trajectory_B_beta_1.00.json": {
+      "sha256": "419d0c089da696507b73fd3c6346b9d077552349fbccb01657762b873a092227",
+      "bytes": 412487
+    },
+    "metrics/r18_span_sweep_A_beta_1.00.json": {
+      "sha256": "fc50df65de340d5e60de0d200ce8a03dc816af697cbd7f8cef30ae60c7bd2ce7",
+      "bytes": 215865
+    },
+    "metrics/r18_span_sweep_B_beta_1.00.json": {
+      "sha256": "c19805762ba49edfac3cf281b298631a29cdb3fcb3f92653bfde9100059392f6",
+      "bytes": 215735
+    },
+    "metrics/r48_interior_timing.json": {
+      "sha256": "dfb70c0bfe8dd010a075523b75052f48685ce8d3b3f3f025f2e92ca97d943cc3",
+      "bytes": 6440
+    },
+    "metrics/r65_timing_family.json": {
+      "sha256": "942016a735c50f83e03e6fa5caab6be891abd9e2143c70354df87793dc91c908",
+      "bytes": 24681
+    }
+  }
+}

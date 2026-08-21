@@ -1,0 +1,93 @@
+{
+ "schema": "r53_registration_departure_v1",
+ "created_utc": "2026-08-15T01:04:48.815487Z",
+ "departs_from": "r53_preregistration.json",
+ "departs_from_declared_sha256": "674ff6274b8f3c7ea7809a71e09467a6121908febefdb7add8f3cf5657e5c3eb",
+ "departs_from_file_sha256": "59dd9775ddef636ebd1331e94b809e073748a1ff1dc1460c33ba76517954b63b",
+ "scored_by": "r53_verdict.json",
+ "scored_by_sha256": "447bfb640f676f746c53aae0800a43797c0a4abc0c8fda3133a030dd1ce2694b",
+ "outcome_returned": "W_monotone",
+ "departure": "the registered window was extended four times. The first three extensions, on 14 August, completed no cell. The fourth, on 15 August, completed the two remaining cells, and the verdict was recomputed over all seven. Two of the seven cells therefore ran outside the registered window and after a five-cell verdict had been sealed.",
+ "what_the_registration_says": "2026-08-14 overnight, cutoff 10:45 local",
+ "what_happened": [
+  {
+   "local": "2026-08-14T04:51",
+   "event": "supervisor started inside the registered window; the two operational-elliptical cells were already on disk"
+  },
+  {
+   "local": "2026-08-14T06:55",
+   "event": "design C complete"
+  },
+  {
+   "local": "2026-08-14T07:31",
+   "event": "high-apolune complete"
+  },
+  {
+   "local": "2026-08-14T09:10",
+   "event": "polar complete; the equatorial cell was not started, at 390 MB free on the metrics volume against the supervisor's 500 MB floor; the campaign stopped with five cells"
+  },
+  {
+   "local": "2026-08-14T09:10",
+   "event": "verdict sealed at five cells, W_monotone, with the equatorial and frozen-like cells recorded as declared and not run"
+  },
+  {
+   "local": "2026-08-14T12:11",
+   "event": "supervisor relaunched with cutoff 16:00, past the registered 10:45, after disk was freed by moving a raw tree to another volume"
+  },
+  {
+   "local": "2026-08-14T13:09",
+   "event": "the equatorial cell's trajectory stage completed, 64 rows, no failures"
+  },
+  {
+   "local": "2026-08-14T15:58",
+   "event": "its span stage killed a pool worker abruptly after 226.4 min; rc=1, no record written"
+  },
+  {
+   "local": "2026-08-14T15:59",
+   "event": "second attempt at 11 workers, same failure in 0.5 min"
+  },
+  {
+   "local": "2026-08-14T16:02",
+   "event": "third attempt at 6 workers, same failure in 0.4 min; the campaign was stopped with five cells and the column as sealed"
+  },
+  {
+   "local": "2026-08-15T00:47",
+   "event": "fourth relaunch, cutoff 09:30, at 4 workers. The abrupt worker deaths were diagnosed as contention on this machine rather than as a property of the cell: the pool held at 4 where it had broken at 11, 8 and 6. The equatorial cell was resumed from its completed trajectory record rather than restarted, so no propagated orbit was recomputed and no archived record was overwritten"
+  },
+  {
+   "local": "2026-08-15T01:54",
+   "event": "equatorial cell complete, span and work-matched stages written"
+  },
+  {
+   "local": "2026-08-15T03:53",
+   "event": "frozen-like cell complete in 119.0 min; the campaign finished with all seven cells, 5.5 h inside its own cutoff"
+  },
+  {
+   "local": "2026-08-15T03:53",
+   "event": "verdict recomputed over seven cells, W_monotone unchanged; the five-cell verdict is kept beside it as r53_verdict.sealed_20260814.json"
+  }
+ ],
+ "what_the_extension_produced": "two ladder records, the near-equatorial and frozen-like cells, and a recomputed verdict. Both cells are quoted in the main text and drawn in the regime map. The column reported is therefore no longer the one that stood inside the registered window, and every number taken from those two cells is a number produced outside it.",
+ "why_it_is_declared_anyway": "the cell list, its order and the scoring rule were fixed before the first propagation, and the extension added no population, orbit, parameter, budget or reference degree. The two cells that ran were the two the registration had already named sixth and seventh, resumed rather than re-selected, so the extension could not have chosen which cells or which outcome to report. What changed was the clock. A reader cannot verify that from the artefacts, which is what makes the declaration necessary rather than optional.",
+ "second_departure": "outcome Z of the registration is defined by the clock, 'a cell the clock does not reach'. While it applied, it did not fit: the equatorial cell was stopped inside the registered window by a resource floor, 390 MB free against a 500 MB floor, not by the clock. Z no longer fires, since every declared cell ran, but the registration's classes still do not partition the ways this campaign could stop, and a later campaign reusing these classes should say so before it runs rather than after.",
+ "cells_reported": [
+  "OEU",
+  "OE",
+  "C",
+  "SH",
+  "SP",
+  "SE",
+  "SF"
+ ],
+ "cells_run_outside_the_registered_window": [
+  "SE",
+  "SF"
+ ],
+ "cells_declared_and_not_run": [],
+ "verdict_recomputed_after_the_extension": true,
+ "verdict_before_the_extension": "r53_verdict.sealed_20260814.json",
+ "verdict_before_the_extension_sha256": "575ac8e7d0b5411e389915413018cb1d3c3b437cb938ae669d6ff230008f9752",
+ "outcome_changed_by_the_extension": false,
+ "registered_classes_cover_result": false,
+ "departure_sha256": "efe1938dfe3b1b0c2740ec90895b23e04105f8c8ba4c89cb4cc7d64558eb27c8"
+}

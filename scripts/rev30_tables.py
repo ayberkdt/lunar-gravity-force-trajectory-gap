@@ -71,7 +71,7 @@ def rows_for(label: str, key: str, betas=BUDGETS) -> list[str]:
     return out
 
 
-def table(beta: float, strata: dict) -> str:
+def table(beta: float, strata: dict, with_coverage: bool = False) -> str:
     lines = ["\\begin{tabular}{@{}l l l r r r r r@{}}", "\\toprule",
              "population & $\\beta$ & budget held equal & interior & fixed & "
              "unres. & median $\\rho$ & work match \\\\", "\\midrule"]
@@ -84,16 +84,17 @@ def table(beta: float, strata: dict) -> str:
             lines.append("\\addlinespace")
         lines += rows
         wrote = True
-    ref = []
-    for key in ("A", "B", "C"):
-        block = rows_for(f"design {key}", key)
-        if block:
-            if ref:
-                ref.append("\\addlinespace")
-            ref += block
-    if ref:
-        lines.append("\\midrule")
-        lines += ref
+    if with_coverage:
+        ref = []
+        for key in ("A", "B", "C"):
+            block = rows_for(f"design {key}", key)
+            if block:
+                if ref:
+                    ref.append("\\addlinespace")
+                ref += block
+        if ref:
+            lines.append("\\midrule")
+            lines += ref
     lines += ["\\bottomrule", "\\end{tabular}"]
     return "\n".join(lines) + "\n"
 
@@ -102,13 +103,21 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--beta", type=float, default=1.00)
     ap.add_argument("--registry", default="r30")
+    ap.add_argument("--with-coverage", action="store_true",
+                    help="print the A/B/C coverage rows under the strata")
     a = ap.parse_args()
     prereg = registry.registration(a.registry)
     strata = registry.populations(a.registry)
 
+    # The coverage designs used to be printed under the rule "for reference".
+    # They are reported in full in the sections that own them (S11--S13), and
+    # repeating eighteen of their rows here made the geometry table look like a
+    # population table rather than a table about where a restriction moves the
+    # crossing. Pass --with-coverage to restore them.
+    coverage = [(f"design_{k}", {"design_key": k}) for k in ("A", "B", "C")] \
+        if a.with_coverage else []
     out: dict = {}
-    for name, spec in list(strata.items()) + [
-            (f"design_{k}", {"design_key": k}) for k in ("A", "B", "C")]:
+    for name, spec in list(strata.items()) + coverage:
       key = spec["design_key"]
       for beta in BUDGETS:
         d, pc = load(key, beta), per_call(key, beta)
@@ -131,7 +140,7 @@ def main() -> int:
 
     tex = METRICS / f"{a.registry}_population_table.tex"
     desc = METRICS / f"{a.registry}_manuscript_descriptives.json"
-    tex.write_text(table(a.beta, strata), encoding="utf-8")
+    tex.write_text(table(a.beta, strata, a.with_coverage), encoding="utf-8")
     desc.write_text(json.dumps(out, indent=2), encoding="utf-8")
     print(f"[written] {tex.name}, {desc.name}")
     for name, v in out.items():

@@ -120,19 +120,47 @@ def ladder_trees(key: str, tag: str) -> list[str]:
     return rels
 
 
-def complete_budgets(key: str) -> list[str]:
-    """A budget counts only with all three ladder stages on disk."""
-    out = []
+def claimed_elsewhere(reg: str) -> set[str]:
+    """Every metrics-relative path some other campaign manifest already names.
+
+    Reading budgets off the disk was right while this campaign was the only
+    one writing into these trees. It stopped being right when a later campaign
+    added a budget column to the same strata: re-running this finalizer then
+    claims that column too, and two manifests indexing one trajectory breaks
+    the partition the integrity check enforces. A budget whose records another
+    manifest already owns is therefore skipped and reported, not claimed.
+    """
+    owned: set[str] = set()
+    for mp in sorted(METRICS.glob("r*_final_experiment_manifest.json")):
+        if mp.name.startswith(f"{reg}_"):
+            continue
+        for m in re.finditer(r'"((?:r\d+_(?:cases|raw))/[^"]+)"',
+                             mp.read_text(encoding="utf-8")):
+            owned.add(m.group(1))
+    return owned
+
+
+def complete_budgets(key: str, owned: set[str]) -> tuple[list[str], list[str]]:
+    """A budget counts only with all three ladder stages on disk, and only if
+    no other manifest already owns its records."""
+    out, skipped = [], []
     rx = re.compile(rf"^r19_equal_total_work_{key}_beta_(\d+\.\d+)\.json$")
     for p in sorted(METRICS.glob(f"r19_equal_total_work_{key}_beta_*.json")):
         m = rx.match(p.name)
         if not m:
             continue
         tag = f"beta_{m.group(1)}"
-        if all((METRICS / f"{stem}_{key}_{tag}.json").exists()
-               for stem in ("r14_trajectory", "r18_span_sweep")):
-            out.append(tag)
-    return out
+        if not all((METRICS / f"{stem}_{key}_{tag}.json").exists()
+                   for stem in ("r14_trajectory", "r18_span_sweep")):
+            continue
+        # owned holds file paths; ladder_trees returns the directories above
+        # them, so the test is a prefix test and not membership
+        prefixes = tuple(f"{rel}/" for rel in ladder_trees(key, tag))
+        if any(o.startswith(prefixes) for o in owned):
+            skipped.append(tag)
+            continue
+        out.append(tag)
+    return out, skipped
 
 
 def main() -> int:
@@ -153,6 +181,8 @@ def main() -> int:
     absent = a1 + a2 + a3
 
     result_names, tree_map, completeness, propagated = [], {}, {}, []
+    owned_elsewhere = claimed_elsewhere(REG)
+    skipped_report: list[str] = []
     for name, spec in strata.items():
         key = spec["design_key"]
         conv = METRICS / f"{REG}_{name}_convergence.json"
@@ -179,7 +209,10 @@ def main() -> int:
                           "orbits": len(d.get("rows", [])),
                           "failures": len(d.get("failures", []))},
                  "budgets": {}}
-        for tag in complete_budgets(key):
+        tags, skipped = complete_budgets(key, owned_elsewhere)
+        if skipped:
+            skipped_report.append(f"{name}: {', '.join(skipped)}")
+        for tag in tags:
             result_names += [f"r14_trajectory_{key}_{tag}.json",
                              f"r18_span_sweep_{key}_{tag}.json",
                              f"r19_equal_total_work_{key}_{tag}.json"]
@@ -190,8 +223,12 @@ def main() -> int:
         completeness[name] = entry
 
     results, a4 = index_files(sorted(set(result_names)), METRICS, required=True)
-    tables, _ = index_files([f"{REG}_population_table.tex",
-                             f"{REG}_verdict.json",
+    # One verdict record per budget, plus the single-file form the campaign
+    # wrote before it was split. The split exists because the one-file form
+    # held whichever budget ran last, so the sealed record could carry a
+    # different outcome class from the one the manuscript quotes.
+    verdicts = sorted(p.name for p in METRICS.glob(f"{REG}_verdict*.json"))
+    tables, _ = index_files([f"{REG}_population_table.tex", *verdicts,
                              f"{REG}_manuscript_descriptives.json"],
                             METRICS, required=False)
     absent += a4
@@ -254,6 +291,8 @@ def main() -> int:
         print(f"  {name:<14} base {info['base']['orbits']}/64 "
               f"complete={info['base']['complete']} "
               f"budgets={sorted(info['budgets']) or 'none'}")
+    for line in skipped_report:
+        print(f"  [skipped, owned by another manifest] {line}")
     if absent:
         print("[error] required files not on disk: " + ", ".join(absent))
         return 1

@@ -338,12 +338,12 @@ def _load(path):
     return d["t_s"], d["state_si"]
 
 
-def endpoint_record(row: dict, which: str) -> dict:
+def endpoint_record(row: dict, which: str, design: str, beta: float) -> dict:
     """k = 0 and k = 1 come from the frozen R14 record, not re-propagated."""
     pol = row["policies"]["fixed_budget" if which == "k0" else "atallah_budget"]
     return {"error_m": pol["error_tighter"]["pos_rms_m"],
             "envelope_m": pol["truth_inclusive_envelope_m"],
-            "source": "r14_trajectory_beta_1.00 (frozen)"}
+            "source": f"r14_trajectory_{design}_{beta_tag(beta)} (frozen)"}
 
 
 def orbit_summary(design: str, beta: float, row: dict) -> dict | None:
@@ -361,8 +361,8 @@ def orbit_summary(design: str, beta: float, row: dict) -> dict | None:
     entries = {}
     # archived endpoints; the k = 1 span is read from an interior sidecar,
     # which recorded the Atallah table it interpolated from
-    entries["0.00"] = {**endpoint_record(row, "k0"), "span": 1.0}
-    entries["1.00"] = {**endpoint_record(row, "k1"), "span": None}
+    entries["0.00"] = {**endpoint_record(row, "k0", design, beta), "span": 1.0}
+    entries["1.00"] = {**endpoint_record(row, "k1", design, beta), "span": None}
 
     for k in K_INTERIOR:
         got = {}

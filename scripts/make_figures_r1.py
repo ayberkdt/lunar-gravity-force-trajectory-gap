@@ -29,10 +29,15 @@ n = np.array(d["spectrum_arrays"]["n"])
 sig = np.array(d["spectrum_arrays"]["sigma_coeff_rms"])
 f600 = d["fit_10_600"]
 ffull = d["fit_2_1800"]
-fig, (ax, axr) = plt.subplots(2, 1, figsize=(5.4, 4.9), sharex=True,
-                              gridspec_kw={"height_ratios": [3, 1.2],
-                                           "hspace": 0.12})
-ax.loglog(n, sig, "-", color="0.55", lw=0.7, label=r"JGGRX\_1800F $\sigma_n$")
+# Two panels, two abscissae: the spectrum is read against degree and the
+# consequence against altitude, so they do not share an x axis. The lower
+# panel used to carry the restricted-fit residual, which said something about
+# the fit rather than about the paper's first claim; it now carries the degree
+# each rule actually asks for.
+fig, (ax, axr) = plt.subplots(2, 1, figsize=(5.4, 5.3),
+                              gridspec_kw={"height_ratios": [2.6, 1.9],
+                                           "hspace": 0.42})
+ax.loglog(n, sig, "-", color="0.55", lw=0.7, label=r"GL1800F $\sigma_n$")
 xs = np.array([10.0, 600.0])
 ax.loglog(xs, 10 ** (f600["logK"] - f600["p"] * np.log10(xs)), "-", color=C1,
           lw=1.8, label=rf"OLS fit $n\in[10,600]$: $p={f600['p']:.2f}$")
@@ -44,14 +49,23 @@ ax.text(950, sig[5], "constrained\n($n>600$)", fontsize=8, color="0.35",
         ha="center")
 ax.set_ylabel(r"Per-coefficient RMS $\sigma_n$")
 ax.legend(frameon=False, fontsize=8, loc="lower left")
-# residual panel (10..600 fit)
-mask = (n >= 10)
-resid = np.log10(sig[mask]) - (f600["logK"] - f600["p"] * np.log10(n[mask]))
-axr.semilogx(n[mask], resid, "-", color=C1, lw=0.7)
-axr.axhline(0, color="k", lw=0.6)
-axr.axvspan(600, 1800, color="0.85", alpha=0.5)
-axr.set_xlabel(r"Degree $n$")
-axr.set_ylabel("Fit residual [dex]")
+# Lower panel: what the spectrum costs in degree. The empirical curve is the
+# 1% discarded-tail budget of Eq. (3); the three rules are read against it.
+rows = sorted(d["criteria_rows"], key=lambda r: r["altitude_km"])
+h = np.array([r["altitude_km"] for r in rows])
+emp = np.array([r["emp_vector_eps1e2"] for r in rows])
+axr.semilogy(h, emp, "o-", color="0.25", lw=1.6, ms=4,
+             label=r"empirical $N_{\min}^{\mathrm{emp}}$, $\varepsilon=1\%$")
+axr.semilogy(h, [r["proxy_vec_p1_7"] for r in rows], "-", color=C1, lw=1.6,
+             label=r"calibrated proxy, $p_{\mathrm{fit}}$")
+axr.semilogy(h, [r["proxy_vec_p2_0"] for r in rows], "--", color=C3, lw=1.4,
+             label=r"classical $p=2$")
+axr.semilogy(h, [r["atten_1e3"] for r in rows], ":", color=C4, lw=1.4,
+             label=r"attenuation only, $f=10^{-3}$")
+axr.set_xlabel(r"Altitude $h$ [km]")
+axr.set_ylabel(r"Truncation degree $N$")
+axr.legend(frameon=False, fontsize=7.2, loc="upper right", ncol=2,
+           handlelength=1.6, columnspacing=1.0)
 fig.savefig(FIGS / "fig_spectrum.pdf")
 plt.close(fig)
 
@@ -82,7 +96,7 @@ pstar_by_h = dict(zip(pdense["altitudes_km"],
 pstar_by_h.update({20.0: 328, 30.0: 219})
 fig, ax = plt.subplots(figsize=(4.9, 3.4))
 ax.plot(h, [r["emp_vector_eps1e2"] for r in rows], "o-", color="black",
-        lw=1.8, ms=4.5, label="Empirical (JGGRX spectrum)", zorder=5)
+        lw=1.8, ms=4.5, label="Empirical (GL1800F spectrum)", zorder=5)
 ax.plot(h, [r["proxy_vec_p1_7"] for r in rows], "s--", color=C1, lw=1.4,
         ms=4, label=r"Proxy, $p=1.7$")
 ax.plot(h, [pstar_by_h[float(x)] for x in h], "P--", color=C4, lw=1.2,
@@ -184,7 +198,7 @@ ax.axhline(floor, color="gray", ls=":", lw=1)
 ax.text(22, floor * 0.80, "baseline-tolerance integration floor",
         fontsize=7.5, color="gray", ha="left", va="top")
 blend = mtransforms.blended_transform_factory(ax.transData, ax.transAxes)
-for x, color, lbl in [(56, C3, r"$p=2.0$ pick"), (68, "black", r"$p^{*}=1.76$ pick"),
+for x, color, lbl in [(56, C3, r"$p=2.0$ pick"), (68, "black", r"$p_{\mathrm{fit}}=1.76$ pick"),
                       (124, C2, "attenuation pick")]:
     ax.axvline(x, color=color, ls=":", lw=1.0)
     ax.text(x, 0.985, lbl, rotation=90, ha="right", va="top",

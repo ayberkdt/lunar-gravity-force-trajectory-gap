@@ -1,0 +1,31 @@
+{
+  "schema": "r44_preregistration_v1",
+  "campaign": "R44 (O42): equal-realized-work comparison re-matched at the tighter level",
+  "registered_utc": "2026-08-09T00:00:00Z",
+  "registered_before_any_propagation": true,
+  "motivation": "Council rounds 13-14 (Sert Elestirmen, MAJOR): the R19 equal-realized-work comparator is matched on tight-level realized total quadratic work while every error in the comparison is read at the tighter level; on the calls the tighter propagation makes, the interior member outspends its comparator by 9.5%/10.1% (A/B at beta=1). This campaign re-establishes the match at the level the errors are read at.",
+  "cells": [
+    {"design": "A", "beta": 0.50}, {"design": "B", "beta": 0.50},
+    {"design": "A", "beta": 0.75}, {"design": "B", "beta": 0.75},
+    {"design": "A", "beta": 1.00}, {"design": "B", "beta": 1.00},
+    {"design": "A", "beta": 1.25}, {"design": "B", "beta": 1.50}
+  ],
+  "frozen_rules": {
+    "member": "k = 0.50 of the archived R18 span sweep, reused unchanged",
+    "match_target": "W_k^tighter = mean(N_k^2)_calls x n_RHS(k) from the archived R18 tighter-level telemetry",
+    "comparator_estimate": "N* = round(N_0 x sqrt(W_k^tighter / W_0^tighter)); W_0^tighter = N_0^2 x n_RHS(fixed, tighter) from archived comparator telemetry; where the beta-specific fixed_budget sidecar is not addressable through r14.reuse_paths, n_RHS is taken from the orbit's fixed_critical run and the source policy is recorded in the case config (this affects the first estimate only; the achieved work ratio is measured from the propagated runs at both levels and reported)",
+    "propagation": "each comparator at both tolerance levels, identical contract to R18/R19 (InstrumentedDOP853, vector atol, 7-day arc, 120 s grid, max step from R14)",
+    "censoring": "a work-matched degree at or above the orbit's adopted reference degree is censored and reported, never clamped",
+    "scoring": "existing reference-inclusive envelope rule, errors at the tighter level against the archived truths; no new decision logic",
+    "no_outcome_dependent_stopping": "all eight cells run to completion or wall-clock deadline; partially completed cells are reported as partial"
+  },
+  "declared_outcomes": {
+    "A": "the interior member retains a resolved majority over its tighter-matched comparator at every cell with beta >= 0.75: the constructive claim is restated under level-consistent matching with the new counts and achieved ratios",
+    "B": "one or more beta >= 0.75 cells flip to a fixed-degree majority: the paper reports the flip and narrows the constructive claim to the cells that survive",
+    "C": "more than half of the beta >= 0.75 cells are unresolved-dominated: the constructive claim is downgraded to raw-direction language with the resolved counts printed alongside",
+    "note": "all three outcomes are publishable; whichever occurs, the abstract, tab:equal-work, tab:practical-recommendations and the conclusion are updated together with the level declaration (council items 1, 2, 6 of round 14)"
+  },
+  "plan_validation": "plan subcommand run on all eight cells on 2026-08-09 before registration: 64 orbits each, 0 missing telemetry, 0 censored at estimate time; estimated 28.6 h single-thread, about 3 h at 10 workers",
+  "driver": "python_codes/rev44_equal_work_tighter.py",
+  "launch": "withheld; the user schedules the run window explicitly"
+}

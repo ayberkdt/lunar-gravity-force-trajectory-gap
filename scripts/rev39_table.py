@@ -7,7 +7,12 @@ reference degree, the relative change between them, and whether the side
 changed. Band membership travels with every row, because the registration
 forbids reporting a partial band as a band and band L is one of four.
 
-Read from metrics/r39_gradient_degree_panel.json, which the run wrote.
+Read from metrics/r57_gradient_degree_completion.json when that record exists
+and from metrics/r39_gradient_degree_panel.json otherwise. R57 is R39 carried
+forward and finished: it copies R39's solved rows byte for byte and adds the
+three the R39 campaign ran out of compute for, so the completion record is a
+superset and the table drawn from it supersedes the partial one. Nothing is
+re-solved or re-scored here.
 
 Usage:  python rev39_table.py
 """
@@ -19,11 +24,16 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 METRICS = ROOT / "metrics"
-RECORD = METRICS / "r39_gradient_degree_panel.json"
+COMPLETION = METRICS / "r57_gradient_degree_completion.json"
+PANEL = METRICS / "r39_gradient_degree_panel.json"
 OUT = METRICS / "r39_gradient_degree_table.tex"
 
 BAND_LABEL = {"L": "L, $h_p<50$", "M": "M, $50$--$100$", "H": "H, $>100$",
               "X-fragile": "X, ratio near 1", "X-extreme": "X, ratio extreme"}
+# R39 printed bands in this order and ascending perilune inside each. The
+# completion record appends its three rows at the end rather than in place,
+# so the order is imposed here instead of taken from the file.
+BAND_ORDER = ["L", "M", "H", "X-fragile", "X-extreme"]
 
 
 def fmt(x: float) -> str:
@@ -38,11 +48,13 @@ def fmt(x: float) -> str:
 
 
 def main() -> int:
-    if not RECORD.exists():
-        print(f"[abort] {RECORD.name} missing")
+    record = COMPLETION if COMPLETION.exists() else PANEL
+    if not record.exists():
+        print(f"[abort] {PANEL.name} missing")
         return 2
-    rec = json.loads(RECORD.read_text(encoding="utf-8"))
-    comp = rec["comparison"]
+    rec = json.loads(record.read_text(encoding="utf-8"))
+    comp = sorted(rec["comparison"],
+                  key=lambda c: (BAND_ORDER.index(c["band"]), c["hp_km"]))
     st = rec["summary"]["band_status"]
 
     lines = [r"\begin{tabular}{@{}l l r r r r r c@{}}", r"\toprule",
@@ -64,24 +76,38 @@ def main() -> int:
             f"${c['relative_change']*100:+.1f}\\%$ \\\\")
     lines.append(r"\midrule")
 
-    partial = [b for b, v in st.items() if not v["complete"]]
-    done = [f"{b} ({v['solved']}/{v['declared']})"
-            for b, v in st.items() if v["complete"]]
-    note = ("Bands complete: " + ", ".join(done) + ". "
-            + ("Incomplete: "
-               + ", ".join(f"{b} ({st[b]['solved']}/{st[b]['declared']})"
-                           for b in partial)
-               + ", reported as a partial band and never as the band."
-               if partial else "All declared bands complete."))
+    s = rec["summary"]
+    if st:
+        partial = [b for b, v in st.items() if not v["complete"]]
+        done = [f"{b} ({v['solved']}/{v['declared']})"
+                for b, v in st.items() if v["complete"]]
+        note = ("Bands complete: " + ", ".join(done) + ". "
+                + ("Incomplete: "
+                   + ", ".join(f"{b} ({st[b]['solved']}/{st[b]['declared']})"
+                               for b in partial)
+                   + ", reported as a partial band and never as the band."
+                   if partial else "All declared bands complete."))
+    else:
+        # the completion record carries a list of finished bands instead of
+        # the partial-run bookkeeping, because none of them is partial now
+        note = ("All declared bands complete: "
+                + ", ".join(sorted(s["bands_complete"])) + ".")
     lines.append(r"\multicolumn{8}{@{}p{\linewidth}@{}}{\footnotesize " + note
                  + r"} \\")
-    s = rec["summary"]
+    by_band = s.get("abs_relative_change_by_band")
+    if by_band:
+        lines.append(
+            r"\multicolumn{8}{@{}p{\linewidth}@{}}{\footnotesize "
+            r"Median $|\Delta|$ by band: "
+            + ", ".join(f"{b} {by_band[b]*100:.2g}\\%"
+                        for b in BAND_ORDER if b in by_band)
+            + r".} \\")
     lines.append(
         r"\multicolumn{8}{@{}p{\linewidth}@{}}{\footnotesize Side changes: "
         f"{s['side_changes_resolved']} of {s['resolved']} resolved, "
         f"{s['side_changes_unresolved']} among the unresolved. "
         r"$|\Delta|$ median "
-        f"{s['abs_relative_change']['median']*100:.1f}\\%, p90 "
+        f"{s['abs_relative_change']['median']*100:.2g}\\%, p90 "
         f"{s['abs_relative_change']['p90']*100:.1f}\\%, max "
         f"{s['abs_relative_change']['max']*100:.1f}\\%." + r"} \\")
     lines += [r"\bottomrule", r"\end{tabular}"]

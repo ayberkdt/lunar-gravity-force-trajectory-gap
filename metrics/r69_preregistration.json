@@ -1,0 +1,97 @@
+{
+  "schema": "r69_preregistration_v1",
+  "campaign": "R69 (O61): the interior candidate calibrated without a reference trajectory",
+  "registered_utc": "2026-08-21T13:39:20Z",
+  "registered_before_any_propagation": true,
+  "motivation": "(O60) established that the exploratory k = 0.5 candidate keeps its advantage at equal measured kernel time on both full designs, but its budget is calibrated on the altitude history of an already-propagated reference arc. The manuscript states that limitation: the calibration knows the radial dwell in advance. If a high-fidelity reference propagation is a precondition, the schedule is an offline comparison rather than something a propagator can be handed. This campaign asks whether the same schedule can be built from the initial osculating elements alone.",
+  "locked_choices": {
+    "population": "every orbit of coverage designs A and B, 64 + 64, the same population as (O60); no selection, no post-hoc removal",
+    "member": "k = 0.50, beta = 1, the (O60) candidate",
+    "what_changes": "only the altitude history the two calibrations read. Both the radial tolerance eps_A and the family scale s_k are bisected on the two-body history r(E) = a0 (1 - e0 cos E) of the initial osculating elements, sampled on the same uniform 120 s grid through Kepler's equation, instead of on the propagated reference arc.",
+    "what_does_not_change": "the family construction, the budget definition beta = <N^2>/N_crit^2, N_crit from the orbit's own perilune altitude, the constant comparator degree, the 10 km binning, the floor and the reference-degree cap",
+    "comparator": "a constant degree refined over integers until its measured gravity-kernel time falls within 0.95-1.05 of the member's, the (O60) protocol unchanged, serial on an idle machine",
+    "scoring": "errors at the tighter level against the same archived reference as every other campaign, under the reference-inclusive envelope rule. The reference is used to score, never to build: the claim is about constructing the schedule without foreknowledge.",
+    "member_envelope": "the member has no second tolerance level in this campaign, so its envelope is reused from the archived k = 0.5 member at the same budget and is recorded as reused rather than measured. This is the one quantity in the resolution threshold that is not measured here.",
+    "budget_adherence": "reported three ways, all against the same target beta N_crit^2: the predicted work the bisection met on the Kepler history, the work the frozen table spends when sampled on the altitude history actually flown, and the call-weighted mean N^2 of the propagation. The second is the primary one, because it is the paper's own sampled convention.",
+    "budget_gate": 0.05,
+    "timing_match_miss": "kept, flagged, and included in the primary tallies, as in (O59)/(O60)",
+    "ceiling_censored": "excluded from the tallies and reported"
+  },
+  "declared_outcomes": {
+    "_order": "evaluated in the order listed; the first that holds is the one reported",
+    "A_ordering_and_budget_hold": "the member keeps a resolved majority on both designs and the median absolute sampled budget miss is at most 5 per cent on both. Reading: the schedule can be set from the orbital elements alone; a precomputed high-fidelity reference trajectory is not required, and the limitation the manuscript states is lifted for this member.",
+    "B_ordering_holds_budget_degrades": "the member keeps a resolved majority on both designs but the median budget miss exceeds 5 per cent. Reading: the ordering is robust to reference-free calibration while the budget guarantee is not, so the comparison stays honest only if the achieved budget is reported with it.",
+    "C_one_design_loses": "one design loses the majority. Reading: reference-free calibration is not population-independent and the result is reported per design with no pooled claim.",
+    "D_both_lose": "both designs lose the majority. Reading: the (O60) advantage depends on the foreknowledge in the calibration, which is a finding about the policy's deployability and is reported as such."
+  },
+  "what_this_cannot_settle": [
+    "the calibration is still made once, before the arc; it is not a causal recalibration that updates as the orbit evolves",
+    "N_crit still comes from the design perilune rather than from an onboard estimate",
+    "scoring still uses an archived reference trajectory",
+    "the horizon stays seven days and the comparison stays single-machine"
+  ],
+  "driver": "python_codes/rev69_reference_free.py",
+  "records": [
+    "metrics/r69_reference_free.json",
+    "metrics/r69_reference_free_state.json"
+  ],
+  "numbering_note": "r68 is held by the full-design measured-time campaign; this one takes r69 and the observation label (O61).",
+  "inputs_as_read": {
+    "python_codes/rev69_reference_free.py": {
+      "sha256": "afeb080c9c80dda69a41c60530f9a800e396fce2155be9e88ffea93bb0a97973",
+      "bytes": 25183
+    },
+    "python_codes/rev69_preregister.py": {
+      "sha256": "fa913e255c6c0414230fe135d707a5054a8f2e6ad28fab5938eb8f812673c2d5",
+      "bytes": 9832
+    },
+    "python_codes/rev68_timing_full.py": {
+      "sha256": "37635b8285801de6819053549ab796f7dda5699bcf28e7ba7d3d834894c0e0fd",
+      "bytes": 22322
+    },
+    "python_codes/rev14_budget_pareto.py": {
+      "sha256": "99e636c4f410936095807539d119a620700ebef4506638c64def881b4dc02284",
+      "bytes": 22030
+    },
+    "python_codes/rev18_span_sweep.py": {
+      "sha256": "415b049b56e2f05a8444f57f0a6457a8a7db119147a2ade3215f5a8e0259935b",
+      "bytes": 24838
+    },
+    "python_codes/rev12_atallah.py": {
+      "sha256": "05ab2043dfd986e0eaa946fc84309a6a9996b68882f05c1332494fd916baa089",
+      "bytes": 8628
+    },
+    "metrics/r69_reference_free_state.json": {
+      "sha256": "c69e8976a10af2a90ce665c75d243eb659a76b0064993529e37c40f6f4f0a217",
+      "bytes": 312762
+    },
+    "metrics/r68_timing_full_interior.json": {
+      "sha256": "9154b1e0ce63d870118f00c9f6d8dce5d4ad7285566942c0994ef4efb1d405fb",
+      "bytes": 100258
+    },
+    "metrics/r68_preregistration.json": {
+      "sha256": "ecb794e6e461cfea712bab8a8c7399b558b80309271ce577ec3b6c80e5a78322",
+      "bytes": 8753
+    },
+    "metrics/r12_kernel_cost_curve.json": {
+      "sha256": "e08ad2e516f4ffa54b60ec846f60bd00272e7de43c526b7fec5bf01298692165",
+      "bytes": 5784
+    },
+    "metrics/r14_trajectory_A_beta_1.00.json": {
+      "sha256": "a036cfa6ac4f20d9ac7fc8663b414106a11932d780837574ae49d62fead39e00",
+      "bytes": 412475
+    },
+    "metrics/r14_trajectory_B_beta_1.00.json": {
+      "sha256": "419d0c089da696507b73fd3c6346b9d077552349fbccb01657762b873a092227",
+      "bytes": 412487
+    },
+    "metrics/r18_span_sweep_A_beta_1.00.json": {
+      "sha256": "fc50df65de340d5e60de0d200ce8a03dc816af697cbd7f8cef30ae60c7bd2ce7",
+      "bytes": 215865
+    },
+    "metrics/r18_span_sweep_B_beta_1.00.json": {
+      "sha256": "c19805762ba49edfac3cf281b298631a29cdb3fcb3f92653bfde9100059392f6",
+      "bytes": 215735
+    }
+  }
+}

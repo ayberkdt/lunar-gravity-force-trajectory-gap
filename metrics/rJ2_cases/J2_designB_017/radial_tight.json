@@ -1,0 +1,79 @@
+{
+  "schema": "rJ2_case_v1",
+  "created_utc": "2026-08-08T22:49:53.310393Z",
+  "config": {
+    "sobol_index": 17,
+    "policy": "radial",
+    "policy_spec": {
+      "kind": "budget_calibrated_radial",
+      "beta": 1.0,
+      "accuracy_parameter_m_s2": 0.017436329929488906,
+      "bin_km": 10.0,
+      "floor": 2,
+      "cap": 300,
+      "n_critical": 108,
+      "source": "frozen budget record, not recalibrated",
+      "table": {
+        "90.0": 162,
+        "100.0": 142,
+        "110.0": 125,
+        "120.0": 112,
+        "130.0": 100,
+        "140.0": 91,
+        "150.0": 83,
+        "160.0": 76,
+        "170.0": 70,
+        "180.0": 65,
+        "190.0": 60
+      }
+    },
+    "level": "tight",
+    "adopted_truth_degree": 300,
+    "dynamics": "moon_sh + earth + sun + srp_eclipse",
+    "orientation": "DE440/MOON_PA",
+    "duration_s": 604800.0,
+    "output_step_s": 120.0,
+    "max_step_s": 60.0,
+    "rtol": 1e-12,
+    "atol_kind": "vector",
+    "atol_position_m": 1e-05,
+    "atol_velocity_m_s": 1e-08,
+    "integrator": "InstrumentedDOP853",
+    "field": "JGGRX_1800F",
+    "timing_comparable": false,
+    "execution": "parallel_process_pool"
+  },
+  "telemetry": {
+    "n_rhs": 199226,
+    "wall_s": 64.69942659998196,
+    "gravity_wall_s": 29.994287,
+    "mean_active_degree": 98.8972071918324,
+    "mean_degree_squared": 10495.597065644042,
+    "rms_active_degree": 102.4480212871095,
+    "min_active_degree": 65,
+    "max_active_degree": 162,
+    "degree_counts": {
+      "65": 3925,
+      "70": 33626,
+      "76": 30196,
+      "83": 23928,
+      "91": 18117,
+      "100": 16891,
+      "112": 17736,
+      "125": 20899,
+      "142": 30831,
+      "162": 3077
+    },
+    "component_rms_acceleration_m_s2": {
+      "earth_3b": 2.158073314264874e-05,
+      "sun_3b": 1.1053984258203283e-07,
+      "srp": 4.947358105830822e-08
+    },
+    "n_accepted_steps": 11892,
+    "n_attempted_steps": 15342,
+    "n_rejected_trials": 3450,
+    "total_wall_s": 64.69942659998196
+  },
+  "raw_path": "D:\\makale_raw_offload\\jgcd\\J2\\J2_designB_017\\radial_tight.npz",
+  "raw_sha256": "4bb542cba823ed1586871f5e7712ad096680062e741807f2ff0221d5de33d908"
+}

@@ -1,8 +1,8 @@
 """Tables for the R18 span sweep.
 
 Emits, into metrics/:
-  r18_span_table.tex          main text, one row per k
-  r18_span_detail_table.tex   supplement, one row per orbit
+  r18_span_table.tex             main text, one row per k
+  r18_span_detail_table_A/B.tex  supplement, one row per orbit
   r18_manuscript_descriptives.json
 
 Usage:  python rev18_tables.py

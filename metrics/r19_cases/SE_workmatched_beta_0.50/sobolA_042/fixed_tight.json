@@ -1,0 +1,62 @@
+{
+  "schema": "r19_equal_total_work_v1",
+  "created_utc": "2026-08-08T00:48:21.692609Z",
+  "config": {
+    "sobol_index": 42,
+    "design": "SE",
+    "beta": 0.5,
+    "policy": "constant degree matched on realized total quadratic work",
+    "matched_to": "span-sweep member k=0.50",
+    "degree": 68,
+    "target_total_quadratic_work": 701876283.0,
+    "constant_endpoint_degree": 62,
+    "constant_endpoint_total_work": 582546668.0,
+    "first_estimate_rule": "N* = round(N_0 * sqrt(W_k / W_0)); the achieved ratio is measured, not assumed",
+    "adopted_truth_degree": 300,
+    "initial_state_si": [
+      1562551.192814224,
+      979015.1680224803,
+      -270281.156937788,
+      -830.3550957789369,
+      1423.7553185719478,
+      356.68674856256627
+    ],
+    "duration_s": 604800.0,
+    "output_step_s": 120.0,
+    "integrator": "InstrumentedDOP853",
+    "max_step_s": 60.0,
+    "atol_kind": "vector",
+    "timing_comparable": false,
+    "source": {
+      "driver": "rev19_equal_total_work.py",
+      "reuses": "r18_span_sweep_SE_beta_0.50.json (realized work), r14_trajectory_SE_beta_0.50.json, r11 truths",
+      "lunaris_commit": "27e9ab86ed61d623f78c453ea2054348f1044c23"
+    }
+  },
+  "config_sha256": "6b4a6ed95bf12a02141a0ed769716156e141e7c11b3d53da34b37dfa3aa7f4e2",
+  "status": "ok",
+  "event": null,
+  "telemetry": {
+    "n_rhs": 151730,
+    "n_accepted_steps": 10104,
+    "n_attempted_steps": 10118,
+    "n_rejected_trials": 14,
+    "switch_count_at_rhs_samples": 0,
+    "degree_counts": {
+      "68": 151730
+    },
+    "degree_range": [
+      68,
+      68
+    ],
+    "mean_degree": 68.0,
+    "mean_degree_sq": 4624.0,
+    "gravity_kernel_ns": 8709523900,
+    "process_cpu_ns": 15437500000,
+    "total_wall_ns": 15811871500
+  },
+  "raw_path": "metrics\\r19_raw\\SE_workmatched_beta_0.50\\sobolA_042\\fixed_tight.npz",
+  "raw_sha256": "342fd54132e9e986ca46d5d5cd35c3584022b41271cf5d1ebe2d97e983a0f8ce",
+  "n_output_epochs": 5041,
+  "last_output_epoch_s": 604800.0
+}

@@ -161,7 +161,8 @@ def main() -> int:
     result_names = [f"{REG}_{NAME}_rows.json", f"{REG}_{NAME}_convergence.json",
                     f"{REG}_{NAME}_operating_point.json",
                     f"{REG}_budget_pareto_{NAME}.json",
-                    f"{REG}_campaign_progress.json"]
+                    f"{REG}_campaign_progress.json",
+                    f"{REG}_manuscript_descriptives.json"]
     tree_map = {
         "base": index_tree([f"r11_cases/stratum_{NAME}_convergence",
                             f"r11_raw/stratum_{NAME}_convergence"]),

@@ -1,0 +1,23 @@
+{
+  "schema": "r48_preregistration_v1",
+  "campaign": "R48 (O48): measured-kernel-time-matched comparator for the interior member",
+  "registered_utc": "2026-08-09T20:30:00Z",
+  "registered_before_any_propagation": true,
+  "motivation": "The measured-time control exists only for the radial endpoint (R13); the interior member has been compared under operation-count proxies whose low-degree flattening the paper itself records as biased in the member's favor. Council rounds 13-14 flag this repeatedly. This campaign applies the R13 protocol to the interior member.",
+  "frozen_rules": {
+    "panel": "7 orbits per design spread over perilune with the extremes retained (the R13 selection rule) from the R18 beta=1 population, orbits with a scored k=0.50 entry only",
+    "member_baseline": "the archived k=0.50 schedule re-run serially at the tight level for a contention-free kernel time; accuracy still comes from the archived trajectories",
+    "comparator": "first pass at N_time from the call-weighted mean per-call measured cost of the member's archived degree histogram (r12 cost curve); one refinement pass on the measured total-kernel-time ratio with c(N)~N^2, capped at the adopted truth degree; refined comparator propagated at both levels",
+    "scoring": "errors at the tighter level against the archived truths under the campaign envelope rule; achieved serial time ratios reported alongside",
+    "seriality": "every timed stage refuses to start while other python processes are alive",
+    "no_outcome_dependent_stopping": "orbits processed in frozen panel order to completion or the declared cutoff; partial panels reported as partial"
+  },
+  "declared_outcomes": {
+    "A": "the interior member keeps the lower error on the majority of resolved panel orbits at measured-time match: the proxy-bias caveat is replaced by the measured result",
+    "B": "the comparator wins the majority: the paper states that the interior advantage does not survive measured-time matching on this panel and the constructive claim carries that bound",
+    "C": "the panel is unresolved-dominated: raw directions are reported and the caveat stands as written",
+    "note": "all three outcomes are publishable; the main-text sentence 'the remaining discrepancy is tested directly by the measured-time control' is finalized with whichever outcome occurs"
+  },
+  "driver": "python_codes/rev48_interior_timing.py",
+  "scheduled_window": "2026-08-10 overnight, after the R44 stage frees the machine; cutoff 06:45 local"
+}

@@ -1,0 +1,1619 @@
+{
+  "schema": "rJ3_score_v1",
+  "created_utc": "2026-08-08T19:13:33.270160Z",
+  "plan_sha256": "168b9a9f2d9c46498b70dfe5f371c2f3785d271a2b7a7b0a809dda4585a4927c",
+  "beta": 1.0,
+  "levels": [
+    "loose",
+    "tight",
+    "tighter",
+    "tightest"
+  ],
+  "counts": {
+    "orbits": 16,
+    "with_all_four_levels": 16,
+    "rho_same_side_at_every_level": 11,
+    "by_role": {
+      "boundary": 7,
+      "low": 0,
+      "high": 4
+    }
+  },
+  "aggregates": {
+    "max_rho_spread_dex": 1.1735492745780416,
+    "median_rho_by_level": {
+      "loose": 4.229468827480883,
+      "tight": 3.839661029820779,
+      "tighter": 3.3325039120582143,
+      "tightest": 3.2512247866345128
+    }
+  },
+  "verdict": "B_sign_moves",
+  "verdict_note": "the pre-registered threshold is applied to every orbit in the sample, including the ones the resolution rule itself declares unresolved and excludes from the reported counts. It is kept unchanged and reported as found, but it is not the question a reader is asking: see conditional_on_resolution",
+  "conditional_on_resolution": {
+    "question": "do the comparisons the resolution rule admits keep their sign when the rule is evaluated on a different pair of tolerance levels?",
+    "by_margin_stratum": {
+      "boundary": {
+        "orbits": 8,
+        "sign_stable_across_all_levels": 7,
+        "median_M_res_archived": 1.164849650753104,
+        "median_rho_spread_dex": 0.41611621676971344
+      },
+      "low": {
+        "orbits": 4,
+        "sign_stable_across_all_levels": 0,
+        "median_M_res_archived": 0.12850522759981198,
+        "median_rho_spread_dex": 0.5367027493027382
+      },
+      "high": {
+        "orbits": 4,
+        "sign_stable_across_all_levels": 4,
+        "median_M_res_archived": 362.7892812429216,
+        "median_rho_spread_dex": 0.3018313925514145
+      }
+    },
+    "resolution_rule_applied_to_each_adjacent_level_pair": {
+      "loose_tight": {
+        "resolved": 5,
+        "of": 16,
+        "radial_worse_among_resolved": 5,
+        "median_rho": 3.839661029820779
+      },
+      "tight_tighter": {
+        "resolved": 10,
+        "of": 16,
+        "radial_worse_among_resolved": 10,
+        "median_rho": 3.3325039120582143
+      },
+      "tighter_tightest": {
+        "resolved": 12,
+        "of": 16,
+        "radial_worse_among_resolved": 11,
+        "median_rho": 3.2512247866345128
+      }
+    },
+    "admitted_by_manuscript_pair": 10,
+    "of_those_sign_unchanged_in_every_pair_that_resolves": 10,
+    "reading": "the sample was drawn to include orbits the rule excludes, so instability among them is the rule working, not the ranking failing"
+  },
+  "rows": [
+    {
+      "sobol_index": 7,
+      "name": "sobolB_007",
+      "role": "low",
+      "hp_km": 82.99847412854433,
+      "incl_deg": 177.14078648015857,
+      "M_res_archived": 0.1781367420290921,
+      "rho_traj_archived": 1.1065986402351178,
+      "by_level": {
+        "loose": {
+          "E_constant_m": 7.152121390712847,
+          "E_radial_m": 7.663692771384711,
+          "rho": 1.0715272228651136,
+          "radial_worse": true,
+          "rtol": 1e-11
+        },
+        "tight": {
+          "E_constant_m": 7.549710841018754,
+          "E_radial_m": 6.842549849426642,
+          "rho": 0.9063327051216323,
+          "radial_worse": false,
+          "rtol": 1e-12
+        },
+        "tighter": {
+          "E_constant_m": 7.458808797288735,
+          "E_radial_m": 8.253907672853448,
+          "rho": 1.1065986402351178,
+          "radial_worse": true,
+          "rtol": 1e-13
+        },
+        "tightest": {
+          "E_constant_m": 7.467234274580771,
+          "E_radial_m": 7.541140672197709,
+          "rho": 1.0098974258606728,
+          "radial_worse": true,
+          "rtol": 2.5e-14
+        }
+      },
+      "levels_available": [
+        "loose",
+        "tight",
+        "tighter",
+        "tightest"
+      ],
+      "all_same_side_of_one": false,
+      "rho_range": [
+        0.9063327051216323,
+        1.1065986402351178
+      ],
+      "rho_spread_dex": 0.08670248038377361,
+      "pairs": {
+        "loose_tight": {
+          "levels": [
+            "loose",
+            "tight"
+          ],
+          "E_constant_m": 7.549710841018754,
+          "E_radial_m": 6.842549849426642,
+          "envelope_sum_m": 8.687842287183631,
+          "M_res": 0.08139661934647703,
+          "resolved": false,
+          "rho": 0.9063327051216323,
+          "radial_worse": false
+        },
+        "tight_tighter": {
+          "levels": [
+            "tight",
+            "tighter"
+          ],
+          "E_constant_m": 7.458808797288735,
+          "E_radial_m": 8.253907672853448,
+          "envelope_sum_m": 4.463418756333056,
+          "M_res": 0.1781367420290921,
+          "resolved": false,
+          "rho": 1.1065986402351178,
+          "radial_worse": true
+        },
+        "tighter_tightest": {
+          "levels": [
+            "tighter",
+            "tightest"
+          ],
+          "E_constant_m": 7.467234274580771,
+          "E_radial_m": 7.541140672197709,
+          "envelope_sum_m": 1.3169560397027653,
+          "M_res": 0.05611910753954868,
+          "resolved": false,
+          "rho": 1.0098974258606728,
+          "radial_worse": true
+        }
+      },
+      "resolved_in_n_pairs": 0,
+      "resolved_in_manuscript_pair": false,
+      "sign_agrees_across_resolved_pairs": null
+    },
+    {
+      "sobol_index": 12,
+      "name": "sobolB_012",
+      "role": "boundary",
+      "hp_km": 38.181006610393524,
+      "incl_deg": 143.5971868224442,
+      "M_res_archived": 1.4088773251404827,
+      "rho_traj_archived": 1.565341240803022,
+      "by_level": {
+        "loose": {
+          "E_constant_m": 5.9627665187034715,
+          "E_radial_m": 9.95380172524092,
+          "rho": 1.669326091172399,
+          "radial_worse": true,
+          "rtol": 1e-11
+        },
+        "tight": {
+          "E_constant_m": 5.34103895380556,
+          "E_radial_m": 6.520290954570162,
+          "rho": 1.2207907508190647,
+          "radial_worse": true,
+          "rtol": 1e-12
+        },
+        "tighter": {
+          "E_constant_m": 5.31934685978016,
+          "E_radial_m": 8.326593013749935,
+          "rho": 1.565341240803022,
+          "radial_worse": true,
+          "rtol": 1e-13
+        },
+        "tightest": {
+          "E_constant_m": 5.317444851282133,
+          "E_radial_m": 8.561692304368785,
+          "rho": 1.610113982151485,
+          "radial_worse": true,
+          "rtol": 2.5e-14
+        }
+      },
+      "levels_available": [
+        "loose",
+        "tight",
+        "tighter",
+        "tightest"
+      ],
+      "all_same_side_of_one": true,
+      "rho_range": [
+        1.2207907508190647,
+        1.669326091172399
+      ],
+      "rho_spread_dex": 0.13589995111390385,
+      "pairs": {
+        "loose_tight": {
+          "levels": [
+            "loose",
+            "tight"
+          ],
+          "E_constant_m": 5.34103895380556,
+          "E_radial_m": 6.520290954570162,
+          "envelope_sum_m": 4.365779463177679,
+          "M_res": 0.27011259059482373,
+          "resolved": false,
+          "rho": 1.2207907508190647,
+          "radial_worse": true
+        },
+        "tight_tighter": {
+          "levels": [
+            "tight",
+            "tighter"
+          ],
+          "E_constant_m": 5.31934685978016,
+          "E_radial_m": 8.326593013749935,
+          "envelope_sum_m": 2.1344982279915072,
+          "M_res": 1.4088773251404827,
+          "resolved": true,
+          "rho": 1.565341240803022,
+          "radial_worse": true
+        },
+        "tighter_tightest": {
+          "levels": [
+            "tighter",
+            "tightest"
+          ],
+          "E_constant_m": 5.317444851282133,
+          "E_radial_m": 8.561692304368785,
+          "envelope_sum_m": 0.4380207858329713,
+          "M_res": 7.406606165771704,
+          "resolved": true,
+          "rho": 1.610113982151485,
+          "radial_worse": true
+        }
+      },
+      "resolved_in_n_pairs": 2,
+      "resolved_in_manuscript_pair": true,
+      "sign_agrees_across_resolved_pairs": true
+    },
+    {
+      "sobol_index": 14,
+      "name": "sobolB_014",
+      "role": "low",
+      "hp_km": 104.33659795671701,
+      "incl_deg": 106.30813909694552,
+      "M_res_archived": 0.037308356050479025,
+      "rho_traj_archived": 0.9905443392715768,
+      "by_level": {
+        "loose": {
+          "E_constant_m": 3.295356275453588,
+          "E_radial_m": 6.924951008852874,
+          "rho": 2.1014271083328286,
+          "radial_worse": true,
+          "rtol": 1e-11
+        },
+        "tight": {
+          "E_constant_m": 4.457729488788577,
+          "E_radial_m": 4.590508606815305,
+          "rho": 1.0297862663853143,
+          "radial_worse": true,
+          "rtol": 1e-12
+        },
+        "tighter": {
+          "E_constant_m": 4.450713646821324,
+          "E_radial_m": 4.408629208577619,
+          "rho": 0.9905443392715768,
+          "radial_worse": false,
+          "rtol": 1e-13
+        },
+        "tightest": {
+          "E_constant_m": 4.416655674784103,
+          "E_radial_m": 4.455440972467411,
+          "rho": 1.008781598688968,
+          "radial_worse": true,
+          "rtol": 2.5e-14
+        }
+      },
+      "levels_available": [
+        "loose",
+        "tight",
+        "tighter",
+        "tightest"
+      ],
+      "all_same_side_of_one": false,
+      "rho_range": [
+        0.9905443392715768,
+        2.1014271083328286
+      ],
+      "rho_spread_dex": 0.3266404099107428,
+      "pairs": {
+        "loose_tight": {
+          "levels": [
+            "loose",
+            "tight"
+          ],
+          "E_constant_m": 4.457729488788577,
+          "E_radial_m": 4.590508606815305,
+          "envelope_sum_m": 7.551917761376981,
+          "M_res": 0.017582172134580798,
+          "resolved": false,
+          "rho": 1.0297862663853143,
+          "radial_worse": true
+        },
+        "tight_tighter": {
+          "levels": [
+            "tight",
+            "tighter"
+          ],
+          "E_constant_m": 4.450713646821324,
+          "E_radial_m": 4.408629208577619,
+          "envelope_sum_m": 1.1280164204170284,
+          "M_res": 0.037308356050479025,
+          "resolved": false,
+          "rho": 0.9905443392715768,
+          "radial_worse": false
+        },
+        "tighter_tightest": {
+          "levels": [
+            "tighter",
+            "tightest"
+          ],
+          "E_constant_m": 4.416655674784103,
+          "E_radial_m": 4.455440972467411,
+          "envelope_sum_m": 0.24804901272021662,
+          "M_res": 0.15636142735651765,
+          "resolved": false,
+          "rho": 1.008781598688968,
+          "radial_worse": true
+        }
+      },
+      "resolved_in_n_pairs": 0,
+      "resolved_in_manuscript_pair": false,
+      "sign_agrees_across_resolved_pairs": null
+    },
+    {
+      "sobol_index": 15,
+      "name": "sobolB_015",
+      "role": "high",
+      "hp_km": 69.98296055942774,
+      "incl_deg": 77.62547632679343,
+      "M_res_archived": 105.72974655347811,
+      "rho_traj_archived": 32.7635550231419,
+      "by_level": {
+        "loose": {
+          "E_constant_m": 3.002722919792354,
+          "E_radial_m": 196.49796395945756,
+          "rho": 65.43992543043096,
+          "radial_worse": true,
+          "rtol": 1e-11
+        },
+        "tight": {
+          "E_constant_m": 5.073644240359141,
+          "E_radial_m": 165.16979442922766,
+          "rho": 32.55446905704528,
+          "radial_worse": true,
+          "rtol": 1e-12
+        },
+        "tighter": {
+          "E_constant_m": 5.0705946316591675,
+          "E_radial_m": 166.13070621441307,
+          "rho": 32.7635550231419,
+          "radial_worse": true,
+          "rtol": 1e-13
+        },
+        "tightest": {
+          "E_constant_m": 5.071395069510118,
+          "E_radial_m": 165.15502682880938,
+          "rho": 32.56599506943222,
+          "radial_worse": true,
+          "rtol": 2.5e-14
+        }
+      },
+      "levels_available": [
+        "loose",
+        "tight",
+        "tighter",
+        "tightest"
+      ],
+      "all_same_side_of_one": true,
+      "rho_range": [
+        32.55446905704528,
+        65.43992543043096
+      ],
+      "rho_spread_dex": 0.30323217910955236,
+      "pairs": {
+        "loose_tight": {
+          "levels": [
+            "loose",
+            "tight"
+          ],
+          "E_constant_m": 5.073644240359141,
+          "E_radial_m": 165.16979442922766,
+          "envelope_sum_m": 38.356707200294366,
+          "M_res": 4.173876275480704,
+          "resolved": true,
+          "rho": 32.55446905704528,
+          "radial_worse": true
+        },
+        "tight_tighter": {
+          "levels": [
+            "tight",
+            "tighter"
+          ],
+          "E_constant_m": 5.0705946316591675,
+          "E_radial_m": 166.13070621441307,
+          "envelope_sum_m": 1.5233188088774023,
+          "M_res": 105.72974655347811,
+          "resolved": true,
+          "rho": 32.7635550231419,
+          "radial_worse": true
+        },
+        "tighter_tightest": {
+          "levels": [
+            "tighter",
+            "tightest"
+          ],
+          "E_constant_m": 5.071395069510118,
+          "E_radial_m": 165.15502682880938,
+          "envelope_sum_m": 1.0086462739802264,
+          "M_res": 158.71136977246945,
+          "resolved": true,
+          "rho": 32.56599506943222,
+          "radial_worse": true
+        }
+      },
+      "resolved_in_n_pairs": 3,
+      "resolved_in_manuscript_pair": true,
+      "sign_agrees_across_resolved_pairs": true
+    },
+    {
+      "sobol_index": 22,
+      "name": "sobolB_022",
+      "role": "boundary",
+      "hp_km": 105.61493072658777,
+      "incl_deg": 68.82309783250093,
+      "M_res_archived": 0.83695002643443,
+      "rho_traj_archived": 3.2077089249266684,
+      "by_level": {
+        "loose": {
+          "E_constant_m": 2.3572134815767725,
+          "E_radial_m": 8.160733978714726,
+          "rho": 3.4620258379210944,
+          "radial_worse": true,
+          "rtol": 1e-11
+        },
+        "tight": {
+          "E_constant_m": 2.399365284430216,
+          "E_radial_m": 12.27717121408453,
+          "rho": 5.116841230367316,
+          "radial_worse": true,
+          "rtol": 1e-12
+        },
+        "tighter": {
+          "E_constant_m": 2.4766495042589147,
+          "E_radial_m": 7.944370718726529,
+          "rho": 3.2077089249266684,
+          "radial_worse": true,
+          "rtol": 1e-13
+        },
+        "tightest": {
+          "E_constant_m": 2.48259100021284,
+          "E_radial_m": 7.001645980182508,
+          "rho": 2.820297817716344,
+          "radial_worse": true,
+          "rtol": 2.5e-14
+        }
+      },
+      "levels_available": [
+        "loose",
+        "tight",
+        "tighter",
+        "tightest"
+      ],
+      "all_same_side_of_one": true,
+      "rho_range": [
+        2.820297817716344,
+        5.116841230367316
+      ],
+      "rho_spread_dex": 0.2587069701731103,
+      "pairs": {
+        "loose_tight": {
+          "levels": [
+            "loose",
+            "tight"
+          ],
+          "E_constant_m": 2.399365284430216,
+          "E_radial_m": 12.27717121408453,
+          "envelope_sum_m": 14.696884924123731,
+          "M_res": 0.6721020121373276,
+          "resolved": false,
+          "rho": 5.116841230367316,
+          "radial_worse": true
+        },
+        "tight_tighter": {
+          "levels": [
+            "tight",
+            "tighter"
+          ],
+          "E_constant_m": 2.4766495042589147,
+          "E_radial_m": 7.944370718726529,
+          "envelope_sum_m": 6.532912410267995,
+          "M_res": 0.83695002643443,
+          "resolved": false,
+          "rho": 3.2077089249266684,
+          "radial_worse": true
+        },
+        "tighter_tightest": {
+          "levels": [
+            "tighter",
+            "tightest"
+          ],
+          "E_constant_m": 2.48259100021284,
+          "E_radial_m": 7.001645980182508,
+          "envelope_sum_m": 4.230964578356621,
+          "M_res": 1.0680909509587402,
+          "resolved": true,
+          "rho": 2.820297817716344,
+          "radial_worse": true
+        }
+      },
+      "resolved_in_n_pairs": 1,
+      "resolved_in_manuscript_pair": false,
+      "sign_agrees_across_resolved_pairs": true
+    },
+    {
+      "sobol_index": 24,
+      "name": "sobolB_024",
+      "role": "boundary",
+      "hp_km": 88.96359488368034,
+      "incl_deg": 84.38423048704863,
+      "M_res_archived": 1.1931853389781069,
+      "rho_traj_archived": 3.45729889918976,
+      "by_level": {
+        "loose": {
+          "E_constant_m": 3.646475763259248,
+          "E_radial_m": 4.9201888850740145,
+          "rho": 1.349299763527377,
+          "radial_worse": true,
+          "rtol": 1e-11
+        },
+        "tight": {
+          "E_constant_m": 3.3343734602244184,
+          "E_radial_m": 18.196913257540533,
+          "rho": 5.45737106974088,
+          "radial_worse": true,
+          "rtol": 1e-12
+        },
+        "tighter": {
+          "E_constant_m": 3.419257047043439,
+          "E_radial_m": 11.821393624790112,
+          "rho": 3.45729889918976,
+          "radial_worse": true,
+          "rtol": 1e-13
+        },
+        "tightest": {
+          "E_constant_m": 3.399434675516228,
+          "E_radial_m": 12.51723435833874,
+          "rho": 3.6821517555526815,
+          "radial_worse": true,
+          "rtol": 2.5e-14
+        }
+      },
+      "levels_available": [
+        "loose",
+        "tight",
+        "tighter",
+        "tightest"
+      ],
+      "all_same_side_of_one": true,
+      "rho_range": [
+        1.349299763527377,
+        5.45737106974088
+      ],
+      "rho_spread_dex": 0.606875040057463,
+      "pairs": {
+        "loose_tight": {
+          "levels": [
+            "loose",
+            "tight"
+          ],
+          "E_constant_m": 3.3343734602244184,
+          "E_radial_m": 18.196913257540533,
+          "envelope_sum_m": 14.782006552711298,
+          "M_res": 1.005448059051905,
+          "resolved": true,
+          "rho": 5.45737106974088,
+          "radial_worse": true
+        },
+        "tight_tighter": {
+          "levels": [
+            "tight",
+            "tighter"
+          ],
+          "E_constant_m": 3.419257047043439,
+          "E_radial_m": 11.821393624790112,
+          "envelope_sum_m": 7.041769877044088,
+          "M_res": 1.1931853389781069,
+          "resolved": true,
+          "rho": 3.45729889918976,
+          "radial_worse": true
+        },
+        "tighter_tightest": {
+          "levels": [
+            "tighter",
+            "tightest"
+          ],
+          "E_constant_m": 3.399434675516228,
+          "E_radial_m": 12.51723435833874,
+          "envelope_sum_m": 0.7665101118964788,
+          "M_res": 11.895211219410394,
+          "resolved": true,
+          "rho": 3.6821517555526815,
+          "radial_worse": true
+        }
+      },
+      "resolved_in_n_pairs": 3,
+      "resolved_in_manuscript_pair": true,
+      "sign_agrees_across_resolved_pairs": true
+    },
+    {
+      "sobol_index": 27,
+      "name": "sobolB_027",
+      "role": "low",
+      "hp_km": 57.16930914670229,
+      "incl_deg": 153.54472272098064,
+      "M_res_archived": 0.2790628198559852,
+      "rho_traj_archived": 1.4002859822735765,
+      "by_level": {
+        "loose": {
+          "E_constant_m": 2.672509621240293,
+          "E_radial_m": 13.354294907530505,
+          "rho": 4.996911817040671,
+          "radial_worse": true,
+          "rtol": 1e-11
+        },
+        "tight": {
+          "E_constant_m": 2.813061584789842,
+          "E_radial_m": 2.5183485415007785,
+          "rho": 0.8952340592603553,
+          "radial_worse": false,
+          "rtol": 1e-12
+        },
+        "tighter": {
+          "E_constant_m": 2.838088381760731,
+          "E_radial_m": 3.97413537743305,
+          "rho": 1.4002859822735765,
+          "radial_worse": true,
+          "rtol": 1e-13
+        },
+        "tightest": {
+          "E_constant_m": 2.8204620535035194,
+          "E_radial_m": 2.92779684898475,
+          "rho": 1.038055748825942,
+          "radial_worse": true,
+          "rtol": 2.5e-14
+        }
+      },
+      "levels_available": [
+        "loose",
+        "tight",
+        "tighter",
+        "tightest"
+      ],
+      "all_same_side_of_one": false,
+      "rho_range": [
+        0.8952340592603553,
+        4.996911817040671
+      ],
+      "rho_spread_dex": 0.7467650886947336,
+      "pairs": {
+        "loose_tight": {
+          "levels": [
+            "loose",
+            "tight"
+          ],
+          "E_constant_m": 2.813061584789842,
+          "E_radial_m": 2.5183485415007785,
+          "envelope_sum_m": 15.405381112002267,
+          "M_res": 0.0191305259601435,
+          "resolved": false,
+          "rho": 0.8952340592603553,
+          "radial_worse": false
+        },
+        "tight_tighter": {
+          "levels": [
+            "tight",
+            "tighter"
+          ],
+          "E_constant_m": 2.838088381760731,
+          "E_radial_m": 3.97413537743305,
+          "envelope_sum_m": 4.070936415888703,
+          "M_res": 0.2790628198559852,
+          "resolved": false,
+          "rho": 1.4002859822735765,
+          "radial_worse": true
+        },
+        "tighter_tightest": {
+          "levels": [
+            "tighter",
+            "tightest"
+          ],
+          "E_constant_m": 2.8204620535035194,
+          "E_radial_m": 2.92779684898475,
+          "envelope_sum_m": 1.6711372010385304,
+          "M_res": 0.0642285956021607,
+          "resolved": false,
+          "rho": 1.038055748825942,
+          "radial_worse": true
+        }
+      },
+      "resolved_in_n_pairs": 0,
+      "resolved_in_manuscript_pair": false,
+      "sign_agrees_across_resolved_pairs": null
+    },
+    {
+      "sobol_index": 28,
+      "name": "sobolB_028",
+      "role": "high",
+      "hp_km": 35.13739004731178,
+      "incl_deg": 123.3171746134758,
+      "M_res_archived": 562.0661345739609,
+      "rho_traj_archived": 3261.494702672512,
+      "by_level": {
+        "loose": {
+          "E_constant_m": 0.7631664415328976,
+          "E_radial_m": 1323.1917826942433,
+          "rho": 1733.818090895713,
+          "radial_worse": true,
+          "rtol": 1e-11
+        },
+        "tight": {
+          "E_constant_m": 0.3792526409832371,
+          "E_radial_m": 1313.2963881627952,
+          "rho": 3462.853639616033,
+          "radial_worse": true,
+          "rtol": 1e-12
+        },
+        "tighter": {
+          "E_constant_m": 0.40271370586326266,
+          "E_radial_m": 1313.4486183666475,
+          "rho": 3261.494702672512,
+          "radial_worse": true,
+          "rtol": 1e-13
+        },
+        "tightest": {
+          "E_constant_m": 0.3886755763384904,
+          "E_radial_m": 1313.379523571505,
+          "rho": 3379.1151374731785,
+          "radial_worse": true,
+          "rtol": 2.5e-14
+        }
+      },
+      "levels_available": [
+        "loose",
+        "tight",
+        "tighter",
+        "tightest"
+      ],
+      "all_same_side_of_one": true,
+      "rho_range": [
+        1733.818090895713,
+        3462.853639616033
+      ],
+      "rho_spread_dex": 0.30043060599327664,
+      "pairs": {
+        "loose_tight": {
+          "levels": [
+            "loose",
+            "tight"
+          ],
+          "E_constant_m": 0.3792526409832371,
+          "E_radial_m": 1313.2963881627952,
+          "envelope_sum_m": 11.912495254907855,
+          "M_res": 110.21344457458655,
+          "resolved": true,
+          "rho": 3462.853639616033,
+          "radial_worse": true
+        },
+        "tight_tighter": {
+          "levels": [
+            "tight",
+            "tighter"
+          ],
+          "E_constant_m": 0.40271370586326266,
+          "E_radial_m": 1313.4486183666475,
+          "envelope_sum_m": 2.3361057069486253,
+          "M_res": 562.0661345739609,
+          "resolved": true,
+          "rho": 3261.494702672512,
+          "radial_worse": true
+        },
+        "tighter_tightest": {
+          "levels": [
+            "tighter",
+            "tightest"
+          ],
+          "E_constant_m": 0.3886755763384904,
+          "E_radial_m": 1313.379523571505,
+          "envelope_sum_m": 0.5050858020761507,
+          "M_res": 2599.540202076814,
+          "resolved": true,
+          "rho": 3379.1151374731785,
+          "radial_worse": true
+        }
+      },
+      "resolved_in_n_pairs": 3,
+      "resolved_in_manuscript_pair": true,
+      "sign_agrees_across_resolved_pairs": true
+    },
+    {
+      "sobol_index": 31,
+      "name": "sobolB_031",
+      "role": "boundary",
+      "hp_km": 66.93305689841509,
+      "incl_deg": 9.313240237534046,
+      "M_res_archived": 0.7415021802807857,
+      "rho_traj_archived": 0.4037637970947842,
+      "by_level": {
+        "loose": {
+          "E_constant_m": 3.2293105722023534,
+          "E_radial_m": 3.2429202435698397,
+          "rho": 1.0042144200946905,
+          "radial_worse": true,
+          "rtol": 1e-11
+        },
+        "tight": {
+          "E_constant_m": 1.94226966229248,
+          "E_radial_m": 0.5443503102726116,
+          "rho": 0.28026505322134804,
+          "radial_worse": false,
+          "rtol": 1e-12
+        },
+        "tighter": {
+          "E_constant_m": 1.9411959670611745,
+          "E_radial_m": 0.7837846545657015,
+          "rho": 0.4037637970947842,
+          "radial_worse": false,
+          "rtol": 1e-13
+        },
+        "tightest": {
+          "E_constant_m": 1.9417426385636927,
+          "E_radial_m": 1.0506952655301505,
+          "rho": 0.5411094367826984,
+          "radial_worse": false,
+          "rtol": 2.5e-14
+        }
+      },
+      "levels_available": [
+        "loose",
+        "tight",
+        "tighter",
+        "tightest"
+      ],
+      "all_same_side_of_one": false,
+      "rho_range": [
+        0.28026505322134804,
+        1.0042144200946905
+      ],
+      "rho_spread_dex": 0.5542575052310411,
+      "pairs": {
+        "loose_tight": {
+          "levels": [
+            "loose",
+            "tight"
+          ],
+          "E_constant_m": 1.94226966229248,
+          "E_radial_m": 0.5443503102726116,
+          "envelope_sum_m": 6.0640539554000625,
+          "M_res": 0.23052554649105916,
+          "resolved": false,
+          "rho": 0.28026505322134804,
+          "radial_worse": false
+        },
+        "tight_tighter": {
+          "levels": [
+            "tight",
+            "tighter"
+          ],
+          "E_constant_m": 1.9411959670611745,
+          "E_radial_m": 0.7837846545657015,
+          "envelope_sum_m": 1.5609007542731625,
+          "M_res": 0.7415021802807857,
+          "resolved": false,
+          "rho": 0.4037637970947842,
+          "radial_worse": false
+        },
+        "tighter_tightest": {
+          "levels": [
+            "tighter",
+            "tightest"
+          ],
+          "E_constant_m": 1.9417426385636927,
+          "E_radial_m": 1.0506952655301505,
+          "envelope_sum_m": 0.35625801561615206,
+          "M_res": 2.501129333167329,
+          "resolved": true,
+          "rho": 0.5411094367826984,
+          "radial_worse": false
+        }
+      },
+      "resolved_in_n_pairs": 1,
+      "resolved_in_manuscript_pair": false,
+      "sign_agrees_across_resolved_pairs": true
+    },
+    {
+      "sobol_index": 32,
+      "name": "sobolB_032",
+      "role": "low",
+      "hp_km": 64.5182454586029,
+      "incl_deg": 49.043859746307135,
+      "M_res_archived": 0.07887371317053188,
+      "rho_traj_archived": 0.9333862492429562,
+      "by_level": {
+        "loose": {
+          "E_constant_m": 5.176921836571839,
+          "E_radial_m": 0.5806970389745264,
+          "rho": 0.1121703315804869,
+          "radial_worse": false,
+          "rtol": 1e-11
+        },
+        "tight": {
+          "E_constant_m": 4.199658510804622,
+          "E_radial_m": 7.0249179489978975,
+          "rho": 1.6727355166913267,
+          "radial_worse": true,
+          "rtol": 1e-12
+        },
+        "tighter": {
+          "E_constant_m": 4.086767306587574,
+          "E_radial_m": 3.8145324078245144,
+          "rho": 0.9333862492429562,
+          "radial_worse": false,
+          "rtol": 1e-13
+        },
+        "tightest": {
+          "E_constant_m": 4.0725333820379035,
+          "E_radial_m": 5.30772575544894,
+          "rho": 1.3032982808339668,
+          "radial_worse": true,
+          "rtol": 2.5e-14
+        }
+      },
+      "levels_available": [
+        "loose",
+        "tight",
+        "tighter",
+        "tightest"
+      ],
+      "all_same_side_of_one": false,
+      "rho_range": [
+        0.1121703315804869,
+        1.6727355166913267
+      ],
+      "rho_spread_dex": 1.1735492745780416,
+      "pairs": {
+        "loose_tight": {
+          "levels": [
+            "loose",
+            "tight"
+          ],
+          "E_constant_m": 4.199658510804622,
+          "E_radial_m": 7.0249179489978975,
+          "envelope_sum_m": 16.250835516078457,
+          "M_res": 0.17385318037327893,
+          "resolved": false,
+          "rho": 1.6727355166913267,
+          "radial_worse": true
+        },
+        "tight_tighter": {
+          "levels": [
+            "tight",
+            "tighter"
+          ],
+          "E_constant_m": 4.086767306587574,
+          "E_radial_m": 3.8145324078245144,
+          "envelope_sum_m": 3.4515288785056173,
+          "M_res": 0.07887371317053188,
+          "resolved": false,
+          "rho": 0.9333862492429562,
+          "radial_worse": false
+        },
+        "tighter_tightest": {
+          "levels": [
+            "tighter",
+            "tightest"
+          ],
+          "E_constant_m": 4.0725333820379035,
+          "E_radial_m": 5.30772575544894,
+          "envelope_sum_m": 1.6316115927418822,
+          "M_res": 0.7570382429897591,
+          "resolved": false,
+          "rho": 1.3032982808339668,
+          "radial_worse": true
+        }
+      },
+      "resolved_in_n_pairs": 0,
+      "resolved_in_manuscript_pair": false,
+      "sign_agrees_across_resolved_pairs": null
+    },
+    {
+      "sobol_index": 37,
+      "name": "sobolB_037",
+      "role": "boundary",
+      "hp_km": 144.97267484664917,
+      "incl_deg": 75.91115953400731,
+      "M_res_archived": 1.136513962528101,
+      "rho_traj_archived": 12.91552015000273,
+      "by_level": {
+        "loose": {
+          "E_constant_m": 1.000243238412356,
+          "E_radial_m": 17.150888009177805,
+          "rho": 17.1467172688922,
+          "radial_worse": true,
+          "rtol": 1e-11
+        },
+        "tight": {
+          "E_constant_m": 1.0263929644716931,
+          "E_radial_m": 4.686082838538794,
+          "rho": 4.565583554005383,
+          "radial_worse": true,
+          "rtol": 1e-12
+        },
+        "tighter": {
+          "E_constant_m": 1.0050801203457833,
+          "E_radial_m": 12.981132546693132,
+          "rho": 12.91552015000273,
+          "radial_worse": true,
+          "rtol": 1e-13
+        },
+        "tightest": {
+          "E_constant_m": 1.0218274561378258,
+          "E_radial_m": 15.620106837245128,
+          "rho": 15.286442680140963,
+          "radial_worse": true,
+          "rtol": 2.5e-14
+        }
+      },
+      "levels_available": [
+        "loose",
+        "tight",
+        "tighter",
+        "tightest"
+      ],
+      "all_same_side_of_one": true,
+      "rho_range": [
+        4.565583554005383,
+        17.1467172688922
+      ],
+      "rho_spread_dex": 0.5746846917162758,
+      "pairs": {
+        "loose_tight": {
+          "levels": [
+            "loose",
+            "tight"
+          ],
+          "E_constant_m": 1.0263929644716931,
+          "E_radial_m": 4.686082838538794,
+          "envelope_sum_m": 14.848855399503117,
+          "M_res": 0.2464627592904948,
+          "resolved": false,
+          "rho": 4.565583554005383,
+          "radial_worse": true
+        },
+        "tight_tighter": {
+          "levels": [
+            "tight",
+            "tighter"
+          ],
+          "E_constant_m": 1.0050801203457833,
+          "E_radial_m": 12.981132546693132,
+          "envelope_sum_m": 10.53753215640871,
+          "M_res": 1.136513962528101,
+          "resolved": true,
+          "rho": 12.91552015000273,
+          "radial_worse": true
+        },
+        "tighter_tightest": {
+          "levels": [
+            "tighter",
+            "tightest"
+          ],
+          "E_constant_m": 1.0218274561378258,
+          "E_radial_m": 15.620106837245128,
+          "envelope_sum_m": 2.8063562000467672,
+          "M_res": 5.201862607770185,
+          "resolved": true,
+          "rho": 15.286442680140963,
+          "radial_worse": true
+        }
+      },
+      "resolved_in_n_pairs": 2,
+      "resolved_in_manuscript_pair": true,
+      "sign_agrees_across_resolved_pairs": true
+    },
+    {
+      "sobol_index": 43,
+      "name": "sobolB_043",
+      "role": "high",
+      "hp_km": 49.570774622261524,
+      "incl_deg": 80.21269524469972,
+      "M_res_archived": 301.94869001916635,
+      "rho_traj_archived": 3691.9236612856503,
+      "by_level": {
+        "loose": {
+          "E_constant_m": 2.526002269249855,
+          "E_radial_m": 2424.3458019556037,
+          "rho": 959.755987343416,
+          "radial_worse": true,
+          "rtol": 1e-11
+        },
+        "tight": {
+          "E_constant_m": 0.6601079946800046,
+          "E_radial_m": 2410.0832634391913,
+          "rho": 3651.043894124489,
+          "radial_worse": true,
+          "rtol": 1e-12
+        },
+        "tighter": {
+          "E_constant_m": 0.6546642229971916,
+          "E_radial_m": 2416.970335080517,
+          "rho": 3691.9236612856503,
+          "radial_worse": true,
+          "rtol": 1e-13
+        },
+        "tightest": {
+          "E_constant_m": 0.6552538469930109,
+          "E_radial_m": 2417.3726055100856,
+          "rho": 3689.2154339932777,
+          "radial_worse": true,
+          "rtol": 2.5e-14
+        }
+      },
+      "levels_available": [
+        "loose",
+        "tight",
+        "tighter",
+        "tightest"
+      ],
+      "all_same_side_of_one": true,
+      "rho_range": [
+        959.755987343416,
+        3691.9236612856503
+      ],
+      "rho_spread_dex": 0.5850918823432263,
+      "pairs": {
+        "loose_tight": {
+          "levels": [
+            "loose",
+            "tight"
+          ],
+          "E_constant_m": 0.6601079946800046,
+          "E_radial_m": 2410.0832634391913,
+          "envelope_sum_m": 17.58049786819133,
+          "M_res": 137.050905697268,
+          "resolved": true,
+          "rho": 3651.043894124489,
+          "radial_worse": true
+        },
+        "tight_tighter": {
+          "levels": [
+            "tight",
+            "tighter"
+          ],
+          "E_constant_m": 0.6546642229971916,
+          "E_radial_m": 2416.970335080517,
+          "envelope_sum_m": 8.00240488112117,
+          "M_res": 301.94869001916635,
+          "resolved": true,
+          "rho": 3691.9236612856503,
+          "radial_worse": true
+        },
+        "tighter_tightest": {
+          "levels": [
+            "tighter",
+            "tightest"
+          ],
+          "E_constant_m": 0.6552538469930109,
+          "E_radial_m": 2417.3726055100856,
+          "envelope_sum_m": 0.4536765776917863,
+          "M_res": 5326.960814152796,
+          "resolved": true,
+          "rho": 3689.2154339932777,
+          "radial_worse": true
+        }
+      },
+      "resolved_in_n_pairs": 3,
+      "resolved_in_manuscript_pair": true,
+      "sign_agrees_across_resolved_pairs": true
+    },
+    {
+      "sobol_index": 50,
+      "name": "sobolB_050",
+      "role": "boundary",
+      "hp_km": 133.95185071974993,
+      "incl_deg": 88.29615823924541,
+      "M_res_archived": 1.4914722080776286,
+      "rho_traj_archived": 10.358019844535807,
+      "by_level": {
+        "loose": {
+          "E_constant_m": 1.657154413469841,
+          "E_radial_m": 18.7246212745083,
+          "rho": 11.299261627226192,
+          "radial_worse": true,
+          "rtol": 1e-11
+        },
+        "tight": {
+          "E_constant_m": 1.5946333176131966,
+          "E_radial_m": 9.500270478332448,
+          "rho": 5.95765206546179,
+          "radial_worse": true,
+          "rtol": 1e-12
+        },
+        "tighter": {
+          "E_constant_m": 1.637174231654892,
+          "E_radial_m": 16.957883180444036,
+          "rho": 10.358019844535807,
+          "radial_worse": true,
+          "rtol": 1e-13
+        },
+        "tightest": {
+          "E_constant_m": 1.6565534777746547,
+          "E_radial_m": 14.432743325010671,
+          "rho": 8.712512767410939,
+          "radial_worse": true,
+          "rtol": 2.5e-14
+        }
+      },
+      "levels_available": [
+        "loose",
+        "tight",
+        "tighter",
+        "tightest"
+      ],
+      "all_same_side_of_one": true,
+      "rho_range": [
+        5.95765206546179,
+        11.299261627226192
+      ],
+      "rho_spread_dex": 0.2779749283083857,
+      "pairs": {
+        "loose_tight": {
+          "levels": [
+            "loose",
+            "tight"
+          ],
+          "E_constant_m": 1.5946333176131966,
+          "E_radial_m": 9.500270478332448,
+          "envelope_sum_m": 11.539995358885843,
+          "M_res": 0.6850641542617155,
+          "resolved": false,
+          "rho": 5.95765206546179,
+          "radial_worse": true
+        },
+        "tight_tighter": {
+          "levels": [
+            "tight",
+            "tighter"
+          ],
+          "E_constant_m": 1.637174231654892,
+          "E_radial_m": 16.957883180444036,
+          "envelope_sum_m": 10.272205452984027,
+          "M_res": 1.4914722080776286,
+          "resolved": true,
+          "rho": 10.358019844535807,
+          "radial_worse": true
+        },
+        "tighter_tightest": {
+          "levels": [
+            "tighter",
+            "tightest"
+          ],
+          "E_constant_m": 1.6565534777746547,
+          "E_radial_m": 14.432743325010671,
+          "envelope_sum_m": 2.9629253219479694,
+          "M_res": 4.312018852650777,
+          "resolved": true,
+          "rho": 8.712512767410939,
+          "radial_worse": true
+        }
+      },
+      "resolved_in_n_pairs": 2,
+      "resolved_in_manuscript_pair": true,
+      "sign_agrees_across_resolved_pairs": true
+    },
+    {
+      "sobol_index": 51,
+      "name": "sobolB_051",
+      "role": "high",
+      "hp_km": 40.36037016659975,
+      "incl_deg": 93.35263252258301,
+      "M_res_archived": 423.6298724666769,
+      "rho_traj_archived": 24.38540029933607,
+      "by_level": {
+        "loose": {
+          "E_constant_m": 13.040936831679717,
+          "E_radial_m": 278.94418568461055,
+          "rho": 21.38988857050399,
+          "radial_worse": true,
+          "rtol": 1e-11
+        },
+        "tight": {
+          "E_constant_m": 11.427542855250943,
+          "E_radial_m": 281.1548933083743,
+          "rho": 24.603267462627276,
+          "radial_worse": true,
+          "rtol": 1e-12
+        },
+        "tighter": {
+          "E_constant_m": 11.535855513296537,
+          "E_radial_m": 281.30645448703905,
+          "rho": 24.38540029933607,
+          "radial_worse": true,
+          "rtol": 1e-13
+        },
+        "tightest": {
+          "E_constant_m": 11.54472664126971,
+          "E_radial_m": 281.61014382358627,
+          "rho": 24.39296767901767,
+          "radial_worse": true,
+          "rtol": 2.5e-14
+        }
+      },
+      "levels_available": [
+        "loose",
+        "tight",
+        "tighter",
+        "tightest"
+      ],
+      "all_same_side_of_one": true,
+      "rho_range": [
+        21.38988857050399,
+        24.603267462627276
+      ],
+      "rho_spread_dex": 0.0607842657225907,
+      "pairs": {
+        "loose_tight": {
+          "levels": [
+            "loose",
+            "tight"
+          ],
+          "E_constant_m": 11.427542855250943,
+          "E_radial_m": 281.1548933083743,
+          "envelope_sum_m": 6.846290847005966,
+          "M_res": 39.397588633132806,
+          "resolved": true,
+          "rho": 24.603267462627276,
+          "radial_worse": true
+        },
+        "tight_tighter": {
+          "levels": [
+            "tight",
+            "tighter"
+          ],
+          "E_constant_m": 11.535855513296537,
+          "E_radial_m": 281.30645448703905,
+          "envelope_sum_m": 0.6368073087078223,
+          "M_res": 423.6298724666769,
+          "resolved": true,
+          "rho": 24.38540029933607,
+          "radial_worse": true
+        },
+        "tighter_tightest": {
+          "levels": [
+            "tighter",
+            "tightest"
+          ],
+          "E_constant_m": 11.54472664126971,
+          "E_radial_m": 281.61014382358627,
+          "envelope_sum_m": 0.36793040668326193,
+          "M_res": 734.0122269774951,
+          "resolved": true,
+          "rho": 24.39296767901767,
+          "radial_worse": true
+        }
+      },
+      "resolved_in_n_pairs": 3,
+      "resolved_in_manuscript_pair": true,
+      "sign_agrees_across_resolved_pairs": true
+    },
+    {
+      "sobol_index": 52,
+      "name": "sobolB_052",
+      "role": "boundary",
+      "hp_km": 47.39049330353737,
+      "incl_deg": 170.13750337064266,
+      "M_res_archived": 1.3770291876888816,
+      "rho_traj_archived": 4.229492637551829,
+      "by_level": {
+        "loose": {
+          "E_constant_m": 0.47001220090294776,
+          "E_radial_m": 8.206867710664916,
+          "rho": 17.460967385311648,
+          "radial_worse": true,
+          "rtol": 1e-11
+        },
+        "tight": {
+          "E_constant_m": 1.1794275728644625,
+          "E_radial_m": 3.6724290482370923,
+          "rho": 3.113738505636175,
+          "radial_worse": true,
+          "rtol": 1e-12
+        },
+        "tighter": {
+          "E_constant_m": 0.9857032460737776,
+          "E_radial_m": 4.169024622079981,
+          "rho": 4.229492637551829,
+          "radial_worse": true,
+          "rtol": 1e-13
+        },
+        "tightest": {
+          "E_constant_m": 0.9781295205490796,
+          "E_radial_m": 4.555535968435779,
+          "rho": 4.657395439694426,
+          "radial_worse": true,
+          "rtol": 2.5e-14
+        }
+      },
+      "levels_available": [
+        "loose",
+        "tight",
+        "tighter",
+        "tightest"
+      ],
+      "all_same_side_of_one": true,
+      "rho_range": [
+        3.113738505636175,
+        17.460967385311648
+      ],
+      "rho_spread_dex": 0.7487861637875648,
+      "pairs": {
+        "loose_tight": {
+          "levels": [
+            "loose",
+            "tight"
+          ],
+          "E_constant_m": 1.1794275728644625,
+          "E_radial_m": 3.6724290482370923,
+          "envelope_sum_m": 14.096728677567956,
+          "M_res": 0.17684964592811725,
+          "resolved": false,
+          "rho": 3.113738505636175,
+          "radial_worse": true
+        },
+        "tight_tighter": {
+          "levels": [
+            "tight",
+            "tighter"
+          ],
+          "E_constant_m": 0.9857032460737776,
+          "E_radial_m": 4.169024622079981,
+          "envelope_sum_m": 2.3117312286959493,
+          "M_res": 1.3770291876888816,
+          "resolved": true,
+          "rho": 4.229492637551829,
+          "radial_worse": true
+        },
+        "tighter_tightest": {
+          "levels": [
+            "tighter",
+            "tightest"
+          ],
+          "E_constant_m": 0.9781295205490796,
+          "E_radial_m": 4.555535968435779,
+          "envelope_sum_m": 0.48136227013711974,
+          "M_res": 7.431838076689408,
+          "resolved": true,
+          "rho": 4.657395439694426,
+          "radial_worse": true
+        }
+      },
+      "resolved_in_n_pairs": 2,
+      "resolved_in_manuscript_pair": true,
+      "sign_agrees_across_resolved_pairs": true
+    },
+    {
+      "sobol_index": 63,
+      "name": "sobolB_063",
+      "role": "boundary",
+      "hp_km": 62.567762173712254,
+      "incl_deg": 139.34494961053133,
+      "M_res_archived": 1.099045968434322,
+      "rho_traj_archived": 1.477794264853367,
+      "by_level": {
+        "loose": {
+          "E_constant_m": 15.567835602921233,
+          "E_radial_m": 16.09014560295545,
+          "rho": 1.0335505855378,
+          "radial_worse": true,
+          "rtol": 1e-11
+        },
+        "tight": {
+          "E_constant_m": 13.482891158085248,
+          "E_radial_m": 14.696920251549752,
+          "rho": 1.0900421934160975,
+          "radial_worse": true,
+          "rtol": 1e-12
+        },
+        "tighter": {
+          "E_constant_m": 13.76352114919368,
+          "E_radial_m": 20.339652618466445,
+          "rho": 1.477794264853367,
+          "radial_worse": true,
+          "rtol": 1e-13
+        },
+        "tightest": {
+          "E_constant_m": 13.77665870059943,
+          "E_radial_m": 21.187337602381344,
+          "rho": 1.537915547073796,
+          "radial_worse": true,
+          "rtol": 2.5e-14
+        }
+      },
+      "levels_available": [
+        "loose",
+        "tight",
+        "tighter",
+        "tightest"
+      ],
+      "all_same_side_of_one": true,
+      "rho_range": [
+        1.0335505855378,
+        1.537915547073796
+      ],
+      "rho_spread_dex": 0.17260074996406868,
+      "pairs": {
+        "loose_tight": {
+          "levels": [
+            "loose",
+            "tight"
+          ],
+          "E_constant_m": 13.482891158085248,
+          "E_radial_m": 14.696920251549752,
+          "envelope_sum_m": 7.052224136018185,
+          "M_res": 0.17214839886668248,
+          "resolved": false,
+          "rho": 1.0900421934160975,
+          "radial_worse": true
+        },
+        "tight_tighter": {
+          "levels": [
+            "tight",
+            "tighter"
+          ],
+          "E_constant_m": 13.76352114919368,
+          "E_radial_m": 20.339652618466445,
+          "envelope_sum_m": 5.9834908258123045,
+          "M_res": 1.099045968434322,
+          "resolved": true,
+          "rho": 1.477794264853367,
+          "radial_worse": true
+        },
+        "tighter_tightest": {
+          "levels": [
+            "tighter",
+            "tightest"
+          ],
+          "E_constant_m": 13.77665870059943,
+          "E_radial_m": 21.187337602381344,
+          "envelope_sum_m": 0.9740623012958033,
+          "M_res": 7.60801325738962,
+          "resolved": true,
+          "rho": 1.537915547073796,
+          "radial_worse": true
+        }
+      },
+      "resolved_in_n_pairs": 2,
+      "resolved_in_manuscript_pair": true,
+      "sign_agrees_across_resolved_pairs": true
+    }
+  ],
+  "provenance": {
+    "lunaris_repo": "D:\\Masaustu\\LUNAR_SIMULATION",
+    "lunaris_commit": "27e9ab86ed61d623f78c453ea2054348f1044c23",
+    "lunaris_working_tree_clean": false,
+    "kernel_path": "D:\\Masaustu\\LUNAR_SIMULATION\\src\\lunaris\\physics\\spherical_harmonics.py",
+    "kernel_sha256": "6e2a0a85e18c9b400c003e6c2ad1e163c524c27f54bc0d404e0172709d16d740",
+    "gravity_key": "JGGRX_1800F",
+    "gravity_path": "D:\\Masaustu\\LUNAR_SIMULATION\\data\\gravity_models\\jggrx_1800f_sha.tab.txt",
+    "gravity_sha256": "d2a552067a78bf1d2755807ae14ee1d6843a8f6a4228e01ce59a665516738fec",
+    "harness": "C:\\Users\\ayber\\Desktop\\Makale\\codebase\\python_codes\\revJ_common.py",
+    "harness_sha256": "894b92fa2f3af5e50319280bb47454d46b34d06e7e1337452760cf93f752628f",
+    "python": "3.12.1 (tags/v3.12.1:2305ca5, Dec  7 2023, 22:03:25) [MSC v.1937 64 bit (AMD64)]",
+    "numpy": "2.2.6",
+    "scipy": "1.14.1",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "processor": "Intel64 Family 6 Model 158 Stepping 10, GenuineIntel",
+    "logical_cpu_count": 12
+  }
+}

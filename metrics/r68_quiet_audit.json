@@ -1,0 +1,88 @@
+{
+  "schema": "r68_quiet_audit_v1",
+  "purpose": "post-hoc contention audit of the R68 population timing campaign, from telemetry already in the case records; no propagation is repeated",
+  "metric": "gravity_kernel_ns / (n_rhs * mean_degree_sq), and the same quantity divided by a fitted a + b/N^2 to remove the degree dependence the raw measure carries",
+  "reference_runs": "r65 and r48 are the accepted panel campaigns; their spreads are what this machine produced when it was quiet",
+  "runs": {
+    "r68_endpoint": {
+      "timed_cases": 510,
+      "degree_model": {
+        "a": 4.095871175294003,
+        "b": 7879.392588964227,
+        "corr_raw_throughput_vs_degree": -0.7273230404299215,
+        "residual_rms_over_median": 0.03254972332815147
+      },
+      "raw": {
+        "worst_within_orbit_spread": 1.4693890695350225,
+        "median_within_orbit_spread": 1.0718972858976619,
+        "worst_over_opening_baseline": 1.3999921774681354
+      },
+      "normalized": {
+        "worst_within_orbit_spread": 1.1870745183333242,
+        "median_within_orbit_spread": 1.0481851467266612,
+        "cases_above_1p25_baseline": 0,
+        "worst_over_opening_baseline": 1.0640387635133912
+      }
+    },
+    "r68_interior": {
+      "timed_cases": 561,
+      "degree_model": {
+        "a": 4.306305790440648,
+        "b": 8691.33862493836,
+        "corr_raw_throughput_vs_degree": -0.6543016904125923,
+        "residual_rms_over_median": 0.056026526786757604
+      },
+      "raw": {
+        "worst_within_orbit_spread": 1.2770336717323343,
+        "median_within_orbit_spread": 1.0742369514035297,
+        "worst_over_opening_baseline": 1.3939125850519514
+      },
+      "normalized": {
+        "worst_within_orbit_spread": 1.2298768576525418,
+        "median_within_orbit_spread": 1.0738743551220944,
+        "cases_above_1p25_baseline": 0,
+        "worst_over_opening_baseline": 1.2338065018546218
+      }
+    },
+    "r65_reference": {
+      "timed_cases": 103,
+      "degree_model": {
+        "a": 4.070177041964259,
+        "b": 6357.014641268531,
+        "corr_raw_throughput_vs_degree": -0.658137137849188,
+        "residual_rms_over_median": 0.03674373291956169
+      },
+      "raw": {
+        "worst_within_orbit_spread": 1.2671707065848148,
+        "median_within_orbit_spread": 1.0735112611355007,
+        "worst_over_opening_baseline": 1.270358516469638
+      },
+      "normalized": {
+        "worst_within_orbit_spread": 1.270402298000577,
+        "median_within_orbit_spread": 1.032422892631495,
+        "cases_above_1p25_baseline": 0,
+        "worst_over_opening_baseline": 1.2223598530184652
+      }
+    },
+    "r48_reference": {
+      "timed_cases": 56,
+      "degree_model": {
+        "a": 4.41778741744498,
+        "b": 6134.7737648313405,
+        "corr_raw_throughput_vs_degree": -0.6054191686296653,
+        "residual_rms_over_median": 0.029277455871032386
+      },
+      "raw": {
+        "worst_within_orbit_spread": 1.09282357296163,
+        "median_within_orbit_spread": 1.0251616836558517,
+        "worst_over_opening_baseline": 1.2569036089101837
+      },
+      "normalized": {
+        "worst_within_orbit_spread": 1.1167589579198614,
+        "median_within_orbit_spread": 1.0228855340368717,
+        "cases_above_1p25_baseline": 0,
+        "worst_over_opening_baseline": 1.138410161306292
+      }
+    }
+  }
+}

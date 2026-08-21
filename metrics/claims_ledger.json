@@ -1,0 +1,1887 @@
+{
+  "schema": "claims_ledger_v1",
+  "created_utc": "2026-08-13T22:00:45.008638Z",
+  "note": "A recomputation layer over the sealed records, concentrated on the campaigns added since the manuscript was first sealed, rather than an exhaustive inventory of the manuscript's numbers, whose coverage is the claim map. Each entry names the sealed record it derives from, the derivation, the value pinned when it was last confirmed, and where it is printed. claims_ledger.py recomputes all three. A claim whose source digest has moved is reported stale rather than passed.",
+  "claims": [
+    {
+      "id": "ladder.uncapped.a.cells",
+      "claim": "the block-A control covers sixteen cells",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/supp_span_ladder.tex"
+      ],
+      "source": "r51_verdict.json",
+      "source_sha256": "04a2b454cbf47543a6a1ff97e4304db60d66e4baead1654ba07029a7fa576549",
+      "check": {
+        "kind": "count_cells"
+      },
+      "expect": 16,
+      "tol": 0
+    },
+    {
+      "id": "ladder.uncapped.a.verdicts_unchanged",
+      "claim": "fifteen of the sixteen cells return the same verdict as the capped parent",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/supp_span_ladder.tex",
+        "chapters/08_discussion.tex"
+      ],
+      "source": "r51_verdict.json",
+      "source_sha256": "04a2b454cbf47543a6a1ff97e4304db60d66e4baead1654ba07029a7fa576549",
+      "check": {
+        "kind": "count_cells",
+        "where": {
+          "path": "verdict_changed",
+          "equals": false
+        }
+      },
+      "expect": 15,
+      "tol": 0
+    },
+    {
+      "id": "ladder.uncapped.a.turnover_cell_capped",
+      "claim": "the beta=1 1200 km cell stands at twelve to two under the ceiling",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/supp_span_ladder.tex"
+      ],
+      "source": "r51_verdict.json",
+      "source_sha256": "04a2b454cbf47543a6a1ff97e4304db60d66e4baead1654ba07029a7fa576549",
+      "check": {
+        "kind": "cell_tally",
+        "beta": "1.00",
+        "level": 1200,
+        "under": "capped"
+      },
+      "expect": "12-2",
+      "tol": 0,
+      "appears_as": "from twelve to two down to seven to six"
+    },
+    {
+      "id": "ladder.uncapped.a.turnover_cell_free",
+      "claim": "the same cell stands at seven to six with the ceiling removed",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/supp_span_ladder.tex"
+      ],
+      "source": "r51_verdict.json",
+      "source_sha256": "04a2b454cbf47543a6a1ff97e4304db60d66e4baead1654ba07029a7fa576549",
+      "check": {
+        "kind": "cell_tally",
+        "beta": "1.00",
+        "level": 1200,
+        "under": "uncapped"
+      },
+      "expect": "7-6",
+      "tol": 0
+    },
+    {
+      "id": "ladder.uncapped.a.median_drop_wide",
+      "claim": "the median magnitude drop over the eight block-A cells the ceiling reaches is 2.1",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/supp_span_ladder.tex",
+        "chapters/supp_experiment_contract.tex"
+      ],
+      "source": "r51_verdict.json",
+      "source_sha256": "04a2b454cbf47543a6a1ff97e4304db60d66e4baead1654ba07029a7fa576549",
+      "check": {
+        "kind": "aggregate_cells",
+        "path": "rho_factor",
+        "level_min": 1200,
+        "agg": "median"
+      },
+      "expect": 2.1323758596,
+      "tol": 0.05
+    },
+    {
+      "id": "ladder.uncapped.b.median_drop_wide",
+      "claim": "the median magnitude drop over the eight block-B cells the ceiling reaches is 3.4",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/supp_experiment_contract.tex"
+      ],
+      "source": "r52_verdict.json",
+      "source_sha256": "6d2fe15bd8e3482a8ccd58d9d06b8615b9454ef48658b30f440836f373dd391b",
+      "check": {
+        "kind": "aggregate_cells",
+        "path": "rho_factor",
+        "level_min": 1200,
+        "agg": "median"
+      },
+      "expect": 3.3626886764,
+      "tol": 0.05
+    },
+    {
+      "id": "ladder.uncapped.a.widest_drop_declared",
+      "claim": "the widest level falls by a factor near a thousand at the declared budget",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/supp_span_ladder.tex",
+        "chapters/supp_experiment_contract.tex"
+      ],
+      "source": "r51_verdict.json",
+      "source_sha256": "04a2b454cbf47543a6a1ff97e4304db60d66e4baead1654ba07029a7fa576549",
+      "check": {
+        "kind": "cell_field",
+        "beta": "1.00",
+        "level": 2400,
+        "path": "rho_factor"
+      },
+      "expect": 956.5049861473,
+      "tol": 0.05
+    },
+    {
+      "id": "ladder.uncapped.a.outcome",
+      "claim": "the block-A control returned outcome Z",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/supp_span_ladder.tex"
+      ],
+      "source": "r51_verdict.json",
+      "source_sha256": "04a2b454cbf47543a6a1ff97e4304db60d66e4baead1654ba07029a7fa576549",
+      "check": {
+        "kind": "path",
+        "path": "outcome"
+      },
+      "expect": "Z_ordering_breaks",
+      "tol": 0
+    },
+    {
+      "id": "ladder.uncapped.b.cells",
+      "claim": "the two blocks share sixteen ceiling-free cells",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/supp_span_ladder.tex"
+      ],
+      "source": "r52_verdict.json",
+      "source_sha256": "6d2fe15bd8e3482a8ccd58d9d06b8615b9454ef48658b30f440836f373dd391b",
+      "check": {
+        "kind": "count_cells"
+      },
+      "expect": 16,
+      "tol": 0
+    },
+    {
+      "id": "ladder.replication.agree",
+      "claim": "the blocks agree on the verdict at every one of the sixteen cells",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/supp_span_ladder.tex"
+      ],
+      "source": "r52_verdict.json",
+      "source_sha256": "6d2fe15bd8e3482a8ccd58d9d06b8615b9454ef48658b30f440836f373dd391b",
+      "check": {
+        "kind": "count_cells",
+        "where": {
+          "path": "agrees_with_block_a",
+          "equals": true
+        }
+      },
+      "expect": 16,
+      "tol": 0
+    },
+    {
+      "id": "ladder.replication.disagreements",
+      "claim": "no level changes hands between the blocks",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/supp_span_ladder.tex"
+      ],
+      "source": "r52_verdict.json",
+      "source_sha256": "6d2fe15bd8e3482a8ccd58d9d06b8615b9454ef48658b30f440836f373dd391b",
+      "check": {
+        "kind": "len",
+        "path": "levels_disagreeing_with_block_a"
+      },
+      "expect": 0,
+      "tol": 0
+    },
+    {
+      "id": "ladder.replication.turnover_gaps",
+      "claim": "the turnover falls between the same level pair at every budget",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/supp_span_ladder.tex"
+      ],
+      "source": "r52_verdict.json",
+      "source_sha256": "6d2fe15bd8e3482a8ccd58d9d06b8615b9454ef48658b30f440836f373dd391b",
+      "check": {
+        "kind": "len",
+        "path": "turnover_disagreements"
+      },
+      "expect": 0,
+      "tol": 0
+    },
+    {
+      "id": "ladder.replication.decisive_cell_b",
+      "claim": "block B places the lowest-budget widest cell at five to ten",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/supp_span_ladder.tex"
+      ],
+      "source": "r52_verdict.json",
+      "source_sha256": "6d2fe15bd8e3482a8ccd58d9d06b8615b9454ef48658b30f440836f373dd391b",
+      "check": {
+        "kind": "cell_tally",
+        "beta": "0.50",
+        "level": 2400,
+        "under": "uncapped"
+      },
+      "expect": "5-10",
+      "tol": 0,
+      "appears_as": "block B does the same at $5$--$10$"
+    },
+    {
+      "id": "ladder.replication.decisive_cell_a",
+      "claim": "block A places the same cell at seven to nine",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/supp_span_ladder.tex"
+      ],
+      "source": "r51_verdict.json",
+      "source_sha256": "04a2b454cbf47543a6a1ff97e4304db60d66e4baead1654ba07029a7fa576549",
+      "check": {
+        "kind": "cell_tally",
+        "beta": "0.50",
+        "level": 2400,
+        "under": "uncapped"
+      },
+      "expect": "7-9",
+      "tol": 0
+    },
+    {
+      "id": "ladder.replication.ordering_clause",
+      "claim": "the span-ordering clause of the registered class does not hold",
+      "status": "declared departure",
+      "appears_in": [
+        "chapters/supp_span_ladder.tex"
+      ],
+      "source": "r52_verdict.json",
+      "source_sha256": "6d2fe15bd8e3482a8ccd58d9d06b8615b9454ef48658b30f440836f373dd391b",
+      "check": {
+        "kind": "path",
+        "path": "p_ordering_clause_holds"
+      },
+      "expect": false,
+      "tol": 0
+    },
+    {
+      "id": "ladder.replication.classes_cover",
+      "claim": "no registered class covers the result",
+      "status": "declared departure",
+      "appears_in": [
+        "chapters/supp_span_ladder.tex"
+      ],
+      "source": "r52_verdict.json",
+      "source_sha256": "6d2fe15bd8e3482a8ccd58d9d06b8615b9454ef48658b30f440836f373dd391b",
+      "check": {
+        "kind": "path",
+        "path": "registered_classes_cover_result"
+      },
+      "expect": false,
+      "tol": 0
+    },
+    {
+      "id": "ladder.replication.outcome",
+      "claim": "the replication returned outcome P",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/supp_span_ladder.tex"
+      ],
+      "source": "r52_verdict.json",
+      "source_sha256": "6d2fe15bd8e3482a8ccd58d9d06b8615b9454ef48658b30f440836f373dd391b",
+      "check": {
+        "kind": "path",
+        "path": "outcome"
+      },
+      "expect": "P_replicates",
+      "tol": 0
+    },
+    {
+      "id": "ladder.probe.a.registered_1200",
+      "claim": "five of sixteen orbits reach the ceiling at 1200 km on the registered grid",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/supp_span_ladder.tex"
+      ],
+      "source": "r51_ceiling_probe_registered_grid.json",
+      "source_sha256": "6c9c2b9d9493d611d89a35d91b0cb9edc9de7156bfe37cb8e82f195c9cfd96c7",
+      "check": {
+        "kind": "path",
+        "path": "orbits_clamped_at_parent_cap_by_level.1200"
+      },
+      "expect": 5,
+      "tol": 0
+    },
+    {
+      "id": "ladder.probe.a.all_budgets_600",
+      "claim": "four of sixteen orbits reach it at 600 km once the amended budgets are included",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/supp_span_ladder.tex"
+      ],
+      "source": "r51_ceiling_probe_all_budgets.json",
+      "source_sha256": "915c94392b27cf99d3d102f2dca48d4baad4fa04d926c64bfc584d53b9fc916f",
+      "check": {
+        "kind": "path",
+        "path": "orbits_clamped_at_parent_cap_by_level.600"
+      },
+      "expect": 4,
+      "tol": 0
+    },
+    {
+      "id": "ladder.probe.a.demand_all_budgets",
+      "claim": "the largest request under a ceiling of 600 across all six budgets is 599",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/supp_span_ladder.tex"
+      ],
+      "source": "r51_ceiling_probe_all_budgets.json",
+      "source_sha256": "915c94392b27cf99d3d102f2dca48d4baad4fa04d926c64bfc584d53b9fc916f",
+      "check": {
+        "kind": "path",
+        "path": "max_requested_degree_at_raised_cap"
+      },
+      "expect": 599,
+      "tol": 0
+    },
+    {
+      "id": "ladder.probe.b.demand",
+      "claim": "the largest request on block B under a ceiling of 600 is 528",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/supp_span_ladder.tex"
+      ],
+      "source": "r52_ceiling_probe.json",
+      "source_sha256": "41ee812576ce942c189b3002d39324e8c3703098d6f22ffe4e263ee7cf37987c",
+      "check": {
+        "kind": "path",
+        "path": "max_requested_degree_at_raised_cap"
+      },
+      "expect": 528,
+      "tol": 0,
+      "appears_as": "at $528$"
+    },
+    {
+      "id": "operational.uncapped.tally_free_050_radial",
+      "claim": "the ceiling-free radial endpoint takes 2 of the resolved orbits at half budget",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/supp_operational.tex"
+      ],
+      "source": "r36_regime_map.json",
+      "source_sha256": "3397d5690b8670364895b6ef4dbd10713358bb40e9baaeb0d0d80e2945bf883a",
+      "check": {
+        "kind": "path",
+        "path": [
+          "panels",
+          "a_radial_vs_fixed",
+          "OEU|0.50",
+          "policy_wins"
+        ]
+      },
+      "expect": 2,
+      "tol": 0,
+      "appears_as": "wins 2--61 at $\\beta=0.50$"
+    },
+    {
+      "id": "operational.uncapped.tally_free_050_constant",
+      "claim": "the constant degree takes 61 of them at half budget",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/supp_operational.tex"
+      ],
+      "source": "r36_regime_map.json",
+      "source_sha256": "3397d5690b8670364895b6ef4dbd10713358bb40e9baaeb0d0d80e2945bf883a",
+      "check": {
+        "kind": "path",
+        "path": [
+          "panels",
+          "a_radial_vs_fixed",
+          "OEU|0.50",
+          "fixed_wins"
+        ]
+      },
+      "expect": 61,
+      "tol": 0,
+      "appears_as": "wins 2--61 at $\\beta=0.50$"
+    },
+    {
+      "id": "operational.uncapped.tally_free_075_radial",
+      "claim": "the ceiling-free radial endpoint takes 31 at three quarters of budget",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/supp_operational.tex"
+      ],
+      "source": "r36_regime_map.json",
+      "source_sha256": "3397d5690b8670364895b6ef4dbd10713358bb40e9baaeb0d0d80e2945bf883a",
+      "check": {
+        "kind": "path",
+        "path": [
+          "panels",
+          "a_radial_vs_fixed",
+          "OEU|0.75",
+          "policy_wins"
+        ]
+      },
+      "expect": 31,
+      "tol": 0,
+      "appears_as": "wins 31--28 at $\\beta=0.75$"
+    },
+    {
+      "id": "operational.uncapped.tally_free_075_constant",
+      "claim": "the constant degree takes 28 at three quarters of budget",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/supp_operational.tex"
+      ],
+      "source": "r36_regime_map.json",
+      "source_sha256": "3397d5690b8670364895b6ef4dbd10713358bb40e9baaeb0d0d80e2945bf883a",
+      "check": {
+        "kind": "path",
+        "path": [
+          "panels",
+          "a_radial_vs_fixed",
+          "OEU|0.75",
+          "fixed_wins"
+        ]
+      },
+      "expect": 28,
+      "tol": 0,
+      "appears_as": "wins 31--28 at $\\beta=0.75$"
+    },
+    {
+      "id": "operational.uncapped.tally_free",
+      "claim": "the ceiling-free radial endpoint wins 46--10 at the declared budget",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/supp_experiment_contract.tex",
+        "chapters/supp_operational.tex"
+      ],
+      "source": "r36_regime_map.json",
+      "source_sha256": "3397d5690b8670364895b6ef4dbd10713358bb40e9baaeb0d0d80e2945bf883a",
+      "check": {
+        "kind": "path",
+        "path": [
+          "panels",
+          "a_radial_vs_fixed",
+          "OEU|1.00",
+          "policy_wins"
+        ]
+      },
+      "expect": 46,
+      "tol": 0,
+      "appears_as": "wins 46--10 at $\\beta=1$"
+    },
+    {
+      "id": "operational.uncapped.rho_capped",
+      "claim": "the ceiling had inflated the median error ratio to 81",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/supp_experiment_contract.tex"
+      ],
+      "source": "r36_regime_map.json",
+      "source_sha256": "3397d5690b8670364895b6ef4dbd10713358bb40e9baaeb0d0d80e2945bf883a",
+      "check": {
+        "kind": "path",
+        "path": [
+          "panels",
+          "a_radial_vs_fixed",
+          "OE|1.00",
+          "rho"
+        ]
+      },
+      "expect": 81.4076484519,
+      "tol": 0.01
+    },
+    {
+      "id": "operational.uncapped.rho_free",
+      "claim": "the ceiling-free median error ratio is 5.6",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/supp_experiment_contract.tex"
+      ],
+      "source": "r36_regime_map.json",
+      "source_sha256": "3397d5690b8670364895b6ef4dbd10713358bb40e9baaeb0d0d80e2945bf883a",
+      "check": {
+        "kind": "path",
+        "path": [
+          "panels",
+          "a_radial_vs_fixed",
+          "OEU|1.00",
+          "rho"
+        ]
+      },
+      "expect": 5.562955519,
+      "tol": 0.01
+    },
+    {
+      "id": "calibration.pick.classical",
+      "claim": "the classical p=2 pick at 100 km is 56",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/supp_results_detail.tex"
+      ],
+      "source": "e6_orbit_mapping.json",
+      "source_sha256": "8fa268f43d923cf59ab1b67a9965e93d33f403d9a7eb65c2d5f8e93d0e5a6d55",
+      "check": {
+        "kind": "path",
+        "path": "criteria_at_100km.kaula_p2_0"
+      },
+      "expect": 56,
+      "tol": 0,
+      "appears_as": "pick ($N=56$)"
+    },
+    {
+      "id": "calibration.pick.calibrated",
+      "claim": "the empirical minimum degree at 100 km is 69 under the radial weighting the sweep was run at",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/supp_results_detail.tex"
+      ],
+      "source": "e6_orbit_mapping.json",
+      "source_sha256": "8fa268f43d923cf59ab1b67a9965e93d33f403d9a7eb65c2d5f8e93d0e5a6d55",
+      "check": {
+        "kind": "path",
+        "path": "criteria_at_100km.empirical"
+      },
+      "expect": 69,
+      "tol": 0,
+      "appears_as": "empirical minimum ($N=69$)"
+    },
+    {
+      "id": "calibration.pick.classical_totalvector",
+      "claim": "the total-vector p=2 pick at 100 km is 57, the counterpart of the sweep's 56 under the radial weighting",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/supp_results_detail.tex"
+      ],
+      "source": "r1_spectrum_pfit.json",
+      "source_sha256": "c99853fe86ea5303eeb28768f35402405ae36db090be4ac6c06974d5d5fbe16b",
+      "check": {
+        "kind": "aggregate_rows",
+        "rows": "criteria_rows",
+        "path": "proxy_vec_p2_0",
+        "where": {
+          "path": "altitude_km",
+          "equals": 100
+        },
+        "agg": "median"
+      },
+      "expect": 57,
+      "tol": 0,
+      "appears_as": "moves the first two to $57$ and $70$"
+    },
+    {
+      "id": "calibration.pick.calibrated_totalvector",
+      "claim": "the total-vector empirical minimum at 100 km is 70, the counterpart of the sweep's 69 under the radial weighting",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/supp_results_detail.tex"
+      ],
+      "source": "r43_lookup.json",
+      "source_sha256": "f71af9a36ab487951ba5ef2ffaf9488ab79964a45c24fa53ac97d8a9a8452b32",
+      "check": {
+        "kind": "aggregate_rows",
+        "rows": "rows",
+        "path": "N_eps1e-2",
+        "where": {
+          "path": "altitude_km",
+          "equals": 100
+        },
+        "agg": "median"
+      },
+      "expect": 70,
+      "tol": 0,
+      "appears_as": "moves the first two to $57$ and $70$"
+    },
+    {
+      "id": "calibration.pick.attenuation",
+      "claim": "the attenuation pick at 100 km is 124",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/supp_results_detail.tex"
+      ],
+      "source": "e6_orbit_mapping.json",
+      "source_sha256": "8fa268f43d923cf59ab1b67a9965e93d33f403d9a7eb65c2d5f8e93d0e5a6d55",
+      "check": {
+        "kind": "path",
+        "path": "criteria_at_100km.attenuation_only"
+      },
+      "expect": 124,
+      "tol": 0,
+      "appears_as": "attenuation pick ($N=124$)"
+    },
+    {
+      "id": "variational.panel.resolved_signs",
+      "claim": "the forced variational reconstruction reverses the ranking on all 100 resolved orbits",
+      "status": "confirmatory",
+      "appears_in": [
+        "main.tex"
+      ],
+      "source": "r42_panel_verdict.json",
+      "source_sha256": "e494758b3eb097fcf3c07874140830b5b57603b231f23c37b35fbba0e921afe2",
+      "check": {
+        "kind": "path",
+        "path": "resolved.sign_agreement"
+      },
+      "expect": 100,
+      "tol": 0,
+      "note": "the record field is the resolved-comparison sign agreement"
+    },
+    {
+      "id": "ladder.uncapped.b.verdicts_unchanged",
+      "claim": "block B also retains fifteen of its sixteen capped-parent verdicts",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/supp_span_ladder.tex"
+      ],
+      "source": "r52_verdict.json",
+      "source_sha256": "6d2fe15bd8e3482a8ccd58d9d06b8615b9454ef48658b30f440836f373dd391b",
+      "check": {
+        "kind": "count_cells",
+        "where": {
+          "path": "verdict_changed",
+          "equals": false
+        }
+      },
+      "expect": 15,
+      "tol": 0
+    },
+    {
+      "id": "ladder.uncapped.b.changed_cell",
+      "claim": "the cell block B changes is the same one block A changes",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/supp_span_ladder.tex"
+      ],
+      "source": "r52_verdict.json",
+      "source_sha256": "6d2fe15bd8e3482a8ccd58d9d06b8615b9454ef48658b30f440836f373dd391b",
+      "check": {
+        "kind": "path",
+        "path": [
+          "levels_changing_hands_vs_capped_parent",
+          0,
+          "level_km"
+        ]
+      },
+      "expect": 2400.0,
+      "tol": 0
+    },
+    {
+      "id": "ladder.uncapped.b.changed_budget",
+      "claim": "and it changes at the lowest registered budget",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/supp_span_ladder.tex"
+      ],
+      "source": "r52_verdict.json",
+      "source_sha256": "6d2fe15bd8e3482a8ccd58d9d06b8615b9454ef48658b30f440836f373dd391b",
+      "check": {
+        "kind": "path",
+        "path": [
+          "levels_changing_hands_vs_capped_parent",
+          0,
+          "beta"
+        ]
+      },
+      "expect": "0.50",
+      "tol": 0
+    },
+    {
+      "id": "ladder.replication.turnover_lowest",
+      "claim": "neither ceiling-free block carries a turnover at the lowest budget",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/supp_span_ladder.tex"
+      ],
+      "source": "r52_verdict.json",
+      "source_sha256": "6d2fe15bd8e3482a8ccd58d9d06b8615b9454ef48658b30f440836f373dd391b",
+      "check": {
+        "kind": "path",
+        "path": [
+          "by_budget",
+          "0.50",
+          "turnover_block_b"
+        ]
+      },
+      "expect": null,
+      "tol": 0
+    },
+    {
+      "id": "ladder.replication.turnover_declared",
+      "claim": "at the declared budget both place the turnover between 600 and 1200 km",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/supp_span_ladder.tex"
+      ],
+      "source": "r52_verdict.json",
+      "source_sha256": "6d2fe15bd8e3482a8ccd58d9d06b8615b9454ef48658b30f440836f373dd391b",
+      "check": {
+        "kind": "path",
+        "path": [
+          "by_budget",
+          "1.00",
+          "turnover_block_b"
+        ]
+      },
+      "expect": [
+        600.0,
+        1200.0
+      ],
+      "tol": 0
+    },
+    {
+      "id": "posthoc.b62.oeu_policy",
+      "claim": "the ceiling-free radial endpoint takes 13 at the post-hoc budget",
+      "status": "exploratory",
+      "appears_in": [
+        "chapters/supp_operational.tex"
+      ],
+      "source": "r36_regime_map.json",
+      "source_sha256": "3397d5690b8670364895b6ef4dbd10713358bb40e9baaeb0d0d80e2945bf883a",
+      "check": {
+        "kind": "path",
+        "path": [
+          "panels",
+          "a_radial_vs_fixed",
+          "OEU|0.62",
+          "policy_wins"
+        ]
+      },
+      "expect": 13,
+      "tol": 0,
+      "appears_as": "13--47 at the post-hoc $\\beta=0.62$"
+    },
+    {
+      "id": "posthoc.b62.oeu_constant",
+      "claim": "the constant degree takes 47 there",
+      "status": "exploratory",
+      "appears_in": [
+        "chapters/supp_operational.tex"
+      ],
+      "source": "r36_regime_map.json",
+      "source_sha256": "3397d5690b8670364895b6ef4dbd10713358bb40e9baaeb0d0d80e2945bf883a",
+      "check": {
+        "kind": "path",
+        "path": [
+          "panels",
+          "a_radial_vs_fixed",
+          "OEU|0.62",
+          "fixed_wins"
+        ]
+      },
+      "expect": 47,
+      "tol": 0,
+      "appears_as": "13--47 at the post-hoc $\\beta=0.62$"
+    },
+    {
+      "id": "posthoc.b62.a_policy",
+      "claim": "design A's interior member has crossed by 0.62, at 20",
+      "status": "exploratory",
+      "appears_in": [
+        "chapters/supp_budget_pareto.tex"
+      ],
+      "source": "r36_regime_map.json",
+      "source_sha256": "3397d5690b8670364895b6ef4dbd10713358bb40e9baaeb0d0d80e2945bf883a",
+      "check": {
+        "kind": "path",
+        "path": [
+          "panels",
+          "b_interior_vs_workmatched",
+          "A|0.62",
+          "policy_wins"
+        ]
+      },
+      "expect": 20,
+      "tol": 0,
+      "appears_as": "on design A at $20$--$19$"
+    },
+    {
+      "id": "posthoc.b62.a_constant",
+      "claim": "its work-matched comparator takes 19",
+      "status": "exploratory",
+      "appears_in": [
+        "chapters/supp_budget_pareto.tex"
+      ],
+      "source": "r36_regime_map.json",
+      "source_sha256": "3397d5690b8670364895b6ef4dbd10713358bb40e9baaeb0d0d80e2945bf883a",
+      "check": {
+        "kind": "path",
+        "path": [
+          "panels",
+          "b_interior_vs_workmatched",
+          "A|0.62",
+          "fixed_wins"
+        ]
+      },
+      "expect": 19,
+      "tol": 0,
+      "appears_as": "on design A at $20$--$19$"
+    },
+    {
+      "id": "posthoc.b62.b_policy",
+      "claim": "design B has not crossed by 0.62: the interior member takes 21",
+      "status": "exploratory",
+      "appears_in": [
+        "chapters/supp_budget_pareto.tex"
+      ],
+      "source": "r36_regime_map.json",
+      "source_sha256": "3397d5690b8670364895b6ef4dbd10713358bb40e9baaeb0d0d80e2945bf883a",
+      "check": {
+        "kind": "path",
+        "path": [
+          "panels",
+          "b_interior_vs_workmatched",
+          "B|0.62",
+          "policy_wins"
+        ]
+      },
+      "expect": 21,
+      "tol": 0,
+      "appears_as": "on design B at $21$--$24$"
+    },
+    {
+      "id": "posthoc.b62.b_constant",
+      "claim": "its comparator takes 24",
+      "status": "exploratory",
+      "appears_in": [
+        "chapters/supp_budget_pareto.tex"
+      ],
+      "source": "r36_regime_map.json",
+      "source_sha256": "3397d5690b8670364895b6ef4dbd10713358bb40e9baaeb0d0d80e2945bf883a",
+      "check": {
+        "kind": "path",
+        "path": [
+          "panels",
+          "b_interior_vs_workmatched",
+          "B|0.62",
+          "fixed_wins"
+        ]
+      },
+      "expect": 24,
+      "tol": 0,
+      "appears_as": "on design B at $21$--$24$"
+    },
+    {
+      "id": "posthoc.b62.c_policy",
+      "claim": "design C has not crossed by 0.62: the interior member takes 24",
+      "status": "exploratory",
+      "appears_in": [
+        "chapters/supp_budget_pareto.tex"
+      ],
+      "source": "r36_regime_map.json",
+      "source_sha256": "3397d5690b8670364895b6ef4dbd10713358bb40e9baaeb0d0d80e2945bf883a",
+      "check": {
+        "kind": "path",
+        "path": [
+          "panels",
+          "b_interior_vs_workmatched",
+          "C|0.62",
+          "policy_wins"
+        ]
+      },
+      "expect": 24,
+      "tol": 0,
+      "appears_as": "on the third design at $24$--$29$"
+    },
+    {
+      "id": "posthoc.b62.c_constant",
+      "claim": "its comparator takes 29",
+      "status": "exploratory",
+      "appears_in": [
+        "chapters/supp_budget_pareto.tex"
+      ],
+      "source": "r36_regime_map.json",
+      "source_sha256": "3397d5690b8670364895b6ef4dbd10713358bb40e9baaeb0d0d80e2945bf883a",
+      "check": {
+        "kind": "path",
+        "path": [
+          "panels",
+          "b_interior_vs_workmatched",
+          "C|0.62",
+          "fixed_wins"
+        ]
+      },
+      "expect": 29,
+      "tol": 0,
+      "appears_as": "on the third design at $24$--$29$"
+    },
+    {
+      "id": "posthoc.b62.sp_policy",
+      "claim": "the polar sub-box has not crossed by 0.62: the interior member takes 21",
+      "status": "exploratory",
+      "appears_in": [
+        "chapters/supp_budget_pareto.tex"
+      ],
+      "source": "r36_regime_map.json",
+      "source_sha256": "3397d5690b8670364895b6ef4dbd10713358bb40e9baaeb0d0d80e2945bf883a",
+      "check": {
+        "kind": "path",
+        "path": [
+          "panels",
+          "b_interior_vs_workmatched",
+          "SP|0.62",
+          "policy_wins"
+        ]
+      },
+      "expect": 21,
+      "tol": 0,
+      "appears_as": "on the near-polar sub-box at $21$--$25$"
+    },
+    {
+      "id": "posthoc.b62.sp_constant",
+      "claim": "its comparator takes 25",
+      "status": "exploratory",
+      "appears_in": [
+        "chapters/supp_budget_pareto.tex"
+      ],
+      "source": "r36_regime_map.json",
+      "source_sha256": "3397d5690b8670364895b6ef4dbd10713358bb40e9baaeb0d0d80e2945bf883a",
+      "check": {
+        "kind": "path",
+        "path": [
+          "panels",
+          "b_interior_vs_workmatched",
+          "SP|0.62",
+          "fixed_wins"
+        ]
+      },
+      "expect": 25,
+      "tol": 0,
+      "appears_as": "on the near-polar sub-box at $21$--$25$"
+    },
+    {
+      "id": "posthoc.column.outcome",
+      "claim": "the post-hoc column returned its monotone outcome class",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/supp_budget_pareto.tex",
+        "chapters/supp_experiment_contract.tex"
+      ],
+      "source": "r53_verdict.json",
+      "source_sha256": "447bfb640f676f746c53aae0800a43797c0a4abc0c8fda3133a030dd1ce2694b",
+      "check": {
+        "kind": "path",
+        "path": [
+          "outcome"
+        ]
+      },
+      "expect": "W_monotone",
+      "tol": 0,
+      "appears_as": "which is outcome~W"
+    },
+    {
+      "id": "posthoc.column.cells_complete",
+      "claim": "all seven declared cells were completed",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/supp_budget_pareto.tex",
+        "chapters/supp_experiment_contract.tex"
+      ],
+      "source": "r53_verdict.json",
+      "source_sha256": "447bfb640f676f746c53aae0800a43797c0a4abc0c8fda3133a030dd1ce2694b",
+      "check": {
+        "kind": "len",
+        "path": [
+          "cells_run"
+        ]
+      },
+      "expect": 7,
+      "tol": 0,
+      "appears_as": "All seven of the"
+    },
+    {
+      "id": "ladder.geometry.ecc_narrow",
+      "claim": "median eccentricity at the 300 km level is 0.05",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/supp_span_ladder.tex"
+      ],
+      "source": "r50_ladder_geometry.json",
+      "source_sha256": "927f634c8e58feb3bd95f2df01ed9eeb17aa2e105c55e4094d8ad5afad9cc0be",
+      "check": {
+        "kind": "aggregate_rows",
+        "rows": "levels",
+        "path": "median_eccentricity",
+        "where": {
+          "path": "apolune_level_km",
+          "equals": 300
+        },
+        "agg": "median"
+      },
+      "expect": 0.0515,
+      "tol": 0.005,
+      "appears_as": null,
+      "printed_by": "metrics/r50_ladder_geometry_table.tex, written by rev50_ladder_geometry.py from the sealed design records and typeset as Table tab:ladder-geometry"
+    },
+    {
+      "id": "ladder.geometry.ecc_wide",
+      "claim": "median eccentricity at the 2400 km level is 0.38",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/supp_span_ladder.tex"
+      ],
+      "source": "r50_ladder_geometry.json",
+      "source_sha256": "927f634c8e58feb3bd95f2df01ed9eeb17aa2e105c55e4094d8ad5afad9cc0be",
+      "check": {
+        "kind": "aggregate_rows",
+        "rows": "levels",
+        "path": "median_eccentricity",
+        "where": {
+          "path": "apolune_level_km",
+          "equals": 2400
+        },
+        "agg": "median"
+      },
+      "expect": 0.3848,
+      "tol": 0.005,
+      "appears_as": null,
+      "printed_by": "metrics/r50_ladder_geometry_table.tex, written by rev50_ladder_geometry.py from the sealed design records and typeset as Table tab:ladder-geometry"
+    },
+    {
+      "id": "ladder.geometry.period_narrow",
+      "claim": "median period at the 300 km level is 2.13 h",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/supp_span_ladder.tex"
+      ],
+      "source": "r50_ladder_geometry.json",
+      "source_sha256": "927f634c8e58feb3bd95f2df01ed9eeb17aa2e105c55e4094d8ad5afad9cc0be",
+      "check": {
+        "kind": "aggregate_rows",
+        "rows": "levels",
+        "path": "median_period_h",
+        "where": {
+          "path": "apolune_level_km",
+          "equals": 300
+        },
+        "agg": "median"
+      },
+      "expect": 2.127,
+      "tol": 0.01,
+      "appears_as": null,
+      "printed_by": "metrics/r50_ladder_geometry_table.tex, written by rev50_ladder_geometry.py from the sealed design records and typeset as Table tab:ladder-geometry"
+    },
+    {
+      "id": "ladder.geometry.period_wide",
+      "claim": "median period at the 2400 km level is 4.07 h",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/supp_span_ladder.tex"
+      ],
+      "source": "r50_ladder_geometry.json",
+      "source_sha256": "927f634c8e58feb3bd95f2df01ed9eeb17aa2e105c55e4094d8ad5afad9cc0be",
+      "check": {
+        "kind": "aggregate_rows",
+        "rows": "levels",
+        "path": "median_period_h",
+        "where": {
+          "path": "apolune_level_km",
+          "equals": 2400
+        },
+        "agg": "median"
+      },
+      "expect": 4.071,
+      "tol": 0.01,
+      "appears_as": null,
+      "printed_by": "metrics/r50_ladder_geometry_table.tex, written by rev50_ladder_geometry.py from the sealed design records and typeset as Table tab:ladder-geometry"
+    },
+    {
+      "id": "ladder.geometry.revs_narrow",
+      "claim": "median seven-day revolutions at 300 km is 79",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/supp_span_ladder.tex"
+      ],
+      "source": "r50_ladder_geometry.json",
+      "source_sha256": "927f634c8e58feb3bd95f2df01ed9eeb17aa2e105c55e4094d8ad5afad9cc0be",
+      "check": {
+        "kind": "aggregate_rows",
+        "rows": "levels",
+        "path": "median_revolutions_7d",
+        "where": {
+          "path": "apolune_level_km",
+          "equals": 300
+        },
+        "agg": "median"
+      },
+      "expect": 78.99,
+      "tol": 0.5,
+      "appears_as": null,
+      "printed_by": "metrics/r50_ladder_geometry_table.tex, written by rev50_ladder_geometry.py from the sealed design records and typeset as Table tab:ladder-geometry"
+    },
+    {
+      "id": "ladder.geometry.revs_wide",
+      "claim": "median seven-day revolutions at 2400 km is 41",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/supp_span_ladder.tex"
+      ],
+      "source": "r50_ladder_geometry.json",
+      "source_sha256": "927f634c8e58feb3bd95f2df01ed9eeb17aa2e105c55e4094d8ad5afad9cc0be",
+      "check": {
+        "kind": "aggregate_rows",
+        "rows": "levels",
+        "path": "median_revolutions_7d",
+        "where": {
+          "path": "apolune_level_km",
+          "equals": 2400
+        },
+        "agg": "median"
+      },
+      "expect": 41.26,
+      "tol": 0.5,
+      "appears_as": null,
+      "printed_by": "metrics/r50_ladder_geometry_table.tex, written by rev50_ladder_geometry.py from the sealed design records and typeset as Table tab:ladder-geometry"
+    },
+    {
+      "id": "band.share_61_100_at_100km",
+      "claim": "the 61-100 band carries 1.9% of the perturbing RMS at 100 km",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/01_introduction.tex"
+      ],
+      "source": "r1_band_shares.json",
+      "source_sha256": "0561b2874d90e651125fba896930c8255e859f6dfe63a8965abfeca54ebb5ddc",
+      "check": {
+        "kind": "aggregate_rows",
+        "rows": "rows",
+        "path": "b61_100.share",
+        "where": {
+          "path": "altitude_km",
+          "equals": 100
+        },
+        "agg": "median"
+      },
+      "expect": 0.0188694288741605,
+      "tol": 0.0005,
+      "appears_as": "RMS amplitude equal to $1.9\\%$ of the total\nperturbation RMS at 100~km"
+    },
+    {
+      "id": "lookup.emp1pct.50km",
+      "claim": "the 1% tail empirical degree at 50 km is 127",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/07_results.tex"
+      ],
+      "source": "r43_lookup.json",
+      "source_sha256": "f71af9a36ab487951ba5ef2ffaf9488ab79964a45c24fa53ac97d8a9a8452b32",
+      "check": {
+        "kind": "aggregate_rows",
+        "rows": "rows",
+        "path": "N_eps1e-2",
+        "where": {
+          "path": "altitude_km",
+          "equals": 50
+        },
+        "agg": "median"
+      },
+      "expect": 127,
+      "tol": 0,
+      "appears_as": "are $127$, $70$ and $37$ at $50$, $100$ and $200$~km"
+    },
+    {
+      "id": "lookup.emp1pct.100km",
+      "claim": "the 1% tail empirical degree at 100 km is 70",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/07_results.tex"
+      ],
+      "source": "r43_lookup.json",
+      "source_sha256": "f71af9a36ab487951ba5ef2ffaf9488ab79964a45c24fa53ac97d8a9a8452b32",
+      "check": {
+        "kind": "aggregate_rows",
+        "rows": "rows",
+        "path": "N_eps1e-2",
+        "where": {
+          "path": "altitude_km",
+          "equals": 100
+        },
+        "agg": "median"
+      },
+      "expect": 70,
+      "tol": 0,
+      "appears_as": "are $127$, $70$ and $37$ at $50$, $100$ and $200$~km"
+    },
+    {
+      "id": "lookup.emp1pct.200km",
+      "claim": "the 1% tail empirical degree at 200 km is 37",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/07_results.tex"
+      ],
+      "source": "r43_lookup.json",
+      "source_sha256": "f71af9a36ab487951ba5ef2ffaf9488ab79964a45c24fa53ac97d8a9a8452b32",
+      "check": {
+        "kind": "aggregate_rows",
+        "rows": "rows",
+        "path": "N_eps1e-2",
+        "where": {
+          "path": "altitude_km",
+          "equals": 200
+        },
+        "agg": "median"
+      },
+      "expect": 37,
+      "tol": 0,
+      "appears_as": "are $127$, $70$ and $37$ at $50$, $100$ and $200$~km"
+    },
+    {
+      "id": "posthoc.b62.se_policy",
+      "claim": "the near-equatorial sub-box's interior member has crossed by 0.62, at 32",
+      "status": "exploratory",
+      "appears_in": [
+        "chapters/supp_budget_pareto.tex"
+      ],
+      "source": "r36_regime_map.json",
+      "source_sha256": "3397d5690b8670364895b6ef4dbd10713358bb40e9baaeb0d0d80e2945bf883a",
+      "check": {
+        "kind": "path",
+        "path": [
+          "panels",
+          "b_interior_vs_workmatched",
+          "SE|0.62",
+          "policy_wins"
+        ]
+      },
+      "expect": 32,
+      "tol": 0,
+      "appears_as": "on the near-equatorial sub-box at $32$--$21$"
+    },
+    {
+      "id": "posthoc.b62.se_constant",
+      "claim": "its work-matched comparator takes 21",
+      "status": "exploratory",
+      "appears_in": [
+        "chapters/supp_budget_pareto.tex"
+      ],
+      "source": "r36_regime_map.json",
+      "source_sha256": "3397d5690b8670364895b6ef4dbd10713358bb40e9baaeb0d0d80e2945bf883a",
+      "check": {
+        "kind": "path",
+        "path": [
+          "panels",
+          "b_interior_vs_workmatched",
+          "SE|0.62",
+          "fixed_wins"
+        ]
+      },
+      "expect": 21,
+      "tol": 0,
+      "appears_as": "on the near-equatorial sub-box at $32$--$21$"
+    },
+    {
+      "id": "posthoc.b62.sf_policy",
+      "claim": "the frozen-like sub-box's interior member has crossed by 0.62, at 24",
+      "status": "exploratory",
+      "appears_in": [
+        "chapters/supp_budget_pareto.tex"
+      ],
+      "source": "r36_regime_map.json",
+      "source_sha256": "3397d5690b8670364895b6ef4dbd10713358bb40e9baaeb0d0d80e2945bf883a",
+      "check": {
+        "kind": "path",
+        "path": [
+          "panels",
+          "b_interior_vs_workmatched",
+          "SF|0.62",
+          "policy_wins"
+        ]
+      },
+      "expect": 24,
+      "tol": 0,
+      "appears_as": "on the frozen-like one at $24$--$22$"
+    },
+    {
+      "id": "posthoc.b62.sf_constant",
+      "claim": "its work-matched comparator takes 22",
+      "status": "exploratory",
+      "appears_in": [
+        "chapters/supp_budget_pareto.tex"
+      ],
+      "source": "r36_regime_map.json",
+      "source_sha256": "3397d5690b8670364895b6ef4dbd10713358bb40e9baaeb0d0d80e2945bf883a",
+      "check": {
+        "kind": "path",
+        "path": [
+          "panels",
+          "b_interior_vs_workmatched",
+          "SF|0.62",
+          "fixed_wins"
+        ]
+      },
+      "expect": 22,
+      "tol": 0,
+      "appears_as": "on the frozen-like one at $24$--$22$"
+    },
+    {
+      "id": "workmatched.oeu.tally_b100_radial",
+      "claim": "at equal realized total quadratic work the ceiling-free radial endpoint wins 26 resolved comparisons at the declared budget",
+      "status": "exploratory",
+      "appears_in": [
+        "chapters/08_budget.tex",
+        "chapters/supp_operational.tex"
+      ],
+      "source": "r58_endpoint_equal_work_OEU_beta_1.00.json",
+      "check": {
+        "kind": "path",
+        "path": [
+          "summary",
+          "resolved_radial_wins"
+        ]
+      },
+      "expect": 26,
+      "tol": 0,
+      "appears_as": "wins 26--15 at a median ratio of $1.52$",
+      "source_sha256": "55c340bf9f2e225bc3642a961e97f86555277d45fb2b72cb63cf2913ac7b1f26"
+    },
+    {
+      "id": "workmatched.oeu.tally_b100_constant",
+      "claim": "at equal realized total quadratic work the constant degree takes 15 resolved comparisons at the declared budget",
+      "status": "exploratory",
+      "appears_in": [
+        "chapters/08_budget.tex",
+        "chapters/supp_operational.tex"
+      ],
+      "source": "r58_endpoint_equal_work_OEU_beta_1.00.json",
+      "check": {
+        "kind": "path",
+        "path": [
+          "summary",
+          "resolved_constant_wins"
+        ]
+      },
+      "expect": 15,
+      "tol": 0,
+      "appears_as": "wins 26--15 at a median ratio of $1.52$",
+      "source_sha256": "55c340bf9f2e225bc3642a961e97f86555277d45fb2b72cb63cf2913ac7b1f26"
+    },
+    {
+      "id": "workmatched.oeu.tally_b075_radial",
+      "claim": "the beta = 0.75 cell changes side under work matching: the radial endpoint takes 20 of the resolved comparisons there",
+      "status": "exploratory",
+      "appears_in": [
+        "chapters/supp_operational.tex"
+      ],
+      "source": "r58_endpoint_equal_work_OEU_beta_0.75.json",
+      "check": {
+        "kind": "path",
+        "path": [
+          "summary",
+          "resolved_radial_wins"
+        ]
+      },
+      "expect": 20,
+      "tol": 0,
+      "appears_as": "20--41 at $\\beta=0.50$, $0.62$ and $0.75$",
+      "source_sha256": "60342d2e3240a1a7d29e260ae76784a9f54b5fd60c65b55d5ba8088917983108"
+    },
+    {
+      "id": "budget.realized_work_excess.A",
+      "claim": "on design A the radial endpoint's realized total quadratic work is a median 1.29 times the constant degree's at the declared budget",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/08_budget.tex"
+      ],
+      "source": "r14_trajectory_A_beta_1.00.json",
+      "check": {
+        "kind": "aggregate_rows",
+        "rows": "rows",
+        "path": [
+          "cost",
+          "total_work_ratio_atallah_over_fixed"
+        ],
+        "agg": "median"
+      },
+      "expect": 1.2892193847594222,
+      "tol": 1e-06,
+      "appears_as": "median $29\\%$ more realized quadratic work than the constant degree on both",
+      "source_sha256": "a036cfa6ac4f20d9ac7fc8663b414106a11932d780837574ae49d62fead39e00"
+    },
+    {
+      "id": "budget.realized_work_excess.B",
+      "claim": "on design B the same ratio has median 1.29",
+      "status": "confirmatory",
+      "appears_in": [
+        "chapters/08_budget.tex"
+      ],
+      "source": "r14_trajectory_B_beta_1.00.json",
+      "check": {
+        "kind": "aggregate_rows",
+        "rows": "rows",
+        "path": [
+          "cost",
+          "total_work_ratio_atallah_over_fixed"
+        ],
+        "agg": "median"
+      },
+      "expect": 1.2895691167034848,
+      "tol": 1e-06,
+      "appears_as": "median $29\\%$ more realized quadratic work than the constant degree on both",
+      "source_sha256": "419d0c089da696507b73fd3c6346b9d077552349fbccb01657762b873a092227"
+    },
+    {
+      "id": "timing.full.endpoint.A.resolved",
+      "claim": "on design A the measured-time endpoint comparison resolves 53 of 64 cells",
+      "status": "registered",
+      "appears_in": [
+        "chapters/08_budget.tex"
+      ],
+      "source": "r68_timing_full_endpoint.json",
+      "check": {
+        "kind": "path",
+        "path": [
+          "by_design",
+          "A",
+          "resolved"
+        ]
+      },
+      "expect": 53,
+      "tol": 0,
+      "appears_as": "the constant degree\nwins 51 of 53 resolved comparisons on design~A and 53 of 55 on design~B, at\nmedian fixed-to-radial error ratios of $0.021$ and $0.019$ and\nmedian achieved time ratios of $0.99$ and $1.00$",
+      "source_sha256": "b1e4cc6e609347ea8e1ffd5f366d31296afee21b3b78cf010406e7bf3254d6a4"
+    },
+    {
+      "id": "timing.full.endpoint.A.constant_wins",
+      "claim": "on design A the time-matched constant degree takes 51 of those resolved comparisons",
+      "status": "registered",
+      "appears_in": [
+        "chapters/08_budget.tex"
+      ],
+      "source": "r68_timing_full_endpoint.json",
+      "check": {
+        "kind": "path",
+        "path": [
+          "by_design",
+          "A",
+          "resolved_constant_wins"
+        ]
+      },
+      "expect": 51,
+      "tol": 0,
+      "appears_as": "the constant degree\nwins 51 of 53 resolved comparisons on design~A and 53 of 55 on design~B, at\nmedian fixed-to-radial error ratios of $0.021$ and $0.019$ and\nmedian achieved time ratios of $0.99$ and $1.00$",
+      "source_sha256": "b1e4cc6e609347ea8e1ffd5f366d31296afee21b3b78cf010406e7bf3254d6a4"
+    },
+    {
+      "id": "timing.full.endpoint.A.radial_wins",
+      "claim": "on design A the radial endpoint takes 2",
+      "status": "registered",
+      "appears_in": [
+        "chapters/08_budget.tex"
+      ],
+      "source": "r68_timing_full_endpoint.json",
+      "check": {
+        "kind": "path",
+        "path": [
+          "by_design",
+          "A",
+          "resolved_radial_wins"
+        ]
+      },
+      "expect": 2,
+      "tol": 0,
+      "appears_as": "the constant degree\nwins 51 of 53 resolved comparisons on design~A and 53 of 55 on design~B, at\nmedian fixed-to-radial error ratios of $0.021$ and $0.019$ and\nmedian achieved time ratios of $0.99$ and $1.00$",
+      "source_sha256": "b1e4cc6e609347ea8e1ffd5f366d31296afee21b3b78cf010406e7bf3254d6a4"
+    },
+    {
+      "id": "timing.full.endpoint.B.resolved",
+      "claim": "on design B the measured-time endpoint comparison resolves 55 of 64 cells",
+      "status": "registered",
+      "appears_in": [
+        "chapters/08_budget.tex"
+      ],
+      "source": "r68_timing_full_endpoint.json",
+      "check": {
+        "kind": "path",
+        "path": [
+          "by_design",
+          "B",
+          "resolved"
+        ]
+      },
+      "expect": 55,
+      "tol": 0,
+      "appears_as": "the constant degree\nwins 51 of 53 resolved comparisons on design~A and 53 of 55 on design~B, at\nmedian fixed-to-radial error ratios of $0.021$ and $0.019$ and\nmedian achieved time ratios of $0.99$ and $1.00$",
+      "source_sha256": "b1e4cc6e609347ea8e1ffd5f366d31296afee21b3b78cf010406e7bf3254d6a4"
+    },
+    {
+      "id": "timing.full.endpoint.B.constant_wins",
+      "claim": "on design B the time-matched constant degree takes 53 of those resolved comparisons",
+      "status": "registered",
+      "appears_in": [
+        "chapters/08_budget.tex"
+      ],
+      "source": "r68_timing_full_endpoint.json",
+      "check": {
+        "kind": "path",
+        "path": [
+          "by_design",
+          "B",
+          "resolved_constant_wins"
+        ]
+      },
+      "expect": 53,
+      "tol": 0,
+      "appears_as": "the constant degree\nwins 51 of 53 resolved comparisons on design~A and 53 of 55 on design~B, at\nmedian fixed-to-radial error ratios of $0.021$ and $0.019$ and\nmedian achieved time ratios of $0.99$ and $1.00$",
+      "source_sha256": "b1e4cc6e609347ea8e1ffd5f366d31296afee21b3b78cf010406e7bf3254d6a4"
+    },
+    {
+      "id": "timing.full.endpoint.B.radial_wins",
+      "claim": "on design B the radial endpoint takes 2",
+      "status": "registered",
+      "appears_in": [
+        "chapters/08_budget.tex"
+      ],
+      "source": "r68_timing_full_endpoint.json",
+      "check": {
+        "kind": "path",
+        "path": [
+          "by_design",
+          "B",
+          "resolved_radial_wins"
+        ]
+      },
+      "expect": 2,
+      "tol": 0,
+      "appears_as": "the constant degree\nwins 51 of 53 resolved comparisons on design~A and 53 of 55 on design~B, at\nmedian fixed-to-radial error ratios of $0.021$ and $0.019$ and\nmedian achieved time ratios of $0.99$ and $1.00$",
+      "source_sha256": "b1e4cc6e609347ea8e1ffd5f366d31296afee21b3b78cf010406e7bf3254d6a4"
+    },
+    {
+      "id": "timing.full.endpoint.A.time_ratio",
+      "claim": "median achieved comparator-to-member kernel-time ratio on design A",
+      "status": "registered",
+      "appears_in": [
+        "chapters/08_budget.tex"
+      ],
+      "source": "r68_timing_full_endpoint.json",
+      "check": {
+        "kind": "aggregate_rows",
+        "rows": "rows",
+        "path": [
+          "achieved_time_ratio"
+        ],
+        "where": {
+          "path": [
+            "design"
+          ],
+          "equals": "A"
+        },
+        "agg": "median"
+      },
+      "expect": 0.9895986462383504,
+      "tol": 1e-06,
+      "appears_as": "the constant degree\nwins 51 of 53 resolved comparisons on design~A and 53 of 55 on design~B, at\nmedian fixed-to-radial error ratios of $0.021$ and $0.019$ and\nmedian achieved time ratios of $0.99$ and $1.00$",
+      "source_sha256": "b1e4cc6e609347ea8e1ffd5f366d31296afee21b3b78cf010406e7bf3254d6a4"
+    },
+    {
+      "id": "timing.full.endpoint.B.time_ratio",
+      "claim": "median achieved comparator-to-member kernel-time ratio on design B",
+      "status": "registered",
+      "appears_in": [
+        "chapters/08_budget.tex"
+      ],
+      "source": "r68_timing_full_endpoint.json",
+      "check": {
+        "kind": "aggregate_rows",
+        "rows": "rows",
+        "path": [
+          "achieved_time_ratio"
+        ],
+        "where": {
+          "path": [
+            "design"
+          ],
+          "equals": "B"
+        },
+        "agg": "median"
+      },
+      "expect": 1.0024383745553362,
+      "tol": 1e-06,
+      "appears_as": "the constant degree\nwins 51 of 53 resolved comparisons on design~A and 53 of 55 on design~B, at\nmedian fixed-to-radial error ratios of $0.021$ and $0.019$ and\nmedian achieved time ratios of $0.99$ and $1.00$",
+      "source_sha256": "b1e4cc6e609347ea8e1ffd5f366d31296afee21b3b78cf010406e7bf3254d6a4"
+    },
+    {
+      "id": "timing.full.interior.A.member_wins",
+      "claim": "on design A the k=0.5 member takes 11 resolved comparisons at matched measured time",
+      "status": "registered",
+      "appears_in": [
+        "chapters/08_budget.tex"
+      ],
+      "source": "r68_timing_full_interior.json",
+      "check": {
+        "kind": "path",
+        "path": [
+          "by_design",
+          "A",
+          "resolved_interior_wins"
+        ]
+      },
+      "expect": 11,
+      "tol": 0,
+      "appears_as": "the exploratory $k=0.5$ candidate wins the\nresolved comparisons 11--8 on design~A and 22--9 on design~B, with median\nfixed-to-member error ratios of $2.05$ and $2.60$",
+      "source_sha256": "991bf02b847811531fd9c7424df71c692d0ac91914f603ef711fc503511d6a27"
+    },
+    {
+      "id": "timing.full.interior.A.constant_wins",
+      "claim": "on design A the time-matched constant degree takes 8",
+      "status": "registered",
+      "appears_in": [
+        "chapters/08_budget.tex"
+      ],
+      "source": "r68_timing_full_interior.json",
+      "check": {
+        "kind": "path",
+        "path": [
+          "by_design",
+          "A",
+          "resolved_constant_wins"
+        ]
+      },
+      "expect": 8,
+      "tol": 0,
+      "appears_as": "the exploratory $k=0.5$ candidate wins the\nresolved comparisons 11--8 on design~A and 22--9 on design~B, with median\nfixed-to-member error ratios of $2.05$ and $2.60$",
+      "source_sha256": "991bf02b847811531fd9c7424df71c692d0ac91914f603ef711fc503511d6a27"
+    },
+    {
+      "id": "timing.full.interior.B.member_wins",
+      "claim": "on design B the k=0.5 member takes 22 resolved comparisons at matched measured time",
+      "status": "registered",
+      "appears_in": [
+        "chapters/08_budget.tex"
+      ],
+      "source": "r68_timing_full_interior.json",
+      "check": {
+        "kind": "path",
+        "path": [
+          "by_design",
+          "B",
+          "resolved_interior_wins"
+        ]
+      },
+      "expect": 22,
+      "tol": 0,
+      "appears_as": "the exploratory $k=0.5$ candidate wins the\nresolved comparisons 11--8 on design~A and 22--9 on design~B, with median\nfixed-to-member error ratios of $2.05$ and $2.60$",
+      "source_sha256": "991bf02b847811531fd9c7424df71c692d0ac91914f603ef711fc503511d6a27"
+    },
+    {
+      "id": "timing.full.interior.B.constant_wins",
+      "claim": "on design B the time-matched constant degree takes 9",
+      "status": "registered",
+      "appears_in": [
+        "chapters/08_budget.tex"
+      ],
+      "source": "r68_timing_full_interior.json",
+      "check": {
+        "kind": "path",
+        "path": [
+          "by_design",
+          "B",
+          "resolved_constant_wins"
+        ]
+      },
+      "expect": 9,
+      "tol": 0,
+      "appears_as": "the exploratory $k=0.5$ candidate wins the\nresolved comparisons 11--8 on design~A and 22--9 on design~B, with median\nfixed-to-member error ratios of $2.05$ and $2.60$",
+      "source_sha256": "991bf02b847811531fd9c7424df71c692d0ac91914f603ef711fc503511d6a27"
+    },
+    {
+      "id": "timing.full.interior.A.time_ratio",
+      "claim": "median achieved comparator-to-member kernel-time ratio on design A, above unity so the residual mismatch favours the constant degree",
+      "status": "registered",
+      "appears_in": [
+        "chapters/08_budget.tex"
+      ],
+      "source": "r68_timing_full_interior.json",
+      "check": {
+        "kind": "aggregate_rows",
+        "rows": "rows",
+        "path": [
+          "achieved_time_ratio"
+        ],
+        "where": {
+          "path": [
+            "design"
+          ],
+          "equals": "A"
+        },
+        "agg": "median"
+      },
+      "expect": 1.0151669197593967,
+      "tol": 1e-06,
+      "appears_as": "The median achieved time ratios are $1.015$ and $1.003$",
+      "source_sha256": "991bf02b847811531fd9c7424df71c692d0ac91914f603ef711fc503511d6a27"
+    },
+    {
+      "id": "timing.full.interior.B.time_ratio",
+      "claim": "median achieved comparator-to-member kernel-time ratio on design B, above unity so the residual mismatch favours the constant degree",
+      "status": "registered",
+      "appears_in": [
+        "chapters/08_budget.tex"
+      ],
+      "source": "r68_timing_full_interior.json",
+      "check": {
+        "kind": "aggregate_rows",
+        "rows": "rows",
+        "path": [
+          "achieved_time_ratio"
+        ],
+        "where": {
+          "path": [
+            "design"
+          ],
+          "equals": "B"
+        },
+        "agg": "median"
+      },
+      "expect": 1.0028384346020007,
+      "tol": 1e-06,
+      "appears_as": "The median achieved time ratios are $1.015$ and $1.003$",
+      "source_sha256": "991bf02b847811531fd9c7424df71c692d0ac91914f603ef711fc503511d6a27"
+    },
+    {
+      "id": "timing.full.endpoint.degree_over_critical",
+      "claim": "at equal measured kernel time the matched constant comparator runs at a median 1.28 times the critical degree, over both designs",
+      "status": "registered",
+      "appears_in": [
+        "chapters/08_budget.tex"
+      ],
+      "source": "r68_timing_full_endpoint.json",
+      "check": {
+        "kind": "ratio_rows",
+        "numerator": [
+          "comparator_degree"
+        ],
+        "denominator": [
+          "n_critical"
+        ],
+        "agg": "median"
+      },
+      "expect": 1.2846927966101696,
+      "tol": 1e-06,
+      "appears_as": "the matched constant degree runs at a\nmedian $1.28\\,N_{\\mathrm{crit}}$",
+      "source_sha256": "b1e4cc6e609347ea8e1ffd5f366d31296afee21b3b78cf010406e7bf3254d6a4"
+    },
+    {
+      "id": "timing.full.interior.A.median_rho",
+      "claim": "on design A the median fixed-to-member error ratio under the measured-time match, recomputed from the per-cell rows",
+      "status": "registered",
+      "appears_in": [
+        "chapters/08_budget.tex"
+      ],
+      "source": "r68_timing_full_interior.json",
+      "check": {
+        "kind": "ratio_rows",
+        "rows": "rows",
+        "numerator": [
+          "comparator_error_m"
+        ],
+        "denominator": [
+          "member_error_m"
+        ],
+        "where": {
+          "path": [
+            "design"
+          ],
+          "equals": "A"
+        },
+        "agg": "median"
+      },
+      "expect": 2.045344804684744,
+      "tol": 1e-06,
+      "appears_as": "the exploratory $k=0.5$ candidate wins the\nresolved comparisons 11--8 on design~A and 22--9 on design~B, with median\nfixed-to-member error ratios of $2.05$ and $2.60$",
+      "source_sha256": "991bf02b847811531fd9c7424df71c692d0ac91914f603ef711fc503511d6a27"
+    },
+    {
+      "id": "timing.full.interior.B.median_rho",
+      "claim": "on design B the median fixed-to-member error ratio under the measured-time match, recomputed from the per-cell rows",
+      "status": "registered",
+      "appears_in": [
+        "chapters/08_budget.tex"
+      ],
+      "source": "r68_timing_full_interior.json",
+      "check": {
+        "kind": "ratio_rows",
+        "rows": "rows",
+        "numerator": [
+          "comparator_error_m"
+        ],
+        "denominator": [
+          "member_error_m"
+        ],
+        "where": {
+          "path": [
+            "design"
+          ],
+          "equals": "B"
+        },
+        "agg": "median"
+      },
+      "expect": 2.6005533565000913,
+      "tol": 1e-06,
+      "appears_as": "the exploratory $k=0.5$ candidate wins the\nresolved comparisons 11--8 on design~A and 22--9 on design~B, with median\nfixed-to-member error ratios of $2.05$ and $2.60$",
+      "source_sha256": "991bf02b847811531fd9c7424df71c692d0ac91914f603ef711fc503511d6a27"
+    },
+    {
+      "id": "timing.full.endpoint.A.median_rho",
+      "status": "registered",
+      "appears_in": [
+        "chapters/08_budget.tex"
+      ],
+      "source": "r68_timing_full_endpoint.json",
+      "claim": "on design A the median fixed-to-radial error ratio under the measured-time match, recomputed from the per-cell rows",
+      "check": {
+        "kind": "ratio_rows",
+        "rows": "rows",
+        "numerator": [
+          "comparator_error_m"
+        ],
+        "denominator": [
+          "member_error_m"
+        ],
+        "where": {
+          "path": [
+            "design"
+          ],
+          "equals": "A"
+        },
+        "agg": "median"
+      },
+      "expect": 0.0207800175056294,
+      "tol": 1e-06,
+      "appears_as": "median fixed-to-radial error ratios of $0.021$ and $0.019$ and\nmedian achieved time ratios of $0.99$ and $1.00$",
+      "source_sha256": "b1e4cc6e609347ea8e1ffd5f366d31296afee21b3b78cf010406e7bf3254d6a4"
+    },
+    {
+      "id": "timing.full.endpoint.B.median_rho",
+      "status": "registered",
+      "appears_in": [
+        "chapters/08_budget.tex"
+      ],
+      "source": "r68_timing_full_endpoint.json",
+      "claim": "on design B the median fixed-to-radial error ratio under the measured-time match, recomputed from the per-cell rows",
+      "check": {
+        "kind": "ratio_rows",
+        "rows": "rows",
+        "numerator": [
+          "comparator_error_m"
+        ],
+        "denominator": [
+          "member_error_m"
+        ],
+        "where": {
+          "path": [
+            "design"
+          ],
+          "equals": "B"
+        },
+        "agg": "median"
+      },
+      "expect": 0.019469638914598384,
+      "tol": 1e-06,
+      "appears_as": "median fixed-to-radial error ratios of $0.021$ and $0.019$ and\nmedian achieved time ratios of $0.99$ and $1.00$",
+      "source_sha256": "b1e4cc6e609347ea8e1ffd5f366d31296afee21b3b78cf010406e7bf3254d6a4"
+    }
+  ]
+}

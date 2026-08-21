@@ -204,13 +204,13 @@ def build_table(rows) -> str:
   $\\rho$ columns are fixed over radial, so values above unity favor the radial
   allocation; both are given to two significant figures so that the predicted
   and measured ratios can be compared where they are small. Errors are in
-  metres.}}
+  meters.}}
   \\label{{tab:budget-variational}}
   \\begin{{tabular}}{{l r r r r r r r r r r}}
     \\toprule
-    Des. & idx & $h_p$ [km] & $N_F$ & pred.\\ $E_{{\\mathrm{{At}}}}$ &
+    Des. & idx & $h_p$ [km] & $N_F$ & pred.\\ $E_{{\\mathrm{{rad}}}}$ &
       pred.\\ $E_{{\\mathrm{{fix}}}}$ & pred.\\ $\\rho$ &
-      meas.\\ $E_{{\\mathrm{{At}}}}$ &
+      meas.\\ $E_{{\\mathrm{{rad}}}}$ &
       meas.\\ $E_{{\\mathrm{{fix}}}}$ & calib. & meas.\\ $\\rho$\\\\
     \\midrule
 {body}

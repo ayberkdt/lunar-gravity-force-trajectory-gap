@@ -1,0 +1,133 @@
+{
+  "schema": "r51_preregistration_v1",
+  "created_utc": "2026-08-12T20:49:39.441423Z",
+  "campaign": "R51: block A of the paired radial-span ladder re-run with its reference degree raised from 300 to 600, so that the calibrated radial schedule is never clamped to the reference model",
+  "question": "R50 finds the budget crossing moving with radial span, and the widest level carries the largest error ratios in the campaign. Where a policy's degree reaches the reference degree its force model is the reference model and its defect vanishes by construction. Does the level ordering survive when the ceiling is removed?",
+  "why_a_paired_control": "same orbits, same identities, same apolune levels, same initial states, same comparator degrees, same tolerances, same arc. One number differs, so anything that moves is attributable to the ceiling and to nothing else.",
+  "why_block_A_only": "the ordering is a property of the levels, and block A carries all four of them with sixty-four orbits. Auditing block B as well would double the cost to sharpen a count rather than to test the claim. If the ordering breaks here, block B's capped numbers fall with it and are reported as falling.",
+  "not_blind": "the capped ladder is known. The protections are that no orbit is drawn, no parameter is chosen, the reference degree was fixed by the demand probe rather than by preference, and the outcomes below are written before the first trajectory of this control.",
+  "ceiling_probe": {
+    "schema": "r51_ceiling_probe_v1",
+    "created_utc": "2026-08-12T19:05:50.929160Z",
+    "population": "span_ladder_a",
+    "design_key": "RS1",
+    "method": "the calibration bisection of rev14_budget_pareto re-run at cap 600 on the archived R50 altitude histories; no propagation, no new trajectory, and nothing in metrics/r50_* modified",
+    "budgets_probed": [
+      1.0,
+      0.75,
+      0.5
+    ],
+    "parent_reference_degree": 300,
+    "raised_reference_degree": 600,
+    "by_level_at_parent_cap": {
+      "300": {
+        "orbits": 16,
+        "max_degree": 251,
+        "median_fraction_at_cap": 0.0,
+        "orbits_touching_cap": 0
+      },
+      "600": {
+        "orbits": 16,
+        "max_degree": 294,
+        "median_fraction_at_cap": 0.0,
+        "orbits_touching_cap": 0
+      },
+      "1200": {
+        "orbits": 16,
+        "max_degree": 300,
+        "median_fraction_at_cap": 0.0,
+        "orbits_touching_cap": 5
+      },
+      "2400": {
+        "orbits": 16,
+        "max_degree": 300,
+        "median_fraction_at_cap": 0.0632810950208292,
+        "orbits_touching_cap": 16
+      }
+    },
+    "by_level_at_raised_cap": {
+      "300": {
+        "orbits": 16,
+        "max_degree": 254,
+        "median_fraction_at_cap": 0.0,
+        "orbits_touching_cap": 0
+      },
+      "600": {
+        "orbits": 16,
+        "max_degree": 324,
+        "median_fraction_at_cap": 0.0,
+        "orbits_touching_cap": 0
+      },
+      "1200": {
+        "orbits": 16,
+        "max_degree": 408,
+        "median_fraction_at_cap": 0.0,
+        "orbits_touching_cap": 0
+      },
+      "2400": {
+        "orbits": 16,
+        "max_degree": 533,
+        "median_fraction_at_cap": 0.0,
+        "orbits_touching_cap": 0
+      }
+    },
+    "max_requested_degree_at_raised_cap": 533,
+    "orbits_clamped_at_parent_cap_by_level": {
+      "300": 0,
+      "600": 0,
+      "1200": 5,
+      "2400": 16
+    },
+    "parent_inputs_watched": [
+      "r50_span_ladder_a_design_frozen.json",
+      "r50_span_ladder_a_rows.json"
+    ],
+    "parent_inputs_sha256": {
+      "r50_span_ladder_a_design_frozen.json": "cefc2dd36ec40d634d5d5cf177efd3ca21e2349e0b11c3e14f2ff024252eab2f",
+      "r50_span_ladder_a_rows.json": "6f1dcc97ccd2138e770d87b05beceb3832757df61c1b91cb1fcd734efcd58c89"
+    },
+    "parent_inputs_unchanged": true,
+    "conclusion": "600 clears the demand and the cap does bind today: the control is both meaningful and correctly referenced"
+  },
+  "protocol": "identical to R50 in every respect except the adopted reference degree: the same seven-day arc, tolerance levels, output grid, resolution rule, two-policy base scope inherited from r30_preregistration.json, R12-rule operating point regeneration, calibration and ladder",
+  "budgets": [
+    1.0,
+    0.75,
+    0.62,
+    0.5
+  ],
+  "budget_order": "1.00 first, because it is the budget the geometry sentence is written at, then 0.75, 0.62, 0.50. The amendment budgets of R50 are not run here unless the registered four are carried first, and a budget the clock does not reach is reported as not run.",
+  "population": "span_ladder_a_uncapped",
+  "design": {
+    "design_key": "RS1U",
+    "design_sha256": "2e5ed5512e8ad42e544c9bdabe3265737e1e75ca3bd07ed567f2197fadfac4c9",
+    "file": "r51_span_ladder_a_uncapped_design_frozen.json"
+  },
+  "strata": {
+    "span_ladder_a_uncapped": {
+      "file": "r51_span_ladder_a_uncapped_design_frozen.json",
+      "design_sha256": "2e5ed5512e8ad42e544c9bdabe3265737e1e75ca3bd07ed567f2197fadfac4c9",
+      "seed": 20260732,
+      "design_key": "RS1U"
+    }
+  },
+  "sub_boxes": {
+    "span_ladder_a_uncapped": "the R50 block A identities at the same four apolune levels, referenced at degree 600"
+  },
+  "outcomes": {
+    "X_ordering_survives": "The level ordering of the span ladder is unchanged: the same levels favour the same policy and the score is ordered in radial span at every budget that decides. The ceiling is then reported as having flattered the magnitudes without creating the ordering, both sets of numbers are printed side by side, and the span dependence is quoted from the uncapped run.",
+    "Y_ordering_survives_magnitude_falls": "The ordering is unchanged but the median ratios at the wide levels drop by an order of magnitude or more, as they did on the operational elliptical population. The uncapped numbers become the quoted ones and the sentence carrying them says the magnitude was a ceiling effect and the ordering was not.",
+    "Z_ordering_breaks": "The level ordering changes: a level that favoured the radial endpoint under the cap no longer does, or the score stops ordering in span. The span dependence is then reported as confounded with the ceiling, the capped ladder is retired from every place it is quoted, and the discussion says that the geometry axis could not be separated from the reference-degree ceiling by this campaign.",
+    "W_undecided": "Too few comparisons resolve per level under the raised reference to order the levels. Reported with its resolved and unresolved counts, and read as leaving the capped result unaudited rather than as confirming it."
+  },
+  "verdict_rule": "per level, the R19 realized-work tally and the R14 endpoint tally, read exactly as rev50_verdict.py reads them, and compared level by level against the capped parent",
+  "reporting_commitment": "the capped and uncapped ladders are printed together wherever a wide-level ratio is quoted. If the ordering breaks, the capped ladder is retired rather than kept beside its own audit.",
+  "prohibited": [
+    "choosing between the capped and the uncapped ladder after seeing both",
+    "quoting a capped median ratio from a wide level without the uncapped one in the same sentence, whatever the outcome",
+    "dropping an orbit, changing a level, or re-deriving n_critical or n_work after propagation starts",
+    "pooling this population with its capped parent, with the strata, with the coverage designs or with R31",
+    "treating the subset of orbits that never touch the ceiling in the capped run as a substitute for this control"
+  ],
+  "preregistration_sha256": "6355875427c25489cb4868ef90f541d8bb4438f0ff20a36a187f3c538035f1b8"
+}

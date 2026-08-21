@@ -1,0 +1,78 @@
+{
+  "schema": "r50_preregistration_v1",
+  "created_utc": "2026-08-11T22:25:44.761952Z",
+  "campaign": "R50: a paired radial-span ladder. Sixteen orbit identities, each flown at four apolunes, propagated through the budget ladder at four budgets, to measure whether the budget crossing depends on radial span when radial span is the only thing that varies.",
+  "question": "the paper reports that the winning allocation shifts with budget and radial-span regime. The span half of that sentence rests on one sub-box that restricts the span and one step out to an elliptical population that moves perilune, eccentricity, dwell and degree demand together. Does the crossing move with radial span alone?",
+  "why_this_design": "a sub-box drawn narrower would compare two populations and inherit the same confound in weaker form. Holding an identity fixed and changing only its apolune makes every orbit its own control, so a level-to-level difference cannot be a difference in perilune, inclination, argument of perilune or epoch geometry.",
+  "levels": {
+    "apolune_km": [
+      300.0,
+      600.0,
+      1200.0,
+      2400.0
+    ],
+    "inside_factor_box_km": [
+      300.0,
+      600.0
+    ],
+    "why_these": "300 and 600 km are the narrowest and the widest arcs the coverage box allows at this perilune; 1200 and 2400 km leave it, and 2400 km at a 100 km perilune is the Okina geometry and the upper end of the R31 population. The ladder therefore runs from the geometry where the paper reports the constant degree winning to the geometry where it reports the radial endpoint winning.",
+    "out_of_box_qualifier": "levels 1200 and 2400 km are a scope extension exactly as R31 is, and every number from them carries that qualifier"
+  },
+  "budgets": [
+    1.0,
+    0.75,
+    0.62,
+    0.5
+  ],
+  "budget_order": "beta = 1.00 first, because it is the budget the geometry sentence is written at, then 0.75, 0.62, 0.50 in that order. A budget the clock does not reach is reported as not run.",
+  "budget_note": "0.62 is the amendment budget declared in r28_calibration_amendment.json and computed by the standard calibration; here it is pre-registered before any orbit of this population propagates rather than added afterwards.",
+  "not_blind": "the coverage-design, strata and R31 results are known. The protections are the arithmetic seed, the single-draw commitment, the level grid fixed here, and outcomes fixed before propagation.",
+  "single_draw_commitment": "one draw of identities per block. If the numbers disagree with the sentence the paper prints, the disagreement is the result; no seed is changed, no level is added, moved or dropped after its numbers are known, and no identity is removed.",
+  "protocol": "identical to the R30 strata and R31: the same truth-degree rule, tolerance levels, seven-day arc, output grid, resolution rule, calibration and ladder, and the same two-policy base scope declared in r30_preregistration.json and inherited here",
+  "reference_degree": "the adopted rule, which gives degree 300 at every perilune in this band. The cap-lifted control R38 ran for R31 is not run here and is not implied; the cap binds at perilune, which the ladder holds fixed, so it is common to all four levels.",
+  "readouts": {
+    "primary": "per level and budget, the realized-work tally of the budget-calibrated radial endpoint against its work-matched constant degree. This is the comparison the discussion's geometry sentence is about.",
+    "secondary": "per level and budget, the same tally for the interior member of the span family, which is the comparison the budget-axis sentence is about",
+    "paired": "per identity, the level at which each verdict changes, so the dependence is read within identities and not only across level medians"
+  },
+  "verdict_rule": "per level, the R19 realized-work tally: radial or interior if resolved wins exceed the constant degree's, constant if the reverse, split if equal, undecided if nothing resolves. A dependence is claimed only if the level tallies order consistently at a budget that decides.",
+  "blocks": {
+    "span_ladder_a": "the primary panel, sixteen identities",
+    "span_ladder_b": "a second sixteen identities at the same four levels, run only if the clock allows after block A carries every budget. It doubles the panel behind each level. It is declared here so that running it is a question of the clock and not a decision taken after block A is known; if the clock does not reach it, it is reported as declared and not run."
+  },
+  "pooling": "blocks A and B are pooled with each other only level by level, because they are the same design at the same levels. Neither is pooled with the coverage designs, the strata or R31, whose boxes they overlap.",
+  "outcomes": {
+    "T_span_dependence": "The per-level tally moves with radial span in one direction, and at every budget that decides. The paper then states a controlled dependence: holding perilune, inclination, argument of perilune and perilune longitude fixed, increasing the radial span moves the budget crossing. The discussion sentence that currently reads the span as a direction is replaced by the measured dependence, and the OE result stops being the only wide-span evidence.",
+    "U_threshold": "The verdict does not move level by level but flips once, between two adjacent levels, and stays flipped. Reported as a threshold in radial span rather than as a gradient, with the two levels it sits between named. The paper does not describe a threshold as a dependence.",
+    "V_no_dependence": "The verdict is the same at every level at a given budget, within the resolved counts. The radial-span reading is then withdrawn from the discussion and the conclusion: the difference between the coverage designs and the elliptical population is attributed to something the ladder holds fixed -- perilune, dwell or degree demand -- and that correction goes in the main text, not only in the supplement. This outcome contradicts a sentence the paper currently prints, and it is written before any orbit of this population propagates.",
+    "W_undecided": "Too few comparisons resolve per level to produce level tallies. Reported as undecided with its resolved and unresolved counts per level, and read as no evidence either way rather than as agreement with the existing sentence."
+  },
+  "reporting_commitment": "the outcome is written into the discussion whichever way it comes out. V_no_dependence contradicts a sentence the paper currently prints; if it is what returns, that sentence is corrected in the main text and the correction is not deferred to the supplement.",
+  "completion_reporting": "every number carries its level, its orbit count and its completion state; a level whose ladder is partial is reported as partial and is not read as agreement",
+  "prohibited": [
+    "re-seeding a block or redrawing an identity",
+    "adding, moving or dropping an apolune level after its numbers are known",
+    "quoting the 1200 or 2400 km levels without the out-of-box qualifier",
+    "pooling this population with the coverage designs, the strata or R31",
+    "reading a level tally from a partial ladder"
+  ],
+  "strata": {
+    "span_ladder_a": {
+      "file": "r50_span_ladder_a_design_frozen.json",
+      "design_sha256": "ffd22f6491a75e160ea5ee1fe08c89d1239b7c23f8d798ca47a751a02bb2346c",
+      "seed": 20260732,
+      "design_key": "RS1"
+    },
+    "span_ladder_b": {
+      "file": "r50_span_ladder_b_design_frozen.json",
+      "design_sha256": "c64363e3fba34fcaca85f424ad87bebb232f759a97c0f0eba6dbf6ecfbd0920c",
+      "seed": 20260733,
+      "design_key": "RS2"
+    }
+  },
+  "sub_boxes": {
+    "span_ladder_a": "perilune 80-120 km, apolune prescribed at 300, 600, 1200, 2400 km, everything else the full range",
+    "span_ladder_b": "perilune 80-120 km, apolune prescribed at 300, 600, 1200, 2400 km, everything else the full range"
+  },
+  "preregistration_sha256": "72e5bcaecb2d4b3bbd08c9663aa418623a07b6591909512b2b30bb7f09315888"
+}

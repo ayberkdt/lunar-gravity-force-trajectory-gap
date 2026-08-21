@@ -1,0 +1,69 @@
+{
+  "schema": "rJ1_preregistration_v1",
+  "created_utc": "2026-08-08T08:15:34.337558Z",
+  "status": "frozen_before_any_J1_trajectory_was_propagated",
+  "question": "does the force--trajectory reversal reproduce under an independently produced GRAIL gravity solution?",
+  "field": {
+    "key": "GRGM1200A",
+    "sha256": "fa04c3dce9376948ad243f3df74144e2602f12d183ea4d179604ed0a79da7ded",
+    "recalibrated": true,
+    "calibration_record": "rJ1_field_calibration.json"
+  },
+  "population": {
+    "file": "rJ1_design.json",
+    "design_sha256": "b4340dd3cd5319b942ba2a7cd005726ccc61560e7a5ae4860d00d4c6dcaf4b67",
+    "sample_count": 32
+  },
+  "arc": {
+    "duration_s": 604800.0,
+    "output_step_s": 120.0,
+    "max_step_s": 60.0
+  },
+  "policies": {
+    "reference": "constant adopted truth degree",
+    "constant": "N_F(beta) = argmin_N |N^2 - beta N_crit^2|, beta=1.0",
+    "radial": "budget-calibrated Atallah radial rule, accuracy parameter bisected so the 10-km-binned degree history spends <N^2> = beta N_crit^2 with beta=1.0"
+  },
+  "levels": {
+    "tight": {
+      "rtol": 1e-12,
+      "atol_position_m": 1e-05,
+      "atol_velocity_m_s": 1e-08
+    },
+    "tighter": {
+      "rtol": 1e-13,
+      "atol_position_m": 1e-06,
+      "atol_velocity_m_s": 1e-09
+    }
+  },
+  "metrics": {
+    "J_force": "time average of |a_policy(x_ref(t)) - a_ref(x_ref(t))|",
+    "J_traj": "position RMS against the reference on the output grid"
+  },
+  "resolution_rule": "a trajectory comparison counts only when the error gap exceeds the sum of the two policies' numerical envelopes, each envelope being the policy's own between-level self-difference plus the reference's",
+  "declared_outcomes": {
+    "A_reversal_reproduced": "on the resolved orbits the radial policy wins the force metric in the majority and loses the trajectory metric in the majority, with the same sign as the primary field",
+    "B_reversal_absent": "the trajectory-metric sign agrees with the force-metric sign, i.e. no reversal on this solution",
+    "C_unresolved": "fewer than half the orbits resolve, and no population statement is made"
+  },
+  "reporting_commitment": "all three outcomes are reported as found; the per-orbit table is written whatever the aggregate says",
+  "provenance": {
+    "lunaris_repo": "D:\\Masaustu\\LUNAR_SIMULATION",
+    "lunaris_commit": "27e9ab86ed61d623f78c453ea2054348f1044c23",
+    "lunaris_working_tree_clean": false,
+    "kernel_path": "D:\\Masaustu\\LUNAR_SIMULATION\\src\\lunaris\\physics\\spherical_harmonics.py",
+    "kernel_sha256": "6e2a0a85e18c9b400c003e6c2ad1e163c524c27f54bc0d404e0172709d16d740",
+    "gravity_key": "GRGM1200A",
+    "gravity_path": "C:\\Users\\ayber\\Desktop\\lunaris external validation\\gravity_models\\gggrx_1200a_sha.tab",
+    "gravity_sha256": "fa04c3dce9376948ad243f3df74144e2602f12d183ea4d179604ed0a79da7ded",
+    "harness": "C:\\Users\\ayber\\Desktop\\Makale\\codebase\\python_codes\\revJ_common.py",
+    "harness_sha256": "fac5e0b17e34ba56e1afc828de31b0b7c9a172efae04efd32d408b88eeb61e77",
+    "python": "3.12.1 (tags/v3.12.1:2305ca5, Dec  7 2023, 22:03:25) [MSC v.1937 64 bit (AMD64)]",
+    "numpy": "2.2.6",
+    "scipy": "1.14.1",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "processor": "Intel64 Family 6 Model 158 Stepping 10, GenuineIntel",
+    "logical_cpu_count": 12
+  },
+  "preregistration_sha256": "4fce2c20768dcad8600712bf934f3129210bbb7bc62df70b4e6dbb1ab54bc3b9"
+}

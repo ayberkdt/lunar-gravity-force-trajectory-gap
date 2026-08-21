@@ -223,6 +223,11 @@ def load_trajectories(pareto: dict) -> dict:
     out = {}
     for p in sorted(METRICS.glob("r14_trajectory_*.json")):
         d = json.loads(p.read_text(encoding="utf-8"))
+        # membership is design AND budget: later campaigns reuse this driver's
+        # record naming for other designs (C, the strata), and those must not
+        # be paired with this campaign's pareto record
+        if d["design"] not in pareto["designs"]:
+            continue
         if key_of(float(d["beta"])) not in grid:
             continue
         out.setdefault(d["design"], {})[float(d["beta"])] = d
@@ -281,8 +286,8 @@ def force_table_compact(pareto: dict) -> str:
   median $\beta$ is {ba['median']:.2f} and {bb['median']:.2f} across a
   range over the design of {ba['min']:.2f}--{ba['max']:.2f} and
   {bb['min']:.2f}--{bb['max']:.2f}.
-  Magnitudes and percentile spreads are in Supplementary
-  Table~\ref*{{supp-tab:budget-force-pareto-full}}.}}
+  Magnitudes and percentile spreads are in Supplemental
+  Table~\suppref{{tab:budget-force-pareto-full}}.}}
   \label{{tab:budget-force-pareto}}
   \begin{{tabular}}{{l c c c c c}}
     \toprule
@@ -347,7 +352,7 @@ def force_table(pareto: dict) -> str:
   \\begin{{tabular}}{{l r r r r r r c c}}
     \\toprule
     $\\beta$ & orbits & cens. & $N_F$ & $\\overline{{N}}_A$ &
-      $|\\Delta a|_{{\\mathrm{{At}}}}$ & $|\\Delta a|_{{\\mathrm{{fix}}}}$ &
+      $|\\Delta a|_{{\\mathrm{{rad}}}}$ & $|\\Delta a|_{{\\mathrm{{fix}}}}$ &
       $R_a$ median\\;[p10, p90] & At.\\ smaller\\\\
     \\midrule
 {body}
@@ -358,6 +363,12 @@ def force_table(pareto: dict) -> str:
 
 
 # ---------------------------------------------------------------- trajectory
+# Cells propagated by the registered (O33) grid extension rather than under
+# the original pre-registration; marked in the table so the pre-registered
+# matrix can be read off it.
+O33_CELLS = {("A", 1.25), ("B", 0.75), ("B", 1.50)}
+
+
 def trajectory_table(traj: dict) -> str:
     groups = []
     for des in ("A", "B"):
@@ -370,8 +381,9 @@ def trajectory_table(traj: dict) -> str:
             if not s["orbits"]:
                 continue
             r = s["rho_budget"]
+            tag = r"$^{\ddagger}$" if (des, b) in O33_CELLS else ""
             block.append(
-                f"{b:.2f} & {s['orbits']} & {len(d['censored'])} & "
+                f"{b:.2f}{tag} & {s['orbits']} & {len(d['censored'])} & "
                 f"{sci(s['atallah_error_m']['median'])} & "
                 f"{sci(s['fixed_error_m']['median'])} & "
                 f"{num(r['median'])}\\;[{num(r['p10'])}, {num(r['p90'])}] & "
@@ -384,22 +396,57 @@ def trajectory_table(traj: dict) -> str:
 \\begin{{table}}[!htbp]
   \\centering\\small
   \\setlength{{\\tabcolsep}}{{4pt}}
-  \\caption{{Propagated fixed-budget comparison. Seven-day Cartesian position RMS
-  against the common adopted reference at the tight vector tolerance, for the
-  budget-calibrated radial rule and the constant degree spending the same
-  per-call quadratic gravity work. $\\rho_{{\\mathrm{{budget}}}} = E_F/E_A$, so
-  values above unity favor radial allocation. Resolved counts apply the
-  reference-inclusive pairwise criterion of the rest of the paper; comparisons that
-  do not clear it are reported as unresolved and are never counted as ties. At
-  $\\beta = 1$ the comparator degree coincides with the critical-altitude fixed
-  degree on every orbit of both designs, so that row reuses the archived
-  critical-degree trajectories unchanged.}}
+  \\caption{{Propagated fixed-budget comparison across the budget grid, for
+  the budget-calibrated radial rule and the constant degree at equal
+  per-call work. $^{{\\ddagger}}$ marks the registered (O33) grid extensions;
+  the same notation is used throughout.}}
   \\label{{tab:budget-trajectory-pareto}}
   \\begin{{tabular}}{{c l r r r r r c c r}}
     \\toprule
-    & $\\beta$ & orbits & cens. & $E_{{\\mathrm{{At}}}}$ [m] & $E_{{\\mathrm{{fix}}}}$ [m] &
-      $\\rho_{{\\mathrm{{budget}}}}$ median\\;[p10, p90] & raw At. &
-      res.\\ At./fix & unres.\\\\
+    & $\\beta$ & orbits & cens. & $E_{{\\mathrm{{rad}}}}$ [m] & $E_{{\\mathrm{{fix}}}}$ [m] &
+      $\\rho_{{\\mathrm{{budget}}}}$ median\\;[p10, p90] & raw rad. &
+      res.\\ rad./fix & unres.\\\\
+    \\midrule
+{body}
+    \\bottomrule
+  \\end{{tabular}}
+\\end{{table}}
+"""
+
+
+def trajectory_table_headline(traj: dict) -> str:
+    """The beta = 1 verdict alone, for the main text.
+
+    The full grid moved to the supplement (2026-08-17 editorial decision):
+    Fig. 2 already carries the error curves and unresolved fractions across
+    the grid, and the high-beta rows' large median ratios invited a reading
+    the resolution evidence does not support. What the main text keeps is
+    the exact headline numbers at the declared budget, per design.
+    """
+    rows = []
+    for des in ("A", "B"):
+        if des not in traj or 1.00 not in traj[des]:
+            continue
+        s = traj[des][1.00]["summary"]
+        r = s["rho_budget"]
+        rows.append(
+            f"    {des} & 1.00 & "
+            f"{num(r['median'])}\\;[{num(r['p10'])}, {num(r['p90'])}] & "
+            f"{s['resolved_atallah_wins']}\\,/\\,{s['resolved_fixed_wins']} & "
+            f"{s['unresolved']}\\\\")
+    body = "\n".join(rows)
+    return f"""% auto-generated by rev14_tables.py -- do not edit by hand
+\\begin{{table}}[!htbp]
+  \\centering\\small
+  \\caption{{The equal nominal per-call budget comparison at the declared
+  budget $\\beta=1$. $\\rho_{{\\mathrm{{budget}}}}=E_{{\\mathrm{{fix}}}}/E_{{\\mathrm{{rad}}}}$
+  is the median of per-orbit ratios and exceeds unity where radial allocation
+  wins. Comparisons failing the resolution rule are reported as undecided.}}
+  \\label{{tab:budget-headline}}
+  \\begin{{tabular}}{{c c r c r}}
+    \\toprule
+    design & $\\beta$ & $\\rho_{{\\mathrm{{budget}}}}$ median\\;[p10, p90] &
+      res.\\ rad.\\,/\\,fix & undecided\\\\
     \\midrule
 {body}
     \\bottomrule
@@ -431,10 +478,14 @@ def cost_table(traj: dict) -> str:
   \\centering\\small
   \\setlength{{\\tabcolsep}}{{4pt}}
   \\caption{{Does the per-call budget match survive the integrator? The per-call
-  ratio is the declared budget match, $\\langle N^2\\rangle_A / N_F^2$. The
+  ratio is the realized per-call work on the calls actually made,
+  $\\langle N^2\\rangle_A / N_F^2$ over right-hand-side samples; the declared
+  match is 1 by construction. The
   right-hand-side ratio is what the adaptive integrator then does with a
   changing degree, and the total quadratic work
-  $W = \\sum_{{\\mathrm{{RHS}}}} N_j^2$ is their product. A per-call equal-work
+  $W = \\sum_{{\\mathrm{{RHS}}}} N_j^2$ is their product per orbit; the
+  medians printed here are taken per column and so need not multiply. A
+  per-call equal-work
   rule is not an equal-work rule end to end whenever the scheduler changes the
   call count, and the excess is reported here rather than absorbed.}}
   \\label{{tab:budget-cost-bookkeeping}}
@@ -475,12 +526,12 @@ def oracle_table(orc: dict) -> str:
   \\setlength{{\\tabcolsep}}{{4pt}}
   \\caption{{O26 Lagrangian-relaxed reference-path allocation benchmark. At each
   budget the relaxation
-  $N_\\lambda(t)=\\arg\\min_N[d(t,N)+\\lambda N^2]$ is solved along the archived
-  reference trajectory with $\\lambda$ bisected to the budget. Over a discrete
+  $N_\\eta(t)=\\arg\\min_N[d(t,N)+\\eta N^2]$ is solved along the archived
+  reference trajectory with the multiplier $\\eta$ bisected to the budget. Over a discrete
   degree set this recovers only the supported efficient solutions of a
   multiple-choice allocation problem, so it returns an attainable allocation
-  rather than the constrained minimum, and the penalties---each policy's defect
-  divided by the benchmark's---are conservative. The benchmark reads the
+  rather than the constrained minimum, and the penalties (each policy's defect
+  divided by the benchmark's) are conservative. The benchmark reads the
   reference trajectory and the local reference field at every epoch, so it is a
   diagnostic rather than a controller, and it speaks only about the instantaneous
   force defect. Its degree grid is coarse above degree 100 while every policy
@@ -517,20 +568,20 @@ def per_orbit_table(d: dict, des: str) -> str:
 \\begin{{longtable}}{{r r r r r r r r r r r c}}
   \\caption{{Per-orbit equal-budget comparison at $\\beta = 1$, design~{des}.
   Errors are seven-day Cartesian position RMS in meters at the tight vector
-  tolerance; $\\rho = E_{{\\mathrm{{fix}}}}/E_{{\\mathrm{{At}}}}$ favors the radial
+  tolerance; $\\rho = E_{{\\mathrm{{fix}}}}/E_{{\\mathrm{{rad}}}}$ favors the radial
   rule above unity; $M_{{\\mathrm{{res}}}}$ is the resolution margin, and a
   comparison resolves only for $M_{{\\mathrm{{res}}}}>1$. The RHS ratio is the
   right-hand-side call count of the radial rule over that of the fixed degree.}}
   \\label{{tab:budget-per-orbit-{des}}}\\\\
   \\toprule
   idx & $h_p$ & $h_a$ & $i$ & $N_{{\\mathrm{{crit}}}}$ & $N_F$ &
-    $E_{{\\mathrm{{At}}}}$ & $E_{{\\mathrm{{fix}}}}$ & $\\rho$ &
+    $E_{{\\mathrm{{rad}}}}$ & $E_{{\\mathrm{{fix}}}}$ & $\\rho$ &
     $M_{{\\mathrm{{res}}}}$ & RHS & res.\\\\
   \\midrule
 \\endfirsthead
   \\toprule
   idx & $h_p$ & $h_a$ & $i$ & $N_{{\\mathrm{{crit}}}}$ & $N_F$ &
-    $E_{{\\mathrm{{At}}}}$ & $E_{{\\mathrm{{fix}}}}$ & $\\rho$ &
+    $E_{{\\mathrm{{rad}}}}$ & $E_{{\\mathrm{{fix}}}}$ & $\\rho$ &
     $M_{{\\mathrm{{res}}}}$ & RHS & res.\\\\
   \\midrule
 \\endhead
@@ -580,6 +631,8 @@ def main() -> int:
     if traj:
         (METRICS / "r14_trajectory_pareto_table.tex").write_text(
             trajectory_table(traj), encoding="utf-8")
+        (METRICS / "r14_trajectory_pareto_headline_table.tex").write_text(
+            trajectory_table_headline(traj), encoding="utf-8")
         (METRICS / "r14_cost_bookkeeping_table.tex").write_text(
             cost_table(traj), encoding="utf-8")
         for des in traj:

@@ -6,8 +6,8 @@ sixteen left undecided. That tally is the weakest evidence the constructive
 claim rests on, and the reason it is weak is visible in the record. In six of
 the eight undecided cases the interior member has the *smaller* raw error, in
 four of them by more than an order of magnitude; what blocks the verdict is the
-interior member's own numerical envelope, which is one to nine metres where the
-oracle's is centimetres. The envelopes, not the physics, are deciding.
+interior member's own numerical envelope, which is one to nine meters where the
+oracle's is centimeters. The envelopes, not the physics, are deciding.
 
 R23-C already established that this is fixable and that fixing it does not
 manufacture winners: refining tight-to-tighter envelopes into tighter-to-ultra

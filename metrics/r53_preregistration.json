@@ -1,0 +1,155 @@
+{
+ "schema": "r53_preregistration_v1",
+ "created_utc": "2026-08-13T23:33:33.677492+00:00",
+ "campaign": "R53: the declared post-hoc budget beta = 0.62 computed on the seven populations of the regime map that lack it",
+ "question": "Figure 4 draws six budgets against thirteen rows. The post-hoc budget beta = 0.62, declared in r28_calibration_amendment.json and marked in the figure with a dagger, is presently computed on four of those rows only: designs A and B and the two identity blocks of the paired ladder. The remaining seven -- design C, the four geometry strata, and the operational elliptical population in both its capped and its ceiling-free reading -- have 0.50, 0.75 and 1.00 and nothing between the first two. Where does each of those populations sit at 0.62?",
+ "what_this_is_not": "no new population, no new orbit, no new design draw, no new parameter and no new reference degree. Every cell below is an already-registered population, propagated by its own already-sealed driver, at a budget its own already-computed calibration already carries: budgets_computed in each of the seven calibration records listed under watched_inputs contains 0.62, which this file checked before it was written. This campaign adds a column to a grid; it does not add a degree of freedom.",
+ "why_it_is_post_hoc_and_declared_as_such": "beta = 0.62 is itself post hoc. It was added in r28_calibration_amendment.json after the pre-registered grid had been scored, to place a point inside the interval where designs A and B were found to cross, and the manuscript marks it as post hoc everywhere it is drawn. Extending it to the remaining populations inherits that status exactly and does not launder it: these cells are declared post hoc, drawn with the same dagger, and no pre-registered verdict of any campaign is restated on their evidence.",
+ "no_registered_verdict_is_at_stake": "every population below already has its registered verdict at its own declared budget, scored and sealed. Those verdicts are not recomputed, not amended and not reopened here. What the new cells can do is locate a crossing more finely inside an interval that is already reported as an interval.",
+ "not_blind": "the 0.50, 0.75 and 1.00 verdicts of all seven populations are known and printed. The protections are that no orbit is drawn, no tolerance chosen, no comparator refit and no calibration recomputed; the budget was fixed long before this campaign by an amendment written for other designs; the cell order below is fixed by cost and centrality before the first propagation; and the outcomes are written here, before it.",
+ "budget": 0.62,
+ "budget_provenance": "r28_calibration_amendment.json",
+ "cells": [
+  {
+   "order": 1,
+   "population": "operational_elliptical_uncapped",
+   "design_key": "OEU",
+   "registry": "r38",
+   "driver": "rev30_stratum_ops.py",
+   "prior_min": 45.0,
+   "measured_prior": "r38 ladders 43.4, 40.4, 36.2 min"
+  },
+  {
+   "order": 2,
+   "population": "operational_elliptical",
+   "design_key": "OE",
+   "registry": "r31",
+   "driver": "rev30_stratum_ops.py",
+   "prior_min": 48.0,
+   "measured_prior": "r31 ladders 46.2, 43.9, 35.2 min"
+  },
+  {
+   "order": 3,
+   "population": "designC",
+   "design_key": "C",
+   "registry": "r29",
+   "driver": "rev29_designC_ladder.py",
+   "prior_min": 135.0,
+   "measured_prior": "r29 ladders 152.5, 122.9, 110.8 min"
+  },
+  {
+   "order": 4,
+   "population": "high_apolune",
+   "design_key": "SH",
+   "registry": "r30",
+   "driver": "rev30_stratum_ops.py",
+   "prior_min": 65.0,
+   "measured_prior": "r30 second-pass ladder 58.9 min"
+  },
+  {
+   "order": 5,
+   "population": "polar",
+   "design_key": "SP",
+   "registry": "r30",
+   "driver": "rev30_stratum_ops.py",
+   "prior_min": 65.0,
+   "measured_prior": "r30 second-pass ladder 58.9 min"
+  },
+  {
+   "order": 6,
+   "population": "equatorial",
+   "design_key": "SE",
+   "registry": "r30",
+   "driver": "rev30_stratum_ops.py",
+   "prior_min": 65.0,
+   "measured_prior": "r30 second-pass ladder 58.9 min"
+  },
+  {
+   "order": 7,
+   "population": "frozen_like",
+   "design_key": "SF",
+   "registry": "r30",
+   "driver": "rev30_stratum_ops.py",
+   "prior_min": 65.0,
+   "measured_prior": "r30 second-pass ladder 58.9 min"
+  }
+ ],
+ "cell_order_rule": "fixed before the run and not outcome-dependent: the two operational-elliptical readings first because they are the pair that carries the geometry-axis result and are the cheapest, then design C because it is a coverage draw and therefore more central than a sub-box, then the four strata in their registered order. A cell the clock does not reach is reported as declared and not run.",
+ "protocol": "identical to the 0.50, 0.75 and 1.00 ladders of each population in every respect except the budget: same seven-day arc, same tolerance levels, same output grid, same resolution rule, same two-policy base, same operating point, same calibration record, same driver invoked the same way. Nothing on disk belonging to another campaign is written.",
+ "declared_outcomes": {
+  "W": "every completed cell scores between its own 0.50 and 0.75 verdicts, i.e. the budget ordering already reported for that population is monotone through the new point: the column is drawn and every crossing interval already printed stands unchanged and better resolved.",
+  "X": "at least one completed cell falls outside its own 0.50/0.75 bracket: the non-monotonicity is reported per population, the affected bracket sentence is qualified, and the cell is drawn as scored rather than smoothed.",
+  "Y": "a completed cell resolves too few comparisons to score under the campaign envelope rule: it is drawn as unresolved, its resolved count is printed, and no verdict is read from it.",
+  "Z": "a cell is not reached before the clock: it is reported as declared and not run, and the figure keeps its blank there.",
+  "note": "all four are publishable and the figure is redrawn under whichever occur."
+ },
+ "prohibited": [
+  "extending the cell list after seeing any cell's result",
+  "reordering the remaining cells on the evidence of a completed one",
+  "re-running a completed cell",
+  "recomputing or editing any of the seven calibration records",
+  "restating any campaign's registered verdict on this campaign's evidence",
+  "quoting a cell whose ladder record carries no summary"
+ ],
+ "watched_inputs": {
+  "r29_budget_pareto_designC.json": {
+   "sha256": "09a6f718adfd47ac55ff43460d8b80b199d1d898ef20009b98eb7a3a8126248a",
+   "bytes": 4203879,
+   "carries_0.62": true
+  },
+  "r30_budget_pareto_high_apolune.json": {
+   "sha256": "4af6ba32c3b35f96cad7a5f4df62d1d0f5cb2e34f51890c74b975667db9db967",
+   "bytes": 5044643,
+   "carries_0.62": true
+  },
+  "r30_budget_pareto_polar.json": {
+   "sha256": "2eef0f41c6cf45135153a251d9afa58bf685ea02a6e8e7598cfa4cd60ccfb099",
+   "bytes": 4188826,
+   "carries_0.62": true
+  },
+  "r30_budget_pareto_equatorial.json": {
+   "sha256": "0d8ff99bb0a64fa0f6cbe4f4e00208db3467e1a787eaa76422a1a174fd47b287",
+   "bytes": 4235731,
+   "carries_0.62": true
+  },
+  "r30_budget_pareto_frozen_like.json": {
+   "sha256": "6f1c595c3e36568a85cdc0ba6cb6cb2419a5e8b5cbbbc2dfe60e8f73b3a3db30",
+   "bytes": 4189512,
+   "carries_0.62": true
+  },
+  "r31_budget_pareto_operational_elliptical.json": {
+   "sha256": "e4d15ae0d340bb2ba370983d32252f22f15f0c8657d1c5852d49895088b29031",
+   "bytes": 10135467,
+   "carries_0.62": true
+  },
+  "r38_budget_pareto_operational_elliptical_uncapped.json": {
+   "sha256": "4924e9c9d89eee55846a592cd24664904360d980fb7aa89b101cf38d3e5ef85f",
+   "bytes": 10110983,
+   "carries_0.62": true
+  }
+ },
+ "watched_inputs_note": "the seven calibration records are read and never written; their digests are recorded here so that a later check can prove the budget 0.62 was already inside each of them before this campaign ran.",
+ "writes": [
+  "metrics/r14_trajectory_{KEY}_beta_0.62.json for each cell",
+  "metrics/r18_span_sweep_{KEY}_beta_0.62.json for each cell",
+  "metrics/r19_equal_total_work_{KEY}_beta_0.62.json for each cell",
+  "the corresponding case and raw subtrees under each population's own registry",
+  "metrics/r53_campaign_progress.json"
+ ],
+ "declared_but_not_scheduled": [
+  {
+   "population": "operational_elliptical_uncapped",
+   "beta": 1.25,
+   "why": "the wide-elliptic pair has no point above the declared budget, so the word 'only' in the geometry sentence is untested from above. That is a different question from this campaign's and is not run under this registration."
+  },
+  {
+   "population": "operational_elliptical",
+   "beta": 1.25,
+   "why": "same"
+  }
+ ],
+ "why_the_amended_ladder_budgets_are_not_here": "the obvious neighbouring job, a ceiling-free ladder at the two amended budgets 1.25 and 1.50, cannot be done at reference degree 600: the six-budget probe in r51_ceiling_probe_all_budgets.json puts the largest request at 599 against a ceiling of 600, so a run at those budgets would move the ceiling rather than remove it, and R52's registration says the same. Those cells keep their superscript c and need a higher reference and a fresh base on each block.",
+ "driver": "python_codes/rev53_campaign.py",
+ "scheduled_window": "2026-08-14 overnight, cutoff 10:45 local",
+ "preregistration_sha256": "674ff6274b8f3c7ea7809a71e09467a6121908febefdb7add8f3cf5657e5c3eb"
+}

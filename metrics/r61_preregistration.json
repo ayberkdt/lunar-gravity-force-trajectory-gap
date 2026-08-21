@@ -1,0 +1,256 @@
+{
+  "schema": "r61_preregistration_v1",
+  "campaign": "R61 (O42-ext): the scoring-tolerance rematch on the third coverage design and the five geometry strata",
+  "registered_utc": "2026-08-18T23:13:38Z",
+  "registered_before_any_propagation": true,
+  "motivation": "R44 (O42) re-established the equal-realized-work match at the tolerance the errors are scored at, on designs A and B only, and one of those two moved its tally crossing above 0.75. Section IX.B nevertheless reads the crossing bracket across seven populations and attributes it to the matching convention as much as to the dynamics, on that two-population base; council round 22 item 3(c) named the same gap from the other side. This campaign supplies the six missing populations so the convention statement is measured on the populations it generalises over rather than inferred from two.",
+  "relationship_to_r44": "method identical, population set disjoint. R44's eight A/B cells and its sealed manifest are untouched; this campaign writes r61_* records and its own case and raw trees, and reads r18_cases read-only.",
+  "cells": [
+    {
+      "population": "C",
+      "design_key": "C",
+      "beta": 0.5,
+      "pass": "bracket"
+    },
+    {
+      "population": "low_perilune",
+      "design_key": "SL",
+      "beta": 0.5,
+      "pass": "bracket"
+    },
+    {
+      "population": "polar",
+      "design_key": "SP",
+      "beta": 0.5,
+      "pass": "bracket"
+    },
+    {
+      "population": "equatorial",
+      "design_key": "SE",
+      "beta": 0.5,
+      "pass": "bracket"
+    },
+    {
+      "population": "frozen_like",
+      "design_key": "SF",
+      "beta": 0.5,
+      "pass": "bracket"
+    },
+    {
+      "population": "high_apolune",
+      "design_key": "SH",
+      "beta": 0.5,
+      "pass": "bracket"
+    },
+    {
+      "population": "C",
+      "design_key": "C",
+      "beta": 0.75,
+      "pass": "bracket"
+    },
+    {
+      "population": "low_perilune",
+      "design_key": "SL",
+      "beta": 0.75,
+      "pass": "bracket"
+    },
+    {
+      "population": "polar",
+      "design_key": "SP",
+      "beta": 0.75,
+      "pass": "bracket"
+    },
+    {
+      "population": "equatorial",
+      "design_key": "SE",
+      "beta": 0.75,
+      "pass": "bracket"
+    },
+    {
+      "population": "frozen_like",
+      "design_key": "SF",
+      "beta": 0.75,
+      "pass": "bracket"
+    },
+    {
+      "population": "high_apolune",
+      "design_key": "SH",
+      "beta": 0.75,
+      "pass": "bracket"
+    },
+    {
+      "population": "C",
+      "design_key": "C",
+      "beta": 1.0,
+      "pass": "declared"
+    },
+    {
+      "population": "low_perilune",
+      "design_key": "SL",
+      "beta": 1.0,
+      "pass": "declared"
+    },
+    {
+      "population": "polar",
+      "design_key": "SP",
+      "beta": 1.0,
+      "pass": "declared"
+    },
+    {
+      "population": "equatorial",
+      "design_key": "SE",
+      "beta": 1.0,
+      "pass": "declared"
+    },
+    {
+      "population": "frozen_like",
+      "design_key": "SF",
+      "beta": 1.0,
+      "pass": "declared"
+    },
+    {
+      "population": "high_apolune",
+      "design_key": "SH",
+      "beta": 1.0,
+      "pass": "declared"
+    }
+  ],
+  "attempt_order": "as listed. The bracket pass (beta 0.50 and 0.75) runs for all six populations before the declared-budget pass (beta 1.00), so a window that ends early still leaves every population with the pair that locates its crossing. Populations are ordered C, low perilune, polar, equatorial, frozen-like, high apolune: the seven-population bracket statement covers the first five, and high apolune is the declared exception to it.",
+  "frozen_rules": {
+    "member": "k = 0.50 of the archived R18 span sweep, reused unchanged",
+    "match_target": "W_k^tighter = mean(N_k^2)_calls x n_RHS(k) from the archived R18 tighter-level telemetry",
+    "comparator_estimate": "N* = round(N_0 x sqrt(W_k^tighter / W_0^tighter)), both works at the tighter level; where the beta-specific fixed sidecar is not addressable the orbit's fixed_critical run supplies n_RHS and the source is recorded per case. This affects the first estimate only; the achieved ratio is measured from the propagated runs at both levels.",
+    "propagation": "each comparator at both tolerance levels, the R18/R19 contract unchanged",
+    "censoring": "a work-matched degree at or above the orbit's adopted reference degree is censored and reported, never clamped",
+    "scoring": "the existing reference-inclusive envelope rule, errors at the tighter level against archived truths; no new decision logic",
+    "no_outcome_dependent_stopping": "cells are attempted in the registered order and each runs to completion or to the window deadline; a cell cut by the deadline is reported as partial and never as a verdict. The order does not depend on any result this campaign produces."
+  },
+  "declared_outcomes": {
+    "A": "no additional population moves its crossing out of (0.50, 0.75] under level-consistent matching: the convention caveat narrows to design B, and Section IX.B says so with the count of populations tested.",
+    "B": "one or more further populations move the crossing above 0.75: the convention reading is corroborated and reported with the per-population brackets, and the bracket sentence carries the convention it holds under.",
+    "C": "cells are unresolved-dominated so that no bracket can be read: the populations concerned are reported as undecidable under this match with their resolved counts, and the two-population caveat stands unchanged.",
+    "note": "all three are publishable and all three change the same three places: Section IX.B's bracket sentence, Section VIII.C, and supp_strata.tex's 'exists for designs A and B only' clause."
+  },
+  "plan_validation": "the plan subcommand was run on all eighteen cells on 2026-08-19 before this registration was written: 64 orbits each, 0 missing telemetry, 0 censored at estimate time, 0 degenerate; estimated 3.6 h single-thread per cell, about 21 min at 10 workers.",
+  "driver": "python_codes/rev61_equal_work_tighter_ext.py",
+  "supervisor": "python_codes/rev61_campaign.py",
+  "window": "one night, supervisor stop-at 2026-08-19T11:00 local, hard cap 12:00; cells not reached are left unrun and listed as such.",
+  "inputs_as_read": {
+    "python_codes/rev61_equal_work_tighter_ext.py": {
+      "sha256": "12a700bbcd480cacdc545479d09430ec39178889bc8e9a31239624be8524aa07",
+      "bytes": 4871
+    },
+    "python_codes/rev44_equal_work_tighter.py": {
+      "sha256": "81f36e62f09f11136dc3b2f933ab03518eea6caff764d2cec500c3c8f572eec8",
+      "bytes": 18005
+    },
+    "python_codes/rev18_span_sweep.py": {
+      "sha256": "415b049b56e2f05a8444f57f0a6457a8a7db119147a2ade3215f5a8e0259935b",
+      "bytes": 24838
+    },
+    "python_codes/rev14_budget_trajectory.py": {
+      "sha256": "d344072bc53b321cb6b979653caabacc2a046ac6224b42bcd43dc1b5628d1ad0",
+      "bytes": 22394
+    },
+    "python_codes/population_registry.py": {
+      "sha256": "2b882636a6f13bbe46b45da2f078169592f6d52282d71afd462fff9b438b618c",
+      "bytes": 1932
+    },
+    "metrics/r18_span_sweep_C_beta_0.50.json": {
+      "sha256": "f9ac7ae8864c829b27372f1620a368808baa454afd0ef5963d2bd3e0e0904f5a",
+      "bytes": 214815
+    },
+    "metrics/r18_span_sweep_SL_beta_0.50.json": {
+      "sha256": "1f2d0b1ff4052b06f7e43665309d3a5eb2d0dadaafab5e8ae3e2136c2aa26c3b",
+      "bytes": 215402
+    },
+    "metrics/r18_span_sweep_SP_beta_0.50.json": {
+      "sha256": "7d852c28bde785d33cb62fa8fd4d476b783514b857a825821276f68d4a392bb6",
+      "bytes": 215276
+    },
+    "metrics/r18_span_sweep_SE_beta_0.50.json": {
+      "sha256": "68f1eba62b50d40186d5d49a96d9e45394ba1e5f88edcc997f31c9aea8040402",
+      "bytes": 215492
+    },
+    "metrics/r18_span_sweep_SF_beta_0.50.json": {
+      "sha256": "1060b8c46678b92ece9a69e1b0a54c7a706c105e0985e37d93b8a6988b047f4d",
+      "bytes": 215714
+    },
+    "metrics/r18_span_sweep_SH_beta_0.50.json": {
+      "sha256": "001fdd0d4b78dc5fbb0d9cf58cecff54541c170a0a22ab4ecb8b884e621cfc10",
+      "bytes": 215278
+    },
+    "metrics/r18_span_sweep_C_beta_0.75.json": {
+      "sha256": "63c2d1fa2e8fb054c822de3a35173b014aa349eae802af1ca18dac2f3b57d6cd",
+      "bytes": 215319
+    },
+    "metrics/r18_span_sweep_SL_beta_0.75.json": {
+      "sha256": "d216b86b246eb22f60560c370ddabaebcbc64ce1119e3ae62ec4da417f2a18d0",
+      "bytes": 215938
+    },
+    "metrics/r18_span_sweep_SP_beta_0.75.json": {
+      "sha256": "cb6f19b9e37a53afff92adee96a9afcfa67643a0ee67e90e6067e1ec324aae7c",
+      "bytes": 215552
+    },
+    "metrics/r18_span_sweep_SE_beta_0.75.json": {
+      "sha256": "cc9a6cb90a07ebe521bf6d7859f2fd75ae5beac00110f5ca8c489d34daf9042f",
+      "bytes": 216133
+    },
+    "metrics/r18_span_sweep_SF_beta_0.75.json": {
+      "sha256": "e4b6edc5ecd08218ca18c40c967f07fd0b5664e4da43700206da6fa755207a8a",
+      "bytes": 215904
+    },
+    "metrics/r18_span_sweep_SH_beta_0.75.json": {
+      "sha256": "51277e58856f0e178ebded2a3327c80c246e0fbdde35e86de3ccb6dcdaa8db06",
+      "bytes": 215578
+    },
+    "metrics/r18_span_sweep_C_beta_1.00.json": {
+      "sha256": "4ae649adf71b1818640caaba06e8551c3604f8353909927f6b928af1ab9642b6",
+      "bytes": 215706
+    },
+    "metrics/r18_span_sweep_SL_beta_1.00.json": {
+      "sha256": "7d829d953e99d43b8aaaf7ae106761553275f931a94c54f1b357b9fe41e4607e",
+      "bytes": 216486
+    },
+    "metrics/r18_span_sweep_SP_beta_1.00.json": {
+      "sha256": "85e0c8bb1fd19436d2c3cbb17f61e5e807ecce6ed1c6c74aa7872b94ac916424",
+      "bytes": 216088
+    },
+    "metrics/r18_span_sweep_SE_beta_1.00.json": {
+      "sha256": "a85f0ee823cde0431b5c5ff879f4e113c7b21a1c276bf986f53465a2e181a490",
+      "bytes": 216243
+    },
+    "metrics/r18_span_sweep_SF_beta_1.00.json": {
+      "sha256": "b3f717d297004336b6d20abe7a682df9f576178f4d96078de3361d75817fa83c",
+      "bytes": 216382
+    },
+    "metrics/r18_span_sweep_SH_beta_1.00.json": {
+      "sha256": "98d58893ed37bd07bf867f980dcbae8c15960d76187656c64a8d554b9a559146",
+      "bytes": 215874
+    },
+    "metrics/r26_designC_rows.json": {
+      "sha256": "fd4f13eb26f51c1a6d7567414c98f62cc8f44c44ff6c9e3572423e65ee5c62e5",
+      "bytes": 103780
+    },
+    "metrics/r30_low_perilune_rows.json": {
+      "sha256": "efc8f397bb00f8bb7abaf713ecc854a248e15a058c0e08bc4f3e0e8d690969dd",
+      "bytes": 135638
+    },
+    "metrics/r30_polar_rows.json": {
+      "sha256": "883de9d06dfe221acbb067bf813c1652e6be67b4e2ecc1aac024dce091d2002c",
+      "bytes": 116773
+    },
+    "metrics/r30_equatorial_rows.json": {
+      "sha256": "f7dcf9c3d2098dc3ba83a6acf074e537eaea1a69b4ba86046b292f851e01c673",
+      "bytes": 118225
+    },
+    "metrics/r30_frozen_like_rows.json": {
+      "sha256": "3dd32c1a5550613582fa0de7a395c76a3a557182419f2068f142fa399be82652",
+      "bytes": 118089
+    },
+    "metrics/r30_high_apolune_rows.json": {
+      "sha256": "c1ec68bb5f2b8433d1f84d341740987dfac8d6b9ee133a133da137a444028fc3",
+      "bytes": 114658
+    }
+  }
+}

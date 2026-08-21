@@ -103,6 +103,23 @@ DURATION = 7.0 * base.DAY
 OUTPUT_STEP = 120.0
 POLICIES = ("truth", "schedule_empirical", "schedule_up", "schedule_down",
             "fixed_critical", "fixed_work")
+def schedule_policies() -> tuple:
+    """The schedule policies this run actually propagates.
+
+    Read from POLICIES at call time rather than hard-coded, because the
+    stratum driver patches POLICIES down to the two the budget ladder needs
+    and the summary has to agree with what was run. Hard-coding them here
+    made every stratum orbit fail with KeyError at the summary step after its
+    trajectories had already been computed.
+    """
+    return tuple(p for p in POLICIES if p.startswith("schedule_"))
+
+
+def comparator_policies() -> tuple:
+    """The fixed-degree comparators this run actually propagates."""
+    return tuple(p for p in POLICIES if p.startswith("fixed_"))
+
+
 COMPARED = ("schedule_empirical", "schedule_up", "schedule_down",
             "fixed_critical", "fixed_work")
 
@@ -327,10 +344,10 @@ def orbit_summary(row: dict, smoke: bool) -> dict:
             "status": data[(policy, "tight")][0]["status"],
         }
     comparisons = {}
-    for schedule_name in ("schedule_empirical", "schedule_up", "schedule_down"):
+    for schedule_name in schedule_policies():
         schedule = policies[schedule_name]
         es = schedule["errors_against_same_tolerance_truth"]["tight"]["pos_rms_m"]
-        for comparator in ("fixed_work", "fixed_critical"):
+        for comparator in comparator_policies():
             fixed = policies[comparator]
             ef = fixed["errors_against_same_tolerance_truth"]["tight"]["pos_rms_m"]
             difference = abs(es - ef)
@@ -382,11 +399,8 @@ def summarize(rows: list[dict]) -> dict:
         p: stat([r["policies"][p]["self_difference_rms_m"] for r in rows])
         for p in COMPARED}
     decisions = {}
-    for key in ("schedule_empirical_vs_fixed_work",
-                "schedule_empirical_vs_fixed_critical",
-                "schedule_up_vs_fixed_work", "schedule_up_vs_fixed_critical",
-                "schedule_down_vs_fixed_work",
-                "schedule_down_vs_fixed_critical"):
+    for key in (f"{s}_vs_{c}" for s in schedule_policies()
+                for c in comparator_policies()):
         cs = [r["comparisons"][key] for r in rows if key in r["comparisons"]]
         schedule_name = key.split("_vs_")[0]
         decisions[key] = {

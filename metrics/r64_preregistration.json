@@ -1,0 +1,65 @@
+{
+  "schema": "r64_preregistration_v1",
+  "campaign": "R57 (O57): the measured-kernel-time comparator matched at the tolerance the errors are scored at",
+  "registered_utc": "2026-08-19T16:01:00Z",
+  "registered_before_any_propagation": true,
+  "motivation": "(O48) matches the comparator on kernel time measured at the tight level while every error in the comparison is read at the tighter level. That is the level inconsistency (O42) removed for realized work, and it is why (O48) bounds cost without superseding the operation-count comparison. This campaign moves the timing to the scoring level and changes nothing else.",
+  "locked_choices": {
+    "panel": "(O48)'s fourteen orbits, read from r48_interior_timing_selection.json; no orbit is selected here",
+    "member": "k = 0.5 at beta = 1, as in (O48)",
+    "not_revisited": "the panel is not enlarged to the full 128 orbits in this campaign. Whether that is worth doing is a question this campaign answers, not one it prejudges."
+  },
+  "construction": {
+    "first_pass": "degree inverted on the member's TIGHTER call histogram against the measured cost curve, where (O48) used the tight histogram",
+    "timed_stages": "the member's contention-free re-run, the first-pass comparator and the refined comparator are all timed at the tighter level",
+    "refinement": "second-pass degree from the measured total kernel time ratio with c(N) ~ N^2 locally, capped at the orbit's adopted reference degree",
+    "envelope": "the refined comparator is also propagated at the tight level, untimed, because the envelope needs the pair",
+    "idle_machine": "every timed stage refuses to start while other python processes are alive"
+  },
+  "declared_outcomes": {
+    "A_interior_holds": "a resolved majority for the member under level-consistent measured time. Reading: the operation-count caveat loosens and the interior result can be stated on measured time for this panel.",
+    "B_constant_wins": "a resolved majority for the constant degree. Reading: the interior advantage is an operation-count result and the manuscript says so on measured time as well as on the proxy.",
+    "C_unresolved_dominated": "more than half the panel undecided. Reading: measured time does not decide this comparison on fourteen orbits, and enlarging the timing panel to 128 orbits is not worth its cost unless the comparator degree moves materially.",
+    "exclusivity_note": "these three are evaluated in order and the first that holds is the one reported. (O56)'s classes overlapped because they were written without this rule."
+  },
+  "driver": "python_codes/rev57_interior_timing_tighter.py",
+  "inputs_as_read": {
+    "python_codes/rev57_interior_timing_tighter.py": {
+      "sha256": "742c3a70a3b8c0c5d6fc94513b400f69bd59c8aa0cd1dd37cdb3070bc93d5208",
+      "bytes": 13195
+    },
+    "python_codes/rev57_preregister.py": {
+      "sha256": "503654eac48a92d450aa669b32065c6fe4cc8ed1fbe8ba2572bc2883085b4e01",
+      "bytes": 5571
+    },
+    "python_codes/rev48_interior_timing.py": {
+      "sha256": "10a5dda12c99811b59f6c8f06bfc2377ed5763b6554172fab38784a3ab2ae91e",
+      "bytes": 15102
+    },
+    "python_codes/rev13_timing_match.py": {
+      "sha256": "f577595dbb03f5a2c6bb8930dc9f35eb390e23abc574cc6401e4c12a61e702df",
+      "bytes": 25046
+    },
+    "metrics/r48_interior_timing_selection.json": {
+      "sha256": "e55a699e96c02091d7fb238f3f422c7e384585e653a20466157cf6c00f2a368a",
+      "bytes": 6350
+    },
+    "metrics/r48_interior_timing.json": {
+      "sha256": "dfb70c0bfe8dd010a075523b75052f48685ce8d3b3f3f025f2e92ca97d943cc3",
+      "bytes": 6440
+    },
+    "metrics/r12_kernel_cost_curve.json": {
+      "sha256": "e08ad2e516f4ffa54b60ec846f60bd00272e7de43c526b7fec5bf01298692165",
+      "bytes": 5784
+    },
+    "metrics/r18_span_sweep_A_beta_1.00.json": {
+      "sha256": "fc50df65de340d5e60de0d200ce8a03dc816af697cbd7f8cef30ae60c7bd2ce7",
+      "bytes": 215865
+    },
+    "metrics/r18_span_sweep_B_beta_1.00.json": {
+      "sha256": "c19805762ba49edfac3cf281b298631a29cdb3fcb3f92653bfde9100059392f6",
+      "bytes": 215735
+    }
+  },
+  "renumbered_from": "registered as r57 and renumbered to r64 without any change to its content: r57 was already held by the (O40) gradient-degree completion campaign. Only the campaign number moved; registered_utc is the original and precedes every propagation in this campaign."
+}

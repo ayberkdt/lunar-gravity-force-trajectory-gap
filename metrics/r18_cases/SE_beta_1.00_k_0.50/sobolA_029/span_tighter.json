@@ -1,0 +1,81 @@
+{
+  "schema": "r18_span_sweep_v1",
+  "created_utc": "2026-08-06T21:26:21.678110Z",
+  "config": {
+    "sobol_index": 29,
+    "design": "SE",
+    "k": 0.5,
+    "beta": 1.0,
+    "adopted_truth_degree": 300,
+    "n_critical": 81,
+    "constant_degree_endpoint": 81,
+    "atallah_tol_accel_m_s2": 0.017583980258575726,
+    "family": "N_k(h) = round(scale * N_0^(1-k) * N_A(h)^k), clipped to [floor, truth]",
+    "scale": 1.0015729525054264,
+    "work_achieved": 6553.812140448324,
+    "work_target": 6561.0,
+    "work_mismatch": -0.0010955432939607768,
+    "work_attainable": true,
+    "degree_table": {
+      "130.0": 90,
+      "140.0": 86,
+      "150.0": 82,
+      "160.0": 79,
+      "170.0": 75,
+      "180.0": 72,
+      "190.0": 69
+    },
+    "degree_span": 1.3043478260869565,
+    "atallah_span": 1.694915254237288,
+    "initial_state_si": [
+      -584894.6221266213,
+      1780390.1906367652,
+      -14892.870661777542,
+      -1546.0347308391094,
+      -507.78416639388195,
+      14.332420208745644
+    ],
+    "duration_s": 604800.0,
+    "output_step_s": 120.0,
+    "integrator": "InstrumentedDOP853",
+    "max_step_s": 60.0,
+    "atol_kind": "vector",
+    "timing_comparable": false,
+    "source": {
+      "driver": "rev18_span_sweep.py",
+      "reuses": "r14_trajectory_SE_beta_1.00.json (tolerances, comparator degree, truth), r11 convergence truths",
+      "lunaris_commit": "27e9ab86ed61d623f78c453ea2054348f1044c23"
+    }
+  },
+  "config_sha256": "9b2449727bf5c9af7d195e7376ca970c513a2d48b563369bf504a3a1500b1cbc",
+  "status": "ok",
+  "event": null,
+  "telemetry": {
+    "n_rhs": 231800,
+    "n_accepted_steps": 12470,
+    "n_attempted_steps": 16199,
+    "n_rejected_trials": 3729,
+    "switch_count_at_rhs_samples": 8345,
+    "degree_counts": {
+      "90": 10654,
+      "86": 46073,
+      "82": 70053,
+      "79": 67109,
+      "75": 32965,
+      "72": 4946
+    },
+    "degree_range": [
+      72,
+      90
+    ],
+    "mean_degree": 81.085340811044,
+    "mean_degree_sq": 6591.825444348577,
+    "gravity_kernel_ns": 48135574500,
+    "process_cpu_ns": 30406250000,
+    "total_wall_ns": 80164656000
+  },
+  "raw_path": "metrics\\r18_raw\\SE_beta_1.00_k_0.50\\sobolA_029\\span_tighter.npz",
+  "raw_sha256": "5670575f886b7843f7eb473186c8384a4f2a8ca46d9f340d94e8c9fa3293e48f",
+  "n_output_epochs": 5041,
+  "last_output_epoch_s": 604800.0
+}

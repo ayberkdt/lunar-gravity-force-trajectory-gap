@@ -1,0 +1,62 @@
+{
+  "schema": "r19_equal_total_work_v1",
+  "created_utc": "2026-08-14T03:47:08.763667Z",
+  "config": {
+    "sobol_index": 53,
+    "design": "C",
+    "beta": 0.62,
+    "policy": "constant degree matched on realized total quadratic work",
+    "matched_to": "span-sweep member k=0.50",
+    "degree": 65,
+    "target_total_quadratic_work": 630877184.0,
+    "constant_endpoint_degree": 63,
+    "constant_endpoint_total_work": 600454134.0,
+    "first_estimate_rule": "N* = round(N_0 * sqrt(W_k / W_0)); the achieved ratio is measured, not assumed",
+    "adopted_truth_degree": 300,
+    "initial_state_si": [
+      710824.8443854743,
+      -432445.4271593129,
+      1680576.5451689553,
+      -1341.547298063372,
+      717.6294921579074,
+      752.0875769052981
+    ],
+    "duration_s": 604800.0,
+    "output_step_s": 120.0,
+    "integrator": "InstrumentedDOP853",
+    "max_step_s": 60.0,
+    "atol_kind": "vector",
+    "timing_comparable": false,
+    "source": {
+      "driver": "rev19_equal_total_work.py",
+      "reuses": "r18_span_sweep_C_beta_0.62.json (realized work), r14_trajectory_C_beta_0.62.json, r11 truths",
+      "lunaris_commit": "27e9ab86ed61d623f78c453ea2054348f1044c23"
+    }
+  },
+  "config_sha256": "7d97a295f228e6c612aa46b424146f4ecd1a4e6103821a34babd4262e02c3363",
+  "status": "ok",
+  "event": null,
+  "telemetry": {
+    "n_rhs": 151325,
+    "n_accepted_steps": 10085,
+    "n_attempted_steps": 10089,
+    "n_rejected_trials": 4,
+    "switch_count_at_rhs_samples": 0,
+    "degree_counts": {
+      "65": 151325
+    },
+    "degree_range": [
+      65,
+      65
+    ],
+    "mean_degree": 65.0,
+    "mean_degree_sq": 4225.0,
+    "gravity_kernel_ns": 9371182300,
+    "process_cpu_ns": 15562500000,
+    "total_wall_ns": 17660783300
+  },
+  "raw_path": "metrics\\r19_raw\\C_workmatched_beta_0.62\\sobolA_053\\fixed_tight.npz",
+  "raw_sha256": "b1a27d1c6f0700034c2dd4dafb35526ac1fc33bb1d0ffe3f52f278b081544899",
+  "n_output_epochs": 5041,
+  "last_output_epoch_s": 604800.0
+}

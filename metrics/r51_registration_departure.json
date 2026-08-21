@@ -1,0 +1,33 @@
+{
+  "schema": "r51_registration_departure_v1",
+  "created_utc": "2026-08-14T20:22:43.227016Z",
+  "departs_from": "r51_preregistration.json",
+  "departs_from_declared_sha256": "6355875427c25489cb4868ef90f541d8bb4438f0ff20a36a187f3c538035f1b8",
+  "departs_from_file_sha256": "dbebc5b708b0113d1d658462573611756194f015d5c5532508258f533f72545d",
+  "scored_by": "r51_verdict.json",
+  "scored_by_sha256": "04a2b454cbf47543a6a1ff97e4304db60d66e4baead1654ba07029a7fa576549",
+  "outcome_returned": "Z_ordering_breaks",
+  "trigger_that_fired": "a level favouring the radial endpoint under the ceiling no longer does: beta=0.50, 2400 km, radial -> constant",
+  "trigger_that_did_not_fire": "the score stops ordering in span; Kendall tau of the ceiling-free level scores is 1.0, 1.0, 1.0, 1.0 at the budgets read",
+  "registered_consequence": "The level ordering changes: a level that favoured the radial endpoint under the cap no longer does, or the score stops ordering in span. The span dependence is then reported as confounded with the ceiling, the capped ladder is retired from every place it is quoted, and the discussion says that the geometry axis could not be separated from the reference-degree ceiling by this campaign.",
+  "consequence_applied": false,
+  "what_was_done_instead": "both runs are printed together; the ceiling-free values are the ones interpreted quantitatively in prose; the cell that changed hands is named wherever the lowest budget is discussed; and the scope of the control is stated wherever its numbers are used.",
+  "superseded_by": "r52_registration_departure.json",
+  "superseded_note": "written while the control covered block A only. R52 then ran the same control on block B, and the sentence above originally read that the pooled tables and the regime map keep the capped values. That is no longer what happens: the regime map draws the ladder rows from the ceiling-free records at the four registered budgets and marks the two amended budgets, which have no ceiling-free run, cell by cell. The ladder tables stay capped because they carry all six budgets. This record is kept as it was written apart from that one correction, because a departure record edited to match later evidence stops being a record of what was decided when.",
+  "why": "the registration attached one consequence to two triggers of different severity. Withdrawing the ladder is the response to the ordering failing, which did not happen. Applying it to a single cell changing hands would retire a result the control itself leaves standing.",
+  "evidence_the_decision_rests_on": {
+    "cells_covered": 16,
+    "verdicts_unchanged": 15,
+    "verdicts_changed": 1,
+    "tallies_moved": 8,
+    "kendall_tau_uncapped": [
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    "median_rho_factor_wide_levels": 2.1323758596236644
+  },
+  "what_the_departure_does_not_cover": "block B and the two amended budgets have no ceiling-free counterpart, so the departure is scoped to block A at the budgets in r51_verdict.json and is not a statement about the cells it does not reach.",
+  "reported_in": "supplement, span-ladder section, ceiling-removed subsection"
+}

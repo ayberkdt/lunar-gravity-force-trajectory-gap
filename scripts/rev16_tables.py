@@ -39,8 +39,8 @@ def summary_table() -> str:
              "$p_{\\mathrm{fit}}$ & $\\Delta_{\\mathrm{fit}}$ & "
              "$\\Delta_{p=2}$ \\\\",
              "\\midrule",
-             "\\multicolumn{7}{@{}l}{\\emph{Same body, three independent "
-             "solutions}}\\\\"]
+             "\\multicolumn{7}{@{}l}{\\emph{Same body: two independent "
+             "solutions and a regional refinement of one}}\\\\"]
     for key in ORDER:
         f = by_key[key]
         if key == "SHGJ180U":
