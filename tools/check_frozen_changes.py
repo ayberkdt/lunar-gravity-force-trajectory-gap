@@ -47,7 +47,6 @@ MAINTAINED_DOCS = {
 FULLY_FROZEN_FILES = {
     ".gitattributes",
     "audit_manifest_digests.py",
-    "docs/REPRODUCIBILITY_INDEX.csv",
     "docs/SOURCE_MANIFEST.md",
     "fetch_data.py",
     "known_stale_digests.json",

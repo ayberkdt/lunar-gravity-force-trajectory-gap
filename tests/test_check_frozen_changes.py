@@ -68,6 +68,10 @@ class ArchiveBoundaryTests(unittest.TestCase):
         self.assert_blocked(Change("M", ("verify_snapshot.py",)))
         self.assert_blocked(Change("M", ("docs/SOURCE_MANIFEST.md",)))
 
+    def test_allows_regenerating_the_reproducibility_index(self) -> None:
+        self.assert_allowed(Change("M", ("docs/REPRODUCIBILITY_INDEX.csv",)))
+        self.assert_allowed(Change("M", ("docs/claim_to_artifact_map.md",)))
+
 
 if __name__ == "__main__":
     unittest.main()

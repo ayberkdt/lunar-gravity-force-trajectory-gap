@@ -48,9 +48,9 @@ def demath(text: str) -> str:
     text = re.sub(r"\\(?:cite[a-z]*|ref\*?|label|nolinkurl)\{[^}]*\}", "", text)
     for _ in range(3):
         text = re.sub(
-            r"\\(?:emph|textbf|textit|code|text|mathrm|mathbf)\{([^{}]*)\}",
+            r"\\(?:emph|textbf|textit|code|text|mathrm|mathbf)\s*\{([^{}]*)\}",
             r"\1", text)
-    text = re.sub(r"\\frac\{([^{}]*)\}\{([^{}]*)\}", r"\1/\2", text)
+    text = re.sub(r"\\frac\s*\{([^{}]*)\}\s*\{([^{}]*)\}", r"\1/\2", text)
     text = text.replace("``", '"').replace("''", '"')
     # an unknown alphabetic macro keeps its own name, which is what
     # operator-style ones such as \max, \min and \deg want
@@ -63,6 +63,7 @@ def demath(text: str) -> str:
     text = text.replace("$", "").replace("{", "").replace("}", "")
     text = text.replace("~", " ").replace("\\", "")
     text = re.sub(r"\s+([,.;:])", r"\1", text)
+    text = re.sub(r" =(?=\d)", "=", text)
     return re.sub(r"\s+", " ", text).strip(" .,")
 
 

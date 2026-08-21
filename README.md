@@ -131,9 +131,10 @@ and the campaign manifest that covers it. The readable version is
 gives the same thing one level up: each claim of the paper against the
 experiment family, the registration status and the records behind it.
 
-For example, Table 13 of the main text is `metrics/r19_equal_work_table.tex`,
-written by `scripts/rev19_tables.py`, covered by
-`metrics/r19_final_experiment_manifest.json`.
+For example, Table 4 of the main text is
+`metrics/r68_measured_time_summary_table.tex`, written by
+`scripts/rev68_tables.py`, covered by
+`metrics/r68_final_experiment_manifest.json`.
 
 ## Environments
 
