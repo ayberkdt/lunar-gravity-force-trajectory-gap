@@ -1,0 +1,43 @@
+name: Archive guard
+
+"on":
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  frozen-evidence:
+    name: Protect frozen evidence
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Select comparison base
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          PR_BASE: ${{ github.event.pull_request.base.sha }}
+          PUSH_BASE: ${{ github.event.before }}
+        run: |
+          if [ "$EVENT_NAME" = "pull_request" ] && [ -n "$PR_BASE" ]; then
+            base="$PR_BASE"
+          elif [ -n "$PUSH_BASE" ] && ! printf '%s' "$PUSH_BASE" | grep -Eq '^0+$'; then
+            base="$PUSH_BASE"
+          else
+            base="$(git rev-parse HEAD^)"
+          fi
+          echo "ARCHIVE_GUARD_BASE=$base" >> "$GITHUB_ENV"
+
+      - name: Reject frozen evidence changes
+        run: python tools/check_frozen_changes.py
+
+      - name: Maintenance regression tests
+        run: python -m unittest discover -s tests -v

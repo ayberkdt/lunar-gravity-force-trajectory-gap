@@ -5,6 +5,7 @@ campaign records; they only rebuild documentation from what is already there.
 
 | tool | regenerates | needs the manuscript? |
 |---|---|---|
+| `check_frozen_changes.py` | nothing; rejects edits to historical evidence | no |
 | `build_source_manifest.py` | `docs/SOURCE_MANIFEST.md` | no |
 | `build_claim_map.py` | `docs/claim_to_artifact_map.md` | yes, for the captions |
 | `show_environments.py` | the table in `environments/README.md` | no |
@@ -14,16 +15,24 @@ campaign records; they only rebuild documentation from what is already there.
 Run them from the repository root:
 
 ```bash
+python tools/check_frozen_changes.py --base HEAD --working-tree
 python tools/build_source_manifest.py
 python tools/build_claim_map.py --manuscript-root ../codebase
 python tools/show_environments.py
 ```
 
 ```powershell
+python tools\check_frozen_changes.py --base HEAD --working-tree
 python tools\build_source_manifest.py
 python tools\build_claim_map.py --manuscript-root ..\codebase
 python tools\show_environments.py
 ```
+
+`check_frozen_changes.py` is a validator, not a repair command. Existing files
+in the evidence directories are append-only, additions under those directories
+are allowed, and every change under `src/` is blocked. In CI it compares the
+proposed commit with the pull-request or push base; with `--working-tree` it
+also checks staged, unstaged, and untracked local files.
 
 `build_source_manifest.py --check` verifies without rewriting and is what CI
 runs, so a change under `src/` that is not reflected in the manifest fails the
@@ -32,8 +41,8 @@ build.
 ## Two of these deserve care
 
 `docs/REPRODUCIBILITY_INDEX.csv` has no generator here. It was built from the
-compiled manuscript — the `.aux` numbering, the float definitions and the
-campaign manifests — and is checked in as a frozen artifact. `build_claim_map.py`
+compiled manuscript (the `.aux` numbering, the float definitions and the
+campaign manifests) and is checked in as a frozen artifact. `build_claim_map.py`
 consumes it. Rebuilding it requires the manuscript sources, which are not part
 of this archive.
 
